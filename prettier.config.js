@@ -6,4 +6,5 @@ module.exports = {
   bracketSpacing: true, // 객체 내의 콜론 뒤 공백 추가
   arrowParens: "always", // 함수 매개변수에 괄호 유지
   endOfLine: "auto", // OS 별 줄바꿈 문자 자동 설정
+  printWidth: 80, // 줄바꿈 너비 설정
 };
