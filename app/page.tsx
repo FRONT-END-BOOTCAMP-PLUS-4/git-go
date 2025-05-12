@@ -1,12 +1,16 @@
+import Image from "next/image";
+
 export default function HomePage() {
     return (
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
             <div className="space-y-6">
                 <div className="flex justify-center">
                     <div className="bg-indigo-100 rounded-full p-6 flex items-center justify-center">
-                        <img
+                        <Image
                             src="/home-center.svg"
                             alt="Home Center Icon"
+                            width={40}
+                            height={40}
                             className="w-10 h-10"
                         />
                     </div>
@@ -39,7 +43,13 @@ export default function HomePage() {
                     ].map((feature) => (
                         <div key={feature.title} className="text-center max-w-[350px]">
                             <div className={`rounded-full p-4 mb-2 flex items-center justify-center mx-auto w-16 h-16 ${feature.bgColor}`}>
-                                <img src={feature.iconPath} alt={feature.title} className="w-6 h-6" />
+                                <Image
+                                    src={feature.iconPath}
+                                    alt={feature.title}
+                                    width={24}
+                                    height={24}
+                                    className="w-6 h-6"
+                                />
                             </div>
                             <h3 className="font-semibold">{feature.title}</h3>
                             <p className="text-sm text-gray-500">{feature.desc}</p>
