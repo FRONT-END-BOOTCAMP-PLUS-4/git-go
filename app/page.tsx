@@ -1,4 +1,5 @@
 import Image from "next/image";
+import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
 
 export default function HomePage() {
     return (
@@ -20,6 +21,7 @@ export default function HomePage() {
                     GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI 기반 요약과 함께<br />
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
+                <LoginWithGitHubButton />
                 <div className="flex gap-20 mt-10 justify-center">
                     {[
                         {
