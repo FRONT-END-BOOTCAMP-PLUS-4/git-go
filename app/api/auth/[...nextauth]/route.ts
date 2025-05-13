@@ -1,5 +1,8 @@
+import { PrismaClient } from "@/prisma/generated/prisma";
 import NextAuth, { AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
+
+const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
     providers: [
@@ -14,12 +17,29 @@ export const authOptions: AuthOptions = {
         }),
     ],
     callbacks: {
-        async jwt({ token, account }) {
-            if (account) {
+        async jwt({ token, account, profile }) {
+            if (account && profile) {
                 token.accessToken = account.access_token;
+
+                const githubProfile = profile as { login: string; avatar_url: string };
+                const githubId = account.providerAccountId;
+                const username = githubProfile.login as string;
+                const profileUrl = githubProfile.avatar_url as string;
+
+                await fetch(`${process.env.NEXTAUTH_URL}/api/auth/join`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ githubId, username, profileUrl }),
+                });
             }
             return token;
         },
+        // async jwt({ token, account }) {
+        //     if (account) {
+        //         token.accessToken = account.access_token;
+        //     }
+        //     return token;
+        // },
         async session({ session, token }) {
             session.accessToken = token.accessToken;
             return session;
