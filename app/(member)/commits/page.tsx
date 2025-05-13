@@ -22,11 +22,11 @@ export default function CommitPage() {
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     Repositories
                 </h2>
-                <ul>
-                    <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                        <button className="flex items-center gap-x-2">
+                <ul className="flex flex-col gap-y-1 p-2">
+                    <li className="border-border-primary1">
+                        <button className="bg-primary2 text-primary7 flex w-full items-center gap-x-2 rounded-md p-2 font-semibold">
                             <Image
-                                src="pull-request.svg"
+                                src="branch-blue.svg"
                                 width={14}
                                 height={14}
                                 alt="브랜치 아이콘"
@@ -34,10 +34,10 @@ export default function CommitPage() {
                             frontend-app
                         </button>
                     </li>
-                    <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                        <button className="flex items-center gap-x-2">
+                    <li className="border-border-primary1">
+                        <button className="flex items-center gap-x-2 p-2">
                             <Image
-                                src="pull-request.svg"
+                                src="branch.svg"
                                 width={14}
                                 height={14}
                                 alt="브랜치 아이콘"
@@ -45,10 +45,10 @@ export default function CommitPage() {
                             backend-app
                         </button>
                     </li>
-                    <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                        <button className="flex items-center gap-x-2">
+                    <li className="border-border-primary1">
+                        <button className="flex items-center gap-x-2 p-2">
                             <Image
-                                src="pull-request.svg"
+                                src="branch.svg"
                                 width={14}
                                 height={14}
                                 alt="브랜치 아이콘"
