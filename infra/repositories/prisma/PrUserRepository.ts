@@ -6,6 +6,16 @@ const prisma = new PrismaClient();
 
 export class PrUserRepository implements UserRepository {
     async create({ githubId, username, profileUrl }: JoinUserDto) {
-        return prisma.user.create({ data: { githubId, username, profileUrl } });
+        const existing = await prisma.user.findFirst({
+            where: {
+                githubId,
+                deletedAt: null, // 삭제되지 않은 사용자만
+            },
+        });
+        if (existing) return existing;
+
+        return prisma.user.create({
+            data: { githubId, username, profileUrl },
+        });
     }
 }
