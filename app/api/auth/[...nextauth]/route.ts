@@ -26,11 +26,14 @@ export const authOptions: AuthOptions = {
                 const username = githubProfile.login as string;
                 const profileUrl = githubProfile.avatar_url as string;
 
-                await fetch(`${process.env.NEXTAUTH_URL}/api/auth/join`, {
+                const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/join`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ githubId, username, profileUrl }),
                 });
+
+                const user = await res.json();
+                token.id = user.id;
             }
             return token;
         },
