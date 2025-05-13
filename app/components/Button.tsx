@@ -30,7 +30,7 @@ const sizeClassMap: Record<ButtonSize, string> = {
     full: "w-full flex items-center justify-center",
 };
 
-const Button = ({
+export default function Button({
     type = "default",
     size = "regular",
     htmlType = "button",
@@ -38,7 +38,7 @@ const Button = ({
     label,
     onClick,
     icon,
-}: ButtonProps) => {
+}: ButtonProps) {
     const isDisabled = type === "disabled";
     const styleClass = typeClassMap[type];
     const sizeClass = sizeClassMap[size];
@@ -48,12 +48,10 @@ const Button = ({
             type={htmlType}
             onClick={onClick}
             disabled={isDisabled}
-            className={`shadow-border-primary1 flex items-center gap-x-2 rounded-lg px-3 py-2.5 text-xs font-semibold shadow-xs transition-colors ${styleClass} ${sizeClass}`}
+            className={`shadow-border-primary1 flex items-center gap-x-2 rounded-md px-3 py-2.5 text-xs font-semibold shadow-xs transition-colors ${styleClass} ${sizeClass}`}
         >
             {icon && <span className="flex-shrink-0">{icon}</span>}
             {children ?? label}
         </button>
     );
-};
-
-export default Button;
+}
