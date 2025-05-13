@@ -1,3 +1,4 @@
+import Button from "@/app/components/Button";
 import Image from "next/image";
 
 interface LabelBadgeProps {
@@ -72,7 +73,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                             bugfix/nav-issue
                         </div>
                         <div className="ml-auto">
-                            <button className="border-border-primary1 shadow-border-primary1 flex gap-x-4 rounded-lg border-1 px-3 py-2.5 text-xs font-semibold shadow-sm">
+                            <Button type="lined" htmlType="button">
                                 <Image
                                     src="write.svg"
                                     alt="회고 등록 아이콘"
@@ -80,7 +81,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                                     height={12}
                                 />
                                 Write Memoir
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
