@@ -28,7 +28,9 @@
     --color-text-secondary1: #000;
     --color-text-secondary2: #6b7280;
 
-    --color-error1: #d64545;
+    /* danger 컬러 */
+    --color-danger1: #d64545;
+    --color-danger2: #b83232;
 }
 
 @layer utilities {
