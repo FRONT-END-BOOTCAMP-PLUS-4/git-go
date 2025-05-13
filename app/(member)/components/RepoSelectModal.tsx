@@ -65,11 +65,11 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 {loading ? (
                     <p>불러오는 중...</p>
                 ) : (
-                    <ul className="max-h-[350px] overflow-y-auto divide-y">
+                    <ul className="border-border-primary1 max-h-[350px] divide-y overflow-y-auto rounded-lg border">
                         {repos.map((repo) => (
                             <li
                                 key={repo.id}
-                                className="flex justify-between items-start p-4 border border-gray-200 rounded-lg"
+                                className="border-b-border-primary1 flex items-start justify-between p-4 last:border-b-0"
                             >
                                 <div className="flex flex-col gap-1 w-full">
                                     <div className="flex items-start justify-between">
