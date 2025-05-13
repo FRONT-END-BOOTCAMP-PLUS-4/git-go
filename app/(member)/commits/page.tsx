@@ -1,4 +1,5 @@
 import CommitCard from "@/app/(member)/commits/components/CommitCard";
+import Button from "@/app/components/Button";
 import Image from "next/image";
 
 export default function CommitPage() {
@@ -56,8 +57,16 @@ export default function CommitPage() {
                         </button>
                     </li>
                 </ul>
-                <section className="border-border-primary1 border-t p-4">
-                    <button>저장소 추가</button>
+                <section className="border-border-primary1 border-t p-3">
+                    <Button type="lined" size="full">
+                        <Image
+                            src="plus-gray.svg"
+                            width={10.5}
+                            height={16}
+                            alt="저장소 추가 아이콘"
+                        />
+                        저장소 추가
+                    </Button>
                 </section>
             </aside>
 
