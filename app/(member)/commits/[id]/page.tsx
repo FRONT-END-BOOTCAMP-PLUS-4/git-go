@@ -1,3 +1,3 @@
-export default function CommitMemoirCreatePage() {
-    return <div>CommitMemoirCreatePage</div>;
+export default function CommitMemoirDetailPage() {
+    return <div>CommitMemoirDetailPage</div>;
 }
