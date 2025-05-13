@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function LoginWithGitHubButton() {
     return (
         <button
-            onClick={() => signIn("github", { callbackUrl: "/commit" })}
+            onClick={() => signIn("github", { callbackUrl: "/commits" })}
             className="bg-[#6366f1] hover:bg-[#4f46e5] text-white font-semibold py-2 px-4 rounded-md shadow-md transition"
         >
             <Image
