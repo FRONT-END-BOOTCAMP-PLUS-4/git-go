@@ -9,8 +9,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
-                <nav className="flex justify-between items-center">
+            <body className="bg-bg-primary1">
+                <nav className="flex justify-between items-center bg-white">
                     <Link href={"/"}>로고</Link>
                     <button>로그인 버튼</button>{" "}
                 </nav>
