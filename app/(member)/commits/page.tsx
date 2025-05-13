@@ -1,3 +1,4 @@
+import CommitCard from "@/app/(member)/commits/components/CommitCard";
 import Image from "next/image";
 
 export default function CommitPage() {
@@ -31,7 +32,7 @@ export default function CommitPage() {
                             />
                             frontend-app
                         </button>
-                    </li>{" "}
+                    </li>
                     <li className="border-border-primary1 border-b p-4 last:border-b-0">
                         <button className="flex items-center gap-x-2">
                             <Image
@@ -86,230 +87,11 @@ export default function CommitPage() {
                     </section>
 
                     <ul>
-                        <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                            <article className="flex items-start gap-x-4">
-                                <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                                    <Image
-                                        src="commit-blue.svg"
-                                        width={20}
-                                        height={16}
-                                        alt="커밋 아이콘"
-                                    />
-                                </div>
-                                <div className="flex flex-1 flex-col gap-y-1">
-                                    <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                                        <p>bd2a0c2</p>
-                                        <div className="shadow-border-primary1 rounded-lg bg-[#fee2e2] px-3 py-1 font-semibold text-[#991b1b] shadow-sm">
-                                            bugfix
-                                        </div>
-                                        <p className="ml-auto">2 hours ago</p>
-                                    </div>
-                                    <h3 className="font-semibold">
-                                        Fix navigation bug in dashboard
-                                        component
-                                    </h3>
-                                    <div className="flex gap-x-3">
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="branch.svg"
-                                                alt="브랜치 아이콘"
-                                                width={14}
-                                                height={12}
-                                            />
-                                            <p>frontend-app</p>
-                                        </div>
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="code.svg"
-                                                alt="코드 아이콘"
-                                                width={18}
-                                                height={14}
-                                            />
-                                            bugfix/nav-issue
-                                        </div>
-                                        <div className="ml-auto">
-                                            <button className="border-border-primary1 shadow-border-primary1 flex gap-x-4 rounded-lg border-1 px-3 py-2.5 text-xs font-semibold shadow-sm">
-                                                <Image
-                                                    src="write.svg"
-                                                    alt="회고 등록 아이콘"
-                                                    width={12}
-                                                    height={12}
-                                                />
-                                                Write Memoir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </li>
-                        <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                            <article className="flex items-start gap-x-4">
-                                <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                                    <Image
-                                        src="commit-blue.svg"
-                                        width={20}
-                                        height={16}
-                                        alt="커밋 아이콘"
-                                    />
-                                </div>
-                                <div className="flex flex-1 flex-col gap-y-1">
-                                    <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                                        <p>bd2a0c2</p>
-                                        <div className="shadow-border-primary1 rounded-lg bg-[#DCFCE7] px-3 py-1 font-semibold text-[#166534] shadow-sm">
-                                            feature
-                                        </div>
-                                        <p className="ml-auto">2 hours ago</p>
-                                    </div>
-                                    <h3 className="font-semibold">
-                                        Fix navigation bug in dashboard
-                                        component
-                                    </h3>
-                                    <div className="flex gap-x-3">
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="branch.svg"
-                                                alt="브랜치 아이콘"
-                                                width={14}
-                                                height={12}
-                                            />
-                                            <p>frontend-app</p>
-                                        </div>
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="code.svg"
-                                                alt="코드 아이콘"
-                                                width={18}
-                                                height={14}
-                                            />
-                                            bugfix/nav-issue
-                                        </div>
-                                        <div className="ml-auto">
-                                            <button className="border-border-primary1 shadow-border-primary1 flex gap-x-4 rounded-lg border-1 px-3 py-2.5 text-xs font-semibold shadow-sm">
-                                                <Image
-                                                    src="write.svg"
-                                                    alt="회고 등록 아이콘"
-                                                    width={12}
-                                                    height={12}
-                                                />
-                                                Write Memoir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </li>
-                        <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                            <article className="flex items-start gap-x-4">
-                                <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                                    <Image
-                                        src="commit-blue.svg"
-                                        width={20}
-                                        height={16}
-                                        alt="커밋 아이콘"
-                                    />
-                                </div>
-                                <div className="flex flex-1 flex-col gap-y-1">
-                                    <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                                        <p>bd2a0c2</p>
-                                        <div className="shadow-border-primary1 rounded-lg bg-[#DBEAFE] px-3 py-1 font-semibold text-[#1E40AF] shadow-sm">
-                                            refactor
-                                        </div>
-                                        <p className="ml-auto">2 hours ago</p>
-                                    </div>
-                                    <h3 className="font-semibold">
-                                        Fix navigation bug in dashboard
-                                        component
-                                    </h3>
-                                    <div className="flex gap-x-3">
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="branch.svg"
-                                                alt="브랜치 아이콘"
-                                                width={14}
-                                                height={12}
-                                            />
-                                            <p>frontend-app</p>
-                                        </div>
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="code.svg"
-                                                alt="코드 아이콘"
-                                                width={18}
-                                                height={14}
-                                            />
-                                            bugfix/nav-issue
-                                        </div>
-                                        <div className="ml-auto">
-                                            <button className="border-border-primary1 shadow-border-primary1 flex gap-x-4 rounded-lg border-1 px-3 py-2.5 text-xs font-semibold shadow-sm">
-                                                <Image
-                                                    src="write.svg"
-                                                    alt="회고 등록 아이콘"
-                                                    width={12}
-                                                    height={12}
-                                                />
-                                                Write Memoir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </li>
-                        <li className="border-border-primary1 border-b p-4 last:border-b-0">
-                            <article className="flex items-start gap-x-4">
-                                <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                                    <Image
-                                        src="commit-blue.svg"
-                                        width={20}
-                                        height={16}
-                                        alt="커밋 아이콘"
-                                    />
-                                </div>
-                                <div className="flex flex-1 flex-col gap-y-1">
-                                    <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                                        <p>bd2a0c2</p>
-                                        <div className="shadow-border-primary1 rounded-lg bg-[#fee2e2] px-3 py-1 font-semibold text-[#991b1b] shadow-sm">
-                                            bugfix
-                                        </div>
-                                        <p className="ml-auto">2 hours ago</p>
-                                    </div>
-                                    <h3 className="font-semibold">
-                                        Fix navigation bug in dashboard
-                                        component
-                                    </h3>
-                                    <div className="flex gap-x-3">
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="branch.svg"
-                                                alt="브랜치 아이콘"
-                                                width={14}
-                                                height={12}
-                                            />
-                                            <p>frontend-app</p>
-                                        </div>
-                                        <div className="flex items-center gap-x-1">
-                                            <Image
-                                                src="code.svg"
-                                                alt="코드 아이콘"
-                                                width={18}
-                                                height={14}
-                                            />
-                                            bugfix/nav-issue
-                                        </div>
-                                        <div className="ml-auto">
-                                            <button className="border-border-primary1 shadow-border-primary1 flex gap-x-4 rounded-lg border-1 px-3 py-2.5 text-xs font-semibold shadow-sm">
-                                                <Image
-                                                    src="write.svg"
-                                                    alt="회고 등록 아이콘"
-                                                    width={12}
-                                                    height={12}
-                                                />
-                                                Write Memoir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </li>
+                        {/* CommitCard 의 props 로 커밋의 타입을 지정 - bugfix | feature | refactor */}
+                        <CommitCard type="bugfix" />
+                        <CommitCard type="feature" />
+                        <CommitCard type="refactor" />
+                        <CommitCard type="bugfix" />
                     </ul>
                 </div>
             </div>
