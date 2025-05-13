@@ -1,6 +1,10 @@
+"use client";
+
 import CommitCard from "@/app/(member)/commits/components/CommitCard";
+import RepoSelectModal from "@/app/(member)/components/RepoSelectModal";
 import Button from "@/app/components/Button";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CommitPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
@@ -16,49 +20,63 @@ export default function CommitPage() {
         day: "numeric",
     }).format(dateObj);
 
+    const [open, setOpen] = useState(false);
+
+    const branches = [
+        { name: "frontend-app", icon: "branch-blue.svg" },
+        { name: "backend-app", icon: "branch.svg" },
+        { name: "api", icon: "branch.svg" },
+    ];
+
+    const [selectedBranch, setSelectedBranch] = useState("frontend-app");
+
     return (
         <div className="layout-padding bg-bg-primary1 flex gap-x-6 py-6">
+            <RepoSelectModal open={open} onClose={() => setOpen(false)} />
             <aside className="border-border-primary1 h-fit min-w-47 rounded-lg border-1 bg-white">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     Repositories
                 </h2>
                 <ul className="flex flex-col gap-y-1 p-2">
-                    <li className="border-border-primary1">
-                        <button className="bg-primary2 text-primary7 flex w-full items-center gap-x-2 rounded-md p-2 font-semibold">
-                            <Image
-                                src="branch-blue.svg"
-                                width={14}
-                                height={14}
-                                alt="브랜치 아이콘"
-                            />
-                            frontend-app
-                        </button>
-                    </li>
-                    <li className="border-border-primary1">
-                        <button className="flex items-center gap-x-2 p-2">
-                            <Image
-                                src="branch.svg"
-                                width={14}
-                                height={14}
-                                alt="브랜치 아이콘"
-                            />
-                            backend-app
-                        </button>
-                    </li>
-                    <li className="border-border-primary1">
-                        <button className="flex items-center gap-x-2 p-2">
-                            <Image
-                                src="branch.svg"
-                                width={14}
-                                height={14}
-                                alt="브랜치 아이콘"
-                            />
-                            api
-                        </button>
-                    </li>
+                    {branches.map((branch) => {
+                        const isSelected = branch.name === selectedBranch;
+                        return (
+                            <li
+                                key={branch.name}
+                                className="border-border-primary1"
+                            >
+                                <button
+                                    className={`flex w-full items-center gap-x-2 rounded-md p-2 font-semibold ${
+                                        isSelected
+                                            ? "bg-primary2 text-primary7"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        setSelectedBranch(branch.name)
+                                    }
+                                >
+                                    <Image
+                                        src={
+                                            isSelected
+                                                ? "branch-blue.svg"
+                                                : "branch.svg"
+                                        }
+                                        width={14}
+                                        height={14}
+                                        alt="브랜치 아이콘"
+                                    />
+                                    {branch.name}
+                                </button>
+                            </li>
+                        );
+                    })}
                 </ul>
                 <section className="border-border-primary1 border-t p-3">
-                    <Button type="lined" size="full">
+                    <Button
+                        type="lined"
+                        size="full"
+                        onClick={() => setOpen(true)}
+                    >
                         <Image
                             src="plus-gray.svg"
                             width={10.5}
@@ -107,25 +125,3 @@ export default function CommitPage() {
         </div>
     );
 }
-
-// "use client";
-
-// import { useState } from "react";
-// import RepoSelectModal from "../components/RepoSelectModal";
-
-// export default function CommitPage() {
-//     const [open, setOpen] = useState(false);
-
-//     return (
-//         <div className="p-4">
-//             <button
-//                 onClick={() => setOpen(true)}
-//                 className="bg-blue-600 text-white px-4 py-2 rounded-md"
-//             >
-//                 저장소 추가
-//             </button>
-
-//             <RepoSelectModal open={open} onClose={() => setOpen(false)} />
-//         </div>
-//     );
-// }
