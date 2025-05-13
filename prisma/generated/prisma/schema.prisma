@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -18,41 +12,40 @@ model Repo {
   id      Int      @id @default(autoincrement())
   name    String?
   userId  String
-  user    User     @relation(fields: [userId], references: [id])
   memoirs Memoir[]
+  user    User     @relation(fields: [userId], references: [id])
 
   @@map("repo")
 }
 
 model Memoir {
-  id        Int       @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   title     String
   content   String
   source    String
-  aiSum     String?   @map("ai_sum")
-  createdAt DateTime  @map("created_at")
-  updatedAt DateTime? @map("updated_at")
+  aiSum     String?     @map("ai_sum")
+  createdAt DateTime    @map("created_at")
+  updatedAt DateTime?   @map("updated_at")
   userId    String
   typeId    Int
   repoId    Int
-
-  user User        @relation(fields: [userId], references: [id])
-  type MemoirType  @relation(fields: [typeId], references: [id])
-  repo Repo        @relation(fields: [repoId], references: [id])
-  tags MemoirTag[]
+  repo      Repo        @relation(fields: [repoId], references: [id])
+  type      MemoirType  @relation(fields: [typeId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+  tags      MemoirTag[]
 
   @@map("memoir")
 }
 
 model User {
   id         String    @id @default(uuid())
-  username   String?
-  email      String?
+  username   String
   profileUrl String?   @map("profile_url")
-  createdAt  DateTime  @map("created_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
   deletedAt  DateTime? @map("deleted_at")
-  repos      Repo[]
+  githubId   String
   memoirs    Memoir[]
+  repos      Repo[]
 
   @@map("user")
 }
@@ -76,9 +69,8 @@ model Tag {
 model MemoirTag {
   memoirId Int
   tagId    Int
-
-  memoir Memoir @relation(fields: [memoirId], references: [id])
-  tag    Tag    @relation(fields: [tagId], references: [id])
+  memoir   Memoir @relation(fields: [memoirId], references: [id])
+  tag      Tag    @relation(fields: [tagId], references: [id])
 
   @@id([memoirId, tagId])
   @@map("memoir_tag")
