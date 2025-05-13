@@ -41,6 +41,26 @@ export default function RepoSelectModal({ open, onClose }: Props) {
         });
     };
 
+    const handleSave = async () => {
+        const repoIds = Array.from(selected);
+        try {
+            const res = await fetch("/api/repos/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ repoIds }),
+            });
+
+            if (res.ok) {
+                alert("저장소가 성공적으로 연동되었습니다!");
+                onClose();
+            } else {
+                alert("연동에 실패했습니다.");
+            }
+        } catch (error) {
+            alert("네트워크 오류가 발생했습니다.");
+        }
+    };
+
     if (!open) return null;
 
     return (
@@ -112,6 +132,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                         취소
                     </button>
                     <button
+                        onClick={handleSave}
                         className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md font-semibold"
                     >
                         {selected.size}개 저장소 연동하기
