@@ -1386,13 +1386,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    repos: number
     memoirs: number
+    repos: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    repos?: boolean | UserCountOutputTypeCountReposArgs
     memoirs?: boolean | UserCountOutputTypeCountMemoirsArgs
+    repos?: boolean | UserCountOutputTypeCountReposArgs
   }
 
   // Custom InputTypes
@@ -1409,15 +1409,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountReposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RepoWhereInput
+  export type UserCountOutputTypeCountMemoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemoirWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountMemoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MemoirWhereInput
+  export type UserCountOutputTypeCountReposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepoWhereInput
   }
 
 
@@ -1669,8 +1669,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     userId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     memoirs?: boolean | Repo$memoirsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RepoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["repo"]>
 
@@ -1696,8 +1696,8 @@ export namespace Prisma {
 
   export type RepoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "userId", ExtArgs["result"]["repo"]>
   export type RepoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     memoirs?: boolean | Repo$memoirsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RepoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RepoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1710,8 +1710,8 @@ export namespace Prisma {
   export type $RepoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Repo"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       memoirs: Prisma.$MemoirPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2111,8 +2111,8 @@ export namespace Prisma {
    */
   export interface Prisma__RepoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     memoirs<T extends Repo$memoirsArgs<ExtArgs> = {}>(args?: Subset<T, Repo$memoirsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoirPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2829,9 +2829,9 @@ export namespace Prisma {
     userId?: boolean
     typeId?: boolean
     repoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     tags?: boolean | Memoir$tagsArgs<ExtArgs>
     _count?: boolean | MemoirCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["memoir"]>
@@ -2847,9 +2847,9 @@ export namespace Prisma {
     userId?: boolean
     typeId?: boolean
     repoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["memoir"]>
 
   export type MemoirSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2863,9 +2863,9 @@ export namespace Prisma {
     userId?: boolean
     typeId?: boolean
     repoId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["memoir"]>
 
   export type MemoirSelectScalar = {
@@ -2883,29 +2883,29 @@ export namespace Prisma {
 
   export type MemoirOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "source" | "aiSum" | "createdAt" | "updatedAt" | "userId" | "typeId" | "repoId", ExtArgs["result"]["memoir"]>
   export type MemoirInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     tags?: boolean | Memoir$tagsArgs<ExtArgs>
     _count?: boolean | MemoirCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MemoirIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MemoirIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
     repo?: boolean | RepoDefaultArgs<ExtArgs>
+    type?: boolean | MemoirTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $MemoirPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Memoir"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      type: Prisma.$MemoirTypePayload<ExtArgs>
       repo: Prisma.$RepoPayload<ExtArgs>
+      type: Prisma.$MemoirTypePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       tags: Prisma.$MemoirTagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3313,9 +3313,9 @@ export namespace Prisma {
    */
   export interface Prisma__MemoirClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    type<T extends MemoirTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MemoirTypeDefaultArgs<ExtArgs>>): Prisma__MemoirTypeClient<$Result.GetResult<Prisma.$MemoirTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     repo<T extends RepoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RepoDefaultArgs<ExtArgs>>): Prisma__RepoClient<$Result.GetResult<Prisma.$RepoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    type<T extends MemoirTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MemoirTypeDefaultArgs<ExtArgs>>): Prisma__MemoirTypeClient<$Result.GetResult<Prisma.$MemoirTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tags<T extends Memoir$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Memoir$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoirTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3807,28 +3807,28 @@ export namespace Prisma {
   export type UserMinAggregateOutputType = {
     id: string | null
     username: string | null
-    email: string | null
     profileUrl: string | null
     createdAt: Date | null
     deletedAt: Date | null
+    githubId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     username: string | null
-    email: string | null
     profileUrl: string | null
     createdAt: Date | null
     deletedAt: Date | null
+    githubId: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     username: number
-    email: number
     profileUrl: number
     createdAt: number
     deletedAt: number
+    githubId: number
     _all: number
   }
 
@@ -3836,28 +3836,28 @@ export namespace Prisma {
   export type UserMinAggregateInputType = {
     id?: true
     username?: true
-    email?: true
     profileUrl?: true
     createdAt?: true
     deletedAt?: true
+    githubId?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     username?: true
-    email?: true
     profileUrl?: true
     createdAt?: true
     deletedAt?: true
+    githubId?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     username?: true
-    email?: true
     profileUrl?: true
     createdAt?: true
     deletedAt?: true
+    githubId?: true
     _all?: true
   }
 
@@ -3935,11 +3935,11 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
-    username: string | null
-    email: string | null
+    username: string
     profileUrl: string | null
     createdAt: Date
     deletedAt: Date | null
+    githubId: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3962,46 +3962,46 @@ export namespace Prisma {
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
-    email?: boolean
     profileUrl?: boolean
     createdAt?: boolean
     deletedAt?: boolean
-    repos?: boolean | User$reposArgs<ExtArgs>
+    githubId?: boolean
     memoirs?: boolean | User$memoirsArgs<ExtArgs>
+    repos?: boolean | User$reposArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
-    email?: boolean
     profileUrl?: boolean
     createdAt?: boolean
     deletedAt?: boolean
+    githubId?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
-    email?: boolean
     profileUrl?: boolean
     createdAt?: boolean
     deletedAt?: boolean
+    githubId?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     username?: boolean
-    email?: boolean
     profileUrl?: boolean
     createdAt?: boolean
     deletedAt?: boolean
+    githubId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "profileUrl" | "createdAt" | "deletedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "profileUrl" | "createdAt" | "deletedAt" | "githubId", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    repos?: boolean | User$reposArgs<ExtArgs>
     memoirs?: boolean | User$memoirsArgs<ExtArgs>
+    repos?: boolean | User$reposArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4010,16 +4010,16 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      repos: Prisma.$RepoPayload<ExtArgs>[]
       memoirs: Prisma.$MemoirPayload<ExtArgs>[]
+      repos: Prisma.$RepoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      username: string | null
-      email: string | null
+      username: string
       profileUrl: string | null
       createdAt: Date
       deletedAt: Date | null
+      githubId: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4414,8 +4414,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    repos<T extends User$reposArgs<ExtArgs> = {}>(args?: Subset<T, User$reposArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     memoirs<T extends User$memoirsArgs<ExtArgs> = {}>(args?: Subset<T, User$memoirsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoirPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    repos<T extends User$reposArgs<ExtArgs> = {}>(args?: Subset<T, User$reposArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4447,10 +4447,10 @@ export namespace Prisma {
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly username: FieldRef<"User", 'String'>
-    readonly email: FieldRef<"User", 'String'>
     readonly profileUrl: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly deletedAt: FieldRef<"User", 'DateTime'>
+    readonly githubId: FieldRef<"User", 'String'>
   }
     
 
@@ -4839,30 +4839,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.repos
-   */
-  export type User$reposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Repo
-     */
-    select?: RepoSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Repo
-     */
-    omit?: RepoOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RepoInclude<ExtArgs> | null
-    where?: RepoWhereInput
-    orderBy?: RepoOrderByWithRelationInput | RepoOrderByWithRelationInput[]
-    cursor?: RepoWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RepoScalarFieldEnum | RepoScalarFieldEnum[]
-  }
-
-  /**
    * User.memoirs
    */
   export type User$memoirsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4884,6 +4860,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MemoirScalarFieldEnum | MemoirScalarFieldEnum[]
+  }
+
+  /**
+   * User.repos
+   */
+  export type User$reposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repo
+     */
+    select?: RepoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repo
+     */
+    omit?: RepoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepoInclude<ExtArgs> | null
+    where?: RepoWhereInput
+    orderBy?: RepoOrderByWithRelationInput | RepoOrderByWithRelationInput[]
+    cursor?: RepoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepoScalarFieldEnum | RepoScalarFieldEnum[]
   }
 
   /**
@@ -8142,10 +8142,10 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     username: 'username',
-    email: 'email',
     profileUrl: 'profileUrl',
     createdAt: 'createdAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    githubId: 'githubId'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8270,16 +8270,16 @@ export namespace Prisma {
     id?: IntFilter<"Repo"> | number
     name?: StringNullableFilter<"Repo"> | string | null
     userId?: StringFilter<"Repo"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     memoirs?: MemoirListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type RepoOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     userId?: SortOrder
-    user?: UserOrderByWithRelationInput
     memoirs?: MemoirOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type RepoWhereUniqueInput = Prisma.AtLeast<{
@@ -8289,8 +8289,8 @@ export namespace Prisma {
     NOT?: RepoWhereInput | RepoWhereInput[]
     name?: StringNullableFilter<"Repo"> | string | null
     userId?: StringFilter<"Repo"> | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     memoirs?: MemoirListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type RepoOrderByWithAggregationInput = {
@@ -8327,9 +8327,9 @@ export namespace Prisma {
     userId?: StringFilter<"Memoir"> | string
     typeId?: IntFilter<"Memoir"> | number
     repoId?: IntFilter<"Memoir"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    type?: XOR<MemoirTypeScalarRelationFilter, MemoirTypeWhereInput>
     repo?: XOR<RepoScalarRelationFilter, RepoWhereInput>
+    type?: XOR<MemoirTypeScalarRelationFilter, MemoirTypeWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tags?: MemoirTagListRelationFilter
   }
 
@@ -8344,9 +8344,9 @@ export namespace Prisma {
     userId?: SortOrder
     typeId?: SortOrder
     repoId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    type?: MemoirTypeOrderByWithRelationInput
     repo?: RepoOrderByWithRelationInput
+    type?: MemoirTypeOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     tags?: MemoirTagOrderByRelationAggregateInput
   }
 
@@ -8364,9 +8364,9 @@ export namespace Prisma {
     userId?: StringFilter<"Memoir"> | string
     typeId?: IntFilter<"Memoir"> | number
     repoId?: IntFilter<"Memoir"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    type?: XOR<MemoirTypeScalarRelationFilter, MemoirTypeWhereInput>
     repo?: XOR<RepoScalarRelationFilter, RepoWhereInput>
+    type?: XOR<MemoirTypeScalarRelationFilter, MemoirTypeWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tags?: MemoirTagListRelationFilter
   }, "id">
 
@@ -8409,24 +8409,24 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
-    username?: StringNullableFilter<"User"> | string | null
-    email?: StringNullableFilter<"User"> | string | null
+    username?: StringFilter<"User"> | string
     profileUrl?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    repos?: RepoListRelationFilter
+    githubId?: StringFilter<"User"> | string
     memoirs?: MemoirListRelationFilter
+    repos?: RepoListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    username?: SortOrderInput | SortOrder
-    email?: SortOrderInput | SortOrder
+    username?: SortOrder
     profileUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    repos?: RepoOrderByRelationAggregateInput
+    githubId?: SortOrder
     memoirs?: MemoirOrderByRelationAggregateInput
+    repos?: RepoOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -8434,22 +8434,22 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    username?: StringNullableFilter<"User"> | string | null
-    email?: StringNullableFilter<"User"> | string | null
+    username?: StringFilter<"User"> | string
     profileUrl?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    repos?: RepoListRelationFilter
+    githubId?: StringFilter<"User"> | string
     memoirs?: MemoirListRelationFilter
+    repos?: RepoListRelationFilter
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    username?: SortOrderInput | SortOrder
-    email?: SortOrderInput | SortOrder
+    username?: SortOrder
     profileUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    githubId?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -8460,11 +8460,11 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
-    username?: StringNullableWithAggregatesFilter<"User"> | string | null
-    email?: StringNullableWithAggregatesFilter<"User"> | string | null
+    username?: StringWithAggregatesFilter<"User"> | string
     profileUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    githubId?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type MemoirTypeWhereInput = {
@@ -8599,8 +8599,8 @@ export namespace Prisma {
 
   export type RepoCreateInput = {
     name?: string | null
-    user: UserCreateNestedOneWithoutReposInput
     memoirs?: MemoirCreateNestedManyWithoutRepoInput
+    user: UserCreateNestedOneWithoutReposInput
   }
 
   export type RepoUncheckedCreateInput = {
@@ -8612,8 +8612,8 @@ export namespace Prisma {
 
   export type RepoUpdateInput = {
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutReposNestedInput
     memoirs?: MemoirUpdateManyWithoutRepoNestedInput
+    user?: UserUpdateOneRequiredWithoutReposNestedInput
   }
 
   export type RepoUncheckedUpdateInput = {
@@ -8646,9 +8646,9 @@ export namespace Prisma {
     aiSum?: string | null
     createdAt: Date | string
     updatedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutMemoirsInput
-    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
     repo: RepoCreateNestedOneWithoutMemoirsInput
+    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
+    user: UserCreateNestedOneWithoutMemoirsInput
     tags?: MemoirTagCreateNestedManyWithoutMemoirInput
   }
 
@@ -8673,9 +8673,9 @@ export namespace Prisma {
     aiSum?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
-    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
     repo?: RepoUpdateOneRequiredWithoutMemoirsNestedInput
+    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
+    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
     tags?: MemoirTagUpdateManyWithoutMemoirNestedInput
   }
 
@@ -8730,73 +8730,73 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     id?: string
-    username?: string | null
-    email?: string | null
+    username: string
     profileUrl?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     deletedAt?: Date | string | null
-    repos?: RepoCreateNestedManyWithoutUserInput
+    githubId: string
     memoirs?: MemoirCreateNestedManyWithoutUserInput
+    repos?: RepoCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
-    username?: string | null
-    email?: string | null
+    username: string
     profileUrl?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     deletedAt?: Date | string | null
-    repos?: RepoUncheckedCreateNestedManyWithoutUserInput
+    githubId: string
     memoirs?: MemoirUncheckedCreateNestedManyWithoutUserInput
+    repos?: RepoUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
     profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    repos?: RepoUpdateManyWithoutUserNestedInput
+    githubId?: StringFieldUpdateOperationsInput | string
     memoirs?: MemoirUpdateManyWithoutUserNestedInput
+    repos?: RepoUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
     profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    repos?: RepoUncheckedUpdateManyWithoutUserNestedInput
+    githubId?: StringFieldUpdateOperationsInput | string
     memoirs?: MemoirUncheckedUpdateManyWithoutUserNestedInput
+    repos?: RepoUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
-    username?: string | null
-    email?: string | null
+    username: string
     profileUrl?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     deletedAt?: Date | string | null
+    githubId: string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
     profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
     profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MemoirTypeCreateInput = {
@@ -8946,15 +8946,15 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type MemoirListRelationFilter = {
     every?: MemoirWhereInput
     some?: MemoirWhereInput
     none?: MemoirWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type SortOrderInput = {
@@ -9066,14 +9066,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type MemoirTypeScalarRelationFilter = {
-    is?: MemoirTypeWhereInput
-    isNot?: MemoirTypeWhereInput
-  }
-
   export type RepoScalarRelationFilter = {
     is?: RepoWhereInput
     isNot?: RepoWhereInput
+  }
+
+  export type MemoirTypeScalarRelationFilter = {
+    is?: MemoirTypeWhereInput
+    isNot?: MemoirTypeWhereInput
   }
 
   export type MemoirTagListRelationFilter = {
@@ -9178,28 +9178,28 @@ export namespace Prisma {
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
-    email?: SortOrder
     profileUrl?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
+    githubId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
-    email?: SortOrder
     profileUrl?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
+    githubId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
-    email?: SortOrder
     profileUrl?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
+    githubId?: SortOrder
   }
 
   export type MemoirTypeCountOrderByAggregateInput = {
@@ -9288,17 +9288,17 @@ export namespace Prisma {
     tagId?: SortOrder
   }
 
-  export type UserCreateNestedOneWithoutReposInput = {
-    create?: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReposInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type MemoirCreateNestedManyWithoutRepoInput = {
     create?: XOR<MemoirCreateWithoutRepoInput, MemoirUncheckedCreateWithoutRepoInput> | MemoirCreateWithoutRepoInput[] | MemoirUncheckedCreateWithoutRepoInput[]
     connectOrCreate?: MemoirCreateOrConnectWithoutRepoInput | MemoirCreateOrConnectWithoutRepoInput[]
     createMany?: MemoirCreateManyRepoInputEnvelope
     connect?: MemoirWhereUniqueInput | MemoirWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutReposInput = {
+    create?: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReposInput
+    connect?: UserWhereUniqueInput
   }
 
   export type MemoirUncheckedCreateNestedManyWithoutRepoInput = {
@@ -9310,14 +9310,6 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
-  }
-
-  export type UserUpdateOneRequiredWithoutReposNestedInput = {
-    create?: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReposInput
-    upsert?: UserUpsertWithoutReposInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReposInput, UserUpdateWithoutReposInput>, UserUncheckedUpdateWithoutReposInput>
   }
 
   export type MemoirUpdateManyWithoutRepoNestedInput = {
@@ -9332,6 +9324,14 @@ export namespace Prisma {
     update?: MemoirUpdateWithWhereUniqueWithoutRepoInput | MemoirUpdateWithWhereUniqueWithoutRepoInput[]
     updateMany?: MemoirUpdateManyWithWhereWithoutRepoInput | MemoirUpdateManyWithWhereWithoutRepoInput[]
     deleteMany?: MemoirScalarWhereInput | MemoirScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutReposNestedInput = {
+    create?: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReposInput
+    upsert?: UserUpsertWithoutReposInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReposInput, UserUpdateWithoutReposInput>, UserUncheckedUpdateWithoutReposInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -9360,10 +9360,10 @@ export namespace Prisma {
     deleteMany?: MemoirScalarWhereInput | MemoirScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutMemoirsInput = {
-    create?: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMemoirsInput
-    connect?: UserWhereUniqueInput
+  export type RepoCreateNestedOneWithoutMemoirsInput = {
+    create?: XOR<RepoCreateWithoutMemoirsInput, RepoUncheckedCreateWithoutMemoirsInput>
+    connectOrCreate?: RepoCreateOrConnectWithoutMemoirsInput
+    connect?: RepoWhereUniqueInput
   }
 
   export type MemoirTypeCreateNestedOneWithoutMemoirsInput = {
@@ -9372,10 +9372,10 @@ export namespace Prisma {
     connect?: MemoirTypeWhereUniqueInput
   }
 
-  export type RepoCreateNestedOneWithoutMemoirsInput = {
-    create?: XOR<RepoCreateWithoutMemoirsInput, RepoUncheckedCreateWithoutMemoirsInput>
-    connectOrCreate?: RepoCreateOrConnectWithoutMemoirsInput
-    connect?: RepoWhereUniqueInput
+  export type UserCreateNestedOneWithoutMemoirsInput = {
+    create?: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoirsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type MemoirTagCreateNestedManyWithoutMemoirInput = {
@@ -9400,12 +9400,12 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type UserUpdateOneRequiredWithoutMemoirsNestedInput = {
-    create?: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMemoirsInput
-    upsert?: UserUpsertWithoutMemoirsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoirsInput, UserUpdateWithoutMemoirsInput>, UserUncheckedUpdateWithoutMemoirsInput>
+  export type RepoUpdateOneRequiredWithoutMemoirsNestedInput = {
+    create?: XOR<RepoCreateWithoutMemoirsInput, RepoUncheckedCreateWithoutMemoirsInput>
+    connectOrCreate?: RepoCreateOrConnectWithoutMemoirsInput
+    upsert?: RepoUpsertWithoutMemoirsInput
+    connect?: RepoWhereUniqueInput
+    update?: XOR<XOR<RepoUpdateToOneWithWhereWithoutMemoirsInput, RepoUpdateWithoutMemoirsInput>, RepoUncheckedUpdateWithoutMemoirsInput>
   }
 
   export type MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput = {
@@ -9416,12 +9416,12 @@ export namespace Prisma {
     update?: XOR<XOR<MemoirTypeUpdateToOneWithWhereWithoutMemoirsInput, MemoirTypeUpdateWithoutMemoirsInput>, MemoirTypeUncheckedUpdateWithoutMemoirsInput>
   }
 
-  export type RepoUpdateOneRequiredWithoutMemoirsNestedInput = {
-    create?: XOR<RepoCreateWithoutMemoirsInput, RepoUncheckedCreateWithoutMemoirsInput>
-    connectOrCreate?: RepoCreateOrConnectWithoutMemoirsInput
-    upsert?: RepoUpsertWithoutMemoirsInput
-    connect?: RepoWhereUniqueInput
-    update?: XOR<XOR<RepoUpdateToOneWithWhereWithoutMemoirsInput, RepoUpdateWithoutMemoirsInput>, RepoUncheckedUpdateWithoutMemoirsInput>
+  export type UserUpdateOneRequiredWithoutMemoirsNestedInput = {
+    create?: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMemoirsInput
+    upsert?: UserUpsertWithoutMemoirsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoirsInput, UserUpdateWithoutMemoirsInput>, UserUncheckedUpdateWithoutMemoirsInput>
   }
 
   export type MemoirTagUpdateManyWithoutMemoirNestedInput = {
@@ -9452,13 +9452,6 @@ export namespace Prisma {
     deleteMany?: MemoirTagScalarWhereInput | MemoirTagScalarWhereInput[]
   }
 
-  export type RepoCreateNestedManyWithoutUserInput = {
-    create?: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput> | RepoCreateWithoutUserInput[] | RepoUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RepoCreateOrConnectWithoutUserInput | RepoCreateOrConnectWithoutUserInput[]
-    createMany?: RepoCreateManyUserInputEnvelope
-    connect?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
-  }
-
   export type MemoirCreateNestedManyWithoutUserInput = {
     create?: XOR<MemoirCreateWithoutUserInput, MemoirUncheckedCreateWithoutUserInput> | MemoirCreateWithoutUserInput[] | MemoirUncheckedCreateWithoutUserInput[]
     connectOrCreate?: MemoirCreateOrConnectWithoutUserInput | MemoirCreateOrConnectWithoutUserInput[]
@@ -9466,7 +9459,7 @@ export namespace Prisma {
     connect?: MemoirWhereUniqueInput | MemoirWhereUniqueInput[]
   }
 
-  export type RepoUncheckedCreateNestedManyWithoutUserInput = {
+  export type RepoCreateNestedManyWithoutUserInput = {
     create?: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput> | RepoCreateWithoutUserInput[] | RepoUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RepoCreateOrConnectWithoutUserInput | RepoCreateOrConnectWithoutUserInput[]
     createMany?: RepoCreateManyUserInputEnvelope
@@ -9480,18 +9473,11 @@ export namespace Prisma {
     connect?: MemoirWhereUniqueInput | MemoirWhereUniqueInput[]
   }
 
-  export type RepoUpdateManyWithoutUserNestedInput = {
+  export type RepoUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput> | RepoCreateWithoutUserInput[] | RepoUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RepoCreateOrConnectWithoutUserInput | RepoCreateOrConnectWithoutUserInput[]
-    upsert?: RepoUpsertWithWhereUniqueWithoutUserInput | RepoUpsertWithWhereUniqueWithoutUserInput[]
     createMany?: RepoCreateManyUserInputEnvelope
-    set?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
-    disconnect?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
-    delete?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
     connect?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
-    update?: RepoUpdateWithWhereUniqueWithoutUserInput | RepoUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RepoUpdateManyWithWhereWithoutUserInput | RepoUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RepoScalarWhereInput | RepoScalarWhereInput[]
   }
 
   export type MemoirUpdateManyWithoutUserNestedInput = {
@@ -9508,7 +9494,7 @@ export namespace Prisma {
     deleteMany?: MemoirScalarWhereInput | MemoirScalarWhereInput[]
   }
 
-  export type RepoUncheckedUpdateManyWithoutUserNestedInput = {
+  export type RepoUpdateManyWithoutUserNestedInput = {
     create?: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput> | RepoCreateWithoutUserInput[] | RepoUncheckedCreateWithoutUserInput[]
     connectOrCreate?: RepoCreateOrConnectWithoutUserInput | RepoCreateOrConnectWithoutUserInput[]
     upsert?: RepoUpsertWithWhereUniqueWithoutUserInput | RepoUpsertWithWhereUniqueWithoutUserInput[]
@@ -9534,6 +9520,20 @@ export namespace Prisma {
     update?: MemoirUpdateWithWhereUniqueWithoutUserInput | MemoirUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: MemoirUpdateManyWithWhereWithoutUserInput | MemoirUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MemoirScalarWhereInput | MemoirScalarWhereInput[]
+  }
+
+  export type RepoUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput> | RepoCreateWithoutUserInput[] | RepoUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RepoCreateOrConnectWithoutUserInput | RepoCreateOrConnectWithoutUserInput[]
+    upsert?: RepoUpsertWithWhereUniqueWithoutUserInput | RepoUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RepoCreateManyUserInputEnvelope
+    set?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
+    disconnect?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
+    delete?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
+    connect?: RepoWhereUniqueInput | RepoWhereUniqueInput[]
+    update?: RepoUpdateWithWhereUniqueWithoutUserInput | RepoUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RepoUpdateManyWithWhereWithoutUserInput | RepoUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RepoScalarWhereInput | RepoScalarWhereInput[]
   }
 
   export type MemoirCreateNestedManyWithoutTypeInput = {
@@ -9809,31 +9809,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type UserCreateWithoutReposInput = {
-    id?: string
-    username?: string | null
-    email?: string | null
-    profileUrl?: string | null
-    createdAt: Date | string
-    deletedAt?: Date | string | null
-    memoirs?: MemoirCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutReposInput = {
-    id?: string
-    username?: string | null
-    email?: string | null
-    profileUrl?: string | null
-    createdAt: Date | string
-    deletedAt?: Date | string | null
-    memoirs?: MemoirUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutReposInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
-  }
-
   export type MemoirCreateWithoutRepoInput = {
     title: string
     content: string
@@ -9841,8 +9816,8 @@ export namespace Prisma {
     aiSum?: string | null
     createdAt: Date | string
     updatedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutMemoirsInput
     type: MemoirTypeCreateNestedOneWithoutMemoirsInput
+    user: UserCreateNestedOneWithoutMemoirsInput
     tags?: MemoirTagCreateNestedManyWithoutMemoirInput
   }
 
@@ -9869,35 +9844,29 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutReposInput = {
-    update: XOR<UserUpdateWithoutReposInput, UserUncheckedUpdateWithoutReposInput>
+  export type UserCreateWithoutReposInput = {
+    id?: string
+    username: string
+    profileUrl?: string | null
+    createdAt?: Date | string
+    deletedAt?: Date | string | null
+    githubId: string
+    memoirs?: MemoirCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReposInput = {
+    id?: string
+    username: string
+    profileUrl?: string | null
+    createdAt?: Date | string
+    deletedAt?: Date | string | null
+    githubId: string
+    memoirs?: MemoirUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReposInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutReposInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutReposInput, UserUncheckedUpdateWithoutReposInput>
-  }
-
-  export type UserUpdateWithoutReposInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    memoirs?: MemoirUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutReposInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    memoirs?: MemoirUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MemoirUpsertWithWhereUniqueWithoutRepoInput = {
@@ -9932,43 +9901,35 @@ export namespace Prisma {
     repoId?: IntFilter<"Memoir"> | number
   }
 
-  export type UserCreateWithoutMemoirsInput = {
-    id?: string
-    username?: string | null
-    email?: string | null
-    profileUrl?: string | null
-    createdAt: Date | string
-    deletedAt?: Date | string | null
-    repos?: RepoCreateNestedManyWithoutUserInput
+  export type UserUpsertWithoutReposInput = {
+    update: XOR<UserUpdateWithoutReposInput, UserUncheckedUpdateWithoutReposInput>
+    create: XOR<UserCreateWithoutReposInput, UserUncheckedCreateWithoutReposInput>
+    where?: UserWhereInput
   }
 
-  export type UserUncheckedCreateWithoutMemoirsInput = {
-    id?: string
-    username?: string | null
-    email?: string | null
-    profileUrl?: string | null
-    createdAt: Date | string
-    deletedAt?: Date | string | null
-    repos?: RepoUncheckedCreateNestedManyWithoutUserInput
+  export type UserUpdateToOneWithWhereWithoutReposInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReposInput, UserUncheckedUpdateWithoutReposInput>
   }
 
-  export type UserCreateOrConnectWithoutMemoirsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
+  export type UserUpdateWithoutReposInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
+    memoirs?: MemoirUpdateManyWithoutUserNestedInput
   }
 
-  export type MemoirTypeCreateWithoutMemoirsInput = {
-    type: string
-  }
-
-  export type MemoirTypeUncheckedCreateWithoutMemoirsInput = {
-    id?: number
-    type: string
-  }
-
-  export type MemoirTypeCreateOrConnectWithoutMemoirsInput = {
-    where: MemoirTypeWhereUniqueInput
-    create: XOR<MemoirTypeCreateWithoutMemoirsInput, MemoirTypeUncheckedCreateWithoutMemoirsInput>
+  export type UserUncheckedUpdateWithoutReposInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
+    memoirs?: MemoirUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RepoCreateWithoutMemoirsInput = {
@@ -9987,6 +9948,45 @@ export namespace Prisma {
     create: XOR<RepoCreateWithoutMemoirsInput, RepoUncheckedCreateWithoutMemoirsInput>
   }
 
+  export type MemoirTypeCreateWithoutMemoirsInput = {
+    type: string
+  }
+
+  export type MemoirTypeUncheckedCreateWithoutMemoirsInput = {
+    id?: number
+    type: string
+  }
+
+  export type MemoirTypeCreateOrConnectWithoutMemoirsInput = {
+    where: MemoirTypeWhereUniqueInput
+    create: XOR<MemoirTypeCreateWithoutMemoirsInput, MemoirTypeUncheckedCreateWithoutMemoirsInput>
+  }
+
+  export type UserCreateWithoutMemoirsInput = {
+    id?: string
+    username: string
+    profileUrl?: string | null
+    createdAt?: Date | string
+    deletedAt?: Date | string | null
+    githubId: string
+    repos?: RepoCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMemoirsInput = {
+    id?: string
+    username: string
+    profileUrl?: string | null
+    createdAt?: Date | string
+    deletedAt?: Date | string | null
+    githubId: string
+    repos?: RepoUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMemoirsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
+  }
+
   export type MemoirTagCreateWithoutMemoirInput = {
     tag: TagCreateNestedOneWithoutMemoirTagsInput
   }
@@ -10003,57 +10003,6 @@ export namespace Prisma {
   export type MemoirTagCreateManyMemoirInputEnvelope = {
     data: MemoirTagCreateManyMemoirInput | MemoirTagCreateManyMemoirInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutMemoirsInput = {
-    update: XOR<UserUpdateWithoutMemoirsInput, UserUncheckedUpdateWithoutMemoirsInput>
-    create: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutMemoirsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutMemoirsInput, UserUncheckedUpdateWithoutMemoirsInput>
-  }
-
-  export type UserUpdateWithoutMemoirsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    repos?: RepoUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutMemoirsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    repos?: RepoUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type MemoirTypeUpsertWithoutMemoirsInput = {
-    update: XOR<MemoirTypeUpdateWithoutMemoirsInput, MemoirTypeUncheckedUpdateWithoutMemoirsInput>
-    create: XOR<MemoirTypeCreateWithoutMemoirsInput, MemoirTypeUncheckedCreateWithoutMemoirsInput>
-    where?: MemoirTypeWhereInput
-  }
-
-  export type MemoirTypeUpdateToOneWithWhereWithoutMemoirsInput = {
-    where?: MemoirTypeWhereInput
-    data: XOR<MemoirTypeUpdateWithoutMemoirsInput, MemoirTypeUncheckedUpdateWithoutMemoirsInput>
-  }
-
-  export type MemoirTypeUpdateWithoutMemoirsInput = {
-    type?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type MemoirTypeUncheckedUpdateWithoutMemoirsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type RepoUpsertWithoutMemoirsInput = {
@@ -10076,6 +10025,57 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MemoirTypeUpsertWithoutMemoirsInput = {
+    update: XOR<MemoirTypeUpdateWithoutMemoirsInput, MemoirTypeUncheckedUpdateWithoutMemoirsInput>
+    create: XOR<MemoirTypeCreateWithoutMemoirsInput, MemoirTypeUncheckedCreateWithoutMemoirsInput>
+    where?: MemoirTypeWhereInput
+  }
+
+  export type MemoirTypeUpdateToOneWithWhereWithoutMemoirsInput = {
+    where?: MemoirTypeWhereInput
+    data: XOR<MemoirTypeUpdateWithoutMemoirsInput, MemoirTypeUncheckedUpdateWithoutMemoirsInput>
+  }
+
+  export type MemoirTypeUpdateWithoutMemoirsInput = {
+    type?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MemoirTypeUncheckedUpdateWithoutMemoirsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserUpsertWithoutMemoirsInput = {
+    update: XOR<UserUpdateWithoutMemoirsInput, UserUncheckedUpdateWithoutMemoirsInput>
+    create: XOR<UserCreateWithoutMemoirsInput, UserUncheckedCreateWithoutMemoirsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMemoirsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMemoirsInput, UserUncheckedUpdateWithoutMemoirsInput>
+  }
+
+  export type UserUpdateWithoutMemoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
+    repos?: RepoUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMemoirsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    profileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    githubId?: StringFieldUpdateOperationsInput | string
+    repos?: RepoUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MemoirTagUpsertWithWhereUniqueWithoutMemoirInput = {
@@ -10102,27 +10102,6 @@ export namespace Prisma {
     tagId?: IntFilter<"MemoirTag"> | number
   }
 
-  export type RepoCreateWithoutUserInput = {
-    name?: string | null
-    memoirs?: MemoirCreateNestedManyWithoutRepoInput
-  }
-
-  export type RepoUncheckedCreateWithoutUserInput = {
-    id?: number
-    name?: string | null
-    memoirs?: MemoirUncheckedCreateNestedManyWithoutRepoInput
-  }
-
-  export type RepoCreateOrConnectWithoutUserInput = {
-    where: RepoWhereUniqueInput
-    create: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput>
-  }
-
-  export type RepoCreateManyUserInputEnvelope = {
-    data: RepoCreateManyUserInput | RepoCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type MemoirCreateWithoutUserInput = {
     title: string
     content: string
@@ -10130,8 +10109,8 @@ export namespace Prisma {
     aiSum?: string | null
     createdAt: Date | string
     updatedAt?: Date | string | null
-    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
     repo: RepoCreateNestedOneWithoutMemoirsInput
+    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
     tags?: MemoirTagCreateNestedManyWithoutMemoirInput
   }
 
@@ -10156,6 +10135,43 @@ export namespace Prisma {
   export type MemoirCreateManyUserInputEnvelope = {
     data: MemoirCreateManyUserInput | MemoirCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type RepoCreateWithoutUserInput = {
+    name?: string | null
+    memoirs?: MemoirCreateNestedManyWithoutRepoInput
+  }
+
+  export type RepoUncheckedCreateWithoutUserInput = {
+    id?: number
+    name?: string | null
+    memoirs?: MemoirUncheckedCreateNestedManyWithoutRepoInput
+  }
+
+  export type RepoCreateOrConnectWithoutUserInput = {
+    where: RepoWhereUniqueInput
+    create: XOR<RepoCreateWithoutUserInput, RepoUncheckedCreateWithoutUserInput>
+  }
+
+  export type RepoCreateManyUserInputEnvelope = {
+    data: RepoCreateManyUserInput | RepoCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MemoirUpsertWithWhereUniqueWithoutUserInput = {
+    where: MemoirWhereUniqueInput
+    update: XOR<MemoirUpdateWithoutUserInput, MemoirUncheckedUpdateWithoutUserInput>
+    create: XOR<MemoirCreateWithoutUserInput, MemoirUncheckedCreateWithoutUserInput>
+  }
+
+  export type MemoirUpdateWithWhereUniqueWithoutUserInput = {
+    where: MemoirWhereUniqueInput
+    data: XOR<MemoirUpdateWithoutUserInput, MemoirUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MemoirUpdateManyWithWhereWithoutUserInput = {
+    where: MemoirScalarWhereInput
+    data: XOR<MemoirUpdateManyMutationInput, MemoirUncheckedUpdateManyWithoutUserInput>
   }
 
   export type RepoUpsertWithWhereUniqueWithoutUserInput = {
@@ -10183,22 +10199,6 @@ export namespace Prisma {
     userId?: StringFilter<"Repo"> | string
   }
 
-  export type MemoirUpsertWithWhereUniqueWithoutUserInput = {
-    where: MemoirWhereUniqueInput
-    update: XOR<MemoirUpdateWithoutUserInput, MemoirUncheckedUpdateWithoutUserInput>
-    create: XOR<MemoirCreateWithoutUserInput, MemoirUncheckedCreateWithoutUserInput>
-  }
-
-  export type MemoirUpdateWithWhereUniqueWithoutUserInput = {
-    where: MemoirWhereUniqueInput
-    data: XOR<MemoirUpdateWithoutUserInput, MemoirUncheckedUpdateWithoutUserInput>
-  }
-
-  export type MemoirUpdateManyWithWhereWithoutUserInput = {
-    where: MemoirScalarWhereInput
-    data: XOR<MemoirUpdateManyMutationInput, MemoirUncheckedUpdateManyWithoutUserInput>
-  }
-
   export type MemoirCreateWithoutTypeInput = {
     title: string
     content: string
@@ -10206,8 +10206,8 @@ export namespace Prisma {
     aiSum?: string | null
     createdAt: Date | string
     updatedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutMemoirsInput
     repo: RepoCreateNestedOneWithoutMemoirsInput
+    user: UserCreateNestedOneWithoutMemoirsInput
     tags?: MemoirTagCreateNestedManyWithoutMemoirInput
   }
 
@@ -10291,9 +10291,9 @@ export namespace Prisma {
     aiSum?: string | null
     createdAt: Date | string
     updatedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutMemoirsInput
-    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
     repo: RepoCreateNestedOneWithoutMemoirsInput
+    type: MemoirTypeCreateNestedOneWithoutMemoirsInput
+    user: UserCreateNestedOneWithoutMemoirsInput
   }
 
   export type MemoirUncheckedCreateWithoutTagsInput = {
@@ -10346,9 +10346,9 @@ export namespace Prisma {
     aiSum?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
-    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
     repo?: RepoUpdateOneRequiredWithoutMemoirsNestedInput
+    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
+    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
   }
 
   export type MemoirUncheckedUpdateWithoutTagsInput = {
@@ -10403,8 +10403,8 @@ export namespace Prisma {
     aiSum?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
     type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
+    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
     tags?: MemoirTagUpdateManyWithoutMemoirNestedInput
   }
 
@@ -10449,11 +10449,6 @@ export namespace Prisma {
     tagId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type RepoCreateManyUserInput = {
-    id?: number
-    name?: string | null
-  }
-
   export type MemoirCreateManyUserInput = {
     id?: number
     title: string
@@ -10466,20 +10461,9 @@ export namespace Prisma {
     repoId: number
   }
 
-  export type RepoUpdateWithoutUserInput = {
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    memoirs?: MemoirUpdateManyWithoutRepoNestedInput
-  }
-
-  export type RepoUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    memoirs?: MemoirUncheckedUpdateManyWithoutRepoNestedInput
-  }
-
-  export type RepoUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+  export type RepoCreateManyUserInput = {
+    id?: number
+    name?: string | null
   }
 
   export type MemoirUpdateWithoutUserInput = {
@@ -10489,8 +10473,8 @@ export namespace Prisma {
     aiSum?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
     repo?: RepoUpdateOneRequiredWithoutMemoirsNestedInput
+    type?: MemoirTypeUpdateOneRequiredWithoutMemoirsNestedInput
     tags?: MemoirTagUpdateManyWithoutMemoirNestedInput
   }
 
@@ -10519,6 +10503,22 @@ export namespace Prisma {
     repoId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type RepoUpdateWithoutUserInput = {
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    memoirs?: MemoirUpdateManyWithoutRepoNestedInput
+  }
+
+  export type RepoUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    memoirs?: MemoirUncheckedUpdateManyWithoutRepoNestedInput
+  }
+
+  export type RepoUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type MemoirCreateManyTypeInput = {
     id?: number
     title: string
@@ -10538,8 +10538,8 @@ export namespace Prisma {
     aiSum?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
     repo?: RepoUpdateOneRequiredWithoutMemoirsNestedInput
+    user?: UserUpdateOneRequiredWithoutMemoirsNestedInput
     tags?: MemoirTagUpdateManyWithoutMemoirNestedInput
   }
 

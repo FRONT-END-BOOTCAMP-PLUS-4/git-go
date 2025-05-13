@@ -142,10 +142,10 @@ exports.Prisma.MemoirScalarFieldEnum = {
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
-  email: 'email',
   profileUrl: 'profileUrl',
   createdAt: 'createdAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  githubId: 'githubId'
 };
 
 exports.Prisma.MemoirTypeScalarFieldEnum = {
