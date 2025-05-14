@@ -3,6 +3,7 @@ import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useState } from "react";
 import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
+import { useParams, usePathname } from "next/navigation";
 
 export default function SideBar({
     setOpen,
@@ -17,8 +18,11 @@ export default function SideBar({
         { name: "api", icon: "branch.svg" },
     ];
 
+    const pathname = usePathname();
+    console.log(pathname);
+
     return (
-        <aside>
+        <aside className="flex flex-col gap-y-4">
             <div className="border-border-primary1 h-fit min-w-47 rounded-lg border-1 bg-white">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     Repositories
@@ -73,9 +77,7 @@ export default function SideBar({
                     </Button>
                 </section>
             </div>
-            <div className="border-border-primary1 mt-4 w-60 rounded-lg border-1 bg-white p-4 shadow-sm">
-                <CommitPrFilter />
-            </div>
+            {pathname.includes("memoirs") && <CommitPrFilter />}
         </aside>
     );
 }

@@ -31,26 +31,19 @@ export default function MemoirPage() {
     const [selectedBranch, setSelectedBranch] = useState("frontend-app");
 
     return (
-        <div className="layout-padding bg-bg-primary1 flex gap-x-6 py-6">
-            <div className="w-full">
-                <PageTap status="memoir" />
-                <div className="border-border-primary1 mt-6 rounded-lg border-1 bg-white">
-                    <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                        <h2 className="font-bold">최근 활동</h2>
-                        <p className="text-text-secondary2 text-sm">
-                            {formattedDate}
-                        </p>
-                    </section>
+        <div className="border-border-primary1 mt-6 rounded-lg border-1 bg-white">
+            <section className="border-border-primary1 flex items-center justify-between border-b p-4">
+                <h2 className="font-bold">최근 활동</h2>
+                <p className="text-text-secondary2 text-sm">{formattedDate}</p>
+            </section>
 
-                    <ul>
-                        {/* CommitCard 의 props 로 커밋의 타입을 지정 - bugfix | feature | refactor */}
-                        <CommitCard type="bugfix" />
-                        <CommitCard type="feature" />
-                        <CommitCard type="refactor" />
-                        <CommitCard type="bugfix" />
-                    </ul>
-                </div>
-            </div>
+            <ul>
+                {/* CommitCard 의 props 로 커밋의 타입을 지정 - bugfix | feature | refactor */}
+                <CommitCard type="bugfix" />
+                <CommitCard type="feature" />
+                <CommitCard type="refactor" />
+                <CommitCard type="bugfix" />
+            </ul>
         </div>
     );
 }
