@@ -32,6 +32,8 @@
     /* 코드 변경사항 */
     --color-code-add-text: #238636;
     --color-code-delete-text: #f85149;
+    --color-code-add-bg: #d9fbe1;
+    --color-code-delete-bg: #ffebe9;
     --color-code-gray: #444e5c;
 
     --color-code-add-symbol: #30b950;
