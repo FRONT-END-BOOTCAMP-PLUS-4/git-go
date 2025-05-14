@@ -20,10 +20,18 @@ export default function RepoSelectModal({ open, onClose }: Props) {
         const fetchRepos = async () => {
             setLoading(true);
             try {
-                const res = await fetch("/api/github/repos");
-                const data = await res.json();
-                setRepos(data);
-            } catch (err) {
+                const [githubRes, userRes] = await Promise.all([
+                    fetch("/api/github/repos"),
+                    fetch("/api/repos/user"),
+                ]);
+
+                const githubRepos: GitHubRepoDto[] = await githubRes.json();
+                const userRepos: { id: string; name: string }[] = await userRes.json();
+                const userRepoIds = new Set(userRepos.map((r) => r.name));
+
+                setRepos(githubRepos);
+                setSelected(userRepoIds);
+            } catch {
                 alert("레포지토리를 불러오는 데 실패했습니다.");
             } finally {
                 setLoading(false);
