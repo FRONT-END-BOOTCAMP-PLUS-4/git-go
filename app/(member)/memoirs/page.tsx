@@ -1,12 +1,6 @@
 "use client";
 
 import CommitCard from "@/app/(member)/commits/components/CommitCard";
-import RepoSelectModal from "@/app/(member)/components/RepoSelectModal";
-import Button from "@/app/components/Button";
-import Image from "next/image";
-import { useState } from "react";
-import PageTap from "../components/PageTab";
-import CommitPrFilter from "./components/Filter/CommitPrFilter";
 
 export default function MemoirPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
@@ -19,16 +13,6 @@ export default function MemoirPage() {
         month: "long",
         day: "numeric",
     }).format(now);
-
-    const [open, setOpen] = useState(false);
-
-    const branches = [
-        { name: "frontend-app", icon: "branch-blue.svg" },
-        { name: "backend-app", icon: "branch.svg" },
-        { name: "api", icon: "branch.svg" },
-    ];
-
-    const [selectedBranch, setSelectedBranch] = useState("frontend-app");
 
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">
