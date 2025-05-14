@@ -32,67 +32,6 @@ export default function MemoirPage() {
 
     return (
         <div className="layout-padding bg-bg-primary1 flex gap-x-6 py-6">
-            <RepoSelectModal open={open} onClose={() => setOpen(false)} />
-            <aside>
-                <div className="border-border-primary1 h-fit min-w-47 rounded-lg border-1 bg-white">
-                    <h2 className="border-border-primary1 border-b p-4 font-semibold">
-                        Repositories
-                    </h2>
-                    <ul className="flex flex-col gap-y-1 p-2">
-                        {branches.map((branch) => {
-                            const isSelected = branch.name === selectedBranch;
-                            return (
-                                <li
-                                    key={branch.name}
-                                    className="border-border-primary1"
-                                >
-                                    <button
-                                        className={`flex w-full items-center gap-x-2 rounded-md p-2 font-semibold ${
-                                            isSelected
-                                                ? "bg-primary2 text-primary7"
-                                                : ""
-                                        }`}
-                                        onClick={() =>
-                                            setSelectedBranch(branch.name)
-                                        }
-                                    >
-                                        <Image
-                                            src={
-                                                isSelected
-                                                    ? "branch-blue.svg"
-                                                    : "branch.svg"
-                                            }
-                                            width={14}
-                                            height={14}
-                                            alt="브랜치 아이콘"
-                                        />
-                                        {branch.name}
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                    <section className="border-border-primary1 border-t p-3">
-                        <Button
-                            type="lined"
-                            size="full"
-                            onClick={() => setOpen(true)}
-                        >
-                            <Image
-                                src="plus-gray.svg"
-                                width={10.5}
-                                height={16}
-                                alt="저장소 추가 아이콘"
-                            />
-                            저장소 추가
-                        </Button>
-                    </section>
-                </div>
-                <div className="border-border-primary1 mt-4 w-60 rounded-lg border-1 bg-white p-4 shadow-sm">
-                    <CommitPrFilter />
-                </div>
-            </aside>
-
             <div className="w-full">
                 <PageTap status="memoir" />
                 <div className="border-border-primary1 mt-6 rounded-lg border-1 bg-white">
