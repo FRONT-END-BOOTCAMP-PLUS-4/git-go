@@ -1,4 +1,8 @@
+"use client";
+import PrCommitCard from "@/app/(member)/pull-requests/components/PrCommitCard";
+import Button from "@/app/components/Button";
 import Image from "next/image";
+import { useState } from "react";
 
 interface LabelBadgeProps {
     type: "open" | "merged";
@@ -23,8 +27,13 @@ const typeClassMap: Record<
 };
 
 export default function PrCard({ type }: LabelBadgeProps) {
+    const [listIsOpen, setListIsOpen] = useState(false);
+
     return (
-        <li className="border-border-primary1 border-b p-4 last:border-b-0">
+        <li
+            className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
+            onClick={() => setListIsOpen(!listIsOpen)}
+        >
             <article className="flex items-start gap-x-4">
                 <div
                     className={`${typeClassMap[type].bg} flex h-10 w-10 items-center justify-center rounded-full`}
@@ -42,7 +51,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                             Fix navigation bug in dashboard component
                         </h3>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[type].bg} ${typeClassMap.open.text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[type].bg} ${typeClassMap[type].text} text-xs shadow-sm`}
                         >
                             {typeClassMap[type].label}
                         </div>
@@ -73,7 +82,13 @@ export default function PrCard({ type }: LabelBadgeProps) {
                             />
                             bugfix/nav-issue
                         </div>
-                        {/* <div className="ml-auto">
+                    </div>
+
+                    {listIsOpen && (
+                        <div className="border-border-primary1 mt-4 rounded-md border">
+                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b px-4 py-2">
+                                <h3 className="text-sm">Commit in this PR</h3>
+                                <div className="ml-auto">
                                     <Button type="lined" htmlType="button">
                                         <Image
                                             src="write.svg"
@@ -83,8 +98,17 @@ export default function PrCard({ type }: LabelBadgeProps) {
                                         />
                                         Write Memoir
                                     </Button>
-                                </div> */}
-                    </div>
+                                </div>
+                            </div>
+                            <ul>
+                                <PrCommitCard />
+                                <PrCommitCard />
+                                <PrCommitCard />
+                                <PrCommitCard />
+                                <PrCommitCard />
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </article>
         </li>
