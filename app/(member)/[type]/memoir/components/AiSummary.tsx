@@ -11,7 +11,7 @@ export default function AiSummary() {
     const [isSummarized, setIsSummarized] = useState(false);
 
     return (
-        <div className="bg-bg-secondary1 flex h-60 w-full flex-col gap-3 overflow-y-auto px-6">
+        <div className="bg-bg-secondary1 flex h-60 w-full flex-col gap-3 overflow-y-auto rounded-md px-5 py-2">
             {/* 버튼만 보일 때 */}
             {!isSummarized ? (
                 <div className="flex flex-1 items-center justify-center">

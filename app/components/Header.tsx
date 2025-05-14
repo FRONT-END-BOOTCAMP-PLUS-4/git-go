@@ -1,9 +1,8 @@
 import Image from "next/image";
-import React from "react";
 
 export default function Header() {
     return (
-        <div className="border-border-primary1 flex h-[65px] flex-row items-center justify-between border-b bg-white px-24">
+        <div className="border-border-primary1 sticky top-0 z-50 flex h-[65px] flex-row items-center justify-between border-b bg-white px-24">
             <div className="flex items-center justify-center">
                 <Image
                     className="mr-3"
