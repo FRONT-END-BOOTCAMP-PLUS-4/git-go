@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
 
 interface LabelBadgeProps {
     type: "commit" | "pr";
@@ -29,14 +28,15 @@ const tagList = ["React", "Next.js", "NextAuth"];
 export default function MemoirCard({ type }: LabelBadgeProps) {
     const route = useRouter();
 
-    const [listIsOpen, setListIsOpen] = useState(false);
-
-    const moveToPrMemoir = () => {
-        route.push("/pull-requests/1234/memoir");
+    const moveToMemoir = () => {
+        route.push("/memoirs/12");
     };
 
     return (
-        <li className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0">
+        <li
+            className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
+            onClick={moveToMemoir}
+        >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
                     <Image
