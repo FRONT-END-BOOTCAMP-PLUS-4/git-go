@@ -1,5 +1,6 @@
 import Button from "@/app/components/Button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface LabelBadgeProps {
     type: "bugfix" | "feature" | "refactor";
@@ -27,7 +28,12 @@ const typeClassMap: Record<
 };
 
 export default function CommitCard({ type }: LabelBadgeProps) {
+    const route = useRouter();
     const { label, bg, text } = typeClassMap[type];
+
+    const moveToCommitMemoir = () => {
+        route.push("/commits/1234/memoir");
+    };
 
     return (
         <li className="border-border-primary1 border-b p-4 last:border-b-0">
@@ -73,7 +79,11 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                             bugfix/nav-issue
                         </div>
                         <div className="ml-auto">
-                            <Button type="lined" htmlType="button">
+                            <Button
+                                type="lined"
+                                htmlType="button"
+                                onClick={moveToCommitMemoir}
+                            >
                                 <Image
                                     src="write.svg"
                                     alt="회고 등록 아이콘"
