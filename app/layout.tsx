@@ -1,4 +1,5 @@
 import Header from "./components/Header";
+import { Providers } from "./components/Providers";
 import "./globals.css";
 
 import Link from "next/link";
@@ -11,8 +12,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="bg-bg-primary1">
-                <Header />
-                {children}
+                <Providers>
+                    <Header />
+                    {children}
+                </Providers>
             </body>
         </html>
     );
