@@ -26,8 +26,8 @@
     /* 텍스트 컬러 */
     --color-text-primary1: #fff;
     --color-text-secondary1: #000;
-
-    --color-error1: #d64545;
+    --color-text-secondary2: #6b7280;
+    --color-text-gray1: #737373;
 
     /* 코드 변경사항 */
     --color-code-add-text: #238636;
@@ -52,6 +52,10 @@
     /* renamed */
     --color-code-status-renamed-bg: #d1ecff;
     --color-code-status-renamed-text: #0366d6;
+
+    /* danger 컬러 */
+    --color-danger1: #d64545;
+    --color-danger2: #b83232;
 }
 
 @layer utilities {

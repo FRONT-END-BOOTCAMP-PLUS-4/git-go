@@ -1,3 +1,4 @@
+import Header from "./components/Header";
 import "./globals.css";
 
 import Link from "next/link";
@@ -9,11 +10,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
-                <nav className="flex justify-between items-center">
-                    <Link href={"/"}>로고</Link>
-                    <button>로그인 버튼</button>{" "}
-                </nav>
+            <body className="bg-bg-primary1">
+                <Header />
                 {children}
             </body>
         </html>

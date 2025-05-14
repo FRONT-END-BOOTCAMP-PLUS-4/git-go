@@ -7,11 +7,11 @@ import PullRequestMemoir from "./components/PullRequestMemoir";
 export default function CreateMemoirPage() {
     const { type } = useParams();
 
-    if (type === "commit") {
+    if (type === "commits") {
         return <CommitMemoir />;
     }
 
-    if (type === "pull-request") {
+    if (type === "pull-requests") {
         return <PullRequestMemoir />;
     }
 }
