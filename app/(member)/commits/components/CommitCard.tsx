@@ -54,7 +54,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                         Fix navigation bug in dashboard component
                     </h3>
                     <div className="flex items-center gap-x-3">
-                        <div className="flex items-center gap-x-1">
+                        <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
                                 src="branch.svg"
                                 alt="브랜치 아이콘"
@@ -63,7 +63,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                             />
                             <p>frontend-app</p>
                         </div>
-                        <div className="flex items-center gap-x-1">
+                        <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
                                 src="code.svg"
                                 alt="코드 아이콘"
