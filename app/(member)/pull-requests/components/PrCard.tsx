@@ -94,7 +94,9 @@ export default function PrCard({ type }: LabelBadgeProps) {
                     {listIsOpen && (
                         <div className="border-border-primary1 mt-4 rounded-md border">
                             <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b px-4 py-2">
-                                <h3 className="text-sm">Commit in this PR</h3>
+                                <h3 className="text-sm font-semibold">
+                                    Commit in this PR
+                                </h3>
                                 <div className="ml-auto">
                                     <Button
                                         type="lined"
