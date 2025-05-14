@@ -5,20 +5,19 @@ import RepoSelectModal from "@/app/(member)/components/RepoSelectModal";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useState } from "react";
+import PageTap from "../components/PageTab";
 
 export default function CommitPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
 
-    const date = new Date().toLocaleString();
-    const onlyDate = date.split(", ")[0];
-    const dateObj = new Date(onlyDate);
-
     // 현재 날짜를 한국어 형식으로 포맷팅
+    const now = new Date();
+
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
         month: "long",
         day: "numeric",
-    }).format(dateObj);
+    }).format(now);
 
     const [open, setOpen] = useState(false);
 
@@ -89,23 +88,8 @@ export default function CommitPage() {
             </aside>
 
             <div className="w-full">
-                <nav className="bg-white">
-                    <ul className="mb-6 flex gap-x-4">
-                        <li>
-                            <a href="/(member)/commits">커밋</a>
-                        </li>
-                        <li>
-                            <a href="/(member)/pull-requests">Pull Request</a>
-                        </li>
-                        <li>
-                            <a href="/(member)/memoirs">내 회고록</a>
-                        </li>
-                        <li>
-                            <a href="/(member)/memoirs">통계</a>
-                        </li>
-                    </ul>
-                </nav>
-                <div className="border-border-primary1 rounded-lg border-1 bg-white">
+                <PageTap status="commit" />
+                <div className="border-border-primary1 mt-6 rounded-lg border-1 bg-white">
                     <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                         <h2 className="font-bold">최근 활동</h2>
                         <p className="text-text-secondary2 text-sm">
