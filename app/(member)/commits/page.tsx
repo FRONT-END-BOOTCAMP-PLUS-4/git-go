@@ -1,7 +1,7 @@
 "use client";
 
 import CommitCard from "@/app/(member)/commits/components/CommitCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
 
 export default function CommitPage() {
@@ -17,6 +17,7 @@ export default function CommitPage() {
     }).format(now);
 
     useEffect(() => {
+        if (checkedOnceRef.current) return;
         const fetchUserRepos = async () => {
             try {
                 const res = await fetch("/api/repos/user");
@@ -30,9 +31,10 @@ export default function CommitPage() {
         };
 
         fetchUserRepos();
-    });
+    }, []);
 
     const [open, setOpen] = useState(false);
+    const checkedOnceRef = useRef(false);
 
     const branches = [
         { name: "frontend-app", icon: "branch-blue.svg" },
