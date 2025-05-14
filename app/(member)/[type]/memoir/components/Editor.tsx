@@ -47,7 +47,7 @@ export default function Editor() {
                 <div>회고록 작성</div>
                 <div className="flex-1">
                     <textarea
-                        className="border-border1 h-full w-full resize-none rounded-md border px-3 py-2"
+                        className="border-border1 h-full min-h-40 w-full resize-none rounded-md border px-3 py-2"
                         placeholder="변경사항에 대한 회고를 작성하세요."
                     />
                 </div>

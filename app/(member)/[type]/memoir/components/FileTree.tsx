@@ -48,7 +48,7 @@ export default function FileTree({ commits, onSelect }: FileTreeProps) {
             {(isOpened || !isTablet) && (
                 <>
                     <aside
-                        className={`fixed left-0 z-50 h-full w-72 overflow-y-auto transition-transform duration-300 ${
+                        className={`fixed left-0 z-10 h-full w-72 overflow-y-auto transition-transform duration-300 ${
                             !isTablet ? "top-16" : isOpened ? "top-0" : "top-16"
                         } ${
                             isTablet

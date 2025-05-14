@@ -99,7 +99,7 @@ export default function CommitMemoir() {
     return (
         <CreateMemoirLayout>
             <FileTree commits={COMMITS} onSelect={setSelectedFile} />
-            <div className="flex-4 overflow-y-auto p-4">
+            <div className="border-x-border-primary1 flex-4 overflow-y-auto border-x p-4">
                 <ChangeList commits={COMMITS} selectedFile={selectedFile} />
             </div>
             <div className="flex flex-3 flex-col justify-between gap-4 p-4">
