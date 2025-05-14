@@ -1,4 +1,4 @@
-import CommitCard from "@/app/(member)/commits/components/CommitCard";
+import PrCard from "@/app/(member)/pull-requests/components/PrCard";
 
 export default function PullRequestPage() {
     // 현재 날짜 를 한국어 형식으로 포맷팅
@@ -18,11 +18,8 @@ export default function PullRequestPage() {
             </section>
 
             <ul>
-                {/* CommitCard 의 props 로 커밋의 타입을 지정 - bugfix | feature | refactor */}
-                <CommitCard type="bugfix" />
-                <CommitCard type="feature" />
-                <CommitCard type="refactor" />
-                <CommitCard type="bugfix" />
+                <PrCard type="open" />
+                <PrCard type="merged" />
             </ul>
         </div>
     );

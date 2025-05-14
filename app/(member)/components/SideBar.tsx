@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
 import { useParams, usePathname } from "next/navigation";
+import TimeFilter from "./TimeFilter";
 
 export default function SideBar({
     setOpen,
@@ -77,6 +78,15 @@ export default function SideBar({
                     </Button>
                 </section>
             </div>
+            {(pathname.includes("memoirs") || pathname.includes("stats")) && (
+                <TimeFilter
+                    options={[
+                        { value: "7days", label: "Last 7 days" },
+                        { value: "30days", label: "Last 30 days" },
+                        { value: "90days", label: "Last 90 days" },
+                    ]}
+                />
+            )}
             {pathname.includes("memoirs") && <CommitPrFilter />}
         </aside>
     );
