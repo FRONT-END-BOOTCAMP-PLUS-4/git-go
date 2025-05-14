@@ -181,60 +181,60 @@
 //     },
 // ];
 
-// export default function PullRequestMemoir() {
-//     // 1) 어떤 커밋을 보고 있을지 state
-//     const [selectedCommitId, setSelectedCommitId] = useState<string>(
-//         prCommits[0].id
-//     );
-//     // 2) 그 커밋 안에서 어떤 파일을 보고 있을지 state
-//     const [selectedFile, setSelectedFile] = useState<string | null>(null);
+export default function PullRequestMemoir() {
+    //     // 1) 어떤 커밋을 보고 있을지 state
+    //     const [selectedCommitId, setSelectedCommitId] = useState<string>(
+    //         prCommits[0].id
+    //     );
+    //     // 2) 그 커밋 안에서 어떤 파일을 보고 있을지 state
+    //     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-//     // 3) 현재 선택된 커밋 데이터를 찾아서
-//     const currentCommit: PRCommit = prCommits.find(
-//         (c) => c.id === selectedCommitId
-//     )!;
+    //     // 3) 현재 선택된 커밋 데이터를 찾아서
+    //     const currentCommit: PRCommit = prCommits.find(
+    //         (c) => c.id === selectedCommitId
+    //     )!;
 
-//     return (
-//         <CreateMemoirLayout>
-//             <FileTree
-//                 treeData={currentCommit.tree}
-//                 onSelect={setSelectedFile}
-//             />
+    return (
+        //         <CreateMemoirLayout>
+        //             <FileTree
+        //                 treeData={currentCommit.tree}
+        //                 onSelect={setSelectedFile}
+        //             />
 
-//             <div className="border-x-border-primary1 w-full max-w-[575px] border-x p-4">
-//                 <Select
-//                     options={prCommits.map((c) => ({
-//                         value: c.id,
-//                         label: c.message,
-//                     }))}
-//                     value={selectedCommitId}
-//                     onChange={(id) => {
-//                         setSelectedCommitId(id);
-//                         setSelectedFile(null);
-//                     }}
-//                 />
+        //             <div className="border-x-border-primary1 w-full max-w-[575px] border-x p-4">
+        //                 <Select
+        //                     options={prCommits.map((c) => ({
+        //                         value: c.id,
+        //                         label: c.message,
+        //                     }))}
+        //                     value={selectedCommitId}
+        //                     onChange={(id) => {
+        //                         setSelectedCommitId(id);
+        //                         setSelectedFile(null);
+        //                     }}
+        //                 />
 
-//                 <ChangeList
-//                     treeData={currentCommit.tree}
-//                     selectedFile={selectedFile}
-//                     selectedCommitId={selectedCommitId}
-//                     className="h-[calc(100vh-151px)]"
-//                 />
-//             </div>
+        //                 <ChangeList
+        //                     treeData={currentCommit.tree}
+        //                     selectedFile={selectedFile}
+        //                     selectedCommitId={selectedCommitId}
+        //                     className="h-[calc(100vh-151px)]"
+        //                 />
+        //             </div>
 
-//             <div className="flex w-full flex-col gap-4 p-4">
-//                 <Editor />
-//                 <AiSummary />
-//                 <div className="flex justify-end gap-2">
-//                     <button className="border-border-primary1 rounded-md border px-4 py-2">
-//                         취소
-//                     </button>
-//                     <button className="bg-primary7 text-text-primary1 rounded-md px-4 py-2">
-//                         회고록 작성 완료
-//                     </button>
-//                 </div>
-//             </div>
-//         </CreateMemoirLayout>
-<div>PullRequest Memoir Component</div>;
-//     );
-// }
+        //             <div className="flex w-full flex-col gap-4 p-4">
+        //                 <Editor />
+        //                 <AiSummary />
+        //                 <div className="flex justify-end gap-2">
+        //                     <button className="border-border-primary1 rounded-md border px-4 py-2">
+        //                         취소
+        //                     </button>
+        //                     <button className="bg-primary7 text-text-primary1 rounded-md px-4 py-2">
+        //                         회고록 작성 완료
+        //                     </button>
+        //                 </div>
+        //             </div>
+        //         </CreateMemoirLayout>
+        <div>PullRequest Memoir Component</div>
+    );
+}
