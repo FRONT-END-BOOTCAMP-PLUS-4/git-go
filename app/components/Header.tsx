@@ -36,7 +36,7 @@ export default function Header() {
                                 alt="profile"
                                 width={30}
                                 height={30}
-                                className="rounded-full w-[30px] h-[30px]"
+                                className="rounded-full w-[30px] h-[30px] border border-gray-300"
                             />
                         ) : (
                             <div className="w-[30px] h-[30px] rounded-full bg-gray-400 text-white flex items-center justify-center text-sm font-bold">
