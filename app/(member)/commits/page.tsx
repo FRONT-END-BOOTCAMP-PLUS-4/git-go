@@ -1,11 +1,7 @@
 "use client";
 
 import CommitCard from "@/app/(member)/commits/components/CommitCard";
-import RepoSelectModal from "@/app/(member)/components/RepoSelectModal";
-import Button from "@/app/components/Button";
-import Image from "next/image";
 import { useState } from "react";
-import PageTap from "../components/PageTab";
 
 export default function CommitPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
