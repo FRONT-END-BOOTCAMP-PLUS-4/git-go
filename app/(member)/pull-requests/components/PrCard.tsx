@@ -2,6 +2,7 @@
 import PrCommitCard from "@/app/(member)/pull-requests/components/PrCommitCard";
 import Button from "@/app/components/Button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface LabelBadgeProps {
@@ -27,7 +28,13 @@ const typeClassMap: Record<
 };
 
 export default function PrCard({ type }: LabelBadgeProps) {
+    const route = useRouter();
+
     const [listIsOpen, setListIsOpen] = useState(false);
+
+    const moveToPrMemoir = () => {
+        route.push("/pull-requests/1234/memoir");
+    };
 
     return (
         <li
@@ -89,7 +96,11 @@ export default function PrCard({ type }: LabelBadgeProps) {
                             <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b px-4 py-2">
                                 <h3 className="text-sm">Commit in this PR</h3>
                                 <div className="ml-auto">
-                                    <Button type="lined" htmlType="button">
+                                    <Button
+                                        type="lined"
+                                        htmlType="button"
+                                        onClick={moveToPrMemoir}
+                                    >
                                         <Image
                                             src="write.svg"
                                             alt="회고 등록 아이콘"
