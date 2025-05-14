@@ -3,7 +3,7 @@ import React from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-type Status = "commit" | "pullRequest" | "memoir" | "stat";
+type Status = "commits" | "pull-requests" | "memoirs" | "stats";
 
 interface Props {
     status: Status;
@@ -28,19 +28,19 @@ export default function PageTap({ status }: Props) {
         <div className="border-border-primary1 mb-6 flex h-9 w-[440px] cursor-pointer flex-row rounded-md border bg-white px-1 py-1 text-[16px] font-semibold">
             <div
                 className={`flex h-7 flex-row items-center rounded-md px-3 py-1 ${
-                    status === "commit" ? "bg-primary1" : ""
+                    status === "commits" ? "bg-primary1" : ""
                 }`}
                 onClick={commitClickHandler}
             >
                 <Image
-                    src={`/${status === "commit" ? "commit-blue" : "commit"}.svg`}
+                    src={`/${status === "commits" ? "commit-blue" : "commit"}.svg`}
                     alt={`${status}`}
                     width={20}
                     height={20}
                 />
                 <div
                     className={`ml-2 ${
-                        status === "commit"
+                        status === "commits"
                             ? "text-primary7"
                             : "text-text-gray1"
                     }`}
@@ -50,19 +50,19 @@ export default function PageTap({ status }: Props) {
             </div>
             <div
                 className={`flex h-7 flex-row items-center rounded-md px-3 py-1 ${
-                    status === "pullRequest" ? "bg-primary1" : ""
+                    status === "pull-requests" ? "bg-primary1" : ""
                 }`}
                 onClick={pullRequestClickHandler}
             >
                 <Image
-                    src={`/${status === "pullRequest" ? "pull-request-blue" : "pull-request"}.svg`}
+                    src={`/${status === "pull-requests" ? "pull-request-blue" : "pull-request"}.svg`}
                     alt={`${status}`}
                     width={20}
                     height={20}
                 />
                 <div
                     className={`ml-2 ${
-                        status === "pullRequest"
+                        status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-gray1"
                     }`}
@@ -72,19 +72,19 @@ export default function PageTap({ status }: Props) {
             </div>
             <div
                 className={`flex h-7 flex-row items-center rounded-md px-3 py-1 ${
-                    status === "memoir" ? "bg-primary1" : ""
+                    status === "memoirs" ? "bg-primary1" : ""
                 }`}
                 onClick={memoirClickHandler}
             >
                 <Image
-                    src={`/${status === "memoir" ? "memoir-blue" : "memoir"}.svg`}
+                    src={`/${status === "memoirs" ? "memoir-blue" : "memoir"}.svg`}
                     alt={`${status}`}
                     width={20}
                     height={20}
                 />
                 <div
                     className={`ml-2 ${
-                        status === "memoir"
+                        status === "memoirs"
                             ? "text-primary7"
                             : "text-text-gray1"
                     }`}
@@ -94,19 +94,19 @@ export default function PageTap({ status }: Props) {
             </div>
             <div
                 className={`flex h-7 flex-row items-center rounded-md px-3 py-1 ${
-                    status === "stat" ? "bg-primary1" : ""
+                    status === "stats" ? "bg-primary1" : ""
                 }`}
                 onClick={statClickHandler}
             >
                 <Image
-                    src={`/${status === "stat" ? "static-blue" : "static"}.svg`}
+                    src={`/${status === "stats" ? "static-blue" : "static"}.svg`}
                     alt={`${status}`}
                     width={20}
                     height={20}
                 />
                 <div
                     className={`ml-2 ${
-                        status === "stat" ? "text-primary7" : "text-text-gray1"
+                        status === "stats" ? "text-primary7" : "text-text-gray1"
                     }`}
                 >
                     통계

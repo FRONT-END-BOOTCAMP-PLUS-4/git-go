@@ -31,7 +31,7 @@ export default function MemoirPage() {
     const [selectedBranch, setSelectedBranch] = useState("frontend-app");
 
     return (
-        <div className="border-border-primary1 mt-6 rounded-lg border-1 bg-white">
+        <div className="border-border-primary1 rounded-lg border-1 bg-white">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <h2 className="font-bold">최근 활동</h2>
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
