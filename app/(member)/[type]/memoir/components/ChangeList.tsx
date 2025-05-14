@@ -87,13 +87,13 @@ export default function ChangeList({
                     <code className="text-sm break-words whitespace-pre-wrap">
                         {commit.patch.split("\n").map((line, idx) => {
                             // '+' 로 시작하면 녹색, '-' 로 시작하면 빨강, 그 외는 기본 텍스트
-                            let lineClass = "py-1";
+                            let lineClass = "py-1 ";
                             if (line.startsWith("+")) {
                                 lineClass +=
-                                    " text-code-add-text bg-code-add-bg";
+                                    "text-code-add-text bg-code-add-bg";
                             } else if (line.startsWith("-")) {
                                 lineClass +=
-                                    " text-code-delete-text bg-code-delete-bg";
+                                    "text-code-delete-text bg-code-delete-bg";
                             } else if (line.startsWith("@")) {
                                 lineClass += "text-code-gray";
                             }
