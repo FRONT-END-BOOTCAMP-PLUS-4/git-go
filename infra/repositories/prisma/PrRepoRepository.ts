@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/prisma/generated/prisma";
+import { PrismaClient, Repo } from "@/prisma/generated/prisma";
 import { RepoRepository } from "@/domain/repositories/RepoRepository";
 
 const prisma = new PrismaClient();
@@ -10,6 +10,12 @@ export class PrRepoRepository implements RepoRepository {
                 name: repo.name,
                 userId: data.userId,
             })),
+        });
+    }
+
+    async findByUserId(userId: string): Promise<Repo[]> {
+        return await prisma.repo.findMany({
+            where: { userId },
         });
     }
 }
