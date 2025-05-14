@@ -22,15 +22,15 @@ const typeClassMap: Record<
     },
 };
 
-export default function PrCard() {
+export default function PrCard({ type }: LabelBadgeProps) {
     return (
         <li className="border-border-primary1 border-b p-4 last:border-b-0">
             <article className="flex items-start gap-x-4">
                 <div
-                    className={`${typeClassMap.open.bg} flex h-10 w-10 items-center justify-center rounded-full`}
+                    className={`${typeClassMap[type].bg} flex h-10 w-10 items-center justify-center rounded-full`}
                 >
                     <Image
-                        src={typeClassMap.open.icon}
+                        src={typeClassMap[type].icon}
                         width={14}
                         height={16}
                         alt="커밋 아이콘"
@@ -42,9 +42,9 @@ export default function PrCard() {
                             Fix navigation bug in dashboard component
                         </h3>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap.open.bg} ${typeClassMap.open.text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[type].bg} ${typeClassMap.open.text} text-xs shadow-sm`}
                         >
-                            {typeClassMap.open.label}
+                            {typeClassMap[type].label}
                         </div>
                         <p className="text-text-secondary2 ml-auto text-xs">
                             2 hours ago
