@@ -18,4 +18,13 @@ export class PrRepoRepository implements RepoRepository {
             where: { userId },
         });
     }
+
+    async deleteByNames(userId: string, names: string[]): Promise<void> {
+        await prisma.repo.deleteMany({
+            where: {
+                userId,
+                name: { in: names },
+            },
+        });
+    }
 }
