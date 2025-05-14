@@ -6,12 +6,12 @@ const MOCK = ["React", "Next", "Tailwind"];
 
 export default function Editor() {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4">
             <div className="flex flex-col gap-1">
                 <div>제목</div>
                 <div>
                     <input
-                        className="border-border1 w-full rounded-md border px-3 py-2"
+                        className="border-primary1 w-full rounded-md border px-3 py-2 placeholder:text-sm"
                         placeholder="회고록 제목을 입력하세요."
                         type="text"
                     />
@@ -21,7 +21,7 @@ export default function Editor() {
                 <div>태그</div>
                 <div>
                     <input
-                        className="border-border1 w-full rounded-md border px-3 py-2"
+                        className="border-primary1 w-full rounded-md border px-3 py-2 placeholder:text-sm"
                         placeholder="태그를 입력하고 Enter를 누르세요."
                     />
                 </div>
@@ -43,11 +43,11 @@ export default function Editor() {
                     })}
                 </div>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-1 flex-col gap-1">
                 <div>회고록 작성</div>
-                <div>
+                <div className="flex-1">
                     <textarea
-                        className="border-border1 h-50 w-full resize-none rounded-md border px-3 py-2"
+                        className="border-border1 h-full w-full resize-none rounded-md border px-3 py-2"
                         placeholder="변경사항에 대한 회고를 작성하세요."
                     />
                 </div>
