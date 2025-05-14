@@ -14,6 +14,7 @@ export default function MemberLayout({
 
     const pathname = usePathname();
     console.log(pathname);
+    const status = pathname.split("/").pop() || "commits";
 
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
     if (!pathname.endsWith("memoir")) {
@@ -23,7 +24,7 @@ export default function MemberLayout({
                 <SideBar setOpen={setOpen} />
 
                 <div className="w-full">
-                    <PageTap status="commit" />
+                    <PageTap status={status} />
                     {children}
                 </div>
             </div>

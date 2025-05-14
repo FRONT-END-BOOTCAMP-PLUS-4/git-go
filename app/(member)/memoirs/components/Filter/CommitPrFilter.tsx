@@ -7,7 +7,7 @@ export default function CommitPrFilter() {
     const { filters, toggleFilter } = useFilterStore();
 
     return (
-        <div>
+        <div className="border-border-primary1 shadow-sms rounded-lg border-1 bg-white p-4">
             <div className="mb-2 text-lg font-semibold">필터</div>
             <div className="space-y-2">
                 <div className="flex items-center space-x-2">
