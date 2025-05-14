@@ -1,7 +1,4 @@
-import CommitCard from "@/app/(member)/commits/components/CommitCard";
 import PrCard from "@/app/(member)/pull-requests/components/PrCard";
-import Button from "@/app/components/Button";
-import Image from "next/image";
 
 export default function PullRequestPage() {
     // 현재 날짜 를 한국어 형식으로 포맷팅
@@ -21,7 +18,8 @@ export default function PullRequestPage() {
             </section>
 
             <ul>
-                <PrCard />
+                <PrCard type="open" />
+                <PrCard type="merged" />
             </ul>
         </div>
     );
