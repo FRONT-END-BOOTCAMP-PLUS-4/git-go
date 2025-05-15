@@ -8,6 +8,7 @@ import TimeFilter from "./TimeFilter";
 import TagFilter from "../memoirs/components/Filter/TagFilter";
 import { usePathname } from "next/navigation";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
+import { useRepoStore } from "@/store/repoStore";
 
 export default function SideBar({
     setOpen,
@@ -19,37 +20,48 @@ export default function SideBar({
         { id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
+    const { reloadRepoList, resetReload } = useRepoStore();
+
+    const fetchRepos = async (
+        setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
+        setSelectedRepo: (repo: string | null) => void
+    ) => {
+        try {
+            const [userRes, githubRes] = await Promise.all([
+                fetch("/api/repos/user"),
+                fetch("/api/github/repos"),
+            ]);
+
+            const userRepoIds: { name: string }[] = await userRes.json();
+            const githubRepos: GitHubRepoDto[] = await githubRes.json();
+
+            const matched = githubRepos
+                .filter((repo) => userRepoIds.some((r) => r.name === repo.id))
+                .map((repo) => ({
+                    id: repo.id,
+                    nameWithOwner: repo.nameWithOwner,
+                }));
+
+            setUserRepos(matched);
+            if (matched.length > 0) {
+                setSelectedRepo(matched[0].nameWithOwner);
+            }
+        } catch (error) {
+            console.error("레포 불러오기 실패:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchRepos = async () => {
-            try {
-                const [userRes, githubRes] = await Promise.all([
-                    fetch("/api/repos/user"),
-                    fetch("/api/github/repos"),
-                ]);
-
-                const userRepoIds: { name: string }[] = await userRes.json();
-                const githubRepos: GitHubRepoDto[] = await githubRes.json();
-
-                const matched = githubRepos
-                    .filter((repo) =>
-                        userRepoIds.some((r) => r.name === repo.id)
-                    )
-                    .map((repo) => ({
-                        id: repo.id,
-                        nameWithOwner: repo.nameWithOwner,
-                    }));
-
-                setUserRepos(matched);
-                if (matched.length > 0)
-                    setSelectedRepo(matched[0].nameWithOwner);
-            } catch (error) {
-                console.error("레포 불러오기 실패:", error);
-            }
-        };
-
-        fetchRepos();
+        fetchRepos(setUserRepos, setSelectedRepo);
     }, []);
+
+    useEffect(() => {
+        if (!reloadRepoList) return;
+
+        fetchRepos(setUserRepos, setSelectedRepo).finally(() => {
+            resetReload();
+        });
+    }, [reloadRepoList]);
 
     return (
         <aside className="flex w-50 flex-col gap-y-4">
@@ -66,11 +78,10 @@ export default function SideBar({
                                 className="border-border-primary1"
                             >
                                 <button
-                                    className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
-                                        isSelected
-                                            ? "bg-primary2 text-primary7"
-                                            : ""
-                                    }`}
+                                    className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected
+                                        ? "bg-primary2 text-primary7"
+                                        : ""
+                                        }`}
                                     onClick={() =>
                                         setSelectedRepo(repo.nameWithOwner)
                                     }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 import Image from "next/image";
+import { useRepoStore } from "@/store/repoStore";
 
 type Props = {
     open: boolean;
@@ -60,6 +61,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
 
             if (res.ok) {
                 alert("저장소가 성공적으로 연동되었습니다!");
+                useRepoStore.getState().triggerReload();
                 onClose();
             } else {
                 alert("연동에 실패했습니다.");
