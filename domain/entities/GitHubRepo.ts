@@ -1,4 +1,4 @@
-export class GitHubRepo {
+export class GithubRepo {
     constructor(
         public readonly id: string,
         public readonly name: string,
