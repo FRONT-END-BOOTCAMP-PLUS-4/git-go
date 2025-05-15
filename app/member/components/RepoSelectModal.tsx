@@ -109,7 +109,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 className="mt-0.5"
                                             />
                                             <div className="flex items-center gap-2 font-semibold text-sm text-gray-900 truncate">
-                                                {repo.name}
+                                                {repo.nameWithOwner}
                                                 <span className="bg-gray-100 text-yellow-500 text-xs px-2 py-0.5 rounded-md flex items-center gap-1 font-semibold">
                                                     ⭐ {repo.stargazerCount}
                                                 </span>
