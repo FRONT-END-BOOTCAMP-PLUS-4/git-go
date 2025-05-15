@@ -5,6 +5,7 @@ import Button from "@/app/components/Button";
 import Image from "next/image";
 import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
 import TimeFilter from "./TimeFilter";
+import TagFilter from "../memoirs/components/Filter/TagFilter";
 import { usePathname } from "next/navigation";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 
@@ -121,7 +122,14 @@ export default function SideBar({
                 />
             )}
 
-            {pathname.includes("memoirs") && <CommitPrFilter />}
+            {pathname.includes("memoirs") && (
+                <div className="border-border-primary1 shadow-sms w-47 min-w-47 rounded-lg border-1 bg-white p-4">
+                    <CommitPrFilter />
+                    <TagFilter
+                        tags={["React", "TypeScript", "API", "Security"]}
+                    />
+                </div>
+            )}
         </aside>
     );
 }
