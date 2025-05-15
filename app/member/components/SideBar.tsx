@@ -53,7 +53,7 @@ export default function SideBar({
 
     return (
         <aside className="flex w-50 flex-col gap-y-4">
-            <div className="border-border-primary1 h-fit rounded-lg border-1 bg-white">
+            <div className="border-border-primary1 h-fit w-50 rounded-lg border-1 bg-white">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     Repositories
                 </h2>
