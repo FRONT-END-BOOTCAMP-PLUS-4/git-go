@@ -1,4 +1,5 @@
 import Button from "@/app/components/Button";
+import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -28,11 +29,11 @@ const typeClassMap: Record<
 };
 
 export default function CommitCard({ type }: LabelBadgeProps) {
-    const route = useRouter();
+    const router = useRouter();
     const { label, bg, text } = typeClassMap[type];
 
     const moveToCommitMemoir = () => {
-        route.push("/commits/1234/memoir");
+        router.push(`${MEMBER_URL.commits}/1234/memoir`);
     };
 
     return (
@@ -40,7 +41,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
             <article className="flex items-start gap-x-4">
                 <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
                     <Image
-                        src="commit-blue.svg"
+                        src="/commit-blue.svg"
                         width={20}
                         height={16}
                         alt="커밋 아이콘"
@@ -62,7 +63,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="branch.svg"
+                                src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
@@ -71,7 +72,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="code.svg"
+                                src="/code.svg"
                                 alt="코드 아이콘"
                                 width={18}
                                 height={14}
@@ -85,7 +86,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                                 onClick={moveToCommitMemoir}
                             >
                                 <Image
-                                    src="write.svg"
+                                    src="/write.svg"
                                     alt="회고 등록 아이콘"
                                     width={12}
                                     height={12}

@@ -1,4 +1,4 @@
-import PrCard from "@/app/(member)/pull-requests/components/PrCard";
+import PrCard from "@/app/member/pull-requests/components/PrCard";
 
 export default function PullRequestPage() {
     // 현재 날짜 를 한국어 형식으로 포맷팅

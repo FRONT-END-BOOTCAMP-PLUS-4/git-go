@@ -3,6 +3,7 @@ import React from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { MEMBER_URL } from "@/constants/url";
 type Status = "commits" | "pull-requests" | "memoirs" | "stats" | string;
 
 interface Props {
@@ -12,16 +13,16 @@ interface Props {
 export default function PageTap({ status }: Props) {
     const router = useRouter();
     const commitClickHandler = () => {
-        router.push("/commits");
+        router.push(MEMBER_URL.commits);
     };
     const pullRequestClickHandler = () => {
-        router.push("/pull-requests");
+        router.push(MEMBER_URL.prs);
     };
     const memoirClickHandler = () => {
-        router.push("/memoirs");
+        router.push(MEMBER_URL.memoirs);
     };
     const statClickHandler = () => {
-        router.push("/stats");
+        router.push(MEMBER_URL.stats);
     };
 
     return (
