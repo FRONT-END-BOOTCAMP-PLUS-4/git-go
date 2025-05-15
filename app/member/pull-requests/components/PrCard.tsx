@@ -1,5 +1,5 @@
 "use client";
-import PrCommitCard from "@/app/(member)/pull-requests/components/PrCommitCard";
+import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
