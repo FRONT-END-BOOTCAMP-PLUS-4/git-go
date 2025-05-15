@@ -1,4 +1,4 @@
-// import { GithubRepo } from "@/domain/entities/GithubRepo";
+import { GithubRepo } from "@/domain/entities/GithubRepo";
 import { GithubRepoRepository } from "@/domain/repositories/GithubRepoRepository";
 
 export class FetchFromGithub implements GithubRepoRepository {
@@ -77,7 +77,7 @@ export class FetchFromGithub implements GithubRepoRepository {
     const extractRepos = (arr: any[]) =>
       arr.map((c: any) => {
         const r = c.repository ?? c;
-        return new GitHubRepo(
+        return new GithubRepo(
           r.id,
           r.name,
           r.nameWithOwner,
@@ -96,7 +96,7 @@ export class FetchFromGithub implements GithubRepoRepository {
     const fromOwner = extractRepos(repositories.nodes);
 
     const all = [...fromCommits, ...fromPRs, ...fromOwner];
-    const map = new Map<string, GitHubRepo>();
+    const map = new Map<string, GithubRepo>();
     for (const repo of all) {
       map.set(repo.nameWithOwner, repo);
     }
