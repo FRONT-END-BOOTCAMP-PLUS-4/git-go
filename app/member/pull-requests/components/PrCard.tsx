@@ -90,29 +90,31 @@ export default function PrCard({ type }: LabelBadgeProps) {
                             />
                             bugfix/nav-issue
                         </div>
+                        <div className="ml-auto">
+                            <div onClick={(e) => e.stopPropagation()}>
+                                <Button
+                                    type="lined"
+                                    htmlType="button"
+                                    onClick={moveToPrMemoir}
+                                >
+                                    <Image
+                                        src="/write.svg"
+                                        alt="회고 등록 아이콘"
+                                        width={12}
+                                        height={12}
+                                    />
+                                    Write Memoir
+                                </Button>
+                            </div>
+                        </div>
                     </div>
 
                     {listIsOpen && (
                         <div className="border-border-primary1 mt-4 rounded-md border">
-                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b px-4 py-2">
+                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b p-4">
                                 <h3 className="text-sm font-semibold">
                                     Commit in this PR
                                 </h3>
-                                <div className="ml-auto">
-                                    <Button
-                                        type="lined"
-                                        htmlType="button"
-                                        onClick={moveToPrMemoir}
-                                    >
-                                        <Image
-                                            src="/write.svg"
-                                            alt="회고 등록 아이콘"
-                                            width={12}
-                                            height={12}
-                                        />
-                                        Write Memoir
-                                    </Button>
-                                </div>
                             </div>
                             <ul>
                                 <PrCommitCard />
