@@ -1,7 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Button from "./components/Button";
+import { MEMBER_URL } from "@/constants/url";
 
 export default function HomePage() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+    const isLoggedIn = status === "authenticated";
+
     return (
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
             <div className="space-y-6">
@@ -21,7 +31,18 @@ export default function HomePage() {
                     GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI 기반 요약과 함께<br />
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
-                <LoginWithGitHubButton />
+                {status === "loading" ? null : isLoggedIn ? (
+                    <div className="flex justify-center">
+                        <Button
+                            type="default"
+                            size="regular"
+                            onClick={() => router.push(MEMBER_URL.commits)}
+                            label="마이페이지"
+                        />
+                    </div>
+                ) : (
+                    <LoginWithGitHubButton />
+                )}
                 <div className="flex gap-20 mt-10 justify-center">
                     {[
                         {
