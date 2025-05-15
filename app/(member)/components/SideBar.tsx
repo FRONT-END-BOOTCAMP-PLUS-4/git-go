@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 
 export default function SideBar({ setOpen }: { setOpen: (open: boolean) => void }) {
-    const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+    const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
     const [userRepos, setUserRepos] = useState<{ id: string; nameWithOwner: string }[]>([]);
     const pathname = usePathname();
 
@@ -29,7 +29,7 @@ export default function SideBar({ setOpen }: { setOpen: (open: boolean) => void 
                     .map((repo) => ({ id: repo.id, nameWithOwner: repo.nameWithOwner }));
 
                 setUserRepos(matched);
-                if (matched.length > 0) setSelectedBranch(matched[0].nameWithOwner);
+                if (matched.length > 0) setSelectedRepo(matched[0].nameWithOwner);
             } catch (error) {
                 console.error("레포 불러오기 실패:", error);
             }
@@ -44,13 +44,13 @@ export default function SideBar({ setOpen }: { setOpen: (open: boolean) => void 
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">Repositories</h2>
                 <ul className="flex flex-col gap-y-1 p-2">
                     {userRepos.map((repo) => {
-                        const isSelected = repo.nameWithOwner === selectedBranch;
+                        const isSelected = repo.nameWithOwner === selectedRepo;
                         return (
                             <li key={repo.id} className="border-border-primary1">
                                 <button
                                     className={`flex w-full items-center gap-x-2 rounded-md px-2 py-2 font-semibold text-left ${isSelected ? "bg-primary2 text-primary7" : ""
                                         }`}
-                                    onClick={() => setSelectedBranch(repo.nameWithOwner)}
+                                    onClick={() => setSelectedRepo(repo.nameWithOwner)}
                                 >
                                     <Image
                                         src={isSelected ? "branch-blue.svg" : "branch.svg"}
