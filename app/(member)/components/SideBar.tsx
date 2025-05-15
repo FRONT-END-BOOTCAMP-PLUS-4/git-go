@@ -48,7 +48,7 @@ export default function SideBar({ setOpen }: { setOpen: (open: boolean) => void 
                         return (
                             <li key={repo.id} className="border-border-primary1">
                                 <button
-                                    className={`flex w-full items-center gap-x-2 rounded-md p-2 font-semibold ${isSelected ? "bg-primary2 text-primary7" : ""
+                                    className={`flex w-full items-center gap-x-2 rounded-md px-2 py-2 font-semibold text-left ${isSelected ? "bg-primary2 text-primary7" : ""
                                         }`}
                                     onClick={() => setSelectedBranch(repo.nameWithOwner)}
                                 >
