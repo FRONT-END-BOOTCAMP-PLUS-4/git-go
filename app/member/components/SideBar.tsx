@@ -5,6 +5,7 @@ import Button from "@/app/components/Button";
 import Image from "next/image";
 import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
 import TimeFilter from "./TimeFilter";
+import TagFilter from "../memoirs/components/Filter/TagFilter";
 import { usePathname } from "next/navigation";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 
@@ -51,7 +52,7 @@ export default function SideBar({
     }, []);
 
     return (
-        <aside className="flex flex-col gap-y-4">
+        <aside className="flex w-50 flex-col gap-y-4">
             <div className="border-border-primary1 h-fit w-50 rounded-lg border-1 bg-white">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     Repositories
@@ -121,7 +122,14 @@ export default function SideBar({
                 />
             )}
 
-            {pathname.includes("memoirs") && <CommitPrFilter />}
+            {pathname.includes("memoirs") && (
+                <div className="border-border-primary1 shadow-sms rounded-lg border-1 bg-white p-4">
+                    <CommitPrFilter />
+                    <TagFilter
+                        tags={["React", "TypeScript", "API", "Security"]}
+                    />
+                </div>
+            )}
         </aside>
     );
 }

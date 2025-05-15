@@ -10,6 +10,10 @@ interface FilterState {
 
     timePeriod: TimePeriod;
     setTimePeriod: (period: TimePeriod) => void;
+
+    tags: string[]; // 태그 배열 상태
+    addTag: (tag: string) => void; // 태그 추가 메서드
+    removeTag: (tag: string) => void; // 태그 제거 메서드
 }
 
 export const useFilterStore = create<FilterState>((set) => ({
@@ -26,4 +30,14 @@ export const useFilterStore = create<FilterState>((set) => ({
         })),
     timePeriod: "7days",
     setTimePeriod: (period) => set({ timePeriod: period }),
+
+    tags: [], // 초기 태그 배열
+    addTag: (tag) =>
+        set((state) => ({
+            tags: [...state.tags, tag], // 태그 추가
+        })),
+    removeTag: (tag) =>
+        set((state) => ({
+            tags: state.tags.filter((t) => t !== tag), // 태그 제거
+        })),
 }));
