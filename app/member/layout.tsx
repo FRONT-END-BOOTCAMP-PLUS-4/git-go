@@ -1,8 +1,8 @@
 "use client";
-import PageTap from "@/app/(member)/components/PageTab";
-import RepoSelectModal from "@/app/(member)/components/RepoSelectModal";
-import SideBar from "@/app/(member)/components/SideBar";
-import { usePathname } from "next/navigation";
+import PageTap from "@/app/member/components/PageTab";
+import RepoSelectModal from "@/app/member/components/RepoSelectModal";
+import SideBar from "@/app/member/components/SideBar";
+import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function MemberLayout({
@@ -16,8 +16,14 @@ export default function MemberLayout({
     console.log(pathname);
     const status = pathname.split("/").pop() || "commits";
 
+    const { id } = useParams();
+    console.log(id);
+
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
-    if (!pathname.endsWith("memoir")) {
+    if (pathname.endsWith("memoir") || id) {
+        // 작성 페이지는 사이드바 탭 미표시
+        return <>{children}</>;
+    } else {
         return (
             <div className="layout-padding bg-bg-primary1 flex gap-x-6 py-6">
                 <RepoSelectModal open={open} onClose={() => setOpen(false)} />
@@ -29,8 +35,5 @@ export default function MemberLayout({
                 </div>
             </div>
         );
-    } else {
-        // 작성 페이지는 사이드바 탭 미표시
-        return <>{children}</>;
     }
 }

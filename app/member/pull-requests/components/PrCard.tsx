@@ -1,9 +1,10 @@
 "use client";
-import PrCommitCard from "@/app/(member)/pull-requests/components/PrCommitCard";
+import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MEMBER_URL } from "@/constants/url";
 
 interface LabelBadgeProps {
     type: "open" | "merged";
@@ -17,23 +18,23 @@ const typeClassMap: Record<
         label: "open",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
-        icon: "pull-request-green.svg",
+        icon: "/pull-request-green.svg",
     },
     merged: {
         label: "merged",
         bg: "bg-[#e0f2fe]",
         text: "text-[#1e40af]",
-        icon: "pull-request-blue.svg",
+        icon: "/pull-request-blue.svg",
     },
 };
 
 export default function PrCard({ type }: LabelBadgeProps) {
-    const route = useRouter();
+    const router = useRouter();
 
     const [listIsOpen, setListIsOpen] = useState(false);
 
     const moveToPrMemoir = () => {
-        route.push("/pull-requests/1234/memoir");
+        router.push(`${MEMBER_URL.memoirs}/1234/memoir`);
     };
 
     return (
@@ -73,7 +74,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="branch.svg"
+                                src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
@@ -82,36 +83,38 @@ export default function PrCard({ type }: LabelBadgeProps) {
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="code.svg"
+                                src="/code.svg"
                                 alt="코드 아이콘"
                                 width={18}
                                 height={14}
                             />
                             bugfix/nav-issue
                         </div>
+                        <div className="ml-auto">
+                            <div onClick={(e) => e.stopPropagation()}>
+                                <Button
+                                    type="lined"
+                                    htmlType="button"
+                                    onClick={moveToPrMemoir}
+                                >
+                                    <Image
+                                        src="/write.svg"
+                                        alt="회고 등록 아이콘"
+                                        width={12}
+                                        height={12}
+                                    />
+                                    Write Memoir
+                                </Button>
+                            </div>
+                        </div>
                     </div>
 
                     {listIsOpen && (
                         <div className="border-border-primary1 mt-4 rounded-md border">
-                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b px-4 py-2">
+                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b p-4">
                                 <h3 className="text-sm font-semibold">
                                     Commit in this PR
                                 </h3>
-                                <div className="ml-auto">
-                                    <Button
-                                        type="lined"
-                                        htmlType="button"
-                                        onClick={moveToPrMemoir}
-                                    >
-                                        <Image
-                                            src="write.svg"
-                                            alt="회고 등록 아이콘"
-                                            width={12}
-                                            height={12}
-                                        />
-                                        Write Memoir
-                                    </Button>
-                                </div>
                             </div>
                             <ul>
                                 <PrCommitCard />

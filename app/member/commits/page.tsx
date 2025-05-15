@@ -1,6 +1,6 @@
 "use client";
 
-import CommitCard from "@/app/(member)/commits/components/CommitCard";
+import CommitCard from "@/app/member/commits/components/CommitCard";
 import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
 
@@ -48,7 +48,9 @@ export default function CommitPage() {
             <div className="border-border-primary1 rounded-lg border-1 bg-white">
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <h2 className="font-bold">최근 활동</h2>
-                    <p className="text-text-secondary2 text-sm">{formattedDate}</p>
+                    <p className="text-text-secondary2 text-sm">
+                        {formattedDate}
+                    </p>
                 </section>
 
                 <ul>
