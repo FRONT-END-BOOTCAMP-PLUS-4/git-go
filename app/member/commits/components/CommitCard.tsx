@@ -1,4 +1,5 @@
 import Button from "@/app/components/Button";
+import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -28,11 +29,11 @@ const typeClassMap: Record<
 };
 
 export default function CommitCard({ type }: LabelBadgeProps) {
-    const route = useRouter();
+    const router = useRouter();
     const { label, bg, text } = typeClassMap[type];
 
     const moveToCommitMemoir = () => {
-        route.push("/commits/1234/memoir");
+        router.push(`${MEMBER_URL.commits}/1234/memoir`);
     };
 
     return (

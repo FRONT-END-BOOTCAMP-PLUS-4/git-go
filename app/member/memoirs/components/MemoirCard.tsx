@@ -1,5 +1,6 @@
 "use client";
 
+import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -26,10 +27,10 @@ const typeClassMap: Record<
 const tagList = ["React", "Next.js", "NextAuth"];
 
 export default function MemoirCard({ type }: LabelBadgeProps) {
-    const route = useRouter();
+    const router = useRouter();
 
     const moveToMemoir = () => {
-        route.push("/memoirs/12");
+        router.push(`${MEMBER_URL.memoirs}/12`);
     };
 
     return (
@@ -61,8 +62,11 @@ export default function MemoirCard({ type }: LabelBadgeProps) {
                         </p>
                     </div>
                     <ul className="flex gap-x-2">
-                        {tagList.map((item) => (
-                            <li className="border-border-primary1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold">
+                        {tagList.map((item, index) => (
+                            <li
+                                key={index}
+                                className="border-border-primary1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
+                            >
                                 {item}
                             </li>
                         ))}

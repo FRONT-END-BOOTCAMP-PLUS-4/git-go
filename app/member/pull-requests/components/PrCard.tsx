@@ -4,6 +4,7 @@ import Button from "@/app/components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MEMBER_URL } from "@/constants/url";
 
 interface LabelBadgeProps {
     type: "open" | "merged";
@@ -28,12 +29,12 @@ const typeClassMap: Record<
 };
 
 export default function PrCard({ type }: LabelBadgeProps) {
-    const route = useRouter();
+    const router = useRouter();
 
     const [listIsOpen, setListIsOpen] = useState(false);
 
     const moveToPrMemoir = () => {
-        route.push("/pull-requests/1234/memoir");
+        router.push(`${MEMBER_URL.memoirs}/1234/memoir`);
     };
 
     return (
