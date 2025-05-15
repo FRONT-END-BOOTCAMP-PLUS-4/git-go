@@ -1,8 +1,8 @@
+// import { GithubRepo } from "@/domain/entities/GithubRepo";
 import { GithubRepoRepository } from "@/domain/repositories/GithubRepoRepository";
-import { GitHubRepo } from "@/domain/entities/GitHubRepo";
 
 export class FetchFromGithub implements GithubRepoRepository {
-  async fetchAll(token: string): Promise<GitHubRepo[]> {
+  async fetchAll(token: string): Promise<GithubRepo[]> {
     const query = `
       query {
   viewer {
