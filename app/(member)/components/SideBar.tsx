@@ -58,7 +58,7 @@ export default function SideBar({ setOpen }: { setOpen: (open: boolean) => void 
                                         height={14}
                                         alt="브랜치 아이콘"
                                     />
-                                    {repo.nameWithOwner}
+                                    <span className="text-sm">{repo.nameWithOwner}</span>
                                 </button>
                             </li>
                         );
