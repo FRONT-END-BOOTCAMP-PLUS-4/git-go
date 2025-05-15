@@ -17,13 +17,13 @@ const typeClassMap: Record<
         label: "open",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
-        icon: "pull-request-green.svg",
+        icon: "/pull-request-green.svg",
     },
     merged: {
         label: "merged",
         bg: "bg-[#e0f2fe]",
         text: "text-[#1e40af]",
-        icon: "pull-request-blue.svg",
+        icon: "/pull-request-blue.svg",
     },
 };
 
@@ -73,7 +73,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="branch.svg"
+                                src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
@@ -82,7 +82,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="code.svg"
+                                src="/code.svg"
                                 alt="코드 아이콘"
                                 width={18}
                                 height={14}
@@ -104,7 +104,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                                         onClick={moveToPrMemoir}
                                     >
                                         <Image
-                                            src="write.svg"
+                                            src="/write.svg"
                                             alt="회고 등록 아이콘"
                                             width={12}
                                             height={12}

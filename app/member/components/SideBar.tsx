@@ -49,8 +49,8 @@ export default function SideBar({
                                     <Image
                                         src={
                                             isSelected
-                                                ? "branch-blue.svg"
-                                                : "branch.svg"
+                                                ? "/branch-blue.svg"
+                                                : "/branch.svg"
                                         }
                                         width={14}
                                         height={14}
@@ -69,7 +69,7 @@ export default function SideBar({
                         onClick={() => setOpen(true)}
                     >
                         <Image
-                            src="plus-gray.svg"
+                            src="/plus-gray.svg"
                             width={10.5}
                             height={16}
                             alt="저장소 추가 아이콘"

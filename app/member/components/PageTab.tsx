@@ -12,16 +12,16 @@ interface Props {
 export default function PageTap({ status }: Props) {
     const router = useRouter();
     const commitClickHandler = () => {
-        router.push("/commits");
+        router.push("/member/commits");
     };
     const pullRequestClickHandler = () => {
-        router.push("/pull-requests");
+        router.push("/member/pull-requests");
     };
     const memoirClickHandler = () => {
-        router.push("/memoirs");
+        router.push("/member/memoirs");
     };
     const statClickHandler = () => {
-        router.push("/stats");
+        router.push("/member/stats");
     };
 
     return (

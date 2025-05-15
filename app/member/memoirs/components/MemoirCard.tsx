@@ -40,7 +40,7 @@ export default function MemoirCard({ type }: LabelBadgeProps) {
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
                     <Image
-                        src="memoir-purple.svg"
+                        src="/memoir-purple.svg"
                         width={14}
                         height={16}
                         alt="커밋 아이콘"
@@ -75,7 +75,7 @@ export default function MemoirCard({ type }: LabelBadgeProps) {
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="branch.svg"
+                                src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
@@ -84,7 +84,7 @@ export default function MemoirCard({ type }: LabelBadgeProps) {
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="code.svg"
+                                src="/code.svg"
                                 alt="코드 아이콘"
                                 width={18}
                                 height={14}
