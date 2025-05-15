@@ -1,5 +1,5 @@
-import { GitHubRepo } from "../entities/GitHubRepo";
+// import { GitHubRepo } from "../entities/GitHubRepo";
 
 export interface GithubRepoRepository {
-    fetchAll(token: string): Promise<GitHubRepo[]>;
+    fetchAll(token: string): Promise<GithubRepo[]>;
 }
