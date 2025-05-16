@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 import Image from "next/image";
 import { useRepoStore } from "@/store/repoStore";
-import Loading from "./Loading";
+import RepoSkeleton from "./RepoSkeleton";
 
 type Props = {
     open: boolean;
@@ -94,7 +94,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 </p>
 
                 {loading ? (
-                    <Loading />
+                    <RepoSkeleton />
                 ) : (
                     <ul className="border-border-primary1 max-h-[350px] divide-y overflow-y-auto rounded-lg border">
                         {repos.map((repo) => (
