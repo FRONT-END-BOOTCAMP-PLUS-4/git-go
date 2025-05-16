@@ -1,15 +1,15 @@
-import { CommitType } from "@/types/CommitType";
+import { FileChangeType } from "@/types/github/CommitType";
 
 type FileListProps = {
-    commits: CommitType[];
+    files: FileChangeType[];
     onSelect: (fileName: string) => void;
 };
 
-export default function FileList({ commits, onSelect }: FileListProps) {
-    // console.log("commits: ", commits);
+export default function FileList({ files, onSelect }: FileListProps) {
+    // console.log("files: ", files);
     return (
         <ul>
-            {commits.map((commit) => (
+            {files.map((commit) => (
                 <li
                     className="inline-block truncate hover:cursor-pointer hover:underline"
                     key={commit.sha}

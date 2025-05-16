@@ -1,4 +1,4 @@
-import { CommitType } from "@/types/CommitType";
+import { FileChangeType } from "@/types/github/CommitType";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
@@ -15,13 +15,13 @@ const statusClassMap: Record<string, string> = {
 };
 
 type ChangeListProps = {
-    commits: CommitType[];
+    changes: FileChangeType[];
     selectedFile: string | null;
     selectedCommitId?: string | null;
 };
 
 export default function ChangeList({
-    commits,
+    changes,
     selectedFile,
     selectedCommitId,
 }: ChangeListProps) {
@@ -51,13 +51,13 @@ export default function ChangeList({
 
     return (
         <div ref={containerRef}>
-            {commits.map((commit) => (
+            {changes.map((commit) => (
                 <div
                     className="border-border-primary1 mb-5 min-w-[400px] rounded-md border"
                     key={commit.sha}
                 >
                     <div
-                        className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between border-b px-5 py-4"
+                        className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
                         ref={(el) => {
                             refs.current[commit.filename] = el;
                         }}

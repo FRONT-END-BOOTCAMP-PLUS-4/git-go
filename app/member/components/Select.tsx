@@ -42,7 +42,7 @@ export default function Select({
         options.find((opt) => opt.value === value)?.label || placeholder;
 
     return (
-        <div className="relative inline-block w-full" ref={containerRef}>
+        <div className="relative mb-2 inline-block w-full" ref={containerRef}>
             {/* 선택된 값 표시하는 박스 */}
             <div
                 className="border-border-primary1 flex cursor-pointer items-center justify-between rounded border bg-white px-3 py-2"
