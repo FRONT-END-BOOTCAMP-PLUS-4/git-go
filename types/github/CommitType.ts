@@ -1,4 +1,6 @@
-export type CommitType = {
+import { GitObjectType } from "./ShareType";
+
+export type FileChangeType = {
     sha: string;
     filename: string;
     status: string;
@@ -9,4 +11,8 @@ export type CommitType = {
     raw_url: string;
     contents_url: string;
     patch: string;
+};
+
+export type CommitType = GitObjectType & {
+    files: FileChangeType[];
 };
