@@ -47,7 +47,7 @@ export class GbStatsRepository implements StatsRepository {
             if (Array.isArray(data)) {
                 const totalAdditions = data.reduce((acc, [_, add]) => acc + add, 0);
                 const totalDeletions = data.reduce((acc, [__, ___, del]) => acc + del, 0);
-                const totalLines = totalAdditions - totalDeletions;
+                const totalLines = totalAdditions + totalDeletions;
                 return { totalLines };
             }
             await new Promise((res) => setTimeout(res, delay));
