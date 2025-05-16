@@ -10,8 +10,10 @@ export class FetchCommitList {
     repo: string;
     author: string;
     token?: string;
+    page?: number;
+    perPage?: number;
   }): Promise<GithubCommitListDto> {
-    const commits = await this.repository.fetchCommitList(params);
+    const { commits, hasNextPage } = await this.repository.fetchCommitList(params);
     return {
       commits: commits.map((c) => ({
         sha: c.sha,
@@ -21,6 +23,7 @@ export class FetchCommitList {
         type: c.type,
         createdAt: c.createdAt.toISOString(),
       })),
+      hasNextPage,
     };
   }
 }

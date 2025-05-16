@@ -6,24 +6,31 @@ export class GbCommitListRepository implements GithubCommitListRepository {
     owner,
     repo,
     author,
-    token
+    token,
+    page = 1,
+    perPage = 10
   }: {
     owner: string;
     repo: string;
     author: string;
     token?: string;
-  }): Promise<GithubCommit[]> {
+    page?: number;
+    perPage?: number;
+  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; }> {
+    const headers: Record<string, string> = {
+      Accept: "application/vnd.github+json",
+    };
 
-    const headers = token
-      ? {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-      }
-      : {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
 
     // 1. 모든 브랜치 목록 조회
     const branchesRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches`, { headers });
-    if (!branchesRes.ok) throw new Error("Failed to fetch branches");
+    if (!branchesRes.ok) {
+      const errorData = await branchesRes.json();
+      throw new Error(`Failed to fetch branches: ${branchesRes.status} - ${errorData.message || 'Unknown error'}`);
+    }
     const branches = await branchesRes.json();
 
     const allCommits: GithubCommit[] = [];
@@ -33,12 +40,17 @@ export class GbCommitListRepository implements GithubCommitListRepository {
       const branchName = branch.name;
 
       const commitsRes = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}`,
+        `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}&page=${page}&per_page=${perPage}`,
         { headers }
       );
-      if (!commitsRes.ok) throw new Error(`Failed to fetch commits for branch ${branchName}`);
+      if (!commitsRes.ok) {
+        const errorData = await commitsRes.json();
+        throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || 'Unknown error'}`);
+      }
 
       const commits = await commitsRes.json();
+      const linkHeader = commitsRes.headers.get('Link');
+      const hasNext = linkHeader?.includes('rel="next"') ?? false;
 
       const mappedCommits = commits.map((c: any) =>
         GithubCommit.fromJson({ ...c, branch: branchName })
@@ -47,6 +59,12 @@ export class GbCommitListRepository implements GithubCommitListRepository {
       allCommits.push(...mappedCommits);
     }
 
-    return allCommits;
+    // Sort commits by date in descending order
+    allCommits.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    return {
+      commits: allCommits.slice(0, perPage),
+      hasNextPage: allCommits.length > perPage
+    };
   }
 }

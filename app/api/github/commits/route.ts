@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
     const repo = body.repo;
     const author = body.author;
     const accessToken = body.token;
+    const page = parseInt(body.page) || 1;
+    const perPage = parseInt(body.perPage) || 10;
 
     if (!owner || !repo || !author) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
@@ -22,6 +24,8 @@ export async function POST(req: NextRequest) {
       repo,
       author,
       token: accessToken,
+      page,
+      perPage,
     });
 
     return NextResponse.json(commitList);

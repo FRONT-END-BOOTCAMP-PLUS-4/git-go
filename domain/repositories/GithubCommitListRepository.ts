@@ -7,5 +7,7 @@ export interface GithubCommitListRepository {
     repo: string;
     author: string;
     token?: string;
-  }): Promise<GithubCommit[]>;
+    page?: number;
+    perPage?: number;
+  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; }>;
 }

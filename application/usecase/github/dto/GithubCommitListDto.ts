@@ -9,4 +9,5 @@ export interface GithubCommitItemDto {
 
 export interface GithubCommitListDto {
   commits: GithubCommitItemDto[];
+  hasNextPage: boolean;
 }

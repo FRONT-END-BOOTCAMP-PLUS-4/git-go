@@ -67,16 +67,35 @@ const typeClassMap: Record<
     },
 };
 
-export default function CommitCard({ type }: LabelBadgeProps) {
+interface CardInfoProps {
+    key: string;
+    message: string;
+    branch: string;
+    repo: string;
+    type: LabelBadgeProps;
+    createdAt: string;
+}
+
+export default function CommitCard({
+    key,
+    type,
+    message,
+    repo,
+    branch,
+    createdAt,
+}: CardInfoProps) {
     const router = useRouter();
-    const { label, bg, text } = typeClassMap[type];
+    const { label, bg, text } = typeClassMap[type.type];
 
     const moveToCommitMemoir = () => {
         router.push(`${MEMBER_URL.commits}/1234/memoir`);
     };
 
     return (
-        <li className="border-border-primary1 border-b p-4 last:border-b-0">
+        <li
+            className="border-border-primary1 border-b p-4 last:border-b-0"
+            key={key}
+        >
             <article className="flex items-start gap-x-4">
                 <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
                     <Image
@@ -88,16 +107,16 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                        <p>bd2a0c2</p>
+                        <p>{key}</p>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
                         >
                             {label}
                         </div>
-                        <p className="ml-auto">2 hours ago</p>
+                        <p className="ml-auto">{createdAt}</p>
                     </div>
-                    <h3 className="font-semibold">
-                        Fix navigation bug in dashboard component
+                    <h3 className="mr-30 line-clamp-1 font-semibold">
+                        {message}
                     </h3>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
@@ -107,7 +126,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                                 width={14}
                                 height={12}
                             />
-                            <p>frontend-app</p>
+                            <p>{repo}</p>
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
@@ -116,7 +135,7 @@ export default function CommitCard({ type }: LabelBadgeProps) {
                                 width={18}
                                 height={14}
                             />
-                            bugfix/nav-issue
+                            {branch}
                         </div>
                         <div className="ml-auto">
                             <Button
