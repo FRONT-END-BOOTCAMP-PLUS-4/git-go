@@ -7,7 +7,7 @@ import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
 import TimeFilter from "./TimeFilter";
 import TagFilter from "../memoirs/components/Filter/TagFilter";
 import { usePathname } from "next/navigation";
-import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
+import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
 
 export default function SideBar({
@@ -33,7 +33,7 @@ export default function SideBar({
             ]);
 
             const userRepoIds: { name: string }[] = await userRes.json();
-            const githubRepos: GitHubRepoDto[] = await githubRes.json();
+            const githubRepos: GithubRepoDto[] = await githubRes.json();
 
             const matched = githubRepos
                 .filter((repo) => userRepoIds.some((r) => r.name === repo.id))
