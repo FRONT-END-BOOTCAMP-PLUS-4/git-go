@@ -1,7 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import BottomCard from "./components/BottomCard";
 import StatsCard from "./components/StatsCard";
 import Image from "next/image";
+import { useRepoStore } from "@/store/repoStore";
+import StatsCardSkeleton from "../components/StatsCardSkeleton";
 
 export default function StatsPage() {
     const repoData = [
@@ -10,12 +14,34 @@ export default function StatsPage() {
         { name: "data-service", commits: 45 },
     ];
     const maxCommits = Math.max(...repoData.map((r) => r.commits));
+    const { selectedRepo } = useRepoStore();
+    const [totalCommits, setTotalCommits] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (!selectedRepo) return;
+
+        const fetchStats = async () => {
+            const res = await fetch(`/api/stats/commits?repo=${selectedRepo}`);
+            const data = await res.json();
+            setTotalCommits(data.totalCommits);
+        };
+
+        fetchStats();
+    }, [selectedRepo]);
 
     return (
         <div className="min-h-screen space-y-6 bg-gray-50">
             {/* Top stats */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <StatsCard title="전체 커밋" value="247" change="12%" />
+                {totalCommits === null ? (
+                    <StatsCardSkeleton />
+                ) : (
+                    <StatsCard
+                        title="전체 커밋"
+                        value={totalCommits.toString()}
+                        change="12%"
+                    />
+                )}
                 <StatsCard title="코드 라인 수" value="15,234" change="8%" />
                 <StatsCard title="작성된 회고록" value="24" change="15%" />
             </div>
