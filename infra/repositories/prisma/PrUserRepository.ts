@@ -1,12 +1,15 @@
 import { PrismaClient } from "@/prisma/generated/prisma";
 import { UserRepository } from "@/domain/repositories/UserRepository";
-import { JoinUserDto } from "@/application/usecase/user/dto/JoinUserDto";
 
 const prisma = new PrismaClient();
 
 export class PrUserRepository implements UserRepository {
     // 회원가입(중복확인 기능 포함)
-    async create({ githubId, username, profileUrl }: JoinUserDto) {
+    async create({ githubId, username, profileUrl }: {
+        githubId: string;
+        username: string;
+        profileUrl?: string;
+    }) {
         const existing = await prisma.user.findFirst({
             where: {
                 githubId,

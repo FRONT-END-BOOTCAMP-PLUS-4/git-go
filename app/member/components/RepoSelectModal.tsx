@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
 import Image from "next/image";
+import { useRepoStore } from "@/store/repoStore";
+import RepoSkeleton from "./RepoSkeleton";
 
 type Props = {
     open: boolean;
@@ -60,6 +62,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
 
             if (res.ok) {
                 alert("저장소가 성공적으로 연동되었습니다!");
+                useRepoStore.getState().triggerReload();
                 onClose();
             } else {
                 alert("연동에 실패했습니다.");
@@ -91,7 +94,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 </p>
 
                 {loading ? (
-                    <p>불러오는 중...</p>
+                    <RepoSkeleton />
                 ) : (
                     <ul className="border-border-primary1 max-h-[350px] divide-y overflow-y-auto rounded-lg border">
                         {repos.map((repo) => (
@@ -109,7 +112,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 className="mt-0.5"
                                             />
                                             <div className="flex items-center gap-2 font-semibold text-sm text-gray-900 truncate">
-                                                {repo.name}
+                                                {repo.nameWithOwner}
                                                 <span className="bg-gray-100 text-yellow-500 text-xs px-2 py-0.5 rounded-md flex items-center gap-1 font-semibold">
                                                     ⭐ {repo.stargazerCount}
                                                 </span>

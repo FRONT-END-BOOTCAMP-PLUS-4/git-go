@@ -1,5 +1,5 @@
-import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
+import { GithubRepo } from "@/domain/entities/GithubRepo";
 
 export interface GithubRepoRepository {
-    fetchAll(token: string): Promise<GitHubRepoDto[]>;
+    fetchAll(token: string): Promise<GithubRepo[]>;
 }
