@@ -15,12 +15,12 @@ export default function SideBar({
 }: {
     setOpen: (open: boolean) => void;
 }) {
-    const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
     const [userRepos, setUserRepos] = useState<
         { id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
-    const { reloadRepoList, resetReload } = useRepoStore();
+    const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
+        useRepoStore();
 
     const fetchRepos = async (
         setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
@@ -78,10 +78,11 @@ export default function SideBar({
                                 className="border-border-primary1"
                             >
                                 <button
-                                    className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected
-                                        ? "bg-primary2 text-primary7"
-                                        : ""
-                                        }`}
+                                    className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
+                                        isSelected
+                                            ? "bg-primary2 text-primary7"
+                                            : ""
+                                    }`}
                                     onClick={() =>
                                         setSelectedRepo(repo.nameWithOwner)
                                     }

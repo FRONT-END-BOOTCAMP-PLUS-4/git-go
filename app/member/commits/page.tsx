@@ -3,6 +3,7 @@
 import CommitCard from "@/app/member/commits/components/CommitCard";
 import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
+import { useRepoStore } from "@/store/repoStore";
 
 export default function CommitPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
@@ -15,6 +16,9 @@ export default function CommitPage() {
         month: "long",
         day: "numeric",
     }).format(now);
+
+    const { selectedRepo } = useRepoStore();
+    console.log("커밋 페이지", selectedRepo);
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
