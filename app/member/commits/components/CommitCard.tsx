@@ -2,6 +2,7 @@ import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface LabelBadgeProps {
     type:
@@ -68,34 +69,33 @@ const typeClassMap: Record<
 };
 
 interface CardInfoProps {
-    key: string;
+    sha: string;
     message: string;
     branch: string;
     repo: string;
-    type: LabelBadgeProps;
+    commitType: LabelBadgeProps;
     createdAt: string;
 }
 
 export default function CommitCard({
-    key,
-    type,
+    sha,
+    commitType,
     message,
     repo,
     branch,
     createdAt,
 }: CardInfoProps) {
     const router = useRouter();
-    const { label, bg, text } = typeClassMap[type.type];
+    const { label, bg, text } = typeClassMap[commitType];
+
+    const [isVisible, setIsVisible] = useState(false);
 
     const moveToCommitMemoir = () => {
-        router.push(`${MEMBER_URL.commits}/1234/memoir`);
+        router.push(`${MEMBER_URL.commits}/${sha}/memoir`);
     };
 
     return (
-        <li
-            className="border-border-primary1 border-b p-4 last:border-b-0"
-            key={key}
-        >
+        <li className="border-border-primary1 border-b p-4">
             <article className="flex items-start gap-x-4">
                 <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
                     <Image
@@ -107,7 +107,7 @@ export default function CommitCard({
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                        <p>{key}</p>
+                        <p>{sha}</p>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
                         >
@@ -115,7 +115,12 @@ export default function CommitCard({
                         </div>
                         <p className="ml-auto">{createdAt}</p>
                     </div>
-                    <h3 className="mr-30 line-clamp-1 font-semibold">
+                    <h3
+                        className={`line-clamp-${isVisible ? 0 : 1} mr-30 font-semibold`}
+                        onClick={() => {
+                            setIsVisible(!isVisible);
+                        }}
+                    >
                         {message}
                     </h3>
                     <div className="flex items-center gap-x-3">

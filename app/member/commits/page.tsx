@@ -113,10 +113,11 @@ export default function CommitPage() {
                 </section>
 
                 <ul className="divide-y">
-                    {commitList.map((commit) => (
+                    {commitList?.map((commit) => (
                         <CommitCard
                             key={commit.sha}
-                            type={commit.type}
+                            sha={commit.sha}
+                            commitType={commit.type}
                             message={commit.message}
                             repo={commit.repo}
                             branch={commit.branch}

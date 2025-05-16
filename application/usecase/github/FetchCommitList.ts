@@ -1,7 +1,6 @@
 import { GithubCommitListDto } from "@/application/usecase/github/dto/GithubCommitListDto";
 import { GithubCommitListRepository } from "@/domain/repositories/GithubCommitListRepository";
 
-
 export class FetchCommitList {
   constructor(private readonly repository: GithubCommitListRepository) { }
 

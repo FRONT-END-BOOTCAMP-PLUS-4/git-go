@@ -8,7 +8,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
     author,
     token,
     page = 1,
-    perPage = 10
+    perPage = 10,
   }: {
     owner: string;
     repo: string;
@@ -26,14 +26,20 @@ export class GbCommitListRepository implements GithubCommitListRepository {
     }
 
     // 1. 모든 브랜치 목록 조회
-    const branchesRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches`, { headers });
+    const branchesRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/branches`,
+      { headers }
+    );
     if (!branchesRes.ok) {
       const errorData = await branchesRes.json();
-      throw new Error(`Failed to fetch branches: ${branchesRes.status} - ${errorData.message || 'Unknown error'}`);
+      throw new Error(
+        `Failed to fetch branches: ${branchesRes.status} - ${errorData.message || "Unknown error"}`
+      );
     }
+
     const branches = await branchesRes.json();
 
-    const allCommits: GithubCommit[] = [];
+    const uniqueCommitsMap = new Map<string, GithubCommit>();
 
     // 2. 각 브랜치별 커밋 조회
     for (const branch of branches) {
@@ -45,26 +51,31 @@ export class GbCommitListRepository implements GithubCommitListRepository {
       );
       if (!commitsRes.ok) {
         const errorData = await commitsRes.json();
-        throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || 'Unknown error'}`);
+        throw new Error(
+          `Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`
+        );
       }
 
       const commits = await commitsRes.json();
-      const linkHeader = commitsRes.headers.get('Link');
-      const hasNext = linkHeader?.includes('rel="next"') ?? false;
 
-      const mappedCommits = commits.map((c: any) =>
-        GithubCommit.fromJson({ ...c, branch: branchName })
-      );
-
-      allCommits.push(...mappedCommits);
+      for (const c of commits) {
+        const commit = GithubCommit.fromJson({ ...c, branch: branchName });
+        if (!uniqueCommitsMap.has(commit.sha)) {
+          uniqueCommitsMap.set(commit.sha, commit);
+        }
+      }
     }
 
-    // Sort commits by date in descending order
-    allCommits.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    // 3. 정렬 및 페이징 처리
+    const uniqueCommits = Array.from(uniqueCommitsMap.values()).sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+
+    const paginatedCommits = uniqueCommits.slice(0, perPage);
 
     return {
-      commits: allCommits.slice(0, perPage),
-      hasNextPage: allCommits.length > perPage
+      commits: paginatedCommits,
+      hasNextPage: uniqueCommits.length > perPage,
     };
   }
 }
