@@ -16,14 +16,25 @@ export default function StatsPage() {
     const maxCommits = Math.max(...repoData.map((r) => r.commits));
     const { selectedRepo } = useRepoStore();
     const [totalCommits, setTotalCommits] = useState<number | null>(null);
+    const [totalLines, setTotalLines] = useState<number | null>(null);
 
     useEffect(() => {
         if (!selectedRepo) return;
 
+        setTotalCommits(null);
+        setTotalLines(null);
+
         const fetchStats = async () => {
-            const res = await fetch(`/api/stats/commits?repo=${selectedRepo}`);
-            const data = await res.json();
-            setTotalCommits(data.totalCommits);
+            const [commitRes, lineRes] = await Promise.all([
+                fetch(`/api/stats/commits?repo=${selectedRepo}`),
+                fetch(`/api/stats/lines?repo=${selectedRepo}`),
+            ]);
+
+            const commitData = await commitRes.json();
+            const lineData = await lineRes.json();
+
+            setTotalCommits(commitData.totalCommits);
+            setTotalLines(lineData.totalLines);
         };
 
         fetchStats();
@@ -42,7 +53,12 @@ export default function StatsPage() {
                         change="12%"
                     />
                 )}
-                <StatsCard title="코드 라인 수" value="15,234" change="8%" />
+                {totalLines === null ? (
+                    <StatsCardSkeleton />
+                ) : (
+                    <StatsCard title="코드 라인 수" value={totalLines.toLocaleString()} change="8%" />
+                )}
+                {/* <StatsCard title="코드 라인 수" value="15,234" change="8%" /> */}
                 <StatsCard title="작성된 회고록" value="24" change="15%" />
             </div>
 
