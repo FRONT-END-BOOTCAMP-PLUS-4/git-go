@@ -15,12 +15,12 @@ export default function SideBar({
 }: {
     setOpen: (open: boolean) => void;
 }) {
-    const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
     const [userRepos, setUserRepos] = useState<
         { id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
-    const { reloadRepoList, resetReload } = useRepoStore();
+    const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
+        useRepoStore();
 
     const fetchRepos = async (
         setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
