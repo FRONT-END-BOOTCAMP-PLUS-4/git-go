@@ -4,7 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { owner, repo, author, token } = await req.json();
+    const body = await req.json();
+
+    const owner = body.owner;
+    const repo = body.repo;
+    const author = body.author;
+    const accessToken = body.token;
 
     if (!owner || !repo || !author) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
@@ -12,7 +17,12 @@ export async function POST(req: NextRequest) {
 
     const repository = new GbCommitListRepository();
     const usecase = new FetchCommitList(repository);
-    const commitList = await usecase.execute({ owner, repo, author, token });
+    const commitList = await usecase.execute({
+      owner,
+      repo,
+      author,
+      token: accessToken,
+    });
 
     return NextResponse.json(commitList);
   } catch (error) {

@@ -4,6 +4,7 @@ import CommitCard from "@/app/member/commits/components/CommitCard";
 import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
 import { useRepoStore } from "@/store/repoStore";
+import { useSession } from "next-auth/react";
 
 export default function CommitPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
@@ -19,6 +20,9 @@ export default function CommitPage() {
 
     const { selectedRepo } = useRepoStore();
     console.log("커밋 페이지", selectedRepo);
+
+    const ownerName = selectedRepo?.split("/")[0];
+    const repoName = selectedRepo?.split("/")[1];
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
@@ -40,11 +44,41 @@ export default function CommitPage() {
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);
 
-    const branches = [
-        { name: "frontend-app", icon: "branch-blue.svg" },
-        { name: "backend-app", icon: "branch.svg" },
-        { name: "api", icon: "branch.svg" },
-    ];
+    const { data: session } = useSession();
+
+    useEffect(() => {
+        const fetchCommitsByRepo = async (
+            ownerName: string,
+            repoName: string
+        ): Promise<void> => {
+            if (!session) return;
+
+            const accessToken = session.accessToken;
+            const author = session.user?.name;
+
+            try {
+                const res: Response = await fetch("/api/github/commits", {
+                    method: "POST",
+
+                    body: JSON.stringify({
+                        owner: ownerName,
+                        repo: repoName,
+                        author: author,
+                        token: accessToken,
+                    }),
+                });
+
+                if (res.ok) {
+                    const result = await res.json();
+                    console.log(result);
+                }
+            } catch (error: unknown) {
+                console.error();
+            }
+        };
+
+        fetchCommitsByRepo(ownerName, repoName);
+    }, [selectedRepo]);
 
     return (
         <>
@@ -59,10 +93,10 @@ export default function CommitPage() {
 
                 <ul>
                     {/* CommitCard 의 props 로 커밋의 타입을 지정 - bugfix | feature | refactor */}
-                    <CommitCard type="bugfix" />
-                    <CommitCard type="feature" />
+                    <CommitCard type="fix" />
+                    <CommitCard type="fix" />
                     <CommitCard type="refactor" />
-                    <CommitCard type="bugfix" />
+                    <CommitCard type="feat" />
                 </ul>
             </div>
         </>

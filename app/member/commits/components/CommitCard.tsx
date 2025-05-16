@@ -4,27 +4,66 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface LabelBadgeProps {
-    type: "bugfix" | "feature" | "refactor";
+    type:
+        | "feat"
+        | "fix"
+        | "chore"
+        | "merge"
+        | "refactor"
+        | "test"
+        | "docs"
+        | "style"
+        | "etc";
 }
 
 const typeClassMap: Record<
     LabelBadgeProps["type"],
     { bg: string; text: string; label: string }
 > = {
-    bugfix: {
-        label: "bugfix",
-        bg: "bg-[#fee2e2]",
-        text: "text-[#991b1b]",
-    },
-    feature: {
+    feat: {
         label: "feature",
-        bg: "bg-[#d1fae5]",
-        text: "text-[#065f46]",
+        bg: "bg-[#E0F7FA]", // 밝은 시안
+        text: "text-[#006064]", // 진한 시안
+    },
+    fix: {
+        label: "bugfix",
+        bg: "bg-[#FFEBEE]", // 밝은 레드
+        text: "text-[#B71C1C]", // 진한 레드
+    },
+    chore: {
+        label: "chore",
+        bg: "bg-[#FFF3E0]", // 밝은 오렌지
+        text: "text-[#E65100]", // 진한 오렌지
+    },
+    merge: {
+        label: "merge",
+        bg: "bg-[#E8EAF6]", // 밝은 인디고
+        text: "text-[#303F9F]", // 진한 인디고
     },
     refactor: {
         label: "refactor",
-        bg: "bg-[#e0f2fe]",
-        text: "text-[#1e40af]",
+        bg: "bg-[#F3E5F5]", // 밝은 퍼플
+        text: "text-[#6A1B9A]", // 진한 퍼플
+    },
+    test: {
+        label: "test",
+        bg: "bg-[#E0F2F1]", // 밝은 민트
+        text: "text-[#004D40]", // 진한 민트
+    },
+    docs: {
+        label: "docs",
+        bg: "bg-[#E3F2FD]", // 밝은 블루
+        text: "text-[#1565C0]", // 진한 블루
+    },
+    style: {
+        label: "style",
+        bg: "bg-[#FCE4EC]", // 밝은 핑크
+        text: "text-[#880E4F]", // 진한 핑크
+    },
+    etc: {
+        label: "etc",
+        bg: "bg-[#ECEFF1]", // 밝은 그레이
+        text: "text-[#37474F]", // 진한 그레이
     },
 };
 
