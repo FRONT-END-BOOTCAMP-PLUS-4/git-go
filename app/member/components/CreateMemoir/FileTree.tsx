@@ -1,23 +1,23 @@
 import { useDeviceType } from "@/hooks/useDeviceType";
-import { CommitType } from "@/types/CommitType";
+import { FileChangeType } from "@/types/github/CommitType";
 import { PanelLeft, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import FileList from "./FileList";
 
 type FileTreeProps = {
-    commits: CommitType[];
+    files: FileChangeType[];
     onSelect: (fileName: string) => void;
 };
 
-export default function FileTree({ commits, onSelect }: FileTreeProps) {
+export default function FileTree({ files, onSelect }: FileTreeProps) {
     const { isTablet } = useDeviceType();
     const [isOpened, setIsOpened] = useState(false);
     const toggle = () => setIsOpened((p) => !p);
 
     // 파일 선택시 FileList 리렌더링 방지
     const memoizedFileList = useMemo(
-        () => <FileList commits={commits} onSelect={onSelect} />,
-        [commits, onSelect]
+        () => <FileList files={files} onSelect={onSelect} />,
+        [files, onSelect]
     );
 
     return (
