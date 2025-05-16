@@ -1,10 +1,10 @@
 "use client";
-import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import Button from "@/app/components/Button";
+import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
+import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { MEMBER_URL } from "@/constants/url";
 
 interface LabelBadgeProps {
     type: "open" | "merged";
@@ -34,7 +34,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
     const [listIsOpen, setListIsOpen] = useState(false);
 
     const moveToPrMemoir = () => {
-        router.push(`${MEMBER_URL.memoirs}/1234/memoir`);
+        router.push(`${MEMBER_URL.prs}/1234/memoir`);
     };
 
     return (
