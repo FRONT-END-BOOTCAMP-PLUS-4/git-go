@@ -1,8 +1,8 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
 
 export default function Header() {
@@ -28,7 +28,7 @@ export default function Header() {
                 <div className="relative inline-block text-left">
                     <button
                         onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+                        className="flex items-center gap-2 rounded-lg px-4 py-2 transition hover:bg-gray-200"
                     >
                         {session?.user?.image ? (
                             <Image
@@ -36,25 +36,40 @@ export default function Header() {
                                 alt="profile"
                                 width={30}
                                 height={30}
-                                className="rounded-full w-[30px] h-[30px] border"
-                                style={{ borderColor: "var(--color-border-primary1)" }}
+                                className="h-[30px] w-[30px] rounded-full border"
+                                style={{
+                                    borderColor: "var(--color-border-primary1)",
+                                }}
                             />
                         ) : (
-                            <div className="w-[30px] h-[30px] rounded-full bg-gray-400 text-white flex items-center justify-center text-sm font-bold">
-                                {session?.user?.name?.charAt(0).toUpperCase() ?? "U"}
+                            <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-gray-400 text-sm font-bold text-white">
+                                {session?.user?.name?.charAt(0).toUpperCase() ??
+                                    "U"}
                             </div>
                         )}
-                        <div className="ml-1">{session?.user?.name ?? "사용자"}</div>
-                        <Image src="/down-arrow.svg" alt="down arrow" width={13} height={13} />
+                        <div className="ml-1">
+                            {session?.user?.name ?? "사용자"}
+                        </div>
+                        <Image
+                            src="/down-arrow.svg"
+                            alt="down arrow"
+                            width={13}
+                            height={13}
+                        />
                     </button>
 
                     {dropdownOpen && (
-                        <div className="absolute mt-2 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-full">
+                        <div className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
                             <button
                                 onClick={() => signOut({ callbackUrl: "/" })}
-                                className="w-full text-red-500 text-sm px-4 py-2 flex items-center gap-2 hover:bg-red-50"
+                                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50"
                             >
-                                <Image src="/logout.svg" alt="logout icon" width={16} height={16} />
+                                <Image
+                                    src="/logout.svg"
+                                    alt="logout icon"
+                                    width={16}
+                                    height={16}
+                                />
                                 로그아웃
                             </button>
                         </div>
