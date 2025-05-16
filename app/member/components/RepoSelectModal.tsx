@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GitHubRepoDto } from "@/application/usecase/github/dto/GitHubRepoDto";
+import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import Image from "next/image";
 import { useRepoStore } from "@/store/repoStore";
 import RepoSkeleton from "./RepoSkeleton";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function RepoSelectModal({ open, onClose }: Props) {
-    const [repos, setRepos] = useState<GitHubRepoDto[]>([]);
+    const [repos, setRepos] = useState<GithubRepoDto[]>([]);
     const [selected, setSelected] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                     fetch("/api/repos/user"),
                 ]);
 
-                const githubRepos: GitHubRepoDto[] = await githubRes.json();
+                const githubRepos: GithubRepoDto[] = await githubRes.json();
                 const userRepos: { id: string; name: string }[] = await userRes.json();
                 const userRepoIds = new Set(userRepos.map((r) => r.name));
 

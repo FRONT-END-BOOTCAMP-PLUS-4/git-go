@@ -1,4 +1,4 @@
-export class GitHubRepoDto {
+export class GithubRepoDto {
     constructor(
         public id: string,
         public name: string,
