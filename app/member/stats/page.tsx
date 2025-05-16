@@ -17,24 +17,29 @@ export default function StatsPage() {
     const { selectedRepo } = useRepoStore();
     const [totalCommits, setTotalCommits] = useState<number | null>(null);
     const [totalLines, setTotalLines] = useState<number | null>(null);
+    const [totalMemoirs, setTotalMemoirs] = useState<number | null>(null);
 
     useEffect(() => {
         if (!selectedRepo) return;
 
         setTotalCommits(null);
         setTotalLines(null);
+        setTotalMemoirs(null);
 
         const fetchStats = async () => {
-            const [commitRes, lineRes] = await Promise.all([
-                fetch(`/api/stats/commits?repo=${selectedRepo}`),
-                fetch(`/api/stats/lines?repo=${selectedRepo}`),
+            const [commitRes, lineRes, memoirRes] = await Promise.all([
+                fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`),
+                fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`),
+                fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`),
             ]);
 
             const commitData = await commitRes.json();
             const lineData = await lineRes.json();
+            const memoirData = await memoirRes.json();
 
             setTotalCommits(commitData.totalCommits);
             setTotalLines(lineData.totalLines);
+            setTotalMemoirs(memoirData.totalMemoirs);
         };
 
         fetchStats();
@@ -59,7 +64,12 @@ export default function StatsPage() {
                     <StatsCard title="코드 라인 수" value={totalLines.toLocaleString()} change="8%" />
                 )}
                 {/* <StatsCard title="코드 라인 수" value="15,234" change="8%" /> */}
-                <StatsCard title="작성된 회고록" value="24" change="15%" />
+                {totalMemoirs === null ? (
+                    <StatsCardSkeleton />
+                ) : (
+                    <StatsCard title="작성된 회고록" value={totalMemoirs.toLocaleString()} change="15%" />
+                )}
+                {/* <StatsCard title="작성된 회고록" value="24" change="15%" /> */}
             </div>
 
             {/* Bottom section */}
