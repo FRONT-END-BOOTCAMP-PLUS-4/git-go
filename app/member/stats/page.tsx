@@ -6,18 +6,35 @@ import StatsCard from "./components/StatsCard";
 import Image from "next/image";
 import { useRepoStore } from "@/store/repoStore";
 import StatsCardSkeleton from "../components/StatsCardSkeleton";
+import TopReposSkeleton from "./components/TopReposSkeleton";
 
 export default function StatsPage() {
-    const repoData = [
-        { name: "frontend-app", commits: 85 },
-        { name: "backend-api", commits: 65 },
-        { name: "data-service", commits: 45 },
-    ];
-    const maxCommits = Math.max(...repoData.map((r) => r.commits));
-    const { selectedRepo } = useRepoStore();
+    const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
     const [totalCommits, setTotalCommits] = useState<number | null>(null);
     const [totalLines, setTotalLines] = useState<number | null>(null);
     const [totalMemoirs, setTotalMemoirs] = useState<number | null>(null);
+    const [topRepos, setTopRepos] = useState<
+        { name: string; commits: number }[]
+    >([]);
+    const [loadingTopRepos, setLoadingTopRepos] = useState(false);
+
+    useEffect(() => {
+        const fetchTopRepos = async () => {
+            setLoadingTopRepos(true);
+            try {
+                const res = await fetch("/api/stats/top-active-repos");
+                const data = await res.json();
+                setTopRepos(data);
+            } catch (e) {
+                console.error("Top active repos fetch 실패", e);
+            } finally {
+                setLoadingTopRepos(false);
+                resetReload();
+            }
+        };
+
+        fetchTopRepos();
+    }, [reloadRepoList]);
 
     useEffect(() => {
         if (!selectedRepo) return;
@@ -63,13 +80,11 @@ export default function StatsPage() {
                 ) : (
                     <StatsCard title="코드 라인 수" value={totalLines.toLocaleString()} change="8%" />
                 )}
-                {/* <StatsCard title="코드 라인 수" value="15,234" change="8%" /> */}
                 {totalMemoirs === null ? (
                     <StatsCardSkeleton />
                 ) : (
                     <StatsCard title="작성된 회고록" value={totalMemoirs.toLocaleString()} change="15%" />
                 )}
-                {/* <StatsCard title="작성된 회고록" value="24" change="15%" /> */}
             </div>
 
             {/* Bottom section */}
@@ -88,22 +103,30 @@ export default function StatsPage() {
                 {/* Most active repos */}
                 <BottomCard title="가장 활발한 저장소" subtitle="커밋 수 기준">
                     <div className="space-y-4">
-                        {repoData.map((repo) => (
-                            <div key={repo.name} className="h-10 space-y-1">
-                                <div className="text-text-secondary2 flex justify-between text-sm font-medium">
-                                    <span>{repo.name}</span>
-                                    <span>{repo.commits} commits</span>
+                        {loadingTopRepos ? (
+                            <TopReposSkeleton />
+                        ) : topRepos.length > 0 ? (
+                            topRepos.map((repo) => (
+                                <div key={repo.name} className="h-10 space-y-1">
+                                    <div className="text-text-secondary2 flex justify-between text-sm font-medium">
+                                        <span>{repo.name}</span>
+                                        <span>{repo.commits} commits</span>
+                                    </div>
+                                    <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
+                                        <div
+                                            className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
+                                            style={{
+                                                width: `${(repo.commits / Math.max(...topRepos.map(r => r.commits), 1)) * 100}%`,
+                                            }}
+                                        ></div>
+                                    </div>
                                 </div>
-                                <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
-                                        style={{
-                                            width: `${(repo.commits / maxCommits) * 100}%`,
-                                        }}
-                                    ></div>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p className="text-sm text-gray-400 text-center mt-4">
+                                연동된 저장소가 없거나 커밋 정보가 없습니다.
+                            </p>
+                        )}
                     </div>
                 </BottomCard>
             </div>
