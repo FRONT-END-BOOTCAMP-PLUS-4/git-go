@@ -79,4 +79,51 @@ export class GbStatsRepository implements StatsRepository {
         return json.data?.node?.nameWithOwner ?? "";
     }
 
+    async fetchWeeklyCommits(repo: string): Promise<{ date: string; count: number }[]> {
+        const [owner, name] = repo.split("/");
+
+        const since = new Date();
+        since.setDate(since.getDate() - 7);
+        const sinceIso = since.toISOString();
+
+        let page = 1;
+        const allCommits: any[] = [];
+
+        while (true) {
+            const res = await fetch(
+                `https://api.github.com/repos/${owner}/${name}/commits?since=${sinceIso}&per_page=100&page=${page}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                }
+            );
+
+            if (!res.ok) throw new Error("GitHub API 실패");
+            const commits = await res.json();
+            allCommits.push(...commits);
+            if (commits.length < 100) break;
+            page++;
+        }
+
+        const dailyCount: Record<string, number> = {};
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const dayStr = date.toISOString().split("T")[0];
+            dailyCount[dayStr] = 0;
+        }
+
+        for (const commit of allCommits) {
+            const dateStr = commit.commit.author.date.split("T")[0];
+            if (dailyCount[dateStr] !== undefined) {
+                dailyCount[dateStr]++;
+            }
+        }
+
+        return Object.entries(dailyCount)
+            .map(([date, count]) => ({ date, count }))
+            .sort((a, b) => a.date.localeCompare(b.date));
+    }
+
 }
