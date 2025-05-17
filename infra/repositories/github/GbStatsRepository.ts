@@ -55,4 +55,28 @@ export class GbStatsRepository implements StatsRepository {
         return { totalLines: 0 };
     }
 
+    async resolveNameWithOwner(repoId: string): Promise<string> {
+        const query = `
+      query ($id: ID!) {
+        node(id: $id) {
+          ... on Repository {
+            nameWithOwner
+          }
+        }
+      }
+    `;
+
+        const res = await fetch("https://api.github.com/graphql", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query, variables: { id: repoId } }),
+        });
+
+        const json = await res.json();
+        return json.data?.node?.nameWithOwner ?? "";
+    }
+
 }
