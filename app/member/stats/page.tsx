@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from "react";
 import BottomCard from "./components/BottomCard";
 import StatsCard from "./components/StatsCard";
-import Image from "next/image";
 import { useRepoStore } from "@/store/repoStore";
 import StatsCardSkeleton from "../components/StatsCardSkeleton";
 import TopReposSkeleton from "./components/TopReposSkeleton";
+import WeeklyCommitChart from "./components/WeeklyCommitChart";
+import ChartSkeleton from "./components/ChartSkeleton";
 
 export default function StatsPage() {
     const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
@@ -17,6 +18,9 @@ export default function StatsPage() {
         { name: string; commits: number }[]
     >([]);
     const [loadingTopRepos, setLoadingTopRepos] = useState(false);
+    const [weeklyCommits, setWeeklyCommits] = useState<{ date: string; count: number }[]>([]);
+    const [loadingWeekly, setLoadingWeekly] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
 
     useEffect(() => {
         const fetchTopRepos = async () => {
@@ -42,22 +46,35 @@ export default function StatsPage() {
         setTotalCommits(null);
         setTotalLines(null);
         setTotalMemoirs(null);
+        setLoadingWeekly(true);
+        setIsFirstLoad(true);
+        setWeeklyCommits([]);
 
         const fetchStats = async () => {
-            const [commitRes, lineRes, memoirRes] = await Promise.all([
-                fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`),
-                fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`),
-                fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`),
-            ]);
+            try {
+                const [commitRes, lineRes, memoirRes, weeklyRes] = await Promise.all([
+                    fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`),
+                    fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`),
+                    fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`),
+                    fetch(`/api/stats/weekly-commits?repo=${selectedRepo.nameWithOwner}`),
+                ]);
 
-            const commitData = await commitRes.json();
-            const lineData = await lineRes.json();
-            const memoirData = await memoirRes.json();
+                const commitData = await commitRes.json();
+                const lineData = await lineRes.json();
+                const memoirData = await memoirRes.json();
+                const weeklyData = await weeklyRes.json();
 
-            setTotalCommits(commitData.totalCommits);
-            setTotalLines(lineData.totalLines);
-            setTotalMemoirs(memoirData.totalMemoirs);
-        };
+                setTotalCommits(commitData.totalCommits);
+                setTotalLines(lineData.totalLines);
+                setTotalMemoirs(memoirData.totalMemoirs);
+                setWeeklyCommits(weeklyData);
+            } catch (err) {
+                console.error("Stats fetch 실패", err);
+            } finally {
+                setLoadingWeekly(false);
+                setIsFirstLoad(false)
+            }
+        }
 
         fetchStats();
     }, [selectedRepo]);
@@ -91,13 +108,18 @@ export default function StatsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Commit activity */}
                 <BottomCard title="커밋 활동" subtitle="최근 7일">
-                    <div className="text-text-secondary2 mt-12 flex h-32 items-center justify-center">
-                        <Image
-                            src="/activity.svg"
-                            alt="커밋 활동"
-                            width={36}
-                            height={36}
-                        />
+                    <div className="space-y-4">
+                        {loadingWeekly || isFirstLoad ? (
+                            <ChartSkeleton />
+                        ) : weeklyCommits.length > 0 ? (
+                            <div className="w-full h-64">
+                                <WeeklyCommitChart data={weeklyCommits} />
+                            </div>
+                        ) : (
+                            <div className="flex h-32 items-center justify-center text-sm text-gray-400">
+                                커밋 정보 없음
+                            </div>
+                        )}
                     </div>
                 </BottomCard>
                 {/* Most active repos */}
