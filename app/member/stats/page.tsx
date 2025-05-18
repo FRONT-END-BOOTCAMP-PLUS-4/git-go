@@ -21,6 +21,7 @@ export default function StatsPage() {
     const [weeklyCommits, setWeeklyCommits] = useState<{ date: string; count: number }[]>([]);
     const [loadingWeekly, setLoadingWeekly] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [commitChange, setCommitChange] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTopRepos = async () => {
@@ -68,6 +69,17 @@ export default function StatsPage() {
                 setTotalLines(lineData.totalLines);
                 setTotalMemoirs(memoirData.totalMemoirs);
                 setWeeklyCommits(weeklyData);
+
+                const recentTotal = weeklyData.reduce(
+                    (sum: number, d: { date: string; count: number }) => sum + d.count,
+                    0
+                );
+                const previousCommits = commitData.totalCommits - recentTotal;
+                const changePercent = previousCommits > 0
+                    ? ((recentTotal / previousCommits) * 100).toFixed(0)
+                    : "0";
+
+                setCommitChange(`${changePercent}%`);
             } catch (err) {
                 console.error("Stats fetch 실패", err);
             } finally {
@@ -89,7 +101,7 @@ export default function StatsPage() {
                     <StatsCard
                         title="전체 커밋"
                         value={totalCommits.toString()}
-                        change="12%"
+                        change={commitChange ?? "0%"}
                     />
                 )}
                 {totalLines === null ? (
