@@ -22,6 +22,7 @@ export default function StatsPage() {
     const [loadingWeekly, setLoadingWeekly] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [commitChange, setCommitChange] = useState<string | null>(null);
+    const [lineChangePercent, setLineChangePercent] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTopRepos = async () => {
@@ -70,6 +71,7 @@ export default function StatsPage() {
                 setTotalMemoirs(memoirData.totalMemoirs);
                 setWeeklyCommits(weeklyData);
 
+                // 전체 커밋과 7일전 커밋 비교해서 변화량 계산
                 const recentTotal = weeklyData.reduce(
                     (sum: number, d: { date: string; count: number }) => sum + d.count,
                     0
@@ -79,7 +81,13 @@ export default function StatsPage() {
                     ? ((recentTotal / previousCommits) * 100).toFixed(0)
                     : "0";
 
+                // 전체 코드라인 수와 7일전 코드라인 수 비교해서 변화량 계산            
+                const lineChange = lineData.prevLines > 0
+                    ? ((lineData.totalLines - lineData.prevLines) / lineData.prevLines * 100).toFixed(0)
+                    : "0";
+
                 setCommitChange(`${changePercent}%`);
+                setLineChangePercent(`${lineChange}%`);
             } catch (err) {
                 console.error("Stats fetch 실패", err);
             } finally {
@@ -107,7 +115,11 @@ export default function StatsPage() {
                 {totalLines === null ? (
                     <StatsCardSkeleton />
                 ) : (
-                    <StatsCard title="코드 라인 수" value={totalLines.toLocaleString()} change="8%" />
+                    <StatsCard
+                        title="코드 라인 수"
+                        value={totalLines.toLocaleString()}
+                        change={lineChangePercent ?? "0%"}
+                    />
                 )}
                 {totalMemoirs === null ? (
                     <StatsCardSkeleton />

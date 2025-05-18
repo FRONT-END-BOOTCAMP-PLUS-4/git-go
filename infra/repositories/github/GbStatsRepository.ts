@@ -29,7 +29,7 @@ export class GbStatsRepository implements StatsRepository {
         return { totalCommits: lastPage };
     }
 
-    async fetchLines(repo: string): Promise<{ totalLines: number }> {
+    async fetchLines(repo: string): Promise<{ totalLines: number; prevLines: number }> {
         const [owner, name] = repo.split("/");
         const url = `https://api.github.com/repos/${owner}/${name}/stats/code_frequency`;
         const headers = {
@@ -48,11 +48,20 @@ export class GbStatsRepository implements StatsRepository {
                 const totalAdditions = data.reduce((acc, [_, add]) => acc + add, 0);
                 const totalDeletions = data.reduce((acc, [__, ___, del]) => acc + del, 0);
                 const totalLines = totalAdditions + totalDeletions;
-                return { totalLines };
+
+                const lastWeek = data[data.length - 1];
+                const isLastWeekZero = lastWeek && lastWeek[1] === 0 && lastWeek[2] === 0;
+                const weeksToExclude = isLastWeekZero ? 2 : 1;
+                const prevData = data.slice(0, -weeksToExclude);
+                const prevAdd = prevData.reduce((sum, [_, add]) => sum + add, 0);
+                const prevDel = prevData.reduce((sum, [__, ___, del]) => sum + del, 0);
+                const prevLines = prevAdd + prevDel;
+
+                return { totalLines, prevLines };
             }
             await new Promise((res) => setTimeout(res, delay));
         }
-        return { totalLines: 0 };
+        return { totalLines: 0, prevLines: 0 };
     }
 
     async resolveNameWithOwner(repoId: string): Promise<string> {
