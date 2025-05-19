@@ -16,7 +16,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
     token?: string;
     page?: number;
     perPage?: number;
-  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; }> {
+  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }> {
     const headers: Record<string, string> = {
       Accept: "application/vnd.github+json",
     };
@@ -73,9 +73,12 @@ export class GbCommitListRepository implements GithubCommitListRepository {
 
     const paginatedCommits = uniqueCommits.slice(0, perPage);
 
+    console.log(uniqueCommits.length);
+
     return {
       commits: paginatedCommits,
       hasNextPage: uniqueCommits.length > perPage,
+      totalCount: uniqueCommits.length
     };
   }
 }

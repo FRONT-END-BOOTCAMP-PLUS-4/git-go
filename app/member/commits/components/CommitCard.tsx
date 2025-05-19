@@ -73,7 +73,7 @@ interface CardInfoProps {
     message: string;
     branch: string;
     repo: string;
-    commitType: LabelBadgeProps;
+    commitType: LabelBadgeProps["type"];
     createdAt: string;
 }
 
