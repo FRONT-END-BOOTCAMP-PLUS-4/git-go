@@ -6,6 +6,25 @@ import RepoSelectModal from "../components/RepoSelectModal";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Loading from "../components/Loading";
+import Pagination from "@/app/components/Pagination";
+
+interface Commit {
+    sha: string;
+    type:
+        | "feat"
+        | "fix"
+        | "chore"
+        | "merge"
+        | "refactor"
+        | "test"
+        | "docs"
+        | "style"
+        | "etc";
+    message: string;
+    repo: string;
+    branch: string;
+    createdAt: string;
+}
 
 export default function CommitPage() {
     const now = new Date();
@@ -16,17 +35,22 @@ export default function CommitPage() {
     }).format(now);
 
     const { selectedRepo } = useRepoStore();
-    console.log(selectedRepo);
     const ownerName = selectedRepo?.nameWithOwner.split("/")[0];
     const repoName = selectedRepo?.nameWithOwner.split("/")[1];
 
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);
-    const [commitList, setCommitList] = useState<any[]>([]);
+    const [allCommits, setAllCommits] = useState<Commit[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [hasNextPage, setHasNextPage] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState(null);
     const perPage = 10;
+
+    const pageCount = Math.ceil(allCommits.length / perPage);
+    const currentCommits = allCommits.slice(
+        (currentPage - 1) * perPage,
+        currentPage * perPage
+    );
 
     const { data: session } = useSession();
 
@@ -69,17 +93,15 @@ export default function CommitPage() {
                     repo: repoName,
                     author: author,
                     token: accessToken,
-                    page,
-                    perPage,
                 }),
             });
 
             if (res.ok) {
                 const result = await res.json();
-                setCommitList((prev) =>
-                    page === 1 ? result.commits : [...prev, ...result.commits]
-                );
-                setHasNextPage(result.hasNextPage);
+                console.log(result);
+                setAllCommits(result.commits);
+                setCurrentPage(1);
+                setTotalCount(result.totalCount);
             }
         } catch (error: unknown) {
             console.error("Failed to fetch commits:", error);
@@ -90,31 +112,30 @@ export default function CommitPage() {
 
     useEffect(() => {
         setCurrentPage(1);
-        setCommitList([]);
-        fetchCommitsByRepo(ownerName, repoName, 1);
+        setAllCommits([]);
+        fetchCommitsByRepo(ownerName, repoName, currentPage);
     }, [selectedRepo]);
-
-    const loadMore = () => {
-        if (!isLoading && hasNextPage) {
-            const nextPage = currentPage + 1;
-            setCurrentPage(nextPage);
-            fetchCommitsByRepo(ownerName, repoName, nextPage);
-        }
-    };
 
     return (
         <>
             <RepoSelectModal open={open} onClose={() => setOpen(false)} />
             <div className="border-border-primary1 rounded-lg border-1 bg-white">
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                    <h2 className="font-bold">최근 활동</h2>
+                    <div className="flex items-center gap-x-3">
+                        <h2 className="font-bold">최근 활동</h2>
+                        {allCommits.length > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                전체 {totalCount}개
+                            </span>
+                        )}
+                    </div>
                     <p className="text-text-secondary2 text-sm">
                         {formattedDate}
                     </p>
                 </section>
 
                 <ul className="divide-y">
-                    {commitList?.map((commit) => (
+                    {currentCommits.map((commit) => (
                         <CommitCard
                             key={commit.sha}
                             sha={commit.sha}
@@ -129,15 +150,26 @@ export default function CommitPage() {
 
                 {isLoading && <Loading />}
 
-                {!isLoading && hasNextPage && (
-                    <div className="flex justify-center p-4">
-                        <button
-                            onClick={loadMore}
-                            className="text-text-secondary1 hover:text-text-primary1 text-sm font-medium"
-                        >
-                            더 보기
-                        </button>
-                    </div>
+                {!isLoading && currentCommits.length > 0 && (
+                    // <div className="flex items-center justify-center gap-2 p-4">
+                    //     {Array.from({ length: pageCount }, (_, i) => (
+                    //         <button
+                    //             key={i + 1}
+                    //             onClick={() => setCurrentPage(i + 1)}
+                    //             className={`rounded-md px-3 py-2 text-sm ${
+                    //                 currentPage === i + 1
+                    //                     ? "bg-primary7 text-white"
+                    //                     : "text-text-secondary1 hover:text-text-primary1"
+                    //             }`}
+                    //         >
+                    //             {i + 1}
+                    //         </button>
+                    //     ))}
+                    // </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={totalCount ?? 0}
+                    />
                 )}
             </div>
         </>

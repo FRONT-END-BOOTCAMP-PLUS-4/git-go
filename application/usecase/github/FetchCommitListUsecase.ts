@@ -11,8 +11,9 @@ export class FetchCommitList {
     token?: string;
     page?: number;
     perPage?: number;
+    totalCount?: number;
   }): Promise<GithubCommitListDto> {
-    const { commits, hasNextPage } = await this.repository.fetchCommitList(params);
+    const { commits, hasNextPage, totalCount } = await this.repository.fetchCommitList(params);
     return {
       commits: commits.map((c) => ({
         sha: c.sha,
@@ -23,6 +24,7 @@ export class FetchCommitList {
         createdAt: c.createdAt.toISOString(),
       })),
       hasNextPage,
+      totalCount,
     };
   }
 }
