@@ -96,6 +96,13 @@ export default function CommitCard({
         router.push(`${MEMBER_URL.commits}/${shortSha}/memoir`);
     };
 
+    const newCreatedAt = new Date(createdAt);
+    const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }).format(newCreatedAt);
+
     return (
         <li className="border-border-primary1 border-b p-4">
             <article className="flex items-start gap-x-4">
@@ -115,7 +122,7 @@ export default function CommitCard({
                         >
                             {label}
                         </div>
-                        <p className="ml-auto">{createdAt}</p>
+                        <p className="ml-auto">{formattedDate}</p>
                     </div>
                     <h3
                         className={`line-clamp-${isVisible ? 0 : 1} mr-30 font-semibold`}
