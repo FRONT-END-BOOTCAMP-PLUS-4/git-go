@@ -115,7 +115,7 @@ export default function CommitCard({
                     />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
-                    <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
+                    <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">
                         <p>{shortSha}</p>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}

@@ -54,7 +54,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                     />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
-                    <div className="flex items-center gap-x-3">
+                    <div className="mb-3 flex items-center gap-x-3">
                         <h3 className="font-semibold">
                             Fix navigation bug in dashboard component
                         </h3>
