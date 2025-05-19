@@ -27,4 +27,13 @@ export class PrRepoRepository implements RepoRepository {
             },
         });
     }
+
+    async hasMemoirs(repoName: string): Promise<boolean> {
+        const count = await prisma.memoir.count({
+            where: {
+                repo: { name: repoName },
+            },
+        });
+        return count > 0;
+    }
 }

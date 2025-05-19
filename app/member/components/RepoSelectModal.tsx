@@ -65,7 +65,33 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 useRepoStore.getState().triggerReload();
                 onClose();
             } else {
-                alert("연동에 실패했습니다.");
+                const result = await res.text();
+                if (result.startsWith("memoirs-exist:")) {
+                    const failedIds = result.split(":")[1].split(",");
+                    const idToNameMap = new Map(repos.map((r) => [r.id, r.nameWithOwner]));
+                    const failedNames = failedIds.map((id) => idToNameMap.get(id) || id);
+
+                    const confirm = window.confirm(
+                        `해당 저장소에 작성된 회고가 있습니다:\n\n${failedNames.join(
+                            "\n"
+                        )}\n\n연동 해제 시 회고가 삭제됩니다. 계속하시겠습니까?`
+                    );
+                    if (confirm) {
+                        const retryRes = await fetch("/api/repos/save", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ repoIds, force: true }),
+                        });
+
+                        if (retryRes.ok) {
+                            alert("저장소가 성공적으로 연동되었습니다!");
+                            useRepoStore.getState().triggerReload();
+                            onClose();
+                        } else {
+                            alert("강제 연동에 실패했습니다.");
+                        }
+                    }
+                }
             }
         } catch (error) {
             alert("네트워크 오류가 발생했습니다.");
