@@ -54,6 +54,11 @@ export default function WeeklyCommitChart({ data }: Props) {
 
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                top: 20,
+            },
+        },
         plugins: {
             legend: { display: false },
             tooltip: {
