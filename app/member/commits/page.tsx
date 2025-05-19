@@ -40,19 +40,15 @@ export default function CommitPage() {
 
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);
-    const [allCommits, setAllCommits] = useState<Commit[]>([]);
+    const [commits, setCommits] = useState<Commit[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [totalCount, setTotalCount] = useState(null);
+    const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
 
-    const pageCount = Math.ceil(allCommits.length / perPage);
-    const currentCommits = allCommits.slice(
-        (currentPage - 1) * perPage,
-        currentPage * perPage
-    );
-
     const { data: session } = useSession();
+
+    console.log(session);
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
@@ -80,7 +76,7 @@ export default function CommitPage() {
         setIsLoading(true);
 
         const accessToken = session.accessToken;
-        const author = session.user?.id;
+        const author = session.user?.githubId;
 
         try {
             const res = await fetch("/api/github/commits", {
@@ -93,14 +89,14 @@ export default function CommitPage() {
                     repo: repoName,
                     author: author,
                     token: accessToken,
+                    page,
+                    perPage,
                 }),
             });
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result);
-                setAllCommits(result.commits);
-                setCurrentPage(1);
+                setCommits(result.commits);
                 setTotalCount(result.totalCount);
             }
         } catch (error: unknown) {
@@ -110,11 +106,23 @@ export default function CommitPage() {
         }
     };
 
+    // 저장소 변경 시 새로운 데이터 fetch
     useEffect(() => {
-        setCurrentPage(1);
-        setAllCommits([]);
-        fetchCommitsByRepo(ownerName, repoName, currentPage);
+        if (selectedRepo) {
+            fetchCommitsByRepo(ownerName, repoName, 1);
+        }
     }, [selectedRepo]);
+
+    // 페이지 변경 시 새로운 데이터 fetch
+    useEffect(() => {
+        if (selectedRepo) {
+            fetchCommitsByRepo(ownerName, repoName, currentPage);
+        }
+    }, [currentPage]);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
 
     return (
         <>
@@ -123,7 +131,7 @@ export default function CommitPage() {
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <div className="flex items-center gap-x-3">
                         <h2 className="font-bold">최근 활동</h2>
-                        {allCommits.length > 0 && (
+                        {totalCount > 0 && (
                             <span className="text-text-secondary2 text-sm">
                                 전체 {totalCount}개
                             </span>
@@ -134,41 +142,30 @@ export default function CommitPage() {
                     </p>
                 </section>
 
-                <ul className="divide-y">
-                    {currentCommits.map((commit) => (
-                        <CommitCard
-                            key={commit.sha}
-                            sha={commit.sha}
-                            commitType={commit.type}
-                            message={commit.message}
-                            repo={commit.repo}
-                            branch={commit.branch}
-                            createdAt={commit.createdAt}
-                        />
-                    ))}
-                </ul>
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <ul className="divide-y">
+                        {commits.map((commit) => (
+                            <CommitCard
+                                key={commit.sha}
+                                sha={commit.sha}
+                                commitType={commit.type}
+                                message={commit.message}
+                                repo={commit.repo}
+                                branch={commit.branch}
+                                createdAt={commit.createdAt}
+                            />
+                        ))}
+                    </ul>
+                )}
 
-                {isLoading && <Loading />}
-
-                {!isLoading && currentCommits.length > 0 && (
-                    // <div className="flex items-center justify-center gap-2 p-4">
-                    //     {Array.from({ length: pageCount }, (_, i) => (
-                    //         <button
-                    //             key={i + 1}
-                    //             onClick={() => setCurrentPage(i + 1)}
-                    //             className={`rounded-md px-3 py-2 text-sm ${
-                    //                 currentPage === i + 1
-                    //                     ? "bg-primary7 text-white"
-                    //                     : "text-text-secondary1 hover:text-text-primary1"
-                    //             }`}
-                    //         >
-                    //             {i + 1}
-                    //         </button>
-                    //     ))}
-                    // </div>
+                {!isLoading && commits.length > 0 && (
                     <Pagination
                         currentPage={currentPage}
-                        totalCount={totalCount ?? 0}
+                        totalCount={totalCount}
+                        perPage={perPage}
+                        setCurrentPage={handlePageChange}
                     />
                 )}
             </div>
