@@ -1,7 +1,7 @@
 import { GithubRepoRepository } from "@/domain/repositories/GithubRepoRepository";
 import { GithubRepoDto } from "./dto/GithubRepoDto";
 
-export class FetchRepos {
+export class FetchReposUsecase {
     constructor(private readonly repo: GithubRepoRepository) { }
 
     async execute(token: string): Promise<GithubRepoDto[]> {

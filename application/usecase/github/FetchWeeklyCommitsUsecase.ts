@@ -3,7 +3,7 @@ import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { FetchWeeklyCommitsDto } from "./dto/FetchWeeklyCommitsDto";
 import { ResponseWeeklyCommitsDto } from "./dto/ResponseWeeklyCommitsDto";
 
-export class FetchWeeklyCommits {
+export class FetchWeeklyCommitsUsecase {
     constructor(private readonly statsRepo: StatsRepository) { }
 
     async execute(dto: FetchWeeklyCommitsDto): Promise<ResponseWeeklyCommitsDto[]> {

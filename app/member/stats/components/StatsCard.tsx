@@ -9,6 +9,7 @@ export default function StatsCard({
 }) {
     const changeNumber = parseFloat(change.replace("%", ""));
     const isNegative = changeNumber < 0;
+    const isZero = changeNumber === 0;
 
     return (
         <div className="border-border-primary1 h-30 rounded-xl border bg-white p-4 shadow-sm">
@@ -17,8 +18,15 @@ export default function StatsCard({
                 <span className="text-text-secondary1 text-2xl font-bold">
                     {value}
                 </span>
-                <span className={`text-sm ${isNegative ? "text-red-600" : "text-green-600"}`}>
-                    {isNegative ? "⬇" : "⬆"} {Math.abs(changeNumber)}%
+                <span
+                    className={`text-sm ${isZero
+                        ? "text-gray-400"
+                        : isNegative
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                >
+                    {isZero ? "⬆" : isNegative ? "⬇" : "⬆"} {Math.abs(changeNumber)}
                 </span>
                 {/* <span className="text-sm text-green-600">⬆ {change}</span> */}
             </div>
