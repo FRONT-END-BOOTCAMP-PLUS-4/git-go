@@ -46,7 +46,8 @@ export const authOptions: AuthOptions = {
     // },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
-      session.user.id = token.githubId as string;
+      session.user.githubId = token.githubId as string;
+      session.user.id = token.id as string;
       return session;
     },
   },
