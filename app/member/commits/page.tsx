@@ -7,6 +7,7 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Loading from "../components/Loading";
 import Pagination from "@/app/components/Pagination";
+import CommitCardSkeleton from "@/app/member/commits/components/CommitCardSkeleton";
 
 interface Commit {
     sha: string;
