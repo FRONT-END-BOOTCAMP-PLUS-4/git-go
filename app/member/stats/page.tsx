@@ -72,22 +72,16 @@ export default function StatsPage() {
                 setWeeklyCommits(weeklyData);
 
                 // 전체 커밋과 7일전 커밋 비교해서 변화량 계산
-                const recentTotal = weeklyData.reduce(
+                const commitDiff = weeklyData.reduce(
                     (sum: number, d: { date: string; count: number }) => sum + d.count,
                     0
                 );
-                const previousCommits = commitData.totalCommits - recentTotal;
-                const changePercent = previousCommits > 0
-                    ? ((recentTotal / previousCommits) * 100).toFixed(0)
-                    : "0";
 
-                // 전체 코드라인 수와 7일전 코드라인 수 비교해서 변화량 계산            
-                const lineChange = lineData.prevLines > 0
-                    ? ((lineData.totalLines - lineData.prevLines) / lineData.prevLines * 100).toFixed(0)
-                    : "0";
+                // 전체 코드라인 수와 7일전 코드라인 수 비교해서 변화량 계산                
+                const lineDiff = lineData.totalLines - lineData.prevLines;
 
-                setCommitChange(`${changePercent}%`);
-                setLineChangePercent(`${lineChange}%`);
+                setCommitChange(`${commitDiff}`);
+                setLineChangePercent(`${lineDiff}`);
             } catch (err) {
                 console.error("Stats fetch 실패", err);
             } finally {
