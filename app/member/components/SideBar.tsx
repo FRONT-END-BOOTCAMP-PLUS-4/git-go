@@ -9,6 +9,7 @@ import TagFilter from "../memoirs/components/Filter/TagFilter";
 import { usePathname } from "next/navigation";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
+import SideBarRepoSkeleton from "./SideBarRepoSkeleton";
 
 export default function SideBar({
     setOpen,
@@ -21,6 +22,7 @@ export default function SideBar({
     const pathname = usePathname();
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
         useRepoStore();
+    const [loadingRepos, setLoadingRepos] = useState(true);
 
     const fetchRepos = async (
         setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
@@ -28,6 +30,7 @@ export default function SideBar({
             repo: { id: string; nameWithOwner: string } | null
         ) => void
     ) => {
+        setLoadingRepos(true);
         try {
             const [userRes, githubRes] = await Promise.all([
                 fetch("/api/repos/user"),
@@ -50,6 +53,8 @@ export default function SideBar({
             }
         } catch (error) {
             console.error("레포 불러오기 실패:", error);
+        } finally {
+            setLoadingRepos(false);
         }
     };
 
@@ -72,40 +77,35 @@ export default function SideBar({
                     Repositories
                 </h2>
                 <ul className="flex w-full flex-col gap-y-1 p-2">
-                    {userRepos.map((repo) => {
-                        const isSelected =
-                            selectedRepo?.nameWithOwner === repo.nameWithOwner;
-                        return (
-                            <li
-                                key={repo.id}
-                                className="border-border-primary1"
-                            >
-                                <button
-                                    className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected
-                                            ? "bg-primary2 text-primary7"
-                                            : ""
-                                        }`}
-                                    onClick={() => setSelectedRepo(repo)}
-                                >
-                                    <Image
-                                        src={
-                                            isSelected
-                                                ? "/branch-blue.svg"
-                                                : "/branch.svg"
-                                        }
-                                        width={14}
-                                        height={14}
-                                        alt="브랜치 아이콘"
-                                    />
-                                    <span
-                                        className={`text-sm break-all hover:line-clamp-none ${selectedRepo?.nameWithOwner === repo.nameWithOwner ? "line-clamp-none" : "line-clamp-2"}`}
+                    {loadingRepos ? (
+                        <SideBarRepoSkeleton />
+                    ) : (
+                        userRepos.map((repo) => {
+                            const isSelected = selectedRepo?.nameWithOwner === repo.nameWithOwner;
+                            return (
+                                <li key={repo.id} className="border-border-primary1">
+                                    <button
+                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected ? "bg-primary2 text-primary7" : ""
+                                            }`}
+                                        onClick={() => setSelectedRepo(repo)}
                                     >
-                                        {repo.nameWithOwner}
-                                    </span>
-                                </button>
-                            </li>
-                        );
-                    })}
+                                        <Image
+                                            src={isSelected ? "/branch-blue.svg" : "/branch.svg"}
+                                            width={14}
+                                            height={14}
+                                            alt="브랜치 아이콘"
+                                        />
+                                        <span
+                                            className={`text-sm break-all hover:line-clamp-none ${isSelected ? "line-clamp-none" : "line-clamp-2"
+                                                }`}
+                                        >
+                                            {repo.nameWithOwner}
+                                        </span>
+                                    </button>
+                                </li>
+                            );
+                        })
+                    )}
                 </ul>
                 <section className="border-border-primary1 border-t p-3">
                     <Button
