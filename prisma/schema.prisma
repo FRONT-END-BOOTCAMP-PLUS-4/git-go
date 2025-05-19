@@ -30,7 +30,7 @@ model Memoir {
   userId    String
   typeId    Int
   repoId    Int
-  repo      Repo        @relation(fields: [repoId], references: [id])
+  repo      Repo        @relation(fields: [repoId], references: [id], onDelete: Cascade)
   type      MemoirType  @relation(fields: [typeId], references: [id])
   user      User        @relation(fields: [userId], references: [id])
   tags      MemoirTag[]
@@ -70,7 +70,7 @@ model Tag {
 model MemoirTag {
   memoirId Int
   tagId    Int
-  memoir   Memoir @relation(fields: [memoirId], references: [id])
+  memoir   Memoir @relation(fields: [memoirId], references: [id], onDelete: Cascade)
   tag      Tag    @relation(fields: [tagId], references: [id])
 
   @@id([memoirId, tagId])

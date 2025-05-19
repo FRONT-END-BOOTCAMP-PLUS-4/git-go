@@ -90,8 +90,10 @@ export default function CommitCard({
 
     const [isVisible, setIsVisible] = useState(false);
 
+    const shortSha = sha.substring(0, 6);
+
     const moveToCommitMemoir = () => {
-        router.push(`${MEMBER_URL.commits}/${sha}/memoir`);
+        router.push(`${MEMBER_URL.commits}/${shortSha}/memoir`);
     };
 
     return (
@@ -107,7 +109,7 @@ export default function CommitCard({
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
-                        <p>{sha}</p>
+                        <p>{shortSha}</p>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
                         >

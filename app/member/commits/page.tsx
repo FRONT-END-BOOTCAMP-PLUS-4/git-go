@@ -16,8 +16,9 @@ export default function CommitPage() {
     }).format(now);
 
     const { selectedRepo } = useRepoStore();
-    const ownerName = selectedRepo?.split("/")[0];
-    const repoName = selectedRepo?.split("/")[1];
+    console.log(selectedRepo);
+    const ownerName = selectedRepo?.nameWithOwner.split("/")[0];
+    const repoName = selectedRepo?.nameWithOwner.split("/")[1];
 
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);

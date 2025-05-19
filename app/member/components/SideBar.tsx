@@ -24,7 +24,9 @@ export default function SideBar({
 
     const fetchRepos = async (
         setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
-        setSelectedRepo: (repo: string | null) => void
+        setSelectedRepo: (
+            repo: { id: string; nameWithOwner: string } | null
+        ) => void
     ) => {
         try {
             const [userRes, githubRes] = await Promise.all([
@@ -44,7 +46,7 @@ export default function SideBar({
 
             setUserRepos(matched);
             if (matched.length > 0) {
-                setSelectedRepo(matched[0].nameWithOwner);
+                setSelectedRepo(matched[0]);
             }
         } catch (error) {
             console.error("레포 불러오기 실패:", error);
@@ -71,7 +73,8 @@ export default function SideBar({
                 </h2>
                 <ul className="flex w-full flex-col gap-y-1 p-2">
                     {userRepos.map((repo) => {
-                        const isSelected = repo.nameWithOwner === selectedRepo;
+                        const isSelected =
+                            selectedRepo?.nameWithOwner === repo.nameWithOwner;
                         return (
                             <li
                                 key={repo.id}
@@ -83,9 +86,7 @@ export default function SideBar({
                                             ? "bg-primary2 text-primary7"
                                             : ""
                                     }`}
-                                    onClick={() =>
-                                        setSelectedRepo(repo.nameWithOwner)
-                                    }
+                                    onClick={() => setSelectedRepo(repo)}
                                 >
                                     <Image
                                         src={
@@ -98,7 +99,7 @@ export default function SideBar({
                                         alt="브랜치 아이콘"
                                     />
                                     <span
-                                        className={`text-sm hover:line-clamp-none ${selectedRepo === repo.nameWithOwner ? "line-clamp-none" : "line-clamp-2"}`}
+                                        className={`text-sm break-all hover:line-clamp-none ${selectedRepo?.nameWithOwner === repo.nameWithOwner ? "line-clamp-none" : "line-clamp-2"}`}
                                     >
                                         {repo.nameWithOwner}
                                     </span>
