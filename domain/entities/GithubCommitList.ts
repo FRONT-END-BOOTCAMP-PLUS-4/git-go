@@ -20,6 +20,14 @@ export class GithubCommit {
 }
 
 function extractCommitType(message: string): string {
-  const match = message.match(/(?:^|\s)(feat|fix|chore|merge|refactor|test|docs|style)(?=\(|:|\s)/i);
-  return match ? match[1].toLowerCase() : "etc";
+  const keywords = ["feat", "fix", "chore", "merge", "refactor", "test", "docs", "style"];
+  const lowerMessage = message.toLowerCase();
+
+  for (const keyword of keywords) {
+    if (lowerMessage.includes(keyword)) {
+      return keyword;
+    }
+  }
+
+  return "etc";
 }
