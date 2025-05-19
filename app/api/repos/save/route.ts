@@ -7,11 +7,13 @@ import { PrRepoRepository } from "@/infra/repositories/prisma/PrRepoRepository";
 export async function POST(req: NextRequest) {
     const token = await getToken({ req });
     if (!token?.id) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-
-    const { repoIds } = await req.json();
-
+    const { repoIds, force } = await req.json();
     const usecase = new SaveRepos(new PrRepoRepository());
-    await usecase.execute(new SaveReposDto(token.id, repoIds));
 
-    return NextResponse.json({ message: "Repos saved" });
+    try {
+        await usecase.execute(new SaveReposDto(token.id, repoIds, force));
+        return NextResponse.json({ message: "Repos saved" });
+    } catch (e) {
+        return new NextResponse((e as Error).message, { status: 400 });
+    }
 }
