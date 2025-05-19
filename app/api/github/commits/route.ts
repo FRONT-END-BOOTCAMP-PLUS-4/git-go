@@ -1,4 +1,4 @@
-import { FetchCommitList } from "@/application/usecase/github/FetchCommitList";
+import { FetchCommitList } from "@/application/usecase/github/FetchCommitListUsecase";
 import { GbCommitListRepository } from "@/infra/repositories/github/GbCommitListRepository";
 import { NextRequest, NextResponse } from "next/server";
 

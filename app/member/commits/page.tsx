@@ -6,6 +6,25 @@ import RepoSelectModal from "../components/RepoSelectModal";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Loading from "../components/Loading";
+import Pagination from "@/app/components/Pagination";
+
+interface Commit {
+    sha: string;
+    type:
+        | "feat"
+        | "fix"
+        | "chore"
+        | "merge"
+        | "refactor"
+        | "test"
+        | "docs"
+        | "style"
+        | "etc";
+    message: string;
+    repo: string;
+    branch: string;
+    createdAt: string;
+}
 
 export default function CommitPage() {
     const now = new Date();
@@ -16,16 +35,15 @@ export default function CommitPage() {
     }).format(now);
 
     const { selectedRepo } = useRepoStore();
-    console.log(selectedRepo);
     const ownerName = selectedRepo?.nameWithOwner.split("/")[0];
     const repoName = selectedRepo?.nameWithOwner.split("/")[1];
 
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);
-    const [commitList, setCommitList] = useState<any[]>([]);
+    const [commits, setCommits] = useState<Commit[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [hasNextPage, setHasNextPage] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
 
     const { data: session } = useSession();
@@ -56,7 +74,7 @@ export default function CommitPage() {
         setIsLoading(true);
 
         const accessToken = session.accessToken;
-        const author = session.user?.id;
+        const author = session.user?.githubId;
 
         try {
             const res = await fetch("/api/github/commits", {
@@ -76,10 +94,8 @@ export default function CommitPage() {
 
             if (res.ok) {
                 const result = await res.json();
-                setCommitList((prev) =>
-                    page === 1 ? result.commits : [...prev, ...result.commits]
-                );
-                setHasNextPage(result.hasNextPage);
+                setCommits(result.commits);
+                setTotalCount(result.totalCount);
             }
         } catch (error: unknown) {
             console.error("Failed to fetch commits:", error);
@@ -88,18 +104,22 @@ export default function CommitPage() {
         }
     };
 
+    // 저장소 변경 시 새로운 데이터 fetch
     useEffect(() => {
-        setCurrentPage(1);
-        setCommitList([]);
-        fetchCommitsByRepo(ownerName, repoName, 1);
+        if (selectedRepo) {
+            fetchCommitsByRepo(ownerName, repoName, 1);
+        }
     }, [selectedRepo]);
 
-    const loadMore = () => {
-        if (!isLoading && hasNextPage) {
-            const nextPage = currentPage + 1;
-            setCurrentPage(nextPage);
-            fetchCommitsByRepo(ownerName, repoName, nextPage);
+    // 페이지 변경 시 새로운 데이터 fetch
+    useEffect(() => {
+        if (selectedRepo) {
+            fetchCommitsByRepo(ownerName, repoName, currentPage);
         }
+    }, [currentPage]);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
     };
 
     return (
@@ -107,37 +127,44 @@ export default function CommitPage() {
             <RepoSelectModal open={open} onClose={() => setOpen(false)} />
             <div className="border-border-primary1 rounded-lg border-1 bg-white">
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                    <h2 className="font-bold">최근 활동</h2>
+                    <div className="flex items-center gap-x-3">
+                        <h2 className="font-bold">최근 활동</h2>
+                        {totalCount > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                전체 {totalCount}개
+                            </span>
+                        )}
+                    </div>
                     <p className="text-text-secondary2 text-sm">
                         {formattedDate}
                     </p>
                 </section>
 
-                <ul className="divide-y">
-                    {commitList?.map((commit) => (
-                        <CommitCard
-                            key={commit.sha}
-                            sha={commit.sha}
-                            commitType={commit.type}
-                            message={commit.message}
-                            repo={commit.repo}
-                            branch={commit.branch}
-                            createdAt={commit.createdAt}
-                        />
-                    ))}
-                </ul>
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <ul className="divide-y">
+                        {commits.map((commit) => (
+                            <CommitCard
+                                key={commit.sha}
+                                sha={commit.sha}
+                                commitType={commit.type}
+                                message={commit.message}
+                                repo={commit.repo}
+                                branch={commit.branch}
+                                createdAt={commit.createdAt}
+                            />
+                        ))}
+                    </ul>
+                )}
 
-                {isLoading && <Loading />}
-
-                {!isLoading && hasNextPage && (
-                    <div className="flex justify-center p-4">
-                        <button
-                            onClick={loadMore}
-                            className="text-text-secondary1 hover:text-text-primary1 text-sm font-medium"
-                        >
-                            더 보기
-                        </button>
-                    </div>
+                {!isLoading && commits.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        perPage={perPage}
+                        setCurrentPage={handlePageChange}
+                    />
                 )}
             </div>
         </>

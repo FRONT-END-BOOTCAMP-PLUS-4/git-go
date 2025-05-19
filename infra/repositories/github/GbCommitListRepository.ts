@@ -16,7 +16,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
     token?: string;
     page?: number;
     perPage?: number;
-  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; }> {
+  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }> {
     const headers: Record<string, string> = {
       Accept: "application/vnd.github+json",
     };
@@ -39,14 +39,14 @@ export class GbCommitListRepository implements GithubCommitListRepository {
 
     const branches = await branchesRes.json();
 
-    const uniqueCommitsMap = new Map<string, GithubCommit>();
+    let allCommits: GithubCommit[] = [];
 
     // 2. 각 브랜치별 커밋 조회
     for (const branch of branches) {
       const branchName = branch.name;
 
       const commitsRes = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}&page=${page}&per_page=${perPage}`,
+        `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}`,
         { headers }
       );
       if (!commitsRes.ok) {
@@ -57,25 +57,26 @@ export class GbCommitListRepository implements GithubCommitListRepository {
       }
 
       const commits = await commitsRes.json();
-
-      for (const c of commits) {
-        const commit = GithubCommit.fromJson({ ...c, branch: branchName });
-        if (!uniqueCommitsMap.has(commit.sha)) {
-          uniqueCommitsMap.set(commit.sha, commit);
-        }
-      }
+      const mappedCommits = commits.map((c: any) =>
+        GithubCommit.fromJson({ ...c, branch: branchName })
+      );
+      allCommits.push(...mappedCommits);
     }
 
-    // 3. 정렬 및 페이징 처리
-    const uniqueCommits = Array.from(uniqueCommitsMap.values()).sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-    );
+    // 3. 중복 제거 및 정렬
+    const uniqueCommits = Array.from(
+      new Map(allCommits.map(commit => [commit.sha, commit])).values()
+    ).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
-    const paginatedCommits = uniqueCommits.slice(0, perPage);
+    // 4. 페이지네이션 처리
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + perPage;
+    const paginatedCommits = uniqueCommits.slice(startIndex, endIndex);
 
     return {
       commits: paginatedCommits,
-      hasNextPage: uniqueCommits.length > perPage,
+      hasNextPage: endIndex < uniqueCommits.length,
+      totalCount: uniqueCommits.length
     };
   }
 }

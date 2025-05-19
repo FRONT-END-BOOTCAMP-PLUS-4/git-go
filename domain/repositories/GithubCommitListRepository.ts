@@ -9,5 +9,5 @@ export interface GithubCommitListRepository {
     token?: string;
     page?: number;
     perPage?: number;
-  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; }>;
+  }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }>;
 }

@@ -13,11 +13,9 @@ export default function MemberLayout({
     const [open, setOpen] = useState(false);
 
     const pathname = usePathname();
-    console.log(pathname);
     const status = pathname.split("/").pop() || "commits";
 
     const { id } = useParams();
-    console.log(id);
 
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
     if (pathname.endsWith("memoir") || id) {
