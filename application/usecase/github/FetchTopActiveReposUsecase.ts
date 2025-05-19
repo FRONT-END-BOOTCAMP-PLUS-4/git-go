@@ -2,7 +2,7 @@ import { RepoRepository } from "@/domain/repositories/RepoRepository";
 import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { ResponseTopActiveReposDto } from "./dto/ResponseTopActiveReposDto";
 
-export class FetchTopActiveRepos {
+export class FetchTopActiveReposUsecase {
     constructor(
         private readonly repoRepo: RepoRepository,
         private readonly statsRepo: StatsRepository

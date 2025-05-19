@@ -2,7 +2,7 @@ import { Repo } from "@/prisma/generated/prisma";
 import { SaveReposDto } from "./dto/SaveReposDto";
 import { RepoRepository } from "@/domain/repositories/RepoRepository";
 
-export class SaveRepos {
+export class SaveReposUsecase {
     constructor(private readonly repoRepo: RepoRepository) { }
 
     async execute(dto: SaveReposDto) {

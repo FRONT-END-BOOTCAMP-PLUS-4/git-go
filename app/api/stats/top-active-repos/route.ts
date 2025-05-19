@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { GbStatsRepository } from "@/infra/repositories/github/GbStatsRepository";
 import { PrRepoRepository } from "@/infra/repositories/prisma/PrRepoRepository";
-import { FetchTopActiveRepos } from "@/application/usecase/github/FetchTopActiveRepos";
+import { FetchTopActiveReposUsecase } from "@/application/usecase/github/FetchTopActiveReposUsecase";
 
 export async function GET(req: NextRequest) {
     const token = await getToken({ req });
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const usecase = new FetchTopActiveRepos(
+    const usecase = new FetchTopActiveReposUsecase(
         new PrRepoRepository(),
         new GbStatsRepository(token.accessToken)
     );

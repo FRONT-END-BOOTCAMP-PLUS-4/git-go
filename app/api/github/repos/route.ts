@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FetchFromGithub } from "@/infra/repositories/github/GbRepoRepository";
-import { FetchRepos } from "@/application/usecase/github/FetchRepos";
+import { FetchReposUsecase } from "@/application/usecase/github/FetchReposUsecase";
 import { getToken } from "next-auth/jwt";
 
 export async function GET(req: NextRequest) {
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     }
 
     const repo = new FetchFromGithub();
-    const usecase = new FetchRepos(repo);
+    const usecase = new FetchReposUsecase(repo);
     const repos = await usecase.execute(githubToken);
 
     return NextResponse.json(repos);

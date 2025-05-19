@@ -2,7 +2,7 @@ import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { ResponseCommitStatsDto } from "./dto/ResponseCommitStatsDto";
 import { FetchCommitStatsDto } from "./dto/FetchCommitStatsDto";
 
-export class FetchCommitStats {
+export class FetchCommitStatsUsecase {
     constructor(private readonly repo: StatsRepository) { }
 
     async execute(dto: FetchCommitStatsDto): Promise<ResponseCommitStatsDto> {
