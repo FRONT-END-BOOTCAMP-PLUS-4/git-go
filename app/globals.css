@@ -1,13 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* @theme inline {
-    --color-bg-primary1: var(--bg-primary1);
-    --color-bg-primary2: var(--bg-primary2);
-    --color-bg-secondary1: var(--bg-secondary1);
-    --color-foreground: var(--foreground);
-} */
-
 @theme {
     /* 메인 컬러 */
     --color-primary1: #efeeff;
