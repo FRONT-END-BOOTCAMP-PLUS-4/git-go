@@ -7,6 +7,7 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Loading from "../components/Loading";
 import Pagination from "@/app/components/Pagination";
+import CommitCardSkeleton from "@/app/member/commits/components/CommitCardSkeleton";
 
 interface Commit {
     sha: string;
@@ -50,15 +51,18 @@ export default function CommitPage() {
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
+        setIsLoading(true);
         const fetchUserRepos = async () => {
             try {
                 const res = await fetch("/api/repos/user");
                 const repos = await res.json();
                 if (Array.isArray(repos) && repos.length === 0) {
                     setOpen(true);
+                    setIsLoading(false);
                 }
             } catch (err) {
                 console.error("유저 저장소 확인 실패", err);
+                setIsLoading(false);
             }
         };
 
@@ -122,6 +126,18 @@ export default function CommitPage() {
         setCurrentPage(newPage);
     };
 
+    const commitList = commits?.map((commit) => (
+        <CommitCard
+            key={commit.sha}
+            sha={commit.sha}
+            commitType={commit.type}
+            message={commit.message}
+            repo={commit.repo}
+            branch={commit.branch}
+            createdAt={commit.createdAt}
+        />
+    ));
+
     return (
         <>
             <RepoSelectModal open={open} onClose={() => setOpen(false)} />
@@ -129,34 +145,25 @@ export default function CommitPage() {
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <div className="flex items-center gap-x-3">
                         <h2 className="font-bold">최근 활동</h2>
-                        {totalCount > 0 && (
-                            <span className="text-text-secondary2 text-sm">
-                                전체 {totalCount}개
-                            </span>
-                        )}
+                        {totalCount > 0 &&
+                            (isLoading ? (
+                                <span className="text-text-secondary2 text-sm">
+                                    불러오는 중...
+                                </span>
+                            ) : (
+                                <span className="text-text-secondary2 text-sm">
+                                    전체 {totalCount}개
+                                </span>
+                            ))}
                     </div>
                     <p className="text-text-secondary2 text-sm">
                         {formattedDate}
                     </p>
                 </section>
 
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    <ul className="divide-y">
-                        {commits.map((commit) => (
-                            <CommitCard
-                                key={commit.sha}
-                                sha={commit.sha}
-                                commitType={commit.type}
-                                message={commit.message}
-                                repo={commit.repo}
-                                branch={commit.branch}
-                                createdAt={commit.createdAt}
-                            />
-                        ))}
-                    </ul>
-                )}
+                <ul className="min-h-[100px]">
+                    {isLoading ? <Loading /> : <>{commitList}</>}
+                </ul>
 
                 {!isLoading && commits.length > 0 && (
                     <Pagination
