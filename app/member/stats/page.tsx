@@ -118,7 +118,7 @@ export default function StatsPage() {
                 {totalMemoirs === null ? (
                     <StatsCardSkeleton />
                 ) : (
-                    <StatsCard title="작성된 회고록" value={totalMemoirs.toLocaleString()} change="15%" />
+                    <StatsCard title="작성된 회고록" value={totalMemoirs.toLocaleString()} change="hide" />
                 )}
             </div>
 
