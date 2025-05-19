@@ -125,7 +125,24 @@ export default function StatsPage() {
             {/* Bottom section */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Commit activity */}
-                <BottomCard title="커밋 활동" subtitle="최근 7일">
+                {loadingWeekly || isFirstLoad ? (
+                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                        <ChartSkeleton />
+                    </div>
+                ) : (
+                    <BottomCard title="커밋 활동" subtitle="최근 7일">
+                        {weeklyCommits.length > 0 ? (
+                            <div className="w-full h-64">
+                                <WeeklyCommitChart data={weeklyCommits} />
+                            </div>
+                        ) : (
+                            <div className="flex h-32 items-center justify-center text-sm text-gray-400">
+                                커밋 정보 없음
+                            </div>
+                        )}
+                    </BottomCard>
+                )}
+                {/* <BottomCard title="커밋 활동" subtitle="최근 7일">
                     <div className="space-y-4">
                         {loadingWeekly || isFirstLoad ? (
                             <ChartSkeleton />
@@ -139,36 +156,40 @@ export default function StatsPage() {
                             </div>
                         )}
                     </div>
-                </BottomCard>
+                </BottomCard> */}
                 {/* Most active repos */}
-                <BottomCard title="가장 활발한 저장소" subtitle="커밋 수 기준">
-                    <div className="space-y-4">
-                        {loadingTopRepos ? (
-                            <TopReposSkeleton />
-                        ) : topRepos.length > 0 ? (
-                            topRepos.map((repo) => (
-                                <div key={repo.name} className="h-10 space-y-1">
-                                    <div className="text-text-secondary2 flex justify-between text-sm font-medium">
-                                        <span>{repo.name}</span>
-                                        <span>{repo.commits} commits</span>
-                                    </div>
-                                    <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
-                                        <div
-                                            className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
-                                            style={{
-                                                width: `${(repo.commits / Math.max(...topRepos.map(r => r.commits), 1)) * 100}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-sm text-gray-400 text-center mt-4">
-                                연동된 저장소가 없거나 커밋 정보가 없습니다.
-                            </p>
-                        )}
+                {loadingTopRepos ? (
+                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                        <TopReposSkeleton />
                     </div>
-                </BottomCard>
+                ) : (
+                    <BottomCard title="가장 활발한 저장소" subtitle="커밋 수 기준">
+                        <div className="space-y-4">
+                            {topRepos.length > 0 ? (
+                                topRepos.map((repo) => (
+                                    <div key={repo.name} className="h-10 space-y-1">
+                                        <div className="text-text-secondary2 flex justify-between text-sm font-medium">
+                                            <span>{repo.name}</span>
+                                            <span>{repo.commits} commits</span>
+                                        </div>
+                                        <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
+                                            <div
+                                                className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
+                                                style={{
+                                                    width: `${(repo.commits / Math.max(...topRepos.map(r => r.commits), 1)) * 100}%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-sm text-gray-400 text-center mt-4">
+                                    연동된 저장소가 없거나 커밋 정보가 없습니다.
+                                </p>
+                            )}
+                        </div>
+                    </BottomCard>
+                )}
             </div>
         </div>
     );
