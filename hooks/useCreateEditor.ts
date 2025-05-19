@@ -1,6 +1,6 @@
 "use client";
 
-import { editorPlugins } from "@/plate-editor/plugin/editor-plugins";
+import { editorPlugins } from "@/app/member/components/CreateMemoir/plate-editor/plugin/editor-plugins";
 import { withProps } from "@udecode/cn";
 import { AnyPluginConfig } from "@udecode/plate";
 import {
@@ -38,30 +38,30 @@ import {
     PlateLeaf,
     usePlateEditor,
 } from "@udecode/plate/react";
-import { BlockquoteElement } from "../plate-editor/ui/blockquote-element";
-import { CalloutElement } from "../plate-editor/ui/callout-element";
-import { CodeBlockElement } from "../plate-editor/ui/code-block-element";
-import { CodeLeaf } from "../plate-editor/ui/code-leaf";
-import { CodeLineElement } from "../plate-editor/ui/code-line-element";
-import { CodeSyntaxLeaf } from "../plate-editor/ui/code-syntax-leaf";
-import { ColumnElement } from "../plate-editor/ui/column-element";
-import { ColumnGroupElement } from "../plate-editor/ui/column-group-element";
-import { HeadingElement } from "../plate-editor/ui/heading-element";
-import { HighlightLeaf } from "../plate-editor/ui/highlight-leaf";
-import { HrElement } from "../plate-editor/ui/hr-element";
-import { LinkElement } from "../plate-editor/ui/link-element";
-import { ParagraphElement } from "../plate-editor/ui/paragraph-element";
-import { withPlaceholders } from "../plate-editor/ui/placeholder";
-import { SlashInputElement } from "../plate-editor/ui/slash-input-element";
-import { SuggestionLeaf } from "../plate-editor/ui/suggestion-leaf";
+import { BlockquoteElement } from "../app/member/components/CreateMemoir/plate-editor/ui/blockquote-element";
+import { CalloutElement } from "../app/member/components/CreateMemoir/plate-editor/ui/callout-element";
+import { CodeBlockElement } from "../app/member/components/CreateMemoir/plate-editor/ui/code-block-element";
+import { CodeLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/code-leaf";
+import { CodeLineElement } from "../app/member/components/CreateMemoir/plate-editor/ui/code-line-element";
+import { CodeSyntaxLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/code-syntax-leaf";
+import { ColumnElement } from "../app/member/components/CreateMemoir/plate-editor/ui/column-element";
+import { ColumnGroupElement } from "../app/member/components/CreateMemoir/plate-editor/ui/column-group-element";
+import { HeadingElement } from "../app/member/components/CreateMemoir/plate-editor/ui/heading-element";
+import { HighlightLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/highlight-leaf";
+import { HrElement } from "../app/member/components/CreateMemoir/plate-editor/ui/hr-element";
+import { LinkElement } from "../app/member/components/CreateMemoir/plate-editor/ui/link-element";
+import { ParagraphElement } from "../app/member/components/CreateMemoir/plate-editor/ui/paragraph-element";
+import { withPlaceholders } from "../app/member/components/CreateMemoir/plate-editor/ui/placeholder";
+import { SlashInputElement } from "../app/member/components/CreateMemoir/plate-editor/ui/slash-input-element";
+import { SuggestionLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/suggestion-leaf";
 import {
     TableCellElement,
     TableCellHeaderElement,
-} from "../plate-editor/ui/table-cell-element";
-import { TableElement } from "../plate-editor/ui/table-element";
-import { TableRowElement } from "../plate-editor/ui/table-row-element";
-import { TocElement } from "../plate-editor/ui/toc-element";
-import { ToggleElement } from "../plate-editor/ui/toggle-element";
+} from "../app/member/components/CreateMemoir/plate-editor/ui/table-cell-element";
+import { TableElement } from "../app/member/components/CreateMemoir/plate-editor/ui/table-element";
+import { TableRowElement } from "../app/member/components/CreateMemoir/plate-editor/ui/table-row-element";
+import { TocElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toc-element";
+import { ToggleElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toggle-element";
 
 export const viewComponents = {
     // 글씨

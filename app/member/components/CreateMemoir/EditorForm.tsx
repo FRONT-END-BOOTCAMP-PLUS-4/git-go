@@ -1,6 +1,6 @@
 "use client";
 
-import { PlateEditor } from "@/plate-editor/ui/plate-editor";
+import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/ui/plate-editor";
 import { X } from "lucide-react";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { EditorFormHandle } from "../../commits/[sha]/memoir/components/CommitMemoir";
