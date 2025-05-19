@@ -99,7 +99,7 @@ export default function SideBar({
                                         alt="브랜치 아이콘"
                                     />
                                     <span
-                                        className={`text-sm hover:line-clamp-none ${selectedRepo?.nameWithOwner === repo.nameWithOwner ? "line-clamp-none" : "line-clamp-2"}`}
+                                        className={`text-sm break-all hover:line-clamp-none ${selectedRepo?.nameWithOwner === repo.nameWithOwner ? "line-clamp-none" : "line-clamp-2"}`}
                                     >
                                         {repo.nameWithOwner}
                                     </span>
