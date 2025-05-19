@@ -56,7 +56,7 @@ export default function CommitPage() {
         setIsLoading(true);
 
         const accessToken = session.accessToken;
-        const author = session.user?.name;
+        const author = session.user?.id;
 
         try {
             const res = await fetch("/api/github/commits", {
