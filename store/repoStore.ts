@@ -2,8 +2,13 @@ import { create } from "zustand";
 
 // 1. Zustand 스토어 타입 정의
 type RepoStore = {
-    selectedRepo: string | null;
-    setSelectedRepo: (nameWithOwner: string | null) => void;
+    selectedRepo: {
+        id: string;
+        nameWithOwner: string;
+    } | null;
+    setSelectedRepo: (repo: { id: string; nameWithOwner: string } | null) => void;
+    // selectedRepo: string | null;
+    // setSelectedRepo: (nameWithOwner: string | null) => void;
     reloadRepoList: boolean;
     triggerReload: () => void;
     resetReload: () => void;

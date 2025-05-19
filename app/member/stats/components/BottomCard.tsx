@@ -18,7 +18,7 @@ export default function BottomCard({
                 {title}
             </h3>
             {subtitle && (
-                <p className="text-text-secondary2 mb-6 text-sm">{subtitle}</p>
+                <p className="text-text-secondary2 mb-4 text-sm">{subtitle}</p>
             )}
             {children}
         </div>
