@@ -48,8 +48,6 @@ export default function CommitPage() {
 
     const { data: session } = useSession();
 
-    console.log(session);
-
     useEffect(() => {
         if (checkedOnceRef.current) return;
         const fetchUserRepos = async () => {
