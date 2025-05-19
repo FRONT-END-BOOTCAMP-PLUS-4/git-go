@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { FetchCommitStats } from "@/application/usecase/github/FetchCommitStats";
+import { FetchCommitStatsUsecase } from "@/application/usecase/github/FetchCommitStatsUsecase";
 import { FetchCommitStatsDto } from "@/application/usecase/github/dto/FetchCommitStatsDto";
 import { GbStatsRepository } from "@/infra/repositories/github/GbStatsRepository";
 
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const repo = req.nextUrl.searchParams.get("repo");
     if (!repo) return NextResponse.json({ message: "Missing repo" }, { status: 400 });
 
-    const usecase = new FetchCommitStats(new GbStatsRepository(token.accessToken));
+    const usecase = new FetchCommitStatsUsecase(new GbStatsRepository(token.accessToken));
     const result = await usecase.execute(new FetchCommitStatsDto(repo));
 
     return NextResponse.json(result);

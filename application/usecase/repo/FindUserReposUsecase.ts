@@ -1,7 +1,7 @@
 import { RepoRepository } from "@/domain/repositories/RepoRepository";
 import { FindUserReposDto } from "./dto/FindUserReposDto";
 
-export class FindUserRepos {
+export class FindUserReposUsecase {
     constructor(private repoRepo: RepoRepository) { }
 
     async execute(userId: string): Promise<FindUserReposDto[]> {
