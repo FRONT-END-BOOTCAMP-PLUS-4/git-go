@@ -18,7 +18,7 @@ export default function StatsCard({
                     {value}
                 </span>
                 <span className={`text-sm ${isNegative ? "text-red-600" : "text-green-600"}`}>
-                    {isNegative ? "⬇" : "⬆"} {Math.abs(changeNumber)}%
+                    {isNegative ? "⬇" : "⬆"} {Math.abs(changeNumber)}
                 </span>
                 {/* <span className="text-sm text-green-600">⬆ {change}</span> */}
             </div>
