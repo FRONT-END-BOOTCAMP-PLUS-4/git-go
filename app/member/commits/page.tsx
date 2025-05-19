@@ -110,6 +110,7 @@ export default function CommitPage() {
     // 저장소 변경 시 새로운 데이터 fetch
     useEffect(() => {
         if (selectedRepo) {
+            setCurrentPage(1);
             fetchCommitsByRepo(ownerName, repoName, 1);
         }
     }, [selectedRepo]);
