@@ -85,9 +85,9 @@ export default function WeeklyCommitChart({ data }: Props) {
                     },
                 },
                 suggestedMax: Math.max(...data.map(d => d.count)) + 1.5,
-                // grid: {
-                //     display: false,
-                // },
+                grid: {
+                    display: false,
+                },
             },
             x: {
                 grid: {
