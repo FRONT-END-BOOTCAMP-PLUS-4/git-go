@@ -3,16 +3,17 @@
 import { useState } from "react";
 import ConfirmDialog from "../member/components/ConfirmDialog";
 import { signOut } from "next-auth/react";
+import AlertDialog from "../member/components/AlertDialog";
 
 export default function WithdrawButton() {
     const [openConfirm, setOpenConfirm] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleWithdraw = async () => {
         const res = await fetch("/api/auth/withdraw", { method: "PATCH" });
 
         if (res.ok) {
-            alert("탈퇴되었습니다.");
-            signOut({ callbackUrl: "/" });
+            setShowAlert(true);
         } else {
             alert("탈퇴에 실패했습니다.");
         }
@@ -36,6 +37,17 @@ export default function WithdrawButton() {
                 onConfirm={() => {
                     setOpenConfirm(false);
                     handleWithdraw();
+                }}
+            />
+
+            <AlertDialog
+                open={showAlert}
+                title="탈퇴 완료"
+                description={"정상적으로 탈퇴되었습니다.\n그동안 이용해주셔서 감사합니다."}
+                imageSrc="/bye.png"
+                onClose={() => {
+                    setShowAlert(false);
+                    signOut({ callbackUrl: "/" });
                 }}
             />
         </>
