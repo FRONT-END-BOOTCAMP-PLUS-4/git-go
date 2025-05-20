@@ -45,14 +45,24 @@ ${JSON.stringify(simplified, null, 2)}
     };
 
     return (
-        <div className="bg-bg-secondary1 flex h-60 w-full flex-col gap-3 overflow-y-auto rounded-md px-5 py-2">
+        <div
+            className="flex h-60 w-full flex-col gap-3 overflow-y-auto rounded-md px-5 py-2 shadow-md"
+            style={{
+                background: "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 100%)",
+            }}
+        >
             {!isSummarized ? (
-                <div className="flex flex-1 items-center justify-center">
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
+                        AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
+                        <br />
+                        아래 버튼을 클릭하여 AI 요약을 시작해보세요.
+                    </p>
                     <button
-                        className="bg-primary7 hover:bg-primary8 rounded-md px-4 py-2 text-white hover:cursor-pointer"
+                        className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
                         onClick={handleSummarize}
                     >
-                        AI 요약하기
+                        AI 요약 시작하기
                     </button>
                 </div>
             ) : loading && markdown === "" ? (
