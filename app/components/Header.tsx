@@ -67,7 +67,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full items-center gap-2 py-2 text-sm text-red-500 hover:bg-red-50"
+                                    className="flex w-full items-center gap-2 py-2 text-sm text-red-500 hover:bg-red-50 px-2"
                                 >
                                     <Image
                                         src="/logout.svg"
