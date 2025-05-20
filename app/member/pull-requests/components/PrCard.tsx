@@ -148,14 +148,19 @@ export default function PrCard({
                     />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
-                    <div className="mb-1 flex items-center gap-x-3">
-                        <h3 className="font-semibold">{title}</h3>
+                    <div className="relative mb-1 flex items-center gap-x-3">
+                        <h3
+                            className="line-clamp-1 max-w-140 font-semibold"
+                            title={title}
+                        >
+                            {title}
+                        </h3>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
                         >
                             {typeClassMap[state].label}
                         </div>
-                        <p className="text-text-secondary2 ml-auto text-xs">
+                        <p className="text-text-secondary2 ml-auto shrink-0 text-xs">
                             {formattedDate}
                         </p>
                     </div>
