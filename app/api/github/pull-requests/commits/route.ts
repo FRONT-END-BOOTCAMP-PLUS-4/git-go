@@ -10,8 +10,7 @@ export async function POST(req: NextRequest) {
     !accessToken ||
     !githubUsername ||
     !repoFullName ||
-    typeof prNumber !== "number" ||
-    !branchName
+    typeof prNumber !== "number"
   ) {
     return NextResponse.json({ message: "Invalid parameters" }, { status: 400 });
   }
