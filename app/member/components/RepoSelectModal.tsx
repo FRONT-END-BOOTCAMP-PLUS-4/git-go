@@ -190,6 +190,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 open={showConfirm}
                 title="저장소 연동해제"
                 description={confirmMessage}
+                imageSrc="/trash.png"
                 onCancel={() => setShowConfirm(false)}
                 onConfirm={handleConfirm}
             />

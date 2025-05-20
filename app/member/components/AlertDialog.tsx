@@ -2,23 +2,21 @@
 
 import Image from "next/image";
 
-interface ConfirmDialogProps {
+interface AlertDialogProps {
     open: boolean;
     title: string;
     description: string;
-    onConfirm: () => void;
-    onCancel: () => void;
+    onClose: () => void;
     imageSrc?: string;
 }
 
-export default function ConfirmDialog({
+export default function AlertDialog({
     open,
     title,
     description,
-    onConfirm,
-    onCancel,
+    onClose,
     imageSrc,
-}: ConfirmDialogProps) {
+}: AlertDialogProps) {
     if (!open) return null;
 
     return (
@@ -34,22 +32,14 @@ export default function ConfirmDialog({
                         />
                     </div>
                 )}
-
                 <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
                 <p className="mt-3 text-sm text-gray-600 whitespace-pre-line">
                     {description}
                 </p>
-
-                <div className="mt-6 flex justify-end gap-2">
+                <div className="mt-6 flex justify-end">
                     <button
-                        onClick={onCancel}
-                        className="px-4 py-2 rounded-md text-sm border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    >
-                        취소
-                    </button>
-                    <button
-                        onClick={onConfirm}
-                        className="px-4 py-2 rounded-md text-sm bg-danger1 text-white hover:bg-danger2 cursor-pointer"
+                        onClick={onClose}
+                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
                     >
                         확인
                     </button>
