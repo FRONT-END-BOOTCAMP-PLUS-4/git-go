@@ -13,7 +13,7 @@ export default function HomePage() {
     const isLoggedIn = status === "authenticated";
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4">
+        <main className="flex flex-col items-center justify-center bg-gray-50 text-center px-4 mt-25">
             <div className="space-y-6">
                 <div className="flex justify-center">
                     <div className="bg-indigo-100 rounded-full p-6 flex items-center justify-center">
