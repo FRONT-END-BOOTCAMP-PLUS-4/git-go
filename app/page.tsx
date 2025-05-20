@@ -10,7 +10,7 @@ export default async function HomePage() {
     const isLoggedIn = !!session;
 
     return (
-        <main className="flex flex-col items-center justify-center bg-gray-50 text-center px-4 mt-25">
+        <main className="flex flex-col items-center justify-center bg-gray-50 text-center px-4 mt-[15vh]">
             <div className="space-y-6">
                 <div className="flex justify-center">
                     <div className="bg-indigo-100 rounded-full p-6 flex items-center justify-center">
