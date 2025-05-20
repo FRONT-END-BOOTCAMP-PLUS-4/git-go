@@ -1,5 +1,3 @@
-// domain/entities/GithubPrCommitList.ts
-
 export class GithubPrCommitList {
   constructor(
     public sha: string,

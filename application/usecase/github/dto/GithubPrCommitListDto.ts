@@ -1,5 +1,3 @@
-// application/usecase/github/dto/GithubPullRequestCommitDto.ts
-
 import { GithubPrCommitList } from "@/domain/entities/GithubPrCommitList";
 
 export class GithubPrCommitDto {

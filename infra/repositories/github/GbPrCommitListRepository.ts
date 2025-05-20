@@ -1,5 +1,3 @@
-// infra/repositories/GbPrCommitListRepository.ts
-
 import { GithubPrCommitList } from "@/domain/entities/GithubPrCommitList";
 import { GithubPrCommitListRepository } from "@/domain/repositories/GithubPrCommitListRepository";
 
