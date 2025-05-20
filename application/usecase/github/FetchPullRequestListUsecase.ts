@@ -6,11 +6,11 @@ export class FetchPullRequestListUsecase {
 
   async execute(
     repoFullName: string,
-    username: string,
+    author: string,
     page: number = 1,
     perPage: number = 10
   ): Promise<GithubPullRequestListDto[]> {
-    const prList = await this.repository.fetchByUsername(repoFullName, username, page, perPage);
+    const prList = await this.repository.fetchByUsername(repoFullName, author, page, perPage);
 
     return prList.map((pr) => new GithubPullRequestListDto(pr));
   }

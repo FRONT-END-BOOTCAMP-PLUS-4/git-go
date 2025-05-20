@@ -4,11 +4,11 @@ import { GbPrCommitListRepository } from "@/infra/repositories/github/GbPrCommit
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { accessToken, githubUsername, repoFullName, prNumber, branchName } = body;
+  const { accessToken, author, repoFullName, prNumber, branchName } = body;
 
   if (
     !accessToken ||
-    !githubUsername ||
+    !author ||
     !repoFullName ||
     typeof prNumber !== "number"
   ) {
