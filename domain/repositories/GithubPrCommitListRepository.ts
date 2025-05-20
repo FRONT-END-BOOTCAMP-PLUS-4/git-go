@@ -1,5 +1,3 @@
-// domain/repositories/GithubPrCommitListRepository.ts
-
 import { GithubPrCommitList } from "@/domain/entities/GithubPrCommitList";
 
 export interface GithubPrCommitListRepository {
