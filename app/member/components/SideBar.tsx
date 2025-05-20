@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
 import SideBarRepoSkeleton from "./SideBarRepoSkeleton";
+import WithdrawButton from "@/app/components/WithdrawButton";
 
 export default function SideBar({
     setOpen,
@@ -140,6 +141,12 @@ export default function SideBar({
                     <TagFilter
                         tags={["React", "TypeScript", "API", "Security"]}
                     />
+                </div>
+            )}
+
+            {pathname.includes("stats") && (
+                <div className="mt-auto pb-2">
+                    <WithdrawButton />
                 </div>
             )}
         </aside>

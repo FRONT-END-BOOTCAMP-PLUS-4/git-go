@@ -22,7 +22,7 @@ export default function WithdrawButton() {
     return (
         <button
             onClick={handleWithdraw}
-            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md mt-4"
+            className="w-full text-sm text-gray-400 hover:text-gray-600 cursor-pointer py-2 px-3 rounded-md transition mt-2"
         >
             회원 탈퇴
         </button>
