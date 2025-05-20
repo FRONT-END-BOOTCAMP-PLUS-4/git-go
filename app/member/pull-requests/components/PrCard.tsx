@@ -2,6 +2,8 @@
 import Button from "@/app/components/Button";
 import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import { MEMBER_URL } from "@/constants/url";
+import { useRepoStore } from "@/store/repoStore";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -45,10 +47,44 @@ export default function PrCard({
 }: PrCardProps) {
     const router = useRouter();
 
+    const { selectedRepo } = useRepoStore();
+
     const [listIsOpen, setListIsOpen] = useState(false);
+    const { data: session } = useSession();
 
     const moveToPrMemoir = () => {
         router.push(`${MEMBER_URL.prs}/${prNumber}/memoir`);
+    };
+
+    const fetchPrCommitList = async (
+        selectedRepo: string | undefined,
+        prNo: number
+    ) => {
+        setListIsOpen(!listIsOpen);
+
+        const accessToken = session?.accessToken;
+        const author = session?.user.githubId;
+        try {
+            const res = await fetch("/api/github/pull-requests/commits", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    accessToken,
+                    author,
+                    repoFullName: selectedRepo,
+                    prNumber: prNo,
+                }),
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                console.log(result);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const newCreatedAt = new Date(createdAt);
@@ -61,7 +97,9 @@ export default function PrCard({
     return (
         <li
             className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
-            onClick={() => setListIsOpen(!listIsOpen)}
+            onClick={() =>
+                fetchPrCommitList(selectedRepo?.nameWithOwner, prNumber)
+            }
         >
             <article className="flex items-start gap-x-4">
                 <div
