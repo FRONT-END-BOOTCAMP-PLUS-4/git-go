@@ -49,7 +49,7 @@ export default function ConfirmDialog({
                     </button>
                     <button
                         onClick={onConfirm}
-                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
+                        className="px-4 py-2 rounded-md text-sm bg-danger1 text-white hover:bg-danger2 cursor-pointer"
                     >
                         확인
                     </button>
