@@ -18,16 +18,16 @@ export default function CommitMemoir() {
         <CreateMemoirLayout>
             <button
                 onClick={() => setShowModal(true)}
-                className="fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 shadow-lg [animation-fill-mode:both]"
-                style={{
-                    background:
-                        "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%,#EFF6FF 100%)",
-                }}
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+                // style={{
+                //     background:
+                //         "linear-gradient(180deg, #3730a3 0%, #4f46e5 100%)",
+                // }}
             >
                 ✨ AI 요약 시작하기
             </button>
             {showModal && (
-                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw]">
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
                     <AiSummary setShowModal={setShowModal} />
                 </div>
             )}

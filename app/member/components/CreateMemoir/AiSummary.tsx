@@ -76,7 +76,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                         className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
                         onClick={handleSummarize}
                     >
-                        AI 요약 시작하기
+                        AI 요약
                     </button>
                 </div>
             ) : loading && markdown === "" ? (
