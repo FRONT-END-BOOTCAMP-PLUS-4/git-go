@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/app/components/Button";
+import Loading from "@/app/member/components/Loading";
 import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
@@ -16,6 +17,15 @@ interface PrCardProps {
     prNumber: number;
     createdAt: string;
     state: "open" | "closed";
+}
+
+interface PrCommitCardProps {
+    sha: string;
+    message: string;
+    additions: number;
+    deletions: number;
+    authorName: string;
+    authoredDate: string;
 }
 
 const typeClassMap: Record<
@@ -50,8 +60,10 @@ export default function PrCard({
     const { selectedRepo } = useRepoStore();
 
     const [listIsOpen, setListIsOpen] = useState(false);
-    const { data: session } = useSession();
+    const [prCommits, setPrCommits] = useState<PrCommitCardProps[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
+    const { data: session } = useSession();
     const moveToPrMemoir = () => {
         router.push(`${MEMBER_URL.prs}/${prNumber}/memoir`);
     };
@@ -60,7 +72,13 @@ export default function PrCard({
         selectedRepo: string | undefined,
         prNo: number
     ) => {
+        if (listIsOpen === true) {
+            setListIsOpen(false);
+            return;
+        }
+
         setListIsOpen(!listIsOpen);
+        setIsLoading(true);
 
         const accessToken = session?.accessToken;
         const author = session?.user.githubId;
@@ -80,10 +98,17 @@ export default function PrCard({
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result);
+                console.log(result.commitList);
+                setPrCommits(result.commitList);
+                setIsLoading(false);
             }
         } catch (error) {
-            console.error(error);
+            console.error(
+                "Failed to fetch commit list from current PR: ",
+                error
+            );
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -93,6 +118,18 @@ export default function PrCard({
         month: "long",
         day: "numeric",
     }).format(newCreatedAt);
+
+    const prCommitList = prCommits?.map((commit) => (
+        <PrCommitCard
+            sha={commit.sha}
+            message={commit.message}
+            additions={commit.additions}
+            deletions={commit.deletions}
+            authorName={commit.authorName}
+            authoredDate={commit.authoredDate}
+            key={commit.sha}
+        />
+    ));
 
     return (
         <li
@@ -173,11 +210,7 @@ export default function PrCard({
                                 </h3>
                             </div>
                             <ul>
-                                <PrCommitCard />
-                                <PrCommitCard />
-                                <PrCommitCard />
-                                <PrCommitCard />
-                                <PrCommitCard />
+                                {isLoading ? <Loading /> : <>{prCommitList}</>}
                             </ul>
                         </div>
                     )}
