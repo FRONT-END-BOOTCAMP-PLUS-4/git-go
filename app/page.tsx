@@ -1,16 +1,13 @@
-"use client";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 import Image from "next/image";
 import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Button from "./components/Button";
 import { MEMBER_URL } from "@/constants/url";
 
-export default function HomePage() {
-    const { data: session, status } = useSession();
-    const router = useRouter();
-    const isLoggedIn = status === "authenticated";
+export default async function HomePage() {
+    const session = await getServerSession(authOptions);
+    const isLoggedIn = !!session;
 
     return (
         <main className="flex flex-col items-center justify-center bg-gray-50 text-center px-4 mt-25">
@@ -31,18 +28,17 @@ export default function HomePage() {
                     GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI 기반 요약과 함께<br />
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
-                {status === "loading" ? null : isLoggedIn ? (
+
+                {isLoggedIn ? (
                     <div className="flex justify-center">
-                        <Button
-                            type="default"
-                            size="regular"
-                            onClick={() => router.push(MEMBER_URL.commits)}
-                            label="마이페이지"
-                        />
+                        <form action={MEMBER_URL.commits}>
+                            <Button type="default" size="regular" label="마이페이지" htmlType="submit" />
+                        </form>
                     </div>
                 ) : (
                     <LoginWithGitHubButton />
                 )}
+
                 <div className="flex gap-20 mt-10 justify-center">
                     {[
                         {
@@ -65,7 +61,9 @@ export default function HomePage() {
                         },
                     ].map((feature) => (
                         <div key={feature.title} className="text-center max-w-[350px]">
-                            <div className={`rounded-full p-4 mb-2 flex items-center justify-center mx-auto w-16 h-16 ${feature.bgColor}`}>
+                            <div
+                                className={`rounded-full p-4 mb-2 flex items-center justify-center mx-auto w-16 h-16 ${feature.bgColor}`}
+                            >
                                 <Image
                                     src={feature.iconPath}
                                     alt={feature.title}
