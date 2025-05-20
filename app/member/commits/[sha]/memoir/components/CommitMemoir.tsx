@@ -26,7 +26,11 @@ export default function CommitMemoir() {
             >
                 ✨ AI 요약 시작하기
             </button>
-            {showModal && <AiSummary setShowModal={setShowModal} />}
+            {showModal && (
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw]">
+                    <AiSummary setShowModal={setShowModal} />
+                </div>
+            )}
             <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
             <ChangeListLayout>
                 <div className="px-3 py-2 font-semibold">

@@ -42,51 +42,50 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                 setMarkdown((prev) => prev + chunk.text);
             });
         }
-
+        console.log("AI 요약 결과: ", markdown);
         setLoading(false);
     };
 
     return (
-        <div className="fixed inset-0 bottom-10 z-51 flex min-h-screen items-end justify-start overflow-x-auto overflow-y-scroll p-4">
-            <div
-                className="relative flex h-[70%] w-[80%] max-w-md justify-center rounded-xl bg-white p-6 shadow-xl"
-                style={{
-                    background:
-                        "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
-                }}
-                onClick={(e) => e.stopPropagation()}
+        <div
+            className="flex h-full w-full justify-center overflow-y-scroll rounded-xl bg-white shadow-xl"
+            style={{
+                background:
+                    "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                aria-label="Close"
             >
-                <button
-                    onClick={() => setShowModal(false)}
-                    className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
-                    aria-label="Close"
+                ✖
+            </button>
+            {!isSummarized ? (
+                <div
+                    className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
+                    style={{ maxHeight: "100%" }}
                 >
-                    ✖
-                </button>
-                {!isSummarized ? (
-                    <div
-                        className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
-                        style={{ maxHeight: "100%" }}
+                    <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
+                        AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
+                        <br />
+                        아래 버튼을 클릭하여 AI 요약을 시작해보세요.
+                    </p>
+                    <button
+                        className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
+                        onClick={handleSummarize}
                     >
-                        <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
-                            AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
-                            <br />
-                            아래 버튼을 클릭하여 AI 요약을 시작해보세요.
-                        </p>
-                        <button
-                            className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
-                            onClick={handleSummarize}
-                        >
-                            AI 요약 시작하기
-                        </button>
-                    </div>
-                ) : loading && markdown === "" ? (
-                    <div className="flex flex-1 animate-pulse items-center justify-center text-gray-400">
-                        요약 생성 중입니다...
-                    </div>
-                ) : (
-                    <>
-                        {/* <div className="flex items-center gap-2">
+                        AI 요약 시작하기
+                    </button>
+                </div>
+            ) : loading && markdown === "" ? (
+                <div className="flex flex-1 animate-pulse items-center justify-center text-gray-400">
+                    요약 생성 중입니다...
+                </div>
+            ) : (
+                <>
+                    {/* <div className="flex items-center gap-2">
                             <Image
                                 className="h-6 w-6"
                                 src="/ai-summaries.svg"
@@ -96,12 +95,11 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                             />
                             <div className="text-primary7">AI 요약</div>
                         </div> */}
-                        <div className="flex flex-col justify-center gap-1">
-                            <ReactMarkdown>{markdown}</ReactMarkdown>
-                        </div>
-                    </>
-                )}
-            </div>
+                    <div className="flex flex-col gap-1 p-4 pt-8">
+                        <ReactMarkdown>{markdown}</ReactMarkdown>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
