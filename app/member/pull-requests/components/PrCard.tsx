@@ -161,7 +161,7 @@ export default function PrCard({
                     </div>
                     <a
                         href={`https://github.com/${selectedRepo?.nameWithOwner}/pull/${prNumber}`}
-                        className="text-text-secondary2 text-sm"
+                        className="text-text-secondary2 w-fit text-sm"
                         target="_blank"
                         onClick={(e) => e.stopPropagation()}
                     >
