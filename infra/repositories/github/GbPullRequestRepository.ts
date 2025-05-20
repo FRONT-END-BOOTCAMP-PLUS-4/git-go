@@ -8,13 +8,13 @@ export class GbPullRequestRepository implements GithubPullRequestRepository {
 
   async fetchByUsername(
     repoFullName: string,
-    username: string,
+    author: string,
     perPage: number = 10,
     page: number = 1
   ): Promise<GithubPullRequestList[]> {
     const [owner, repo] = repoFullName.split("/");
 
-    const searchUrl = `${this.GITHUB_API_BASE}/search/issues?q=repo:${owner}/${repo}+type:pr+author:${username}&per_page=${perPage}&page=${page}`;
+    const searchUrl = `${this.GITHUB_API_BASE}/search/issues?q=repo:${owner}/${repo}+type:pr+author:${author}&per_page=${perPage}&page=${page}`;
     const searchRes = await fetch(searchUrl, { headers: this.headers() });
 
     if (!searchRes.ok) {
