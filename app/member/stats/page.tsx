@@ -94,7 +94,7 @@ export default function StatsPage() {
     }, [selectedRepo]);
 
     return (
-        <div className="min-h-screen space-y-6 bg-gray-50">
+        <div className="space-y-6 bg-gray-50">
             {/* Top stats */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {totalCommits === null ? (
