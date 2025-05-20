@@ -22,7 +22,7 @@ export default function ConfirmDialog({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="relative bg-white rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-300">
                 {imageSrc && (
                     <div className="absolute top-4 right-4">
@@ -43,13 +43,13 @@ export default function ConfirmDialog({
                 <div className="mt-6 flex justify-end gap-2">
                     <button
                         onClick={onCancel}
-                        className="px-4 py-2 rounded-md text-sm border border-gray-300 text-gray-700 hover:bg-gray-100"
+                        className="px-4 py-2 rounded-md text-sm border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
                     >
                         취소
                     </button>
                     <button
                         onClick={onConfirm}
-                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700"
+                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
                     >
                         확인
                     </button>

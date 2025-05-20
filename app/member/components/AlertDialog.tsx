@@ -39,7 +39,7 @@ export default function AlertDialog({
                 <div className="mt-6 flex justify-end">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700"
+                        className="px-4 py-2 rounded-md text-sm bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
                     >
                         확인
                     </button>
