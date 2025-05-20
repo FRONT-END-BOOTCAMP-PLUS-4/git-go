@@ -6,12 +6,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface LabelBadgeProps {
-    type: "open" | "merged";
+interface PrCardProps {
+    title: string;
+    content: string | null;
+    repositoryName: string;
+    branchName: string;
+    prNumber: number;
+    createdAt: string;
+    state: "open" | "closed";
 }
 
 const typeClassMap: Record<
-    LabelBadgeProps["type"],
+    PrCardProps["state"],
     { bg: string; text: string; label: string; icon: string }
 > = {
     open: {
@@ -20,22 +26,37 @@ const typeClassMap: Record<
         text: "text-[#065f46]",
         icon: "/pull-request-green.svg",
     },
-    merged: {
-        label: "merged",
+    closed: {
+        label: "closed",
         bg: "bg-[#e0f2fe]",
         text: "text-[#1e40af]",
         icon: "/pull-request-blue.svg",
     },
 };
 
-export default function PrCard({ type }: LabelBadgeProps) {
+export default function PrCard({
+    title,
+    content,
+    repositoryName,
+    branchName,
+    prNumber,
+    createdAt,
+    state,
+}: PrCardProps) {
     const router = useRouter();
 
     const [listIsOpen, setListIsOpen] = useState(false);
 
     const moveToPrMemoir = () => {
-        router.push(`${MEMBER_URL.prs}/1234/memoir`);
+        router.push(`${MEMBER_URL.prs}/${prNumber}/memoir`);
     };
+
+    const newCreatedAt = new Date(createdAt);
+    const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }).format(newCreatedAt);
 
     return (
         <li
@@ -44,10 +65,10 @@ export default function PrCard({ type }: LabelBadgeProps) {
         >
             <article className="flex items-start gap-x-4">
                 <div
-                    className={`${typeClassMap[type].bg} flex h-10 w-10 items-center justify-center rounded-full`}
+                    className={`${typeClassMap[state].bg} flex h-10 w-10 items-center justify-center rounded-full`}
                 >
                     <Image
-                        src={typeClassMap[type].icon}
+                        src={typeClassMap[state].icon}
                         width={14}
                         height={16}
                         alt="커밋 아이콘"
@@ -55,21 +76,18 @@ export default function PrCard({ type }: LabelBadgeProps) {
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="mb-3 flex items-center gap-x-3">
-                        <h3 className="font-semibold">
-                            Fix navigation bug in dashboard component
-                        </h3>
+                        <h3 className="font-semibold">{title}</h3>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[type].bg} ${typeClassMap[type].text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
                         >
-                            {typeClassMap[type].label}
+                            {typeClassMap[state].label}
                         </div>
                         <p className="text-text-secondary2 ml-auto text-xs">
-                            2 hours ago
+                            {formattedDate}
                         </p>
                     </div>
                     <p className="text-text-secondary2 text-sm">
-                        Implements JWT-based authentication system with login
-                        and registration flows.
+                        {content ? content : "커밋 내용을 불러올 수 없읍니다."}
                     </p>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
@@ -79,7 +97,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                                 width={14}
                                 height={12}
                             />
-                            <p>frontend-app</p>
+                            <p>{repositoryName}</p>
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
@@ -88,7 +106,7 @@ export default function PrCard({ type }: LabelBadgeProps) {
                                 width={18}
                                 height={14}
                             />
-                            bugfix/nav-issue
+                            {branchName}
                         </div>
                         <div className="ml-auto">
                             <div onClick={(e) => e.stopPropagation()}>
