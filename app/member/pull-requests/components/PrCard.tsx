@@ -11,7 +11,6 @@ import { useState } from "react";
 
 interface PrCardProps {
     title: string;
-    content: string | null;
     repositoryName: string;
     branchName: string;
     prNumber: number;
@@ -48,7 +47,6 @@ const typeClassMap: Record<
 
 export default function PrCard({
     title,
-    content,
     repositoryName,
     branchName,
     prNumber,
@@ -150,7 +148,7 @@ export default function PrCard({
                     />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
-                    <div className="mb-3 flex items-center gap-x-3">
+                    <div className="mb-1 flex items-center gap-x-3">
                         <h3 className="font-semibold">{title}</h3>
                         <div
                             className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
@@ -161,9 +159,17 @@ export default function PrCard({
                             {formattedDate}
                         </p>
                     </div>
-                    <p className="text-text-secondary2 text-sm">
-                        {content ? content : "커밋 내용을 불러올 수 없읍니다."}
-                    </p>
+                    <a
+                        href={`https://github.com/${selectedRepo?.nameWithOwner}/pull/${prNumber}`}
+                        className="text-text-secondary2 text-sm"
+                        target="_blank"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        🔗{" "}
+                        <span className="underline">
+                            {`https://github.com/${selectedRepo?.nameWithOwner}/pull/${prNumber}`}
+                        </span>
+                    </a>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image

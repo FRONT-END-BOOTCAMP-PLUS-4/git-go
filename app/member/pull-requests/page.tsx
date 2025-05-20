@@ -79,7 +79,6 @@ export default function PullRequestPage() {
     const prCardList = prList?.map((pr) => (
         <PrCard
             title={pr.title}
-            content={pr.content}
             repositoryName={pr.repositoryName}
             branchName={pr.branchName}
             prNumber={pr.prNumber}
