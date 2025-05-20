@@ -127,6 +127,7 @@
 //   }
 // }
 
+// infra/repositories/GbPullRequestRepository.ts
 
 import { GithubPullRequestList } from "@/domain/entities/GithubPullRequestList";
 import { GithubPullRequestRepository } from "@/domain/repositories/GithubPullRequestRepository";
@@ -144,61 +145,32 @@ export class GbPullRequestRepository implements GithubPullRequestRepository {
   ): Promise<GithubPullRequestList[]> {
     const [owner, repo] = repoFullName.split("/");
 
-    // 1. 저장소 정보 (디폴트 브랜치 확인용)
-    // const repoRes = await fetch(`${this.GITHUB_API_BASE}/repos/${owner}/${repo}`, {
-    //   headers: this.headers(),
-    // });
-    // const repoData = await repoRes.json();
-    // const defaultBranch = repoData.default_branch;
-
-    // 2. PR 검색
     const searchUrl = `${this.GITHUB_API_BASE}/search/issues?q=repo:${owner}/${repo}+type:pr+author:${username}&per_page=${perPage}&page=${page}`;
     const searchRes = await fetch(searchUrl, { headers: this.headers() });
-    const searchData = await searchRes.json();
 
+    if (!searchRes.ok) {
+      throw new Error(`Failed to fetch PR list: ${searchRes.statusText}`);
+    }
+
+    const searchData = await searchRes.json();
     const prList: GithubPullRequestList[] = [];
 
     for (const pr of searchData.items || []) {
       const prNumber = pr.number;
 
-      // 3. PR 상세 정보
       const prDetailRes = await fetch(
         `${this.GITHUB_API_BASE}/repos/${owner}/${repo}/pulls/${prNumber}`,
         { headers: this.headers() }
       );
+
+      if (!prDetailRes.ok) {
+        throw new Error(`Failed to fetch PR detail for #${prNumber}`);
+      }
+
       const prDetail = await prDetailRes.json();
 
       const sourceBranch = prDetail.head.ref;
-      const baseBranch = prDetail.base.ref;
-      // const isDuplicate = sourceBranch === baseBranch;
-      // const branchName = isDuplicate ? defaultBranch : sourceBranch;
       const branchName = sourceBranch;
-
-      // 4. 커밋 목록
-      const commitRes = await fetch(
-        `${this.GITHUB_API_BASE}/repos/${owner}/${repo}/pulls/${prNumber}/commits`,
-        { headers: this.headers() }
-      );
-      const commitsRaw = await commitRes.json();
-
-      const commits = await Promise.all(
-        commitsRaw.map(async (commit: any) => {
-          const commitDetailRes = await fetch(
-            `${this.GITHUB_API_BASE}/repos/${owner}/${repo}/commits/${commit.sha}`,
-            { headers: this.headers() }
-          );
-          const commitDetail = await commitDetailRes.json();
-
-          return {
-            sha: commit.sha,
-            message: commit.commit.message,
-            authorName: commit.commit.author?.name ?? "unknown",
-            authoredDate: commit.commit.author?.date,
-            additions: commitDetail.stats?.additions ?? 0,
-            deletions: commitDetail.stats?.deletions ?? 0,
-          };
-        })
-      );
 
       prList.push(
         new GithubPullRequestList(
@@ -208,7 +180,6 @@ export class GbPullRequestRepository implements GithubPullRequestRepository {
           repo,
           branchName,
           pr.created_at,
-          commits
         )
       );
     }
