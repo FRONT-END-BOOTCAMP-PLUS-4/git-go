@@ -1,6 +1,7 @@
 "use client";
 import Loading from "@/app/member/components/Loading";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
+import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -95,7 +96,13 @@ export default function PullRequestPage() {
             </section>
 
             <ul className="min-h-[100px]">
-                {isLoading ? <Loading /> : <>{prCardList}</>}
+                {isLoading ? (
+                    Array.from({ length: 5 }).map((_, i) => (
+                        <PrCardSkeleton key={i} />
+                    ))
+                ) : (
+                    <>{prCardList}</>
+                )}
             </ul>
         </div>
     );
