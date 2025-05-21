@@ -2,6 +2,8 @@
 import Button from "@/app/components/Button";
 import Loading from "@/app/member/components/Loading";
 import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
+import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
+
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
@@ -221,7 +223,14 @@ export default function PrCard({
                                 </h3>
                             </div>
                             <ul>
-                                {isLoading ? <Loading /> : <>{prCommitList}</>}
+                                {isLoading ? (
+                                    <>
+                                        <PrCommitCardSkeleton />
+                                        <PrCommitCardSkeleton />
+                                    </>
+                                ) : (
+                                    <>{prCommitList}</>
+                                )}
                             </ul>
                         </div>
                     )}
