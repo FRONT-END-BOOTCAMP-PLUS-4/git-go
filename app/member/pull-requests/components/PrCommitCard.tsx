@@ -36,9 +36,9 @@ export default function PrCommitCard({
             <div className="text-text-secondary2 flex items-center gap-x-3 text-xs">
                 <p>{authorName}</p>
                 <p>
-                    <span className="text-green-500">{`+${additions}`}</span>
+                    <span className="text-code-add-symbol">{`+${additions}`}</span>
                     {"  "}
-                    <span className="text-red-500">{`-${deletions}`}</span>
+                    <span className="text-code-delete-symbol">{`-${deletions}`}</span>
                 </p>
             </div>
         </li>
