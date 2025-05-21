@@ -14,10 +14,6 @@ import { useParams } from "next/navigation";
 
 import { useState } from "react";
 
-export interface EditorFormHandle {
-    getContent: () => unknown[];
-}
-
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
@@ -29,7 +25,6 @@ export default function CommitMemoir() {
         setTitle,
         tags,
         setTags,
-        editorRef,
         disabled,
         loading,
         error,
@@ -68,11 +63,13 @@ export default function CommitMemoir() {
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
                     <EditorForm
-                        title={title}
-                        onTitleChange={setTitle}
-                        tags={tags}
-                        onTagsChange={setTags}
-                        ref={editorRef}
+                        initialTitle={title}
+                        onChangeTitle={setTitle}
+                        initialTags={tags}
+                        onChangeTag={setTags}
+                        initialContent={[]}
+                        sourceId={sha}
+                        typeId={1}
                     />
 
                     <div className="flex justify-end gap-2">
