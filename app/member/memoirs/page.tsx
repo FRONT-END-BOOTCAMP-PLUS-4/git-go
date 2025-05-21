@@ -5,14 +5,13 @@ import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { useRepoStore } from "@/store/repoStore";
 import { useEffect, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
+import MemoirSkeleton from "./components/MemoirSkeleton";
 
 export default function MemoirPage() {
-    // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
-
-    // 현재 날짜를 한국어 형식으로 포맷팅
     const now = new Date();
     const { selectedRepo } = useRepoStore();
     const [memoirs, setMemoirs] = useState<MemoirListDto[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -24,13 +23,21 @@ export default function MemoirPage() {
         if (!selectedRepo) return;
 
         const fetchMemoirs = async () => {
-            const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}`);
-            const data = await res.json();
-            const updatedData = data.map((memoir: any) => ({
-                ...memoir,
-                repoName: selectedRepo.nameWithOwner,
-            }));
-            setMemoirs(updatedData);
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}`);
+                const data = await res.json();
+                const updatedData = data.map((memoir: any) => ({
+                    ...memoir,
+                    repoName: selectedRepo.nameWithOwner,
+                }));
+                setMemoirs(updatedData);
+            } catch (e) {
+                console.error("회고 목록 로딩 실패", e);
+                setMemoirs([]);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchMemoirs();
@@ -44,7 +51,9 @@ export default function MemoirPage() {
             </section>
 
             <ul>
-                {memoirs.length === 0 ? (
+                {loading ? (
+                    Array.from({ length: 3 }).map((_, i) => <MemoirSkeleton key={i} />)
+                ) : memoirs.length === 0 ? (
                     <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
                 ) : (
                     memoirs.map((memoir) => (
