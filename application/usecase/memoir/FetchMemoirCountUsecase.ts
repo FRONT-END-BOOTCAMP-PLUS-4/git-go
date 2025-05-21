@@ -5,6 +5,6 @@ export class FetchMemoirCountUsecase {
     constructor(private repo: MemoirRepository) { }
 
     async execute(dto: FetchMemoirCountDto): Promise<number> {
-        return this.repo.countByRepoName(dto.repoId);
+        return this.repo.countByRepoName(dto.repoId, dto.userId);
     }
 }
