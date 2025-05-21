@@ -4,9 +4,12 @@ import { Memoir, PrismaClient } from "@/prisma/generated/prisma";
 const prisma = new PrismaClient();
 
 export class PrMemoirRepository implements MemoirRepository {
-    async findByUserId(userId: string) {
+    async findByUserId(userId: string, repoId?: number) {
         return prisma.memoir.findMany({
-            where: { userId },
+            where: {
+                userId,
+                ...(repoId && { repoId }),
+            },
             include: {
                 type: true,
                 repo: true,
