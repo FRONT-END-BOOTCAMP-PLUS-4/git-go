@@ -10,7 +10,7 @@ export default function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     return (
-        <div className="border-border-primary1 sticky top-0 z-50 w-full border-b bg-white">
+        <div className="border-border-primary1 sticky top-0 z-50 h-[65px] w-full border-b bg-white">
             <div className="layout-flex mx-0 flex h-[65px] flex-row items-center justify-between px-4 xl:mx-auto xl:max-w-screen-xl">
                 <div className="flex items-center justify-center">
                     <Image
@@ -67,7 +67,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full items-center gap-2 py-2 text-sm text-red-500 hover:bg-red-50 px-2"
+                                    className="flex w-full items-center gap-2 px-2 py-2 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
                                         src="/logout.svg"
