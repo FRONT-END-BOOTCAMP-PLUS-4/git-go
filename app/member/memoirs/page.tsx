@@ -45,7 +45,7 @@ export default function MemoirPage() {
 
             <ul>
                 {memoirs.length === 0 ? (
-                    <EmptyResult message="선택한 저장소에 회고가 없습니다." />
+                    <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
                 ) : (
                     memoirs.map((memoir) => (
                         <MemoirCard key={memoir.id} memoir={memoir} />
