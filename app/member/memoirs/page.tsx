@@ -25,6 +25,7 @@ export default function MemoirPage() {
         const fetchMemoirs = async () => {
             const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}`);
             const data = await res.json();
+            console.log("memoirs", data);
             setMemoirs(data);
         };
 
@@ -38,9 +39,14 @@ export default function MemoirPage() {
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
             </section>
 
-            <ul>
+            {/* <ul>
                 <MemoirCard type="commit" />
                 <MemoirCard type="pr" />
+            </ul> */}
+            <ul>
+                {memoirs.map((memoir) => (
+                    <MemoirCard key={memoir.id} memoir={memoir} />
+                ))}
             </ul>
         </div>
     );
