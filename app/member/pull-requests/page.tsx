@@ -1,5 +1,7 @@
 "use client";
-import Loading from "@/app/member/components/Loading";
+
+import Pagination from "@/app/components/Pagination";
+import EmptyResult from "@/app/member/components/EmptyResult";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
@@ -29,7 +31,9 @@ export default function PullRequestPage() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [prList, setPrList] = useState<PrCardProps[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [totalCount, setTotalCount] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+    const perPage = 10;
 
     const { selectedRepo } = useRepoStore();
     const { data: session } = useSession();
@@ -60,12 +64,11 @@ export default function PullRequestPage() {
 
             if (res.ok) {
                 const result = await res.json();
-                setPrList(result);
-                setIsLoading(false);
+                setPrList(result.list);
+                setTotalCount(result.totalCount);
             }
-        } catch (error) {
+        } catch (error: unknown) {
             console.error("Failed to fetch pull request list: ", error);
-            setIsLoading(false);
         } finally {
             setIsLoading(false);
         }
@@ -74,6 +77,17 @@ export default function PullRequestPage() {
     useEffect(() => {
         fetchPrList(selectedRepo?.nameWithOwner, currentPage);
     }, [selectedRepo]);
+
+    // 페이지 변경 시 새로운 데이터 fetch
+    useEffect(() => {
+        if (selectedRepo) {
+            fetchPrList(selectedRepo.nameWithOwner, currentPage);
+        }
+    }, [currentPage]);
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
 
     const prCardList = prList?.map((pr) => (
         <PrCard
@@ -86,10 +100,18 @@ export default function PullRequestPage() {
             key={pr.prNumber}
         />
     ));
+
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                <h2 className="font-bold">Pull Requests</h2>
+                <div className="flex items-center gap-x-3">
+                    <h2 className="font-bold">Pull Requests</h2>
+                    {(totalCount ?? 0) > 0 && (
+                        <span className="text-text-secondary2 text-sm">
+                            전체 {totalCount}개
+                        </span>
+                    )}
+                </div>
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
             </section>
 
@@ -101,18 +123,17 @@ export default function PullRequestPage() {
                 ) : prList.length !== 0 ? (
                     <>{prCardList}</>
                 ) : (
-                    <li className="m-auto w-fit p-8">
-                        <Image
-                            alt="표시할 커밋 없음"
-                            src="/no-result.png"
-                            width={200}
-                            height={200}
-                            className="mx-auto mb-4"
-                        />
-                        선택한 저장소에 표시할 Pull Request 가 없습니다.
-                    </li>
+                    <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
                 )}
             </ul>
+            {!isLoading && prList.length > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalCount={totalCount || 0}
+                    perPage={perPage}
+                    setCurrentPage={handlePageChange}
+                />
+            )}
         </div>
     );
 }
