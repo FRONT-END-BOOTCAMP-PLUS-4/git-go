@@ -4,6 +4,7 @@ import MemoirCard from "@/app/member/memoirs/components/MemoirCard";
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { useRepoStore } from "@/store/repoStore";
 import { useEffect, useState } from "react";
+import EmptyResult from "../components/EmptyResult";
 
 export default function MemoirPage() {
     // TODO: 사이드바와 탭 부분은 공통 컴포넌트로 작성해서 각 페이지마다 넣기.
@@ -29,7 +30,6 @@ export default function MemoirPage() {
                 ...memoir,
                 repoName: selectedRepo.nameWithOwner,
             }));
-            console.log("memoirs", updatedData);
             setMemoirs(updatedData);
         };
 
@@ -43,14 +43,14 @@ export default function MemoirPage() {
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
             </section>
 
-            {/* <ul>
-                <MemoirCard type="commit" />
-                <MemoirCard type="pr" />
-            </ul> */}
             <ul>
-                {memoirs.map((memoir) => (
-                    <MemoirCard key={memoir.id} memoir={memoir} />
-                ))}
+                {memoirs.length === 0 ? (
+                    <EmptyResult message="선택한 저장소에 회고가 없습니다." />
+                ) : (
+                    memoirs.map((memoir) => (
+                        <MemoirCard key={memoir.id} memoir={memoir} />
+                    ))
+                )}
             </ul>
         </div>
     );
