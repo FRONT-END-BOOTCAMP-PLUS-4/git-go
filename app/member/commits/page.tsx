@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
-import Loading from "../components/Loading";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 import Image from "next/image";
@@ -44,7 +43,7 @@ export default function CommitPage() {
     const checkedOnceRef = useRef(false);
     const [commits, setCommits] = useState<Commit[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
 
@@ -52,7 +51,7 @@ export default function CommitPage() {
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
-        setIsLoading(true);
+
         const fetchUserRepos = async () => {
             try {
                 const res = await fetch("/api/repos/user");
