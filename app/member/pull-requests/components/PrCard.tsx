@@ -224,10 +224,11 @@ export default function PrCard({
                             </div>
                             <ul>
                                 {isLoading ? (
-                                    <>
-                                        <PrCommitCardSkeleton />
-                                        <PrCommitCardSkeleton />
-                                    </>
+                                    Array.from({ length: 2 }).map(
+                                        (_, index) => (
+                                            <PrCommitCardSkeleton key={index} />
+                                        )
+                                    )
                                 ) : (
                                     <>{prCommitList}</>
                                 )}
