@@ -1,6 +1,7 @@
 "use client";
 
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
+import { MEMBER_URL } from "@/constants/url";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -40,7 +41,7 @@ export default function MemoirCard({ memoir }: Props) {
     return (
         <li
             className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
-            onClick={() => moveToMemoir(type, "36")}
+            onClick={() => moveToMemoir(memoir.type, "36")}
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
