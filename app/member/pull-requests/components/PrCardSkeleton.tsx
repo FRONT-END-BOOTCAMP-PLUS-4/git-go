@@ -11,7 +11,7 @@ export default function PrCardSkeleton() {
                         <div className="ml-auto h-5 w-20 rounded bg-gray-200" />
                     </div>
 
-                    <div className="h-4 w-72 rounded bg-gray-200" />
+                    <div className="h-4 w-100 rounded bg-gray-200" />
 
                     <div className="flex items-center gap-x-3">
                         <div className="flex items-center gap-x-1">
