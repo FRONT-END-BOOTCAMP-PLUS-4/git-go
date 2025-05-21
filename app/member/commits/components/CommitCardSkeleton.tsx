@@ -19,12 +19,7 @@ export function CommitCardSkeleton() {
                             <div className="h-3 w-4 rounded bg-gray-200" />
                             <div className="h-4 w-24 rounded bg-gray-200" />
                         </div>
-                        <div className="ml-auto">
-                            <div className="flex items-center gap-x-2 rounded border border-gray-300 px-3 py-1">
-                                <div className="h-3 w-3 rounded bg-gray-200" />
-                                <div className="h-4 w-20 rounded bg-gray-200" />
-                            </div>
-                        </div>
+                        <div className="ml-auto h-8 w-24 rounded bg-gray-200" />
                     </div>
                 </div>
             </article>
