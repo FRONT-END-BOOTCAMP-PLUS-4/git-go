@@ -2,6 +2,8 @@
 import Button from "@/app/components/Button";
 import Loading from "@/app/member/components/Loading";
 import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
+import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
+
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
@@ -96,7 +98,6 @@ export default function PrCard({
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result.commitList);
                 setPrCommits(result.commitList);
                 setIsLoading(false);
             }
@@ -221,7 +222,15 @@ export default function PrCard({
                                 </h3>
                             </div>
                             <ul>
-                                {isLoading ? <Loading /> : <>{prCommitList}</>}
+                                {isLoading ? (
+                                    Array.from({ length: 2 }).map(
+                                        (_, index) => (
+                                            <PrCommitCardSkeleton key={index} />
+                                        )
+                                    )
+                                ) : (
+                                    <>{prCommitList}</>
+                                )}
                             </ul>
                         </div>
                     )}

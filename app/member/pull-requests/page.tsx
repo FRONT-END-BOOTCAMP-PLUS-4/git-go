@@ -1,8 +1,10 @@
 "use client";
 import Loading from "@/app/member/components/Loading";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
+import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface PrCardProps {
@@ -30,9 +32,7 @@ export default function PullRequestPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const { selectedRepo } = useRepoStore();
-    console.log(selectedRepo);
     const { data: session } = useSession();
-    console.log(session);
 
     // pr 목록 조회 함수
     const fetchPrList = async (
@@ -60,7 +60,6 @@ export default function PullRequestPage() {
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result);
                 setPrList(result);
                 setIsLoading(false);
             }
@@ -94,8 +93,25 @@ export default function PullRequestPage() {
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
             </section>
 
-            <ul className="min-h-[100px]">
-                {isLoading ? <Loading /> : <>{prCardList}</>}
+            <ul>
+                {isLoading ? (
+                    Array.from({ length: 5 }).map((_, i) => (
+                        <PrCardSkeleton key={i} />
+                    ))
+                ) : prList.length !== 0 ? (
+                    <>{prCardList}</>
+                ) : (
+                    <li className="m-auto w-fit p-8">
+                        <Image
+                            alt="표시할 커밋 없음"
+                            src="/no-result.png"
+                            width={200}
+                            height={200}
+                            className="mx-auto mb-4"
+                        />
+                        선택한 저장소에 표시할 Pull Request 가 없습니다.
+                    </li>
+                )}
             </ul>
         </div>
     );
