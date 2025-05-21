@@ -1,4 +1,4 @@
 export interface MemoirRepository {
-    findByUserId(userId: string): Promise<any[]>;
+    findByUserId(userId: string, repoId?: number): Promise<any[]>;
     countByRepoName(name: string): Promise<number>;
 }
