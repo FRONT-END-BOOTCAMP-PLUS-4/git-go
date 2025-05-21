@@ -25,23 +25,32 @@ export class PrMemoirRepository implements MemoirRepository {
         tags?: string[];
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
+            const {
+                title,
+                content,
+                source,
+                userId,
+                repoId,
+                typeId,
+                aiSum,
+                tags,
+            } = data;
             // 1) Memoir 레코드 생성
             const memoir = await tx.memoir.create({
                 data: {
-                    title: data.title,
-                    content: data.content,
-                    source: data.source,
-                    userId: data.userId,
-                    repoId: data.repoId,
-                    typeId: data.typeId,
-                    aiSum: data.aiSum,
-                    createdAt: new Date(),
+                    title,
+                    content,
+                    source,
+                    userId,
+                    repoId,
+                    typeId,
+                    aiSum,
                 },
             });
 
             // 2) tags 배열이 있을 때만 처리
-            if (data.tags && data.tags.length > 0) {
-                const tagNames = data.tags;
+            if (tags && tags.length > 0) {
+                const tagNames = tags;
 
                 // 2-1) 기존 태그 조회
                 const existingTags = await tx.tag.findMany({
@@ -81,5 +90,34 @@ export class PrMemoirRepository implements MemoirRepository {
 
             return memoir;
         });
+    }
+
+    async findByMemoirId(id: number): Promise<Memoir> {
+        const memoir = await prisma.memoir.findUnique({
+            where: { id },
+            include: {
+                tags: {
+                    select: {
+                        tag: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!memoir) {
+            throw new Error(`Memoir with id ${id} not found.`);
+        }
+
+        const result = {
+            ...memoir,
+            tags: memoir.tags.map((t) => t.tag.name),
+        };
+
+        return result;
     }
 }
