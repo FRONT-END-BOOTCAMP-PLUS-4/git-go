@@ -29,6 +29,7 @@ export default function MemoirPage() {
                 ...memoir,
                 repoName: selectedRepo.nameWithOwner,
             }));
+            console.log("memoirs", updatedData);
             setMemoirs(updatedData);
         };
 

@@ -7,7 +7,7 @@ type MemoirWithRelations = Prisma.MemoirGetPayload<{
 export class MemoirListDto {
     id: number;
     title: string;
-    content: string;
+    content: Prisma.JsonValue;
     source: string;
     aiSum: string | null;
     type: string;
