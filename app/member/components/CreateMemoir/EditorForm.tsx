@@ -28,7 +28,8 @@ const EditorFormInner = (
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
-            const next = Array.from(new Set([...tags, tagInput.trim()]));
+            const lowerCase = tagInput.trim().toLocaleLowerCase();
+            const next = Array.from(new Set([...tags, lowerCase]));
             onTagsChange(next);
             setTagInput("");
         }
@@ -39,7 +40,7 @@ const EditorFormInner = (
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4">
             {/* 제목 */}
             <div>
                 <label htmlFor="title" className="block text-sm font-medium">
