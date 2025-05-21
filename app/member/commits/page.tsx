@@ -146,16 +146,11 @@ export default function CommitPage() {
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <div className="flex items-center gap-x-3">
                         <h2 className="font-bold">최근 활동</h2>
-                        {totalCount > 0 &&
-                            (isLoading ? (
-                                <span className="text-text-secondary2 text-sm">
-                                    불러오는 중...
-                                </span>
-                            ) : (
-                                <span className="text-text-secondary2 text-sm">
-                                    전체 {totalCount}개
-                                </span>
-                            ))}
+                        {totalCount > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                전체 {totalCount}개
+                            </span>
+                        )}
                     </div>
                     <p className="text-text-secondary2 text-sm">
                         {formattedDate}
