@@ -1,6 +1,7 @@
 "use client";
 
 import Pagination from "@/app/components/Pagination";
+import EmptyResult from "@/app/member/components/EmptyResult";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
@@ -122,16 +123,7 @@ export default function PullRequestPage() {
                 ) : prList.length !== 0 ? (
                     <>{prCardList}</>
                 ) : (
-                    <li className="m-auto w-fit p-8">
-                        <Image
-                            alt="표시할 커밋 없음"
-                            src="/no-result.png"
-                            width={200}
-                            height={200}
-                            className="mx-auto mb-4"
-                        />
-                        선택한 저장소에 표시할 Pull Request 가 없습니다.
-                    </li>
+                    <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
                 )}
             </ul>
             {!isLoading && prList.length > 0 && (
