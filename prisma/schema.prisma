@@ -22,14 +22,14 @@ model Repo {
 model Memoir {
   id        Int         @id @default(autoincrement())
   title     String
-  content   Json
   source    String
   aiSum     String?     @map("ai_sum")
-  createdAt DateTime    @map("created_at") @default(now())
+  createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime?   @map("updated_at")
   userId    String
   typeId    Int
   repoId    Int
+  content   Json
   repo      Repo        @relation(fields: [repoId], references: [id], onDelete: Cascade)
   type      MemoirType  @relation(fields: [typeId], references: [id])
   user      User        @relation(fields: [userId], references: [id])
