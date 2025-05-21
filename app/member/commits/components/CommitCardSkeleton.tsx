@@ -9,7 +9,7 @@ export function CommitCardSkeleton() {
                         <div className="h-5 w-16 rounded bg-gray-200 shadow-sm" />
                         <div className="ml-auto h-4 w-20 rounded bg-gray-200" />
                     </div>
-                    <div className="h-5 w-full rounded bg-gray-300" />
+                    <div className="h-5 w-100 rounded bg-gray-300" />
                     <div className="mt-2 flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <div className="h-3 w-3 rounded bg-gray-200" />
