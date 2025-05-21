@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 import Image from "next/image";
+import EmptyResult from "@/app/member/components/EmptyResult";
 
 interface Commit {
     sha: string;
@@ -165,16 +166,7 @@ export default function CommitPage() {
                     ) : totalCount !== 0 ? (
                         <>{commitList}</>
                     ) : (
-                        <li className="m-auto w-fit p-8">
-                            <Image
-                                alt="표시할 커밋 없음"
-                                src="/no-result.png"
-                                width={200}
-                                height={200}
-                                className="mx-auto mb-4"
-                            />
-                            선택한 저장소에 표시할 커밋이 없습니다.
-                        </li>
+                        <EmptyResult message="선택한 저장소에 표시할 커밋이 없습니다." />
                     )}
                 </ul>
 
