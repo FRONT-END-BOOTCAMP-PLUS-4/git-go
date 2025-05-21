@@ -15,4 +15,11 @@ export interface MemoirRepository {
     }): Promise<Memoir>;
 
     findByMemoirId(id: number): Promise<Memoir>;
+
+    edit(data: {
+        title: string;
+        content: string;
+        memoirId: number;
+        tags?: string[];
+    }): Promise<Memoir>;
 }
