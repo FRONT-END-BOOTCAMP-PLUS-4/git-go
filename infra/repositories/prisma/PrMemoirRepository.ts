@@ -35,9 +35,10 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async countByRepoName(name: string): Promise<number> {
+    async countByRepoName(name: string, userId: string): Promise<number> {
         return await prisma.memoir.count({
             where: {
+                userId,
                 repo: {
                     name,
                 },
