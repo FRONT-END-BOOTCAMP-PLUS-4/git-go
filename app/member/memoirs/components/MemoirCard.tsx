@@ -17,7 +17,7 @@ const typeClassMap: Record<
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
     },
-    pr: {
+    pull_request: {
         label: "PR",
         bg: "bg-[#FEF9C3]",
         text: "text-[#854D0E]",
@@ -61,7 +61,8 @@ export default function MemoirCard({ memoir }: Props) {
                         </div>
                         <p className="text-text-secondary2 ml-auto text-xs">
                             {new Intl.DateTimeFormat("ko-KR", {
-                                month: "short",
+                                year: "numeric",
+                                month: "long",
                                 day: "numeric",
                             }).format(new Date(memoir.updatedAt || memoir.createdAt))}
                         </p>
@@ -77,7 +78,7 @@ export default function MemoirCard({ memoir }: Props) {
                         ))}
                     </ul>
                     <p className="text-text-secondary2 line-clamp-1 text-sm">
-                        {memoir.content}
+                        {JSON.stringify(memoir.content)}
                     </p>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
