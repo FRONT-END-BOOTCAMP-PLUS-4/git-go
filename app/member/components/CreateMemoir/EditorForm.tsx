@@ -26,6 +26,10 @@ const EditorFormInner = (
     const [tagInput, setTagInput] = useState("");
 
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (tags.length >= 10) {
+            return;
+        }
+
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
             const lowerCase = tagInput.trim().toLocaleLowerCase();
@@ -43,13 +47,16 @@ const EditorFormInner = (
         <div className="flex flex-1 flex-col gap-4">
             {/* 제목 */}
             <div>
-                <label htmlFor="title" className="block text-sm font-medium">
+                <label
+                    htmlFor="title"
+                    className="mb-1 block text-sm font-medium"
+                >
                     제목
                 </label>
                 <input
                     id="title"
                     type="text"
-                    className="border-border-primary1 w-full rounded-md border px-3 py-2"
+                    className="border-border-primary1 w-full rounded-md border px-3 py-2.5"
                     placeholder="회고록 제목을 입력하세요..."
                     value={title}
                     onChange={(e) => onTitleChange(e.target.value)}
@@ -58,14 +65,17 @@ const EditorFormInner = (
 
             {/* 태그 */}
             <div>
-                <label htmlFor="tags" className="block text-sm font-medium">
+                <label
+                    htmlFor="tags"
+                    className="mb-1 block text-sm font-medium"
+                >
                     태그
                 </label>
                 <div className="border-border-primary1 flex flex-wrap items-center gap-1 rounded-md border px-3 py-2">
                     {tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-bg-primary2 flex items-center rounded-md px-3 py-2 text-sm"
+                            className="bg-bg-primary2 flex items-center rounded-md px-2 py-1 text-sm"
                         >
                             {tag}
                             <X
@@ -78,7 +88,7 @@ const EditorFormInner = (
                     <input
                         id="tags"
                         className="flex-1 border-none focus:outline-none"
-                        placeholder="태그를 입력하고 Enter"
+                        placeholder="태그를 입력하고 Enter를 눌러주세요. 최대 10개 까지 가능합니다."
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyDown={handleTagKeyDown}
