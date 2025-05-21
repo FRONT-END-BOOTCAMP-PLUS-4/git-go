@@ -7,6 +7,7 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Loading from "../components/Loading";
 import Pagination from "@/app/components/Pagination";
+import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 
 interface Commit {
     sha: string;
@@ -162,7 +163,13 @@ export default function CommitPage() {
                 </section>
 
                 <ul className="min-h-[100px]">
-                    {isLoading ? <Loading /> : <>{commitList}</>}
+                    {isLoading ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                            <CommitCardSkeleton key={index} />
+                        ))
+                    ) : (
+                        <>{commitList}</>
+                    )}
                 </ul>
 
                 {!isLoading && commits.length > 0 && (
