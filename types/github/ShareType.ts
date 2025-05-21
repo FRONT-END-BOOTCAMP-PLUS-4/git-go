@@ -46,3 +46,7 @@ export type BaseAuthorType = {
     type: string;
     site_admin: boolean;
 };
+
+export type EditorFormHandle = {
+    getContent: () => unknown[];
+};

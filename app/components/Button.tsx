@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import type { ReactNode } from "react";
 
 export type ButtonStyleType = "default" | "lined" | "disabled" | "danger";
@@ -14,6 +13,7 @@ interface ButtonProps {
     label?: string;
     onClick?: () => void;
     icon?: ReactNode;
+    isLoading?: boolean;
 }
 
 const typeClassMap: Record<ButtonStyleType, string> = {
@@ -38,8 +38,9 @@ export default function Button({
     label,
     onClick,
     icon,
+    isLoading,
 }: ButtonProps) {
-    const isDisabled = type === "disabled";
+    const isDisabled = type === "disabled" || isLoading;
     const styleClass = typeClassMap[type];
     const sizeClass = sizeClassMap[size];
 
