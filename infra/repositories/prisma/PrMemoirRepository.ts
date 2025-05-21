@@ -4,11 +4,23 @@ import { Memoir, PrismaClient } from "@/prisma/generated/prisma";
 const prisma = new PrismaClient();
 
 export class PrMemoirRepository implements MemoirRepository {
-    async findByUserId(userId: string, repoId?: number) {
+    async findByUserId(userId: string, repoName?: string) {
+        let repoFilter: { repoId?: number } = {};
+        if (repoName) {
+            const repo = await prisma.repo.findFirst({
+                where: {
+                    name: repoName,
+                    userId,
+                },
+            });
+            if (!repo) return [];
+            repoFilter.repoId = repo.id;
+        }
+
         return prisma.memoir.findMany({
             where: {
                 userId,
-                ...(repoId && { repoId }),
+                ...repoFilter,
             },
             include: {
                 type: true,
@@ -19,7 +31,7 @@ export class PrMemoirRepository implements MemoirRepository {
                     },
                 },
             },
-            orderBy: { updatedAt: "desc" },
+            orderBy: { createdAt: "desc" },
         });
     }
 

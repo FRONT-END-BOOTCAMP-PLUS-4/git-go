@@ -1,7 +1,7 @@
 import { Memoir } from "@/prisma/generated/prisma";
 
 export interface MemoirRepository {
-    findByUserId(userId: string, repoId?: number): Promise<any[]>;
+    findByUserId(userId: string, repoId?: string): Promise<any[]>;
     countByRepoName(name: string): Promise<number>;
 
     create(data: {
