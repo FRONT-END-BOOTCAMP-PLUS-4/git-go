@@ -52,7 +52,7 @@ export default function MemoirPage() {
 
             <ul>
                 {loading ? (
-                    Array.from({ length: 3 }).map((_, i) => <MemoirSkeleton key={i} />)
+                    Array.from({ length: 5 }).map((_, i) => <MemoirSkeleton key={i} />)
                 ) : memoirs.length === 0 ? (
                     <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
                 ) : (
