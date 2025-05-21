@@ -1,13 +1,16 @@
 "use client";
 
+import Button from "@/app/components/Button";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import FileTree from "@/app/member/components/CreateMemoir/FileTree";
+import { useMemoirForm } from "@/hooks/useMemoirForm";
 import { CommitType } from "@/types/github/CommitType";
-import { useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export const COMMITS: CommitType = {
     sha: "abcdef1234567890abcdef1234567890abcdef12",
@@ -155,23 +158,20 @@ export const COMMITS: CommitType = {
     ],
 };
 
-export interface EditorFormHandle {
-    getContent: () => unknown[];
-}
-
 export default function CommitMemoir() {
-    // ① 상태들
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const [title, setTitle] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
-    const editorRef = useRef<EditorFormHandle>(null);
-
-    // ② 최종 저장 핸들러
-    const handleComplete = () => {
-        const content = editorRef.current?.getContent() ?? [];
-        console.log("payload:", { title, tags, content });
-        // 여기서 API 호출이나 라우팅 처리도 가능
-    };
+    const { sha }: { sha: string } = useParams();
+    const {
+        title,
+        setTitle,
+        tags,
+        setTags,
+        editorRef,
+        disabled,
+        loading,
+        error,
+        handleSave,
+    } = useMemoirForm(sha, 1);
 
     return (
         <CreateMemoirLayout>
@@ -199,15 +199,14 @@ export default function CommitMemoir() {
                     <AiSummary />
 
                     <div className="flex justify-end gap-2">
-                        <button className="border-border-primary1 rounded-md border px-4 py-2">
-                            취소
-                        </button>
-                        <button
-                            className="bg-primary7 text-text-primary1 rounded-md px-4 py-2"
-                            onClick={handleComplete}
+                        <Button type="lined">취소</Button>
+                        <Button
+                            onClick={handleSave}
+                            type={disabled ? "disabled" : "default"}
+                            isLoading={loading}
                         >
-                            회고록 작성 완료
-                        </button>
+                            {loading ? "저장 중…" : "회고록 작성 완료"}
+                        </Button>
                     </div>
                 </div>
             </div>
