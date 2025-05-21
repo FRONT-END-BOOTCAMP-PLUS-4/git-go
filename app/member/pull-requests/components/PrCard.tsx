@@ -98,7 +98,6 @@ export default function PrCard({
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result.commitList);
                 setPrCommits(result.commitList);
                 setIsLoading(false);
             }
