@@ -9,9 +9,9 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@google/genai": "^0.15.0",
         "@ariakit/react": "^0.4.17",
         "@emoji-mart/data": "^1.2.1",
+        "@google/genai": "^0.15.0",
         "@prisma/client": "^6.7.0",
         "@radix-ui/react-alert-dialog": "^1.1.13",
         "@radix-ui/react-avatar": "^1.1.9",
@@ -81,6 +81,7 @@
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^19.0.0",
+        "react-markdown": "^10.1.0",
         "remark-gfm": "^4.0.1",
         "remark-math": "^6.0.0",
         "sonner": "^2.0.3",
