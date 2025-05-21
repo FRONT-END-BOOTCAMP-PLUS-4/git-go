@@ -2,19 +2,32 @@
 
 import { Plate } from "@udecode/plate/react";
 
-import { EditorFormHandle } from "@/app/member/commits/[sha]/memoir/components/CommitMemoir";
 import {
     Editor,
     EditorContainer,
 } from "@/app/member/components/CreateMemoir/plate-editor/ui/editor";
+import { useCreateEditor } from "@/hooks/useCreateEditor";
+import { EditorFormHandle } from "@/types/github/ShareType";
 import { forwardRef, memo, useImperativeHandle } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useCreateEditor } from "../../../../../../hooks/useCreateEditor";
 
-function PlateEditorInner(_props: unknown, ref: React.Ref<EditorFormHandle>) {
+type PlateEditorProps = {
+    readOnly?: boolean;
+    initialContent: any[];
+};
+
+function PlateEditorInner(
+    _props: PlateEditorProps,
+    ref: React.Ref<EditorFormHandle>
+) {
     console.log("PlateEditor 렌더링");
-    const editor = useCreateEditor();
+    const { readOnly, initialContent } = _props;
+
+    const editor = useCreateEditor({
+        readOnly,
+        value: initialContent,
+    });
 
     useImperativeHandle(ref, () => ({
         getContent: () => editor.children,
@@ -22,7 +35,7 @@ function PlateEditorInner(_props: unknown, ref: React.Ref<EditorFormHandle>) {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <Plate editor={editor}>
+            <Plate editor={editor} readOnly={readOnly}>
                 <EditorContainer>
                     {/* 본문 editor */}
                     <div>
@@ -42,7 +55,7 @@ function PlateEditorInner(_props: unknown, ref: React.Ref<EditorFormHandle>) {
 }
 
 export const PlateEditor = memo(
-    forwardRef<EditorFormHandle, unknown>(PlateEditorInner)
+    forwardRef<EditorFormHandle, PlateEditorProps>(PlateEditorInner)
 );
 
 PlateEditor.displayName = "PlateEditor";

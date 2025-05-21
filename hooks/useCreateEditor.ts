@@ -120,16 +120,19 @@ export const useCreateEditor = (
         components,
         override,
         readOnly,
+        value,
         ...options
     }: {
         components?: Record<string, unknown>;
         plugins?: AnyPluginConfig[];
         readOnly?: boolean;
+        value?: any[];
     } & Omit<CreatePlateEditorOptions, "plugins"> = {},
     deps: unknown[] = []
 ) => {
     return usePlateEditor(
         {
+            value: value ?? [],
             override: {
                 components: {
                     ...(readOnly
