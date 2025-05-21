@@ -1,5 +1,5 @@
 "use client";
-import Loading from "@/app/member/components/Loading";
+
 import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
@@ -29,7 +29,7 @@ export default function PullRequestPage() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [prList, setPrList] = useState<PrCardProps[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { selectedRepo } = useRepoStore();
     const { data: session } = useSession();
