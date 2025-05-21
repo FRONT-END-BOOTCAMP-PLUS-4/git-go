@@ -32,9 +32,7 @@ export default function PullRequestPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const { selectedRepo } = useRepoStore();
-    console.log(selectedRepo);
     const { data: session } = useSession();
-    console.log(session);
 
     // pr 목록 조회 함수
     const fetchPrList = async (
@@ -62,7 +60,6 @@ export default function PullRequestPage() {
 
             if (res.ok) {
                 const result = await res.json();
-                console.log(result);
                 setPrList(result);
                 setIsLoading(false);
             }
