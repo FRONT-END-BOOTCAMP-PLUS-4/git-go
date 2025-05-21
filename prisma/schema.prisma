@@ -22,10 +22,10 @@ model Repo {
 model Memoir {
   id        Int         @id @default(autoincrement())
   title     String
-  content   String
+  content   Json
   source    String
   aiSum     String?     @map("ai_sum")
-  createdAt DateTime    @map("created_at")
+  createdAt DateTime    @map("created_at") @default(now())
   updatedAt DateTime?   @map("updated_at")
   userId    String
   typeId    Int
@@ -61,7 +61,7 @@ model MemoirType {
 
 model Tag {
   id         Int         @id @default(autoincrement())
-  name       String
+  name       String      @unique
   memoirTags MemoirTag[]
 
   @@map("tag")
