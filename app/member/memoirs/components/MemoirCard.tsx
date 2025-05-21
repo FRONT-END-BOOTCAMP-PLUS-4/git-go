@@ -29,14 +29,14 @@ const tagList = ["React", "Next.js", "NextAuth"];
 export default function MemoirCard({ type }: LabelBadgeProps) {
     const router = useRouter();
 
-    const moveToMemoir = () => {
-        router.push(`${MEMBER_URL.memoirs}/12`);
+    const moveToMemoir = (source: string, memoirId: string) => {
+        router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
     };
 
     return (
         <li
             className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
-            onClick={moveToMemoir}
+            onClick={() => moveToMemoir(type, "36")}
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
