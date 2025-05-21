@@ -1,16 +1,40 @@
 "use client";
 
+import Button from "@/app/components/Button";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
+import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import FileTree from "@/app/member/components/CreateMemoir/FileTree";
+
 import { COMMITS } from "@/constants/mockCommits";
+import { useMemoirForm } from "@/hooks/useMemoirForm";
+import { useParams } from "next/navigation";
+
 import { useState } from "react";
+
+export interface EditorFormHandle {
+    getContent: () => unknown[];
+}
 
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    // console.log("selectedFile: ", selectedFile);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const { sha }: { sha: string } = useParams();
+    const {
+        title,
+        setTitle,
+        tags,
+        setTags,
+        editorRef,
+        disabled,
+        loading,
+        error,
+        handleSave,
+    } = useMemoirForm(sha, 1);
 
     return (
         <CreateMemoirLayout>
@@ -25,29 +49,42 @@ export default function CommitMemoir() {
                 ✨ AI 요약 시작하기
             </button>
             {showModal && (
-                <div className="z-51 fixed bottom-10 left-4 flex h-[60vh] w-[60vw] max-w-[770px]">
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
                     <AiSummary setShowModal={setShowModal} />
                 </div>
             )}
             <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
-            <ChangeListLayout>
-                <div className="px-3 py-2 font-semibold">
-                    {COMMITS.commit.message}
-                </div>
-                <ChangeList
-                    changes={COMMITS.files}
-                    selectedFile={selectedFile}
-                />
-            </ChangeListLayout>
-            <div className="border-border-primary1 flex-3 flex flex-col justify-between gap-4 p-4">
-                <Editor />
-                <div className="flex justify-end gap-2">
-                    <button className="border-border-primary1 rounded-md border px-4 py-2">
-                        취소
-                    </button>
-                    <button className="bg-primary7 text-text-primary1 rounded-md px-4 py-2">
-                        회고록 작성 완료
-                    </button>
+
+            <div className="grid grid-cols-2">
+                <ChangeListLayout>
+                    <div className="px-3 py-2 font-semibold">
+                        {COMMITS.commit.message}
+                    </div>
+                    <ChangeList
+                        changes={COMMITS.files}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>
+
+                <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
+                    <EditorForm
+                        title={title}
+                        onTitleChange={setTitle}
+                        tags={tags}
+                        onTagsChange={setTags}
+                        ref={editorRef}
+                    />
+
+                    <div className="flex justify-end gap-2">
+                        <Button type="lined">취소</Button>
+                        <Button
+                            onClick={handleSave}
+                            type={disabled ? "disabled" : "default"}
+                            isLoading={loading}
+                        >
+                            {loading ? "저장 중…" : "회고록 작성 완료"}
+                        </Button>
+                    </div>
                 </div>
             </div>
         </CreateMemoirLayout>
