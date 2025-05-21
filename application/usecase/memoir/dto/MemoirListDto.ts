@@ -12,6 +12,7 @@ export class MemoirListDto {
     aiSum: string | null;
     type: string;
     tags: string[];
+    repoId: string | null;
     repoName: string | null;
     createdAt: Date;
     updatedAt: Date | null;
@@ -24,7 +25,8 @@ export class MemoirListDto {
         this.aiSum = memoir.aiSum;
         this.type = memoir.type.type;
         this.tags = memoir.tags.map((t) => t.tag.name);
-        this.repoName = memoir.repo.name;
+        this.repoId = memoir.repo.name;
+        this.repoName = null;
         this.createdAt = memoir.createdAt;
         this.updatedAt = memoir.updatedAt;
     }

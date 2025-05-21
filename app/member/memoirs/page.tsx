@@ -25,8 +25,11 @@ export default function MemoirPage() {
         const fetchMemoirs = async () => {
             const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}`);
             const data = await res.json();
-            console.log("memoirs", data);
-            setMemoirs(data);
+            const updatedData = data.map((memoir: any) => ({
+                ...memoir,
+                repoName: selectedRepo.nameWithOwner,
+            }));
+            setMemoirs(updatedData);
         };
 
         fetchMemoirs();
