@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@google/genai": "^0.15.0",
         "@ariakit/react": "^0.4.17",
         "@emoji-mart/data": "^1.2.1",
         "@prisma/client": "^6.7.0",
