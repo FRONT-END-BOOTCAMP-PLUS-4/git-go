@@ -54,6 +54,11 @@ export default function WeeklyCommitChart({ data }: Props) {
 
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                top: 20,
+            },
+        },
         plugins: {
             legend: { display: false },
             tooltip: {
@@ -85,9 +90,9 @@ export default function WeeklyCommitChart({ data }: Props) {
                     },
                 },
                 suggestedMax: Math.max(...data.map(d => d.count)) + 1.5,
-                // grid: {
-                //     display: false,
-                // },
+                grid: {
+                    display: false,
+                },
             },
             x: {
                 grid: {
