@@ -26,9 +26,10 @@ export async function GET(req: NextRequest) {
             createdAfter.setDate(createdAfter.getDate() - days);
         }
     }
+    const filterType = searchParams.get("type") as "commits" | "pullRequests" | "all";
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter);
+    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter, filterType);
     return NextResponse.json(result);
 }
 

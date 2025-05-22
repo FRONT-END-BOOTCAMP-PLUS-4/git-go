@@ -40,19 +40,16 @@ export class PrMemoirRepository implements MemoirRepository {
         repoName?: string,
         page = 1,
         perPage = 10,
-        createdAfter?: Date
+        createdAfter?: Date,
+        filterType: "commits" | "pullRequests" | "all" = "all"
     ): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
         let repoFilter: { repoId?: number } = {};
         if (repoName) {
             const repo = await prisma.repo.findFirst({
-                where: {
-                    name: repoName,
-                    userId,
-                },
+                where: { name: repoName, userId },
             });
-
             if (!repo) return [[], 0];
             repoFilter.repoId = repo.id;
         }
@@ -63,10 +60,11 @@ export class PrMemoirRepository implements MemoirRepository {
         };
 
         if (createdAfter) {
-            where.createdAt = {
-                gte: createdAfter,
-            };
+            where.createdAt = { gte: createdAfter };
         }
+
+        if (filterType === "commits") where.typeId = 1;
+        else if (filterType === "pullRequests") where.typeId = 2;
 
         const [memoirs, totalCount] = await Promise.all([
             prisma.memoir.findMany({
