@@ -35,17 +35,27 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async findByUserIdPaginated(userId: string, repoId?: string, page = 1, perPage = 10): Promise<[any[], number]> {
+    async findByUserIdPaginated(userId: string, repoName?: string, page = 1, perPage = 10): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
-        const where: Record<string, any> = { userId };
+        let repoFilter: { repoId?: number } = {};
 
-        if (repoId !== undefined) {
-            const numericRepoId = Number(repoId);
-            if (!isNaN(numericRepoId)) {
-                where.repoId = numericRepoId;
-            }
+        if (repoName) {
+            const repo = await prisma.repo.findFirst({
+                where: {
+                    name: repoName,
+                    userId,
+                },
+            });
+
+            if (!repo) return [[], 0];
+            repoFilter.repoId = repo.id;
         }
+
+        const where = {
+            userId,
+            ...repoFilter,
+        };
 
         const [memoirs, totalCount] = await Promise.all([
             prisma.memoir.findMany({
