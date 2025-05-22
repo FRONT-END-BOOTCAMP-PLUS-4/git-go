@@ -27,8 +27,6 @@ import { TrailingBlockPlugin } from "@udecode/plate-trailing-block";
 import { all, createLowlight } from "lowlight";
 
 import { NodeIdPlugin } from "@udecode/plate-node-id";
-import { BlockSelectionPlugin } from "@udecode/plate-selection/react";
-
 import {
     alignPlugin,
     autoformatPlugin,
@@ -80,7 +78,7 @@ export const viewPlugins = [
     // 토글
     TogglePlugin,
 
-    BlockSelectionPlugin,
+    // BlockSelectionPlugin,
     NodeIdPlugin,
 
     suggestionPlugin,

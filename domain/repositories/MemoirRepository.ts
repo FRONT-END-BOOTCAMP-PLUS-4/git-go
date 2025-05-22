@@ -23,4 +23,6 @@ export interface MemoirRepository {
         memoirId: number;
         tags?: string[];
     }): Promise<Memoir>;
+
+    delete(id: number): Promise<null>;
 }

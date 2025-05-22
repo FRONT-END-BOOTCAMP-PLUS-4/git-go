@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Button from "@/app/components/Button";
-import Image from "next/image";
-import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
-import TimeFilter from "./TimeFilter";
-import TagFilter from "../memoirs/components/Filter/TagFilter";
-import { usePathname } from "next/navigation";
+import WithdrawButton from "@/app/components/WithdrawButton";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
+import TagFilter from "../memoirs/components/Filter/TagFilter";
 import SideBarRepoSkeleton from "./SideBarRepoSkeleton";
-import WithdrawButton from "@/app/components/WithdrawButton";
-import SearchFilter from "../memoirs/components/Filter/SearchFilter";
+import TimeFilter from "./TimeFilter";
 
 export default function SideBar({
     setOpen,
@@ -19,7 +18,7 @@ export default function SideBar({
     setOpen: (open: boolean) => void;
 }) {
     const [userRepos, setUserRepos] = useState<
-        { id: string; nameWithOwner: string }[]
+        { dbId: number; id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
@@ -27,9 +26,11 @@ export default function SideBar({
     const [loadingRepos, setLoadingRepos] = useState(true);
 
     const fetchRepos = async (
-        setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
+        setUserRepos: (
+            repos: { dbId: number; id: string; nameWithOwner: string }[]
+        ) => void,
         setSelectedRepo: (
-            repo: { id: string; nameWithOwner: string } | null
+            repo: { dbId: number; id: string; nameWithOwner: string } | null
         ) => void
     ) => {
         setLoadingRepos(true);
@@ -39,15 +40,25 @@ export default function SideBar({
                 fetch("/api/github/repos"),
             ]);
 
-            const userRepoIds: { name: string }[] = await userRes.json();
+            const userRepoIds: { id: number; name: string }[] =
+                await userRes.json();
             const githubRepos: GithubRepoDto[] = await githubRes.json();
 
             const matched = githubRepos
-                .filter((repo) => userRepoIds.some((r) => r.name === repo.id))
-                .map((repo) => ({
-                    id: repo.id,
-                    nameWithOwner: repo.nameWithOwner,
-                }));
+                .map((repo) => {
+                    const match = userRepoIds.find((r) => r.name === repo.id);
+                    if (!match) return null;
+                    return {
+                        dbId: Number(match.id),
+                        id: repo.id,
+                        nameWithOwner: repo.nameWithOwner,
+                    };
+                })
+                .filter(Boolean) as {
+                dbId: number;
+                id: string;
+                nameWithOwner: string;
+            }[];
 
             setUserRepos(matched);
             if (matched.length > 0) {

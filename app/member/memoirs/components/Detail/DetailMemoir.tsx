@@ -1,13 +1,13 @@
-// app/member/[sha]/[id]/DetailMemoir.tsx
 "use client";
 
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { COMMITS } from "@/constants/mockCommits";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { Value } from "@udecode/plate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ export default function DetailMemoir() {
     const { sha, id }: { sha: string; id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const parseId = Number(id);
 
     // 부모에서만 관리하는 초기값들
     const [title, setTitle] = useState("");
@@ -47,7 +48,11 @@ export default function DetailMemoir() {
 
     return (
         <DetailMemoirLayout>
-            <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
 
             <div className="grid flex-1 grid-cols-2">
                 <ChangeListLayout>
@@ -70,7 +75,7 @@ export default function DetailMemoir() {
                             typeId={1}
                             isEditing={isEditing}
                             onToggleEdit={handleToggleEdit}
-                            memoirId={id}
+                            memoirId={parseId}
                         />
                     ) : (
                         <EditorFormReadOnly
@@ -78,6 +83,7 @@ export default function DetailMemoir() {
                             tags={tags}
                             content={content}
                             handleStatusChange={handleToggleEdit}
+                            memoirId={parseId}
                         />
                     )}
                 </div>
