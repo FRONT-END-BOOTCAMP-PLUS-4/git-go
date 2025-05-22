@@ -9,6 +9,7 @@ import FileTree from "@/app/member/components/CreateMemoir/FileTree";
 
 import { COMMITS } from "@/constants/mockCommits";
 import { useMemoirForm } from "@/hooks/useMemoirForm";
+import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
 
 import { useState } from "react";
@@ -18,6 +19,8 @@ export default function CommitMemoir() {
 
     const [showModal, setShowModal] = useState(false);
 
+    const { selectedRepo } = useRepoStore();
+    console.log("repo: ", selectedRepo?.nameWithOwner);
     const { sha }: { sha: string } = useParams();
     const {
         title,
