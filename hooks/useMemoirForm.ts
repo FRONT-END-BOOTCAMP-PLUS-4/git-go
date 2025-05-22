@@ -34,7 +34,7 @@ export function useMemoirForm(
         aiSum: "AI 요약 텍스트",
         userId: session!.user.id,
         typeId,
-        repoId: repo!.id,
+        repoId: repo!.dbId,
     });
 
     const handleSave = async () => {
