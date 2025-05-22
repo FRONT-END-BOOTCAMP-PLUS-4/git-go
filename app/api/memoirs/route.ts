@@ -11,10 +11,12 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const repoId = searchParams.get("repo");
+    const page = Number(searchParams.get("page") ?? 1);
+    const perPage = Number(searchParams.get("perPage") ?? 10);
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const memoirs = await usecase.execute(token.id, repoId as string);
-    return NextResponse.json(memoirs);
+    const result = await usecase.execute(token.id, repoId as string, page, perPage);
+    return NextResponse.json(result);
 }
 
 export async function POST(req: NextRequest) {
