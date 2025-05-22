@@ -1,15 +1,14 @@
 "use client";
 
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { COMMITS } from "@/constants/mockCommits";
-import { useMemoirForm } from "@/hooks/useMemoirForm";
 import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
 
@@ -21,18 +20,8 @@ export default function CommitMemoir() {
     const [showModal, setShowModal] = useState(false);
 
     const { selectedRepo } = useRepoStore();
-    console.log("repo: ", selectedRepo?.nameWithOwner);
     const { sha }: { sha: string } = useParams();
-    const {
-        title,
-        setTitle,
-        tags,
-        setTags,
-        disabled,
-        loading,
-        error,
-        handleSave,
-    } = useMemoirForm(sha, 1);
+    console.log("repo: ", selectedRepo?.nameWithOwner);
 
     return (
         <CreateMemoirLayout>
@@ -71,10 +60,8 @@ export default function CommitMemoir() {
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
                     <EditorForm
-                        initialTitle={title}
-                        onChangeTitle={setTitle}
-                        initialTags={tags}
-                        onChangeTag={setTags}
+                        initialTitle=""
+                        initialTags={[]}
                         initialContent={[]}
                         sourceId={sha}
                         typeId={1}
