@@ -13,7 +13,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
-export default function DetailMemoir() {
+export default function CommitDetailMemoir() {
     const { sha, id }: { sha: string; id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);

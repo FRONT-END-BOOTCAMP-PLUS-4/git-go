@@ -2,9 +2,10 @@
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
 import type { EditorFormHandle } from "@/types/github/ShareType";
+import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export function useMemoirForm(
     sourceName: string,
@@ -14,14 +15,26 @@ export function useMemoirForm(
     const router = useRouter();
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState<string[]>([]);
+    const [content, setContent] = useState<Value>([]);
     const editorRef = useRef<EditorFormHandle>(null);
 
-    const content = editorRef.current?.getContent() ?? [];
+    // 에디터가 바뀔 때마다 호출할 onChange 핸들러
+    const handleEditorChange = useCallback(() => {
+        const newContent = editorRef.current?.getContent() ?? [];
+        setContent(newContent as Value);
+    }, []);
+
+    // 텍스트 유무 검사
+    const hasText = content.some((node) =>
+        node.children.some((ch: any) => ch.text?.trim() !== "")
+    );
+
+    const disabled = !title.trim() || !hasText;
 
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
 
-    const disabled = !title.trim() || content.length === 0;
+    // const disabled = true;
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -109,5 +122,6 @@ export function useMemoirForm(
         error,
         handleSave,
         handleEdit,
+        handleEditorChange,
     };
 }
