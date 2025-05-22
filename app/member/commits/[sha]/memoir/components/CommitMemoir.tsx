@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/app/components/Button";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
@@ -15,10 +14,6 @@ import { useParams } from "next/navigation";
 
 import { useState } from "react";
 
-export interface EditorFormHandle {
-    getContent: () => unknown[];
-}
-
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
@@ -30,7 +25,6 @@ export default function CommitMemoir() {
         setTitle,
         tags,
         setTags,
-        editorRef,
         disabled,
         loading,
         error,
@@ -75,23 +69,14 @@ export default function CommitMemoir() {
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
                     <EditorForm
-                        title={title}
-                        onTitleChange={setTitle}
-                        tags={tags}
-                        onTagsChange={setTags}
-                        ref={editorRef}
+                        initialTitle={title}
+                        onChangeTitle={setTitle}
+                        initialTags={tags}
+                        onChangeTag={setTags}
+                        initialContent={[]}
+                        sourceId={sha}
+                        typeId={1}
                     />
-
-                    <div className="flex justify-end gap-2">
-                        <Button type="lined">취소</Button>
-                        <Button
-                            onClick={handleSave}
-                            type={disabled ? "disabled" : "default"}
-                            isLoading={loading}
-                        >
-                            {loading ? "저장 중…" : "회고록 작성 완료"}
-                        </Button>
-                    </div>
                 </div>
             </div>
         </CreateMemoirLayout>

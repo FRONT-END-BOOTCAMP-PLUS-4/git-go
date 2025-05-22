@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
+import { MEMBER_URL } from "@/constants/url";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Props {
     memoir: MemoirListDto;
@@ -29,18 +30,43 @@ const typeClassMap: Record<
     },
 };
 
+function getFirstMeaningfulText(content: any): string {
+    if (!Array.isArray(content)) return "";
+
+    for (const block of content) {
+        if (!block.children) continue;
+
+        for (const child of block.children) {
+            if (child.text && child.text.trim()) {
+                return child.text.trim();
+            }
+
+            // table 안의 td 안의 p 안의 children 처리
+            if (Array.isArray(child.children)) {
+                for (const subChild of child.children) {
+                    if (subChild.text && subChild.text.trim()) {
+                        return subChild.text.trim();
+                    }
+                }
+            }
+        }
+    }
+
+    return "";
+}
+
 export default function MemoirCard({ memoir }: Props) {
     const router = useRouter();
     const typeInfo = typeClassMap[memoir.type] || typeClassMap.default;
 
-    const moveToMemoir = () => {
-        router.push(`/member/memoirs/${memoir.id}`);
+    const moveToMemoir = (source: string, memoirId: number) => {
+        router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
     };
 
     return (
         <li
             className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
-            onClick={moveToMemoir}
+            onClick={() => moveToMemoir(memoir.type, memoir.id)}
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
@@ -64,10 +90,12 @@ export default function MemoirCard({ memoir }: Props) {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
-                            }).format(new Date(memoir.updatedAt || memoir.createdAt))}
+                            }).format(
+                                new Date(memoir.updatedAt || memoir.createdAt)
+                            )}
                         </p>
                     </div>
-                    <ul className="flex gap-x-2 flex-wrap">
+                    <ul className="flex flex-wrap gap-x-2">
                         {memoir.tags.map((tag, index) => (
                             <li
                                 key={index}
@@ -78,7 +106,7 @@ export default function MemoirCard({ memoir }: Props) {
                         ))}
                     </ul>
                     <p className="text-text-secondary2 line-clamp-1 text-sm">
-                        {JSON.stringify(memoir.content)}
+                        {getFirstMeaningfulText(memoir.content)}
                     </p>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
