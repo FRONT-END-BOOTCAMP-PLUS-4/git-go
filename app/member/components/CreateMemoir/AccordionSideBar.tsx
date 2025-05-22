@@ -1,5 +1,4 @@
-"use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import useBuildFileTree from "@/hooks/useBuildFileTree";
 import FileNodeComponent from "./FileNodeComponent";
@@ -15,17 +14,26 @@ export default function AccordionSidebar({
     selectedFile,
     onSelect,
 }: AccordionSidebarProps) {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const tree = useBuildFileTree(files.map((f) => ({ filename: f })));
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const tree = useBuildFileTree(files.map((file) => ({ filename: file })));
+
+    const prevWidthRef = useRef<number>(
+        typeof window !== "undefined" ? window.innerWidth : 0
+    );
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 880) {
+            const currentWidth = window.innerWidth;
+            const prevWidth = prevWidthRef.current;
+
+            // 작아질 때만 자동 닫기
+            if (currentWidth < 880 && currentWidth < prevWidth) {
                 setSidebarOpen(false);
             }
+
+            prevWidthRef.current = currentWidth; // 현재 값을 저장
         };
 
-        handleResize(); // 처음 렌더링 시 체크
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
