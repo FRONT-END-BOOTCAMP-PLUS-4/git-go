@@ -15,12 +15,12 @@ export default function AccordionSidebar({
     selectedFile,
     onSelect,
 }: AccordionSidebarProps) {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const tree = useBuildFileTree(files.map((f) => ({ filename: f })));
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 880) {
                 setSidebarOpen(false);
             }
         };
@@ -42,7 +42,7 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 top-[65px] left-0 z-40 flex h-screen w-52 min-w-46 flex-col overflow-x-auto p-4 shadow-md">
+        <div className="bg-bg-primary1 top-[65px] left-0 z-40 flex h-full max-w-[100px] min-w-fit flex-col truncate overflow-x-auto p-4 shadow-md">
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
