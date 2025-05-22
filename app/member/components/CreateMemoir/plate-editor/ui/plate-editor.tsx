@@ -8,26 +8,23 @@ import {
 } from "@/app/member/components/CreateMemoir/plate-editor/ui/editor";
 import { useCreateEditor } from "@/hooks/useCreateEditor";
 import { EditorFormHandle } from "@/types/github/ShareType";
+import { Value } from "@udecode/plate";
 import { forwardRef, memo, useImperativeHandle } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 type PlateEditorProps = {
     readOnly?: boolean;
-    initialContent: any[];
+    initialContent: Value;
 };
 
 function PlateEditorInner(
-    _props: PlateEditorProps,
+    { readOnly, initialContent }: PlateEditorProps,
     ref: React.Ref<EditorFormHandle>
 ) {
-    console.log("PlateEditor 렌더링");
-    const { readOnly, initialContent } = _props;
-
-    const editor = useCreateEditor({
-        readOnly,
-        value: initialContent,
-    });
+    const editor = useCreateEditor({ readOnly, value: initialContent }, [
+        initialContent,
+    ]);
 
     useImperativeHandle(ref, () => ({
         getContent: () => editor.children,

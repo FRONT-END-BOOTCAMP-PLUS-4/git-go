@@ -1,22 +1,18 @@
 "use client";
 
-import Button from "@/app/components/Button";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { COMMITS } from "@/constants/mockCommits";
 import { useMemoirForm } from "@/hooks/useMemoirForm";
 import { useParams } from "next/navigation";
 
 import { useState } from "react";
-
-export interface EditorFormHandle {
-    getContent: () => unknown[];
-}
 
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -29,7 +25,6 @@ export default function CommitMemoir() {
         setTitle,
         tags,
         setTags,
-        editorRef,
         disabled,
         loading,
         error,
@@ -53,7 +48,12 @@ export default function CommitMemoir() {
                     <AiSummary setShowModal={setShowModal} />
                 </div>
             )}
-            <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
+
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
 
             <div className="grid grid-cols-2">
                 <ChangeListLayout>
@@ -68,23 +68,14 @@ export default function CommitMemoir() {
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
                     <EditorForm
-                        title={title}
-                        onTitleChange={setTitle}
-                        tags={tags}
-                        onTagsChange={setTags}
-                        ref={editorRef}
+                        initialTitle={title}
+                        onChangeTitle={setTitle}
+                        initialTags={tags}
+                        onChangeTag={setTags}
+                        initialContent={[]}
+                        sourceId={sha}
+                        typeId={1}
                     />
-
-                    <div className="flex justify-end gap-2">
-                        <Button type="lined">취소</Button>
-                        <Button
-                            onClick={handleSave}
-                            type={disabled ? "disabled" : "default"}
-                            isLoading={loading}
-                        >
-                            {loading ? "저장 중…" : "회고록 작성 완료"}
-                        </Button>
-                    </div>
                 </div>
             </div>
         </CreateMemoirLayout>

@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
-import Loading from "../components/Loading";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 import Image from "next/image";
+import EmptyResult from "@/app/member/components/EmptyResult";
 
 interface Commit {
     sha: string;
@@ -44,7 +44,7 @@ export default function CommitPage() {
     const checkedOnceRef = useRef(false);
     const [commits, setCommits] = useState<Commit[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
 
@@ -52,7 +52,7 @@ export default function CommitPage() {
 
     useEffect(() => {
         if (checkedOnceRef.current) return;
-        setIsLoading(true);
+
         const fetchUserRepos = async () => {
             try {
                 const res = await fetch("/api/repos/user");
@@ -147,16 +147,11 @@ export default function CommitPage() {
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <div className="flex items-center gap-x-3">
                         <h2 className="font-bold">최근 활동</h2>
-                        {totalCount > 0 &&
-                            (isLoading ? (
-                                <span className="text-text-secondary2 text-sm">
-                                    불러오는 중...
-                                </span>
-                            ) : (
-                                <span className="text-text-secondary2 text-sm">
-                                    전체 {totalCount}개
-                                </span>
-                            ))}
+                        {totalCount > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                전체 {totalCount}개
+                            </span>
+                        )}
                     </div>
                     <p className="text-text-secondary2 text-sm">
                         {formattedDate}
@@ -171,16 +166,7 @@ export default function CommitPage() {
                     ) : totalCount !== 0 ? (
                         <>{commitList}</>
                     ) : (
-                        <li className="m-auto w-fit p-8">
-                            <Image
-                                alt="표시할 커밋 없음"
-                                src="/no-result.png"
-                                width={200}
-                                height={200}
-                                className="mx-auto mb-4"
-                            />
-                            선택한 저장소에 표시할 커밋이 없습니다.
-                        </li>
+                        <EmptyResult message="선택한 저장소에 표시할 커밋이 없습니다." />
                     )}
                 </ul>
 

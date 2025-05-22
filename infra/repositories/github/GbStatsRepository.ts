@@ -15,6 +15,9 @@ export class GbStatsRepository implements StatsRepository {
             }
         );
 
+        if (res.status === 409) {
+            return { totalCommits: 0 };
+        }
         if (!res.ok) throw new Error("GitHub API 에러");
 
         const linkHeader = res.headers.get("link");
@@ -41,6 +44,11 @@ export class GbStatsRepository implements StatsRepository {
 
         for (let i = 0; i < maxTries; i++) {
             const res = await fetch(url, { headers });
+
+            if (res.status === 204) {
+                return { totalLines: 0, prevLines: 0 };
+            }
+
             if (!res.ok) throw new Error("GitHub code frequency fetch 실패");
 
             const data = await res.json();
@@ -107,6 +115,14 @@ export class GbStatsRepository implements StatsRepository {
                     },
                 }
             );
+
+            if (res.status === 409) {
+                return Array.from({ length: 7 }).map((_, i) => {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (6 - i));
+                    return { date: date.toISOString().split("T")[0], count: 0 };
+                });
+            }
 
             if (!res.ok) throw new Error("GitHub API 실패");
             const commits = await res.json();

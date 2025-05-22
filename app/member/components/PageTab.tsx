@@ -26,7 +26,7 @@ export default function PageTap({ status }: Props) {
     };
 
     return (
-        <div className="border-border-primary1 mb-6 flex h-9 w-fit cursor-pointer flex-row rounded-md border bg-white px-1 py-1 text-[16px] font-normal">
+        <div className="border-border-primary1 mb-6 flex h-9 min-w-fit cursor-pointer flex-row rounded-md border bg-white px-1 py-1 text-[16px] font-normal">
             <div
                 className={`flex h-7 flex-row items-center rounded-md px-3 py-1 ${
                     status === "commits" ? "bg-primary1" : ""

@@ -1,15 +1,15 @@
 "use client";
 
-import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Editor from "@/app/member/components/CreateMemoir/Editor";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
 import Select from "@/app/member/components/Select";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { useEffect, useState } from "react";
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
+import { COMMITS } from "@/constants/mockCommits";
 
 type Option = {
     value: string;
@@ -546,11 +546,10 @@ export default function PullRequestMemoir() {
 
     return (
         <CreateMemoirLayout>
-            <FileTree
-                files={currentCommit.files}
-                onSelect={(filename: string) => {
-                    setSelectedFile(filename);
-                }}
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
             />
             <ChangeListLayout>
                 <Select
@@ -564,8 +563,8 @@ export default function PullRequestMemoir() {
                 />
             </ChangeListLayout>
             <div className="flex flex-3 flex-col justify-between gap-4 p-4">
-                <Editor />
-                <AiSummary />
+                {/* <Editor />
+                <AiSummary /> */}
                 <div className="flex justify-end gap-2">
                     <button className="border-border-primary1 rounded-md border px-4 py-2">
                         취소
