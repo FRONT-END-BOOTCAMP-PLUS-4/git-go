@@ -1,14 +1,16 @@
-import {
-    GithubCommitDetailRequestDto,
-    GithubCommitDetailResponseDto,
-} from '@/application/usecase/github/dto/GithubCommitDetailDto';
+
+import { GithubCommitDetailRequestDto, GithubCommitDetailResponseDto } from '@/application/usecase/github/dto/GithubCommitListDto';
 import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
 
 export class FetchCommitDetailUsecase {
     constructor(private readonly repository: GithubCommitDetailRepository) { }
 
     async execute(input: GithubCommitDetailRequestDto): Promise<GithubCommitDetailResponseDto> {
-        const commit = await this.repository.getCommitDetail(input.nameWithOwner, input.sha);
+        const commit = await this.repository.getCommitDetail(
+            input.nameWithOwner,
+            input.sha,
+            input.accessToken
+        );
 
         return {
             sha: commit.sha,
@@ -16,7 +18,7 @@ export class FetchCommitDetailUsecase {
             authorName: commit.authorName,
             authorDate: commit.authorDate,
             filesChanged: commit.filesChanged,
-            changedFiles: commit.changedFiles, // ✅ 추가된 라인
+            changedFiles: commit.changedFiles,
         };
     }
 }
