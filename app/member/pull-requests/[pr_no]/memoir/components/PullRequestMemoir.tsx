@@ -3,11 +3,13 @@
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
 import Select from "@/app/member/components/Select";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { useEffect, useState } from "react";
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
+import { COMMITS } from "@/constants/mockCommits";
 
 type Option = {
     value: string;
@@ -544,11 +546,10 @@ export default function PullRequestMemoir() {
 
     return (
         <CreateMemoirLayout>
-            <FileTree
-                files={currentCommit.files}
-                onSelect={(filename: string) => {
-                    setSelectedFile(filename);
-                }}
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
             />
             <ChangeListLayout>
                 <Select
