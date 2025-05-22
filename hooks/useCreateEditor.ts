@@ -2,7 +2,7 @@
 
 import { editorPlugins } from "@/app/member/components/CreateMemoir/plate-editor/plugin/editor-plugins";
 import { withProps } from "@udecode/cn";
-import { AnyPluginConfig } from "@udecode/plate";
+import { AnyPluginConfig, Value } from "@udecode/plate";
 import {
     BoldPlugin,
     CodePlugin,
@@ -126,7 +126,7 @@ export const useCreateEditor = (
         components?: Record<string, unknown>;
         plugins?: AnyPluginConfig[];
         readOnly?: boolean;
-        value?: any[];
+        value?: Value;
     } & Omit<CreatePlateEditorOptions, "plugins"> = {},
     deps: unknown[] = []
 ) => {
