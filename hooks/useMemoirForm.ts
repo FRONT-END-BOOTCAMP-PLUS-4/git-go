@@ -46,7 +46,7 @@ export function useMemoirForm(
         setError(null);
 
         try {
-            const res = await fetch("/api/memoir", {
+            const res = await fetch("/api/memoirs", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(buildPayload()),
@@ -77,7 +77,7 @@ export function useMemoirForm(
 
         try {
             if (!memoirId) throw new Error("memoirId is required");
-            const res = await fetch(`/api/memoir/${memoirId}`, {
+            const res = await fetch(`/api/memoirs/${memoirId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(buildPayload()),
