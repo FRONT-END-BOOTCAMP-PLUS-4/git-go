@@ -152,6 +152,7 @@ export class PrMemoirRepository implements MemoirRepository {
 
         return result;
     }
+
     async edit(data: {
         title: string;
         content: string;
@@ -242,6 +243,22 @@ export class PrMemoirRepository implements MemoirRepository {
                 ...updated,
                 tags: updated.tags.map((t) => t.tag.name),
             };
+        });
+    }
+
+    async delete(id: number): Promise<null> {
+        return prisma.$transaction(async (tx) => {
+            // 1) 중간 테이블(memoirTag)의 연결 관계 먼저 삭제
+            await tx.memoirTag.deleteMany({
+                where: { memoirId: id },
+            });
+
+            // 2) memoir 레코드 자체 삭제
+            await tx.memoir.delete({
+                where: { id },
+            });
+
+            return null;
         });
     }
 }
