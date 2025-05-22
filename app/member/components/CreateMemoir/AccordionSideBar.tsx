@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import useBuildFileTree from "@/hooks/useBuildFileTree";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import FileNodeComponent from "./FileNodeComponent";
 
 type AccordionSidebarProps = {
