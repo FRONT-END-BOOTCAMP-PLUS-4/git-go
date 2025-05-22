@@ -95,6 +95,25 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
+    async findAllTagsByUser(userId: string, repoId?: string): Promise<string[]> {
+        const memoirWhere: any = { userId };
+        if (repoId) {
+            memoirWhere.repoId = Number(repoId);
+        }
+        const tags = await prisma.memoirTag.findMany({
+            where: {
+                memoir: {
+                    is: memoirWhere,
+                },
+            },
+            include: {
+                tag: true,
+            },
+            distinct: ["tagId"],
+        });
+        return tags.map((t) => t.tag.name);
+    }
+
     async create(data: {
         title: string;
         content: string;

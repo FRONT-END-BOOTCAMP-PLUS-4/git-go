@@ -24,6 +24,7 @@ export default function SideBar({
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
         useRepoStore();
     const [loadingRepos, setLoadingRepos] = useState(true);
+    const [repoTags, setRepoTags] = useState<string[]>([]);
 
     const fetchRepos = async (
         setUserRepos: (
@@ -82,6 +83,23 @@ export default function SideBar({
             resetReload();
         });
     }, [reloadRepoList]);
+
+    useEffect(() => {
+        if (!selectedRepo) return;
+
+        const fetchTags = async () => {
+            try {
+                const res = await fetch(`/api/memoirs/tags?repo=${selectedRepo.dbId}`);
+                const tags: string[] = await res.json();
+                setRepoTags(tags);
+            } catch (err) {
+                console.error("태그 로딩 실패", err);
+                setRepoTags([]);
+            }
+        };
+
+        fetchTags();
+    }, [selectedRepo]);
 
     return (
         <aside className="flex w-50 flex-col gap-y-4">
@@ -163,9 +181,7 @@ export default function SideBar({
             {pathname.includes("memoirs") && (
                 <div className="border-border-primary1 shadow-sms rounded-lg border-1 bg-white p-4">
                     <CommitPrFilter />
-                    <TagFilter
-                        tags={["React", "TypeScript", "API", "Security"]}
-                    />
+                    <TagFilter tags={repoTags} />
                 </div>
             )}
 
