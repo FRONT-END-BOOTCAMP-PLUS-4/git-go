@@ -19,7 +19,7 @@ export default function SideBar({
     setOpen: (open: boolean) => void;
 }) {
     const [userRepos, setUserRepos] = useState<
-        { id: string; nameWithOwner: string }[]
+        { dbid: number; id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
@@ -27,9 +27,9 @@ export default function SideBar({
     const [loadingRepos, setLoadingRepos] = useState(true);
 
     const fetchRepos = async (
-        setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
+        setUserRepos: (repos: { dbid: number; id: string; nameWithOwner: string }[]) => void,
         setSelectedRepo: (
-            repo: { id: string; nameWithOwner: string } | null
+            repo: { dbid: number; id: string; nameWithOwner: string } | null
         ) => void
     ) => {
         setLoadingRepos(true);
@@ -39,15 +39,20 @@ export default function SideBar({
                 fetch("/api/github/repos"),
             ]);
 
-            const userRepoIds: { name: string }[] = await userRes.json();
+            const userRepoIds: { id: number; name: string }[] = await userRes.json();
             const githubRepos: GithubRepoDto[] = await githubRes.json();
 
             const matched = githubRepos
-                .filter((repo) => userRepoIds.some((r) => r.name === repo.id))
-                .map((repo) => ({
-                    id: repo.id,
-                    nameWithOwner: repo.nameWithOwner,
-                }));
+                .map((repo) => {
+                    const match = userRepoIds.find((r) => r.name === repo.id);
+                    if (!match) return null;
+                    return {
+                        dbid: Number(match.id),
+                        id: repo.id,
+                        nameWithOwner: repo.nameWithOwner,
+                    };
+                })
+                .filter(Boolean) as { dbid: number; id: string; nameWithOwner: string }[];
 
             setUserRepos(matched);
             if (matched.length > 0) {
