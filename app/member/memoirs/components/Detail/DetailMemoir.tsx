@@ -17,6 +17,7 @@ export default function DetailMemoir() {
     const { sha, id }: { sha: string; id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const parseId = Number(id);
 
     // 부모에서만 관리하는 초기값들
     const [title, setTitle] = useState("");
@@ -70,7 +71,7 @@ export default function DetailMemoir() {
                             typeId={1}
                             isEditing={isEditing}
                             onToggleEdit={handleToggleEdit}
-                            memoirId={id}
+                            memoirId={parseId}
                         />
                     ) : (
                         <EditorFormReadOnly
@@ -78,6 +79,7 @@ export default function DetailMemoir() {
                             tags={tags}
                             content={content}
                             handleStatusChange={handleToggleEdit}
+                            memoirId={parseId}
                         />
                     )}
                 </div>
