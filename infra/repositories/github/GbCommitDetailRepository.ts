@@ -23,7 +23,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         const filePaths: string[] = data.files.map((file: any) => file.filename);
         const tree = this.buildFileTree(filePaths);
 
-        const changedFiles: ChangedFile[] = data.files.map((file: any) => ({
+        const changeDetail: ChangedFile[] = data.files.map((file: any) => ({
             filename: file.filename,
             status: file.status,
             additions: file.additions,
@@ -39,7 +39,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
             data.commit.author.name,
             data.commit.author.date,
             tree,
-            changedFiles
+            changeDetail
         );
     }
 
