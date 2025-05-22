@@ -27,7 +27,7 @@ export default function FileNodeComponent({
     if (node.isFile) {
         return (
             <li
-                className={`cursor-pointer pl-2 text-sm hover:underline ${
+                className={`my-0.5 cursor-pointer pl-2 text-sm hover:underline ${
                     isSelected ? "text-primary7" : "text-text-secondary1"
                 }`}
                 onClick={() => onSelect(node.path)}
