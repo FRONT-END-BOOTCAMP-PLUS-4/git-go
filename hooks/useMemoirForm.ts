@@ -1,4 +1,5 @@
 "use client";
+import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
 import type { EditorFormHandle } from "@/types/github/ShareType";
 import { useSession } from "next-auth/react";
@@ -8,7 +9,7 @@ import { useRef, useState } from "react";
 export function useMemoirForm(
     sourceName: string,
     typeId: number,
-    memoirId?: string
+    memoirId?: number
 ) {
     const router = useRouter();
     const [title, setTitle] = useState("");
@@ -56,7 +57,7 @@ export function useMemoirForm(
                 throw new Error(body?.message || `저장 실패: ${res.status}`);
             }
             // 성공 후 후속 처리
-            router.push("/member/memoirs");
+            router.push(MEMBER_URL.memoirs);
         } catch (err: any) {
             console.error(err);
             setError(err.message);
@@ -88,7 +89,7 @@ export function useMemoirForm(
             }
             // 성공 후 후속 처리
             let source = typeId === 1 ? "commit" : "pull-request";
-            router.push(`/member/memoirs/${source}/${memoirId}`);
+            router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
         } catch (err: any) {
             console.error(err);
             setError(err.message);

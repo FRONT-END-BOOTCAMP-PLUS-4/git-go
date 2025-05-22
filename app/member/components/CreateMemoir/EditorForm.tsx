@@ -25,7 +25,7 @@ type EditorFormProps = {
     typeId: number;
     isEditing?: boolean;
     onToggleEdit?: () => void;
-    memoirId?: string;
+    memoirId?: number;
 };
 
 const EditorFormInner: ForwardRefRenderFunction<
