@@ -34,14 +34,14 @@ export default function MemoirCard({ memoir }: Props) {
     const router = useRouter();
     const typeInfo = typeClassMap[memoir.type] || typeClassMap.default;
 
-    const moveToMemoir = (source: string, memoirId: string) => {
+    const moveToMemoir = (source: string, memoirId: number) => {
         router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
     };
 
     return (
         <li
             className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
-            onClick={() => moveToMemoir(memoir.type, "36")}
+            onClick={() => moveToMemoir(memoir.type, memoir.id)}
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
