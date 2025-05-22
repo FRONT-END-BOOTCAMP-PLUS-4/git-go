@@ -2,6 +2,7 @@ import { Memoir } from "@/prisma/generated/prisma";
 
 export interface MemoirRepository {
     findByUserId(userId: string, repoId?: string): Promise<any[]>;
+    findByUserIdPaginated(userId: string, repoId?: string, page?: number, perPage?: number, createdAfter?: Date): Promise<[any[], number]>;
     countByRepoName(name: string, userId: string): Promise<number>;
 
     create(data: {

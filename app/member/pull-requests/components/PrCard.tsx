@@ -132,7 +132,7 @@ export default function PrCard({
 
     return (
         <li
-            className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
+            className="border-border-primary1 cursor-pointer border-b p-4"
             onClick={() =>
                 fetchPrCommitList(selectedRepo?.nameWithOwner, prNumber)
             }

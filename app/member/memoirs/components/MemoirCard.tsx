@@ -14,12 +14,13 @@ const typeClassMap: Record<
     { bg: string; text: string; label: string }
 > = {
     commit: {
-        label: "commit",
+        label: "Commit",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
     },
+
     "pull-request": {
-        label: "PR",
+        label: "Pull Request",
         bg: "bg-[#FEF9C3]",
         text: "text-[#854D0E]",
     },
@@ -65,7 +66,7 @@ export default function MemoirCard({ memoir }: Props) {
 
     return (
         <li
-            className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
+            className="border-border-primary1 cursor-pointer border-b p-4"
             onClick={() => moveToMemoir(memoir.type, memoir.id)}
         >
             <article className="flex items-start gap-x-4">

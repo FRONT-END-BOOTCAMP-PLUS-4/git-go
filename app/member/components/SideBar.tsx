@@ -55,10 +55,10 @@ export default function SideBar({
                     };
                 })
                 .filter(Boolean) as {
-                dbId: number;
-                id: string;
-                nameWithOwner: string;
-            }[];
+                    dbId: number;
+                    id: string;
+                    nameWithOwner: string;
+                }[];
 
             setUserRepos(matched);
             if (matched.length > 0) {
@@ -103,11 +103,10 @@ export default function SideBar({
                                     className="border-border-primary1"
                                 >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
-                                            isSelected
-                                                ? "bg-primary2 text-primary7"
-                                                : ""
-                                        }`}
+                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected
+                                            ? "bg-primary2 text-primary7"
+                                            : ""
+                                            }`}
                                         onClick={() => setSelectedRepo(repo)}
                                     >
                                         <Image
@@ -121,11 +120,10 @@ export default function SideBar({
                                             alt="브랜치 아이콘"
                                         />
                                         <span
-                                            className={`text-sm break-all hover:line-clamp-none ${
-                                                isSelected
-                                                    ? "line-clamp-none"
-                                                    : "line-clamp-2"
-                                            }`}
+                                            className={`text-sm break-all hover:line-clamp-none ${isSelected
+                                                ? "line-clamp-none"
+                                                : "line-clamp-2"
+                                                }`}
                                         >
                                             {repo.nameWithOwner}
                                         </span>
@@ -155,9 +153,9 @@ export default function SideBar({
             {pathname.includes("memoirs") && (
                 <TimeFilter
                     options={[
-                        { value: "7days", label: "Last 7 days" },
-                        { value: "30days", label: "Last 30 days" },
-                        { value: "90days", label: "Last 90 days" },
+                        { value: "all", label: "전체 기간" },
+                        { value: "7days", label: "지난 7일" },
+                        { value: "30days", label: "지난 30일" },
                     ]}
                 />
             )}
