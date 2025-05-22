@@ -1,13 +1,13 @@
-// app/member/[sha]/[id]/DetailMemoir.tsx
 "use client";
 
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { COMMITS } from "@/constants/mockCommits";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { Value } from "@udecode/plate";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -48,7 +48,11 @@ export default function DetailMemoir() {
 
     return (
         <DetailMemoirLayout>
-            <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
 
             <div className="grid flex-1 grid-cols-2">
                 <ChangeListLayout>
