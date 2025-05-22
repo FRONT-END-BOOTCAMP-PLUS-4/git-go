@@ -1,12 +1,12 @@
 // store/useFilterStore.ts
 import { create } from "zustand";
 
-type FilterType = "commits" | "pullRequests";
-type TimePeriod = "7days" | "30days" | "90days" | string;
+type FilterType = "commits" | "pullRequests" | "all";
+type TimePeriod = "7days" | "30days" | "all" | string;
 
 interface FilterState {
-    filters: Record<FilterType, boolean>;
-    toggleFilter: (type: FilterType) => void;
+    filterType: FilterType;
+    setFilterType: (type: FilterType) => void;
 
     timePeriod: TimePeriod;
     setTimePeriod: (period: TimePeriod) => void;
@@ -17,17 +17,8 @@ interface FilterState {
 }
 
 export const useFilterStore = create<FilterState>((set) => ({
-    filters: {
-        commits: false,
-        pullRequests: false,
-    },
-    toggleFilter: (type) =>
-        set((state) => ({
-            filters: {
-                ...state.filters,
-                [type]: !state.filters[type],
-            },
-        })),
+    filterType: "all",
+    setFilterType: (type) => set({ filterType: type }),
     timePeriod: "all",
     setTimePeriod: (period) => set({ timePeriod: period }),
 
