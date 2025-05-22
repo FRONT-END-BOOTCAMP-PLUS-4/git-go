@@ -14,12 +14,12 @@ const typeClassMap: Record<
     { bg: string; text: string; label: string }
 > = {
     commit: {
-        label: "commit",
+        label: "Commit",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
     },
     pull_request: {
-        label: "PR",
+        label: "Pull Request",
         bg: "bg-[#FEF9C3]",
         text: "text-[#854D0E]",
     },
