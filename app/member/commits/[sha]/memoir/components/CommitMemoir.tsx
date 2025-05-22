@@ -48,7 +48,6 @@ export default function CommitMemoir() {
                     <AiSummary setShowModal={setShowModal} />
                 </div>
             )}
-            {/* <FileTree files={COMMITS.files} onSelect={setSelectedFile} /> */}
 
             <AccordionSidebar
                 files={useExtractFilenames(COMMITS.files)}
