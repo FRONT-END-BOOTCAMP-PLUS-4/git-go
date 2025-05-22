@@ -1,27 +1,73 @@
 "use client";
 
+import Button from "@/app/components/Button";
 import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/ui/plate-editor";
+import { useMemoirForm } from "@/hooks/useMemoirForm";
+import { EditorFormHandle } from "@/types/github/ShareType";
+import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { EditorFormHandle } from "../../commits/[sha]/memoir/components/CommitMemoir";
+import { useRouter } from "next/navigation";
+import {
+    forwardRef,
+    ForwardRefRenderFunction,
+    useEffect,
+    useImperativeHandle,
+    useState,
+} from "react";
 
-interface Props {
-    title: string;
-    onTitleChange: (v: string) => void;
-    tags: string[];
-    onTagsChange: (v: string[]) => void;
-}
+type EditorFormProps = {
+    initialTitle: string;
+    onChangeTitle?: (e: string) => void;
+    initialTags: string[];
+    onChangeTag?: (e: string[]) => void;
+    initialContent: Value;
+    sourceId: string;
+    typeId: number;
+    isEditing?: boolean;
+    onToggleEdit?: () => void;
+    memoirId?: string;
+};
 
-const EditorFormInner = (
-    { title, onTitleChange, tags, onTagsChange }: Props,
-    ref: React.Ref<EditorFormHandle>
+const EditorFormInner: ForwardRefRenderFunction<
+    EditorFormHandle,
+    EditorFormProps
+> = (
+    {
+        initialTitle,
+        initialTags,
+        initialContent,
+        sourceId,
+        typeId,
+        isEditing,
+        onToggleEdit,
+        memoirId,
+    },
+    ref
 ) => {
-    const editorRef = useRef<EditorFormHandle>(null);
+    const {
+        title,
+        setTitle,
+        tags,
+        setTags,
+        editorRef,
+        disabled,
+        loading,
+        error,
+        handleSave,
+        handleEdit,
+    } = useMemoirForm(sourceId, typeId, memoirId);
+    const router = useRouter();
 
-    // ① 부모에서 호출할 수 있도록 getContent 노출
+    // 부모에서 호출할 수 있도록 getContent 노출
     useImperativeHandle(ref, () => ({
         getContent: () => editorRef.current?.getContent() ?? [],
     }));
+
+    // 부모에서 전달된 초기값 세팅
+    useEffect(() => {
+        setTitle(initialTitle);
+        setTags(initialTags);
+    }, [initialTitle, initialTags, setTitle, setTags]);
 
     const [tagInput, setTagInput] = useState("");
 
@@ -34,14 +80,38 @@ const EditorFormInner = (
             e.preventDefault();
             const lowerCase = tagInput.trim().toLocaleLowerCase();
             const next = Array.from(new Set([...tags, lowerCase]));
-            onTagsChange(next);
+            setTags(next);
             setTagInput("");
         }
     };
 
     const removeTag = (tag: string) => {
-        onTagsChange(tags.filter((t) => t !== tag));
+        setTags(tags.filter((t) => t !== tag));
     };
+
+    const onSave = async () => {
+        if (isEditing) {
+            await handleEdit();
+            onToggleEdit?.();
+        } else {
+            await handleSave();
+        }
+    };
+
+    const onCancel = () => {
+        if (isEditing && onToggleEdit) {
+            onToggleEdit();
+        } else {
+            router.back();
+        }
+    };
+
+    // 버튼 텍스트 결정
+    const buttonText = loading
+        ? "저장 중…"
+        : isEditing
+          ? "회고록 수정 완료"
+          : "회고록 작성 완료";
 
     return (
         <div className="flex flex-1 flex-col gap-4">
@@ -53,13 +123,14 @@ const EditorFormInner = (
                 >
                     제목
                 </label>
+
                 <input
                     id="title"
                     type="text"
                     className="border-border-primary1 w-full rounded-md border px-3 py-2.5"
                     placeholder="회고록 제목을 입력하세요..."
                     value={title}
-                    onChange={(e) => onTitleChange(e.target.value)}
+                    onChange={(e) => setTitle(e.target.value)}
                 />
             </div>
 
@@ -97,9 +168,22 @@ const EditorFormInner = (
             </div>
 
             {/* 에디터 */}
-            <PlateEditor ref={editorRef} />
+            <PlateEditor ref={editorRef} initialContent={initialContent} />
+
+            <div className="flex justify-end gap-2">
+                <Button type="lined" onClick={onCancel}>
+                    취소
+                </Button>
+                <Button
+                    onClick={onSave}
+                    type={disabled ? "disabled" : "default"}
+                    isLoading={loading}
+                >
+                    {buttonText}
+                </Button>
+            </div>
         </div>
     );
 };
 
-export default forwardRef<EditorFormHandle, Props>(EditorFormInner);
+export default forwardRef<EditorFormHandle, EditorFormProps>(EditorFormInner);

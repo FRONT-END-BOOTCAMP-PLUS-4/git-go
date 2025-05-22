@@ -57,23 +57,32 @@ export class PrMemoirRepository implements MemoirRepository {
         tags?: string[];
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
+            const {
+                title,
+                content,
+                source,
+                userId,
+                repoId,
+                typeId,
+                aiSum,
+                tags,
+            } = data;
             // 1) Memoir 레코드 생성
             const memoir = await tx.memoir.create({
                 data: {
-                    title: data.title,
-                    content: data.content,
-                    source: data.source,
-                    userId: data.userId,
-                    repoId: data.repoId,
-                    typeId: data.typeId,
-                    aiSum: data.aiSum,
-                    createdAt: new Date(),
+                    title,
+                    content,
+                    source,
+                    userId,
+                    repoId,
+                    typeId,
+                    aiSum,
                 },
             });
 
             // 2) tags 배열이 있을 때만 처리
-            if (data.tags && data.tags.length > 0) {
-                const tagNames = data.tags;
+            if (tags && tags.length > 0) {
+                const tagNames = tags;
 
                 // 2-1) 기존 태그 조회
                 const existingTags = await tx.tag.findMany({
@@ -112,6 +121,127 @@ export class PrMemoirRepository implements MemoirRepository {
             }
 
             return memoir;
+        });
+    }
+
+    async findByMemoirId(id: number): Promise<Memoir> {
+        const memoir = await prisma.memoir.findUnique({
+            where: { id },
+            include: {
+                tags: {
+                    select: {
+                        tag: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!memoir) {
+            throw new Error(`Memoir with id ${id} not found.`);
+        }
+
+        const result = {
+            ...memoir,
+            tags: memoir.tags.map((t) => t.tag.name),
+        };
+
+        return result;
+    }
+    async edit(data: {
+        title: string;
+        content: string;
+        memoirId: number;
+        tags?: string[];
+    }): Promise<Memoir> {
+        return prisma.$transaction(async (tx) => {
+            const { memoirId, title, content, tags } = data;
+
+            // 1) 기본 필드 업데이트 (updatedAt 필드가 있다면 함께 갱신)
+            await tx.memoir.update({
+                where: { id: memoirId },
+                data: {
+                    title,
+                    content,
+                    updatedAt: new Date(),
+                },
+            });
+
+            if (tags) {
+                // 2) 기존 관계 모두 삭제
+                await tx.memoirTag.deleteMany({
+                    where: { memoirId },
+                });
+
+                if (tags.length > 0) {
+                    // 3-1) 기존 태그 조회
+                    const existingTags = await tx.tag.findMany({
+                        where: { name: { in: tags } },
+                    });
+                    const existingTagNames = existingTags.map((t) => t.name);
+                    const existingTagMap = new Map(
+                        existingTags.map((t) => [t.name, t.id])
+                    );
+
+                    // 3-2) 새로 생성할 태그 이름만 필터링
+                    const newTagNames = tags.filter(
+                        (n) => !existingTagNames.includes(n)
+                    );
+                    const createdTags = await Promise.all(
+                        newTagNames.map((name) =>
+                            tx.tag.create({ data: { name } })
+                        )
+                    );
+                    const createdTagMap = new Map(
+                        createdTags.map((t) => [t.name, t.id])
+                    );
+
+                    // 3-3) 최종 tagId 목록 구성
+                    const tagIds = tags.map(
+                        (name) =>
+                            existingTagMap.get(name) ?? createdTagMap.get(name)!
+                    );
+
+                    // 3-4) memoirTag 연결 테이블에 새로 삽입
+                    await Promise.all(
+                        tagIds.map((tagId) =>
+                            tx.memoirTag.create({
+                                data: { memoirId, tagId },
+                            })
+                        )
+                    );
+                }
+            }
+
+            // 4) 최종 결과 조회 (tags 포함)
+            const updated = await tx.memoir.findUnique({
+                where: { id: memoirId },
+                include: {
+                    tags: {
+                        select: {
+                            tag: {
+                                select: { id: true, name: true },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (!updated) {
+                throw new Error(
+                    `Memoir with id ${memoirId} not found after update.`
+                );
+            }
+
+            // 5) domain 모델에 맞게 tags 배열으로 변환
+            return {
+                ...updated,
+                tags: updated.tags.map((t) => t.tag.name),
+            };
         });
     }
 }
