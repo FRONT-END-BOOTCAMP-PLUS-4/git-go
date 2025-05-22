@@ -11,6 +11,7 @@ import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
 import SideBarRepoSkeleton from "./SideBarRepoSkeleton";
 import WithdrawButton from "@/app/components/WithdrawButton";
+import SearchFilter from "../memoirs/components/Filter/SearchFilter";
 
 export default function SideBar({
     setOpen,
@@ -18,7 +19,7 @@ export default function SideBar({
     setOpen: (open: boolean) => void;
 }) {
     const [userRepos, setUserRepos] = useState<
-        { id: string; nameWithOwner: string }[]
+        { dbid: number; id: string; nameWithOwner: string }[]
     >([]);
     const pathname = usePathname();
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
@@ -26,9 +27,9 @@ export default function SideBar({
     const [loadingRepos, setLoadingRepos] = useState(true);
 
     const fetchRepos = async (
-        setUserRepos: (repos: { id: string; nameWithOwner: string }[]) => void,
+        setUserRepos: (repos: { dbid: number; id: string; nameWithOwner: string }[]) => void,
         setSelectedRepo: (
-            repo: { id: string; nameWithOwner: string } | null
+            repo: { dbid: number; id: string; nameWithOwner: string } | null
         ) => void
     ) => {
         setLoadingRepos(true);
@@ -38,15 +39,20 @@ export default function SideBar({
                 fetch("/api/github/repos"),
             ]);
 
-            const userRepoIds: { name: string }[] = await userRes.json();
+            const userRepoIds: { id: number; name: string }[] = await userRes.json();
             const githubRepos: GithubRepoDto[] = await githubRes.json();
 
             const matched = githubRepos
-                .filter((repo) => userRepoIds.some((r) => r.name === repo.id))
-                .map((repo) => ({
-                    id: repo.id,
-                    nameWithOwner: repo.nameWithOwner,
-                }));
+                .map((repo) => {
+                    const match = userRepoIds.find((r) => r.name === repo.id);
+                    if (!match) return null;
+                    return {
+                        dbid: Number(match.id),
+                        id: repo.id,
+                        nameWithOwner: repo.nameWithOwner,
+                    };
+                })
+                .filter(Boolean) as { dbid: number; id: string; nameWithOwner: string }[];
 
             setUserRepos(matched);
             if (matched.length > 0) {
@@ -82,23 +88,38 @@ export default function SideBar({
                         <SideBarRepoSkeleton />
                     ) : (
                         userRepos.map((repo) => {
-                            const isSelected = selectedRepo?.nameWithOwner === repo.nameWithOwner;
+                            const isSelected =
+                                selectedRepo?.nameWithOwner ===
+                                repo.nameWithOwner;
                             return (
-                                <li key={repo.id} className="border-border-primary1">
+                                <li
+                                    key={repo.id}
+                                    className="border-border-primary1"
+                                >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected ? "bg-primary2 text-primary7" : ""
-                                            }`}
+                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
+                                            isSelected
+                                                ? "bg-primary2 text-primary7"
+                                                : ""
+                                        }`}
                                         onClick={() => setSelectedRepo(repo)}
                                     >
                                         <Image
-                                            src={isSelected ? "/branch-blue.svg" : "/branch.svg"}
+                                            src={
+                                                isSelected
+                                                    ? "/branch-blue.svg"
+                                                    : "/branch.svg"
+                                            }
                                             width={14}
                                             height={14}
                                             alt="브랜치 아이콘"
                                         />
                                         <span
-                                            className={`text-sm break-all hover:line-clamp-none ${isSelected ? "line-clamp-none" : "line-clamp-2"
-                                                }`}
+                                            className={`text-sm break-all hover:line-clamp-none ${
+                                                isSelected
+                                                    ? "line-clamp-none"
+                                                    : "line-clamp-2"
+                                            }`}
                                         >
                                             {repo.nameWithOwner}
                                         </span>
@@ -125,7 +146,7 @@ export default function SideBar({
                 </section>
             </div>
 
-            {(pathname.includes("memoirs")) && (
+            {pathname.includes("memoirs") && (
                 <TimeFilter
                     options={[
                         { value: "7days", label: "Last 7 days" },
