@@ -12,16 +12,61 @@ import { COMMITS } from "@/constants/mockCommits";
 import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
     const [showModal, setShowModal] = useState(false);
+    const [filesChanged, setFilesChanged] = useState([]);
 
     const { selectedRepo } = useRepoStore();
     const { sha }: { sha: string } = useParams();
     console.log("repo: ", selectedRepo?.nameWithOwner);
+
+    console.log(sha, selectedRepo?.nameWithOwner);
+
+    const { data: session } = useSession();
+
+    const fetchCommitDetail = async (
+        nameWithOwner: string | undefined,
+        sha: string,
+        accessToken: string | undefined
+    ) => {
+        if (!nameWithOwner || !sha) return;
+
+        try {
+            const res = await fetch("/api/github/commits/detail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nameWithOwner,
+                    sha,
+                    accessToken,
+                }),
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                setFilesChanged(result.changeDetail);
+                console.log(result);
+            }
+        } catch (error) {
+            console.error("Failed to fetch commit detail", error);
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        fetchCommitDetail(
+            selectedRepo?.nameWithOwner,
+            sha,
+            session?.accessToken
+        );
+    }, []);
 
     return (
         <CreateMemoirLayout>
@@ -42,7 +87,7 @@ export default function CommitMemoir() {
             )}
 
             <AccordionSidebar
-                files={useExtractFilenames(COMMITS.files)}
+                files={useExtractFilenames(filesChanged)}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />

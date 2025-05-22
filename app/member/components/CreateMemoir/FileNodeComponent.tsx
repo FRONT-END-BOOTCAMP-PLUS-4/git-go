@@ -20,7 +20,7 @@ export default function FileNodeComponent({
     onSelect,
     selectedFile,
 }: Props) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     const isSelected = selectedFile === node.path;
 
