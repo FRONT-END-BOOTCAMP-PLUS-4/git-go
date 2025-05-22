@@ -33,9 +33,7 @@ export function useMemoirForm(
         aiSum: "AI 요약 텍스트",
         userId: session!.user.id,
         typeId,
-        // repoId: repo!.id,
-        // TODO: repo.id가 int로 바뀌면 수정하기.
-        repoId: 3,
+        repoId: repo!.id,
     });
 
     const handleSave = async () => {
