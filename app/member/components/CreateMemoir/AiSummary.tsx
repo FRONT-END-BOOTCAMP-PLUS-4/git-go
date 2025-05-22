@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
@@ -40,9 +39,9 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
         for await (const chunk of response) {
             flushSync(() => {
                 setMarkdown((prev) => prev + chunk.text);
+                console.log("AI 요약 중간 결과: ", chunk.text);
             });
         }
-        console.log("AI 요약 결과: ", markdown);
         setLoading(false);
     };
 
@@ -57,7 +56,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
         >
             <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 ✖
@@ -95,7 +94,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                             />
                             <div className="text-primary7">AI 요약</div>
                         </div> */}
-                    <div className="flex flex-col gap-1 p-4 pt-8">
+                    <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
                         <ReactMarkdown>{markdown}</ReactMarkdown>
                     </div>
                 </>
