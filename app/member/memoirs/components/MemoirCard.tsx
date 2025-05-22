@@ -30,6 +30,31 @@ const typeClassMap: Record<
     },
 };
 
+function getFirstMeaningfulText(content: any): string {
+    if (!Array.isArray(content)) return "";
+
+    for (const block of content) {
+        if (!block.children) continue;
+
+        for (const child of block.children) {
+            if (child.text && child.text.trim()) {
+                return child.text.trim();
+            }
+
+            // table 안의 td 안의 p 안의 children 처리
+            if (Array.isArray(child.children)) {
+                for (const subChild of child.children) {
+                    if (subChild.text && subChild.text.trim()) {
+                        return subChild.text.trim();
+                    }
+                }
+            }
+        }
+    }
+
+    return "";
+}
+
 export default function MemoirCard({ memoir }: Props) {
     const router = useRouter();
     const typeInfo = typeClassMap[memoir.type] || typeClassMap.default;
@@ -81,7 +106,7 @@ export default function MemoirCard({ memoir }: Props) {
                         ))}
                     </ul>
                     <p className="text-text-secondary2 line-clamp-1 text-sm">
-                        {JSON.stringify(memoir.content)}
+                        {getFirstMeaningfulText(memoir.content)}
                     </p>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
