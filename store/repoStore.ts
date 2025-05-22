@@ -4,11 +4,13 @@ import { createJSONStorage, persist } from "zustand/middleware";
 // 1. Zustand 스토어 타입 정의
 type RepoStore = {
     selectedRepo: {
-        dbid: number;
+        dbId: number;
         id: string;
         nameWithOwner: string;
     } | null;
-    setSelectedRepo: (repo: { dbid: number; id: string; nameWithOwner: string; } | null) => void;
+    setSelectedRepo: (
+        repo: { dbId: number; id: string; nameWithOwner: string; } | null
+    ) => void;
     // selectedRepo: string | null;
     // setSelectedRepo: (nameWithOwner: string | null) => void;
     reloadRepoList: boolean;
@@ -26,6 +28,6 @@ export const useRepoStore = create<RepoStore>()(
             triggerReload: () => set({ reloadRepoList: true }),
             resetReload: () => set({ reloadRepoList: false }),
         }),
-        { name: "repo-store", storage: createJSONStorage(() => sessionStorage), }
+        { name: "repo-store", storage: createJSONStorage(() => sessionStorage) }
     )
 );

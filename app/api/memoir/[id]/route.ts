@@ -1,3 +1,4 @@
+import { DeleteMemoirUsecase } from "@/application/usecase/memoir/DeleteMemoirUsecase";
 import { EditMemoirUsecase } from "@/application/usecase/memoir/EditMemoirUsecase";
 import { GetMemoirUsecase } from "@/application/usecase/memoir/GetMemoirUsecase";
 import { PrMemoirRepository } from "@/infra/repositories/prisma/PrMemoirRepository";
@@ -49,7 +50,39 @@ export async function PUT(
 
         return NextResponse.json(updated, { status: 201 });
     } catch (err) {
-        console.error("❌ Error in POST /api/memoir/[memoirId]:", err);
+        console.error("❌ Error in PUT /api/memoir/[memoirId]:", err);
+        return NextResponse.json(
+            {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Internal Server Error 입니다.",
+            },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    try {
+        const { id } = await params;
+        const memoirId = Number(id);
+        console.log("memoirId: ", memoirId);
+
+        const repo = new PrMemoirRepository();
+        const usecase = new DeleteMemoirUsecase(repo);
+        const deleted = await usecase.execute(memoirId);
+        console.log("deleted: ", deleted);
+
+        return NextResponse.json(
+            { message: "삭제가 완료되었습니다." },
+            { status: 200 }
+        );
+    } catch (err) {
+        console.error("❌ Error in DELETE /api/memoir/[memoirId]:", err);
         return NextResponse.json(
             {
                 message:
