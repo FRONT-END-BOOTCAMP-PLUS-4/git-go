@@ -6,12 +6,17 @@ import { useRepoStore } from "@/store/repoStore";
 import { useEffect, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
 import MemoirSkeleton from "./components/MemoirSkeleton";
+import Pagination from "@/app/components/Pagination";
 
 export default function MemoirPage() {
     const now = new Date();
     const { selectedRepo } = useRepoStore();
     const [memoirs, setMemoirs] = useState<MemoirListDto[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalCount, setTotalCount] = useState(0);
+    const perPage = 10;
+    const handlePageChange = (newPage: number) => setCurrentPage(newPage);
 
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -25,13 +30,14 @@ export default function MemoirPage() {
         const fetchMemoirs = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}`);
-                const data = await res.json();
-                const updatedData = data.map((memoir: any) => ({
+                const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}&page=${currentPage}&perPage=${perPage}`);
+                const { list, totalCount } = await res.json();
+                const updatedData = list.map((memoir: any) => ({
                     ...memoir,
                     repoName: selectedRepo.nameWithOwner,
                 }));
                 setMemoirs(updatedData);
+                setTotalCount(totalCount);
             } catch (e) {
                 console.error("회고 목록 로딩 실패", e);
                 setMemoirs([]);
@@ -41,12 +47,19 @@ export default function MemoirPage() {
         };
 
         fetchMemoirs();
-    }, [selectedRepo]);
+    }, [selectedRepo, currentPage]);
 
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                <h2 className="font-bold">My Memoirs</h2>
+                <div className="flex items-center gap-x-3">
+                    <h2 className="font-bold">My Memoirs</h2>
+                    {(totalCount ?? 0) > 0 && (
+                        <span className="text-text-secondary2 text-sm">
+                            전체 {totalCount}개
+                        </span>
+                    )}
+                </div>
                 <p className="text-text-secondary2 text-sm">{formattedDate}</p>
             </section>
 
@@ -61,6 +74,14 @@ export default function MemoirPage() {
                     ))
                 )}
             </ul>
+            {!loading && memoirs.length > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalCount={totalCount}
+                    perPage={perPage}
+                    setCurrentPage={handlePageChange}
+                />
+            )}
         </div>
     );
 }
