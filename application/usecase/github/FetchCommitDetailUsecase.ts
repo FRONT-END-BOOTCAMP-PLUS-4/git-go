@@ -18,7 +18,7 @@ export class FetchCommitDetailUsecase {
             authorName: commit.authorName,
             authorDate: commit.authorDate,
             filesChanged: commit.filesChanged,
-            changedFiles: commit.changedFiles,
+            changeDetail: commit.changeDetail,
         };
     }
 }

@@ -25,5 +25,5 @@ export interface GithubCommitDetailResponseDto {
     authorName: string;
     authorDate: string;
     filesChanged: FileTreeNode[];
-    changedFiles: ChangedFile[]; // ✅ 새로 추가된 필드
+    changeDetail: ChangedFile[]; // ✅ 새로 추가된 필드
 }

@@ -26,5 +26,5 @@ export interface GithubCommitDetailResponseDto {
     authorName: string;
     authorDate: string;
     filesChanged: FileTreeNode[];
-    changedFiles: ChangedFile[];
+    changeDetail: ChangedFile[];
 }

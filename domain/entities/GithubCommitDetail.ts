@@ -5,7 +5,7 @@ export class GithubCommitDetail {
         public authorName: string,
         public authorDate: string,
         public filesChanged: FileTreeNode[],
-        public changedFiles: ChangedFile[]
+        public changeDetail: ChangedFile[]
     ) { }
 }
 
