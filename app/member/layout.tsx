@@ -4,6 +4,7 @@ import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 import SideBar from "@/app/member/components/SideBar";
 import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
+import SearchFilter from "./memoirs/components/Filter/SearchFilter";
 
 export default function MemberLayout({
     children,
@@ -28,7 +29,10 @@ export default function MemberLayout({
                 <SideBar setOpen={setOpen} />
 
                 <div className="w-full">
-                    <PageTap status={status} />
+                    <div className="flex justify-between">
+                        <PageTap status={status} />
+                        {pathname.includes("memoirs") && <SearchFilter />}
+                    </div>
                     {children}
                 </div>
             </div>
