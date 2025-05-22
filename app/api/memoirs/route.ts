@@ -13,9 +13,22 @@ export async function GET(req: NextRequest) {
     const repoId = searchParams.get("repo");
     const page = Number(searchParams.get("page") ?? 1);
     const perPage = Number(searchParams.get("perPage") ?? 10);
+    const period = searchParams.get("period");
+    let createdAfter: Date | undefined = undefined;
+    if (period && period !== "all") {
+        const days = {
+            "7days": 7,
+            "30days": 30,
+        }[period];
+
+        if (days) {
+            createdAfter = new Date();
+            createdAfter.setDate(createdAfter.getDate() - days);
+        }
+    }
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const result = await usecase.execute(token.id, repoId as string, page, perPage);
+    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter);
     return NextResponse.json(result);
 }
 

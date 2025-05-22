@@ -24,7 +24,7 @@ export default function TimeFilter({ options }: TimeFilterProps) {
     return (
         <div className="border-border-primary1 rounded-lg border bg-white p-4">
             <label className="text-text-secondary1 text-sm font-normal">
-                Time Period
+                작성 기간
             </label>
             <div className="relative inline-block w-full">
                 <button
