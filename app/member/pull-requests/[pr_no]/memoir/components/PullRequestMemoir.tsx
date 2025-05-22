@@ -1,15 +1,17 @@
 "use client";
 
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
+import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import Select from "@/app/member/components/Select";
+import { COMMITS } from "@/constants/mockCommits";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
-import useExtractFilenames from "@/hooks/useExtractFileNames";
-import { COMMITS } from "@/constants/mockCommits";
 
 type Option = {
     value: string;
@@ -531,6 +533,8 @@ export default function PullRequestMemoir() {
 
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
+    const { pr_no }: { pr_no: string } = useParams();
+
     const options: Option[] = MOCK_PR.map((commit) => ({
         value: commit.sha, // SHA를 value로
         label: commit.commit.message, // 커밋 메시지를 label로
@@ -551,27 +555,26 @@ export default function PullRequestMemoir() {
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
-            <ChangeListLayout>
-                <Select
-                    options={options}
-                    value={selectedSha}
-                    onChange={handleChange}
-                />
-                <ChangeList
-                    changes={currentCommit.files}
-                    selectedFile={selectedFile}
-                />
-            </ChangeListLayout>
-            <div className="flex flex-3 flex-col justify-between gap-4 p-4">
-                {/* <Editor />
-                <AiSummary /> */}
-                <div className="flex justify-end gap-2">
-                    <button className="border-border-primary1 rounded-md border px-4 py-2">
-                        취소
-                    </button>
-                    <button className="bg-primary7 text-text-primary1 rounded-md px-4 py-2">
-                        회고록 작성 완료
-                    </button>
+            <div className="grid grid-cols-2">
+                <ChangeListLayout>
+                    <Select
+                        options={options}
+                        value={selectedSha}
+                        onChange={handleChange}
+                    />
+                    <ChangeList
+                        changes={currentCommit.files}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>
+                <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
+                    <EditorForm
+                        initialTitle=""
+                        initialTags={[]}
+                        initialContent={[]}
+                        sourceId={pr_no}
+                        typeId={2}
+                    />
                 </div>
             </div>
         </CreateMemoirLayout>
