@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import { PrMemoirRepository } from "@/infra/repositories/prisma/PrMemoirRepository";
+import { CreateMemoirUsecase } from "@/application/usecase/memoir/CreateMemoirUsecase";
 import { GetMyMemoirsUsecase } from "@/application/usecase/memoir/GetMyMemoirsUsecase";
+import { PrMemoirRepository } from "@/infra/repositories/prisma/PrMemoirRepository";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     const token = await getToken({ req });
@@ -10,8 +11,33 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const repoId = searchParams.get("repo");
+    const page = Number(searchParams.get("page") ?? 1);
+    const perPage = Number(searchParams.get("perPage") ?? 10);
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const memoirs = await usecase.execute(token.id, repoId as string);
-    return NextResponse.json(memoirs);
+    const result = await usecase.execute(token.id, repoId as string, page, perPage);
+    return NextResponse.json(result);
+}
+
+export async function POST(req: NextRequest) {
+    try {
+        const payload = await req.json();
+
+        const repo = new PrMemoirRepository();
+        const usecase = new CreateMemoirUsecase(repo);
+        const memoir = await usecase.execute(payload);
+
+        return NextResponse.json(memoir, { status: 201 });
+    } catch (err) {
+        console.error("❌ Error in POST /api/memoirs:", err);
+        return NextResponse.json(
+            {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Internal Server Error 입니다.",
+            },
+            { status: 500 }
+        );
+    }
 }

@@ -18,7 +18,7 @@ export async function GET(
 
         return NextResponse.json(memoir, { status: 201 });
     } catch (err) {
-        console.error("❌ Error in POST /api/memoir/[memoirId]:", err);
+        console.error("❌ Error in POST /api/memoirs/[memoirId]:", err);
         return NextResponse.json(
             {
                 message:
@@ -41,7 +41,6 @@ export async function PUT(
         const memoirId = Number(id);
 
         const dto = { ...payload, memoirId };
-        console.log("dto: ", dto);
 
         const repo = new PrMemoirRepository();
         const usecase = new EditMemoirUsecase(repo);
@@ -50,7 +49,7 @@ export async function PUT(
 
         return NextResponse.json(updated, { status: 201 });
     } catch (err) {
-        console.error("❌ Error in PUT /api/memoir/[memoirId]:", err);
+        console.error("❌ Error in PUT /api/memoirs/[memoirId]:", err);
         return NextResponse.json(
             {
                 message:
@@ -70,7 +69,6 @@ export async function DELETE(
     try {
         const { id } = await params;
         const memoirId = Number(id);
-        console.log("memoirId: ", memoirId);
 
         const repo = new PrMemoirRepository();
         const usecase = new DeleteMemoirUsecase(repo);
@@ -82,7 +80,7 @@ export async function DELETE(
             { status: 200 }
         );
     } catch (err) {
-        console.error("❌ Error in DELETE /api/memoir/[memoirId]:", err);
+        console.error("❌ Error in DELETE /api/memoirs/[memoirId]:", err);
         return NextResponse.json(
             {
                 message:

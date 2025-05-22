@@ -65,7 +65,7 @@ export default function MemoirCard({ memoir }: Props) {
 
     return (
         <li
-            className="border-border-primary1 cursor-pointer border-b p-4 last:border-b-0"
+            className="border-border-primary1 cursor-pointer border-b p-4"
             onClick={() => moveToMemoir(memoir.type, memoir.id)}
         >
             <article className="flex items-start gap-x-4">
