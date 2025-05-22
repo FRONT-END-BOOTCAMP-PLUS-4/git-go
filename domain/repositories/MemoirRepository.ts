@@ -4,6 +4,7 @@ export interface MemoirRepository {
     findByUserId(userId: string, repoId?: string): Promise<any[]>;
     findByUserIdPaginated(userId: string, repoId?: string, page?: number, perPage?: number, createdAfter?: Date, filterType?: "commits" | "pullRequests" | "all"): Promise<[any[], number]>;
     countByRepoName(name: string, userId: string): Promise<number>;
+    findAllTagsByUser(userId: string, repoId?: string): Promise<string[]>;
 
     create(data: {
         title: string;
