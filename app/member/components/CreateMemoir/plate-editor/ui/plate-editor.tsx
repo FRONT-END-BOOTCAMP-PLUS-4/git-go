@@ -16,10 +16,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 type PlateEditorProps = {
     readOnly?: boolean;
     initialContent: Value;
+    handleEditorChange: () => void;
 };
 
 function PlateEditorInner(
-    { readOnly, initialContent }: PlateEditorProps,
+    { readOnly, initialContent, handleEditorChange }: PlateEditorProps,
     ref: React.Ref<EditorFormHandle>
 ) {
     const editor = useCreateEditor({ readOnly, value: initialContent }, [
@@ -32,7 +33,11 @@ function PlateEditorInner(
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <Plate editor={editor} readOnly={readOnly}>
+            <Plate
+                editor={editor}
+                readOnly={readOnly}
+                onChange={handleEditorChange}
+            >
                 <EditorContainer className="flex flex-1 flex-col">
                     {/* 본문 editor */}
                     <div className="flex flex-1 flex-col gap-1">
@@ -42,7 +47,6 @@ function PlateEditorInner(
                         <Editor
                             className="border-border-primary1 min-h-60 flex-1 overflow-y-auto rounded-md border px-8 py-2 focus:placeholder:text-transparent"
                             variant="demo"
-                            // placeholder="변경 사항에 대한 회고를 작성하세요."
                         />
                     </div>
                 </EditorContainer>

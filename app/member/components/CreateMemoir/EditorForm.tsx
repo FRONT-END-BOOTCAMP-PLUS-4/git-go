@@ -55,6 +55,7 @@ const EditorFormInner: ForwardRefRenderFunction<
         error,
         handleSave,
         handleEdit,
+        handleEditorChange,
     } = useMemoirForm(sourceId, typeId, memoirId);
     const router = useRouter();
 
@@ -168,7 +169,11 @@ const EditorFormInner: ForwardRefRenderFunction<
             </div>
 
             {/* 에디터 */}
-            <PlateEditor ref={editorRef} initialContent={initialContent} />
+            <PlateEditor
+                ref={editorRef}
+                initialContent={initialContent}
+                handleEditorChange={handleEditorChange}
+            />
 
             <div className="flex justify-end gap-2">
                 <Button type="lined" onClick={onCancel}>
