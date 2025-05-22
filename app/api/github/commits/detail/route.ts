@@ -4,13 +4,15 @@ import { GbCommitDetailRepository } from '@/infra/repositories/github/GbCommitDe
 
 export async function POST(req: NextRequest) {
     try {
-        const { nameWithOwner, sha } = await req.json();
+        const { nameWithOwner, sha, accessToken } = await req.json(); // ✅ accessToken 추출
 
         if (
             !nameWithOwner ||
             !sha ||
+            !accessToken || // ✅ accessToken 유효성 체크
             typeof nameWithOwner !== 'string' ||
-            typeof sha !== 'string'
+            typeof sha !== 'string' ||
+            typeof accessToken !== 'string'
         ) {
             return NextResponse.json(
                 { message: 'Invalid parameters' },
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
 
         const repository = new GbCommitDetailRepository();
         const usecase = new FetchCommitDetailUsecase(repository);
-        const result = await usecase.execute({ nameWithOwner, sha });
+        const result = await usecase.execute({ nameWithOwner, sha, accessToken });
 
         return NextResponse.json(result);
     } catch (error) {
@@ -44,5 +46,3 @@ export function PUT() {
         { status: 405 }
     );
 }
-
-// 필요하다면 DELETE, PATCH 등도 같은 패턴으로 처리 가능

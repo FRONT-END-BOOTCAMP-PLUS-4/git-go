@@ -1,12 +1,13 @@
 import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
 import { GithubCommitDetail, FileTreeNode, ChangedFile } from '@/domain/entities/GithubCommitDetail';
-import { getSession } from 'next-auth/react';
 
 export class GbCommitDetailRepository implements GithubCommitDetailRepository {
-    async getCommitDetail(nameWithOwner: string, sha: string): Promise<GithubCommitDetail> {
-        const session = await getSession();
-        const accessToken = session?.accessToken;
-        if (!accessToken) throw new Error('No access token found in session');
+    async getCommitDetail(
+        nameWithOwner: string,
+        sha: string,
+        accessToken: string // ✅ accessToken 인자로 받음
+    ): Promise<GithubCommitDetail> {
+        if (!accessToken) throw new Error('No access token provided');
 
         const res = await fetch(`https://api.github.com/repos/${nameWithOwner}/commits/${sha}`, {
             headers: {
@@ -38,7 +39,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
             data.commit.author.name,
             data.commit.author.date,
             tree,
-            changedFiles // ✅ 여기 추가됨
+            changedFiles
         );
     }
 
