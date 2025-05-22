@@ -6,7 +6,7 @@ import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccodionSideBar";
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { COMMITS } from "@/constants/mockCommits";
