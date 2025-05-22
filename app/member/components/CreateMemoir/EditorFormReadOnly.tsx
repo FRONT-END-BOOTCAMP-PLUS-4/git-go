@@ -25,7 +25,7 @@ export default function EditorFormReadOnly({
 }: Props) {
     const router = useRouter();
     const deleteMemoir = async () => {
-        const res = await fetch(`/api/memoir/${memoirId}`, {
+        const res = await fetch(`/api/memoirs/${memoirId}`, {
             method: "DELETE",
         });
         const data = await res.json();
