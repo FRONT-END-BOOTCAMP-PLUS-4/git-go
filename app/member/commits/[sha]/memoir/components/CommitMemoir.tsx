@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/app/components/Button";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
@@ -71,17 +70,6 @@ export default function CommitMemoir() {
                         sourceId={sha}
                         typeId={1}
                     />
-
-                    <div className="flex justify-end gap-2">
-                        <Button type="lined">취소</Button>
-                        <Button
-                            onClick={handleSave}
-                            type={disabled ? "disabled" : "default"}
-                            isLoading={loading}
-                        >
-                            {loading ? "저장 중…" : "회고록 작성 완료"}
-                        </Button>
-                    </div>
                 </div>
             </div>
         </CreateMemoirLayout>
