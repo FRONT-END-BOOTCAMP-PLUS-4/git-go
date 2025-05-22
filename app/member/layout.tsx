@@ -16,10 +16,10 @@ export default function MemberLayout({
     const pathname = usePathname();
     const status = pathname.split("/").pop() || "commits";
 
-    const { id } = useParams();
+    const { id, memoirId } = useParams();
 
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
-    if (pathname.endsWith("memoir") || id) {
+    if (pathname.endsWith("memoir") || id || memoirId) {
         // 작성 페이지는 사이드바 탭 미표시
         return <>{children}</>;
     } else {
