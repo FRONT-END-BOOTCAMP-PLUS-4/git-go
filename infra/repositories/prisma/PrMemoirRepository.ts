@@ -35,11 +35,16 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async findByUserIdPaginated(userId: string, repoName?: string, page = 1, perPage = 10): Promise<[any[], number]> {
+    async findByUserIdPaginated(
+        userId: string,
+        repoName?: string,
+        page = 1,
+        perPage = 10,
+        createdAfter?: Date
+    ): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
         let repoFilter: { repoId?: number } = {};
-
         if (repoName) {
             const repo = await prisma.repo.findFirst({
                 where: {
@@ -52,10 +57,16 @@ export class PrMemoirRepository implements MemoirRepository {
             repoFilter.repoId = repo.id;
         }
 
-        const where = {
+        const where: Record<string, any> = {
             userId,
             ...repoFilter,
         };
+
+        if (createdAfter) {
+            where.createdAt = {
+                gte: createdAfter,
+            };
+        }
 
         const [memoirs, totalCount] = await Promise.all([
             prisma.memoir.findMany({

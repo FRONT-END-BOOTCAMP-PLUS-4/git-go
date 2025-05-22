@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
 import MemoirSkeleton from "./components/MemoirSkeleton";
 import Pagination from "@/app/components/Pagination";
+import { useFilterStore } from "@/store/useFilterStore";
 
 export default function MemoirPage() {
     const now = new Date();
@@ -17,6 +18,7 @@ export default function MemoirPage() {
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
     const handlePageChange = (newPage: number) => setCurrentPage(newPage);
+    const { timePeriod } = useFilterStore();
 
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -25,12 +27,18 @@ export default function MemoirPage() {
     }).format(now);
 
     useEffect(() => {
+        setCurrentPage(1);
+    }, [timePeriod]);
+
+    useEffect(() => {
         if (!selectedRepo) return;
 
         const fetchMemoirs = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/memoirs?repo=${selectedRepo.id}&page=${currentPage}&perPage=${perPage}`);
+                const res = await fetch(
+                    `/api/memoirs?repo=${selectedRepo.id}&page=${currentPage}&perPage=${perPage}&period=${timePeriod}`
+                );
                 const { list, totalCount } = await res.json();
                 const updatedData = list.map((memoir: any) => ({
                     ...memoir,
@@ -47,7 +55,7 @@ export default function MemoirPage() {
         };
 
         fetchMemoirs();
-    }, [selectedRepo, currentPage]);
+    }, [selectedRepo, currentPage, timePeriod]);
 
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">

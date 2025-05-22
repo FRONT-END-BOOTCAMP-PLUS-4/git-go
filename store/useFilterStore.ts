@@ -28,7 +28,7 @@ export const useFilterStore = create<FilterState>((set) => ({
                 [type]: !state.filters[type],
             },
         })),
-    timePeriod: "7days",
+    timePeriod: "all",
     setTimePeriod: (period) => set({ timePeriod: period }),
 
     tags: [], // 초기 태그 배열
