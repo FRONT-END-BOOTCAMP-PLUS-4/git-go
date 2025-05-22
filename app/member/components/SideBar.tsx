@@ -142,16 +142,13 @@ export default function SideBar({
             </div>
 
             {pathname.includes("memoirs") && (
-                <div>
-                    <TimeFilter
-                        options={[
-                            { value: "7days", label: "Last 7 days" },
-                            { value: "30days", label: "Last 30 days" },
-                            { value: "90days", label: "Last 90 days" },
-                        ]}
-                    />
-                    <SearchFilter />
-                </div>
+                <TimeFilter
+                    options={[
+                        { value: "7days", label: "Last 7 days" },
+                        { value: "30days", label: "Last 30 days" },
+                        { value: "90days", label: "Last 90 days" },
+                    ]}
+                />
             )}
 
             {pathname.includes("memoirs") && (
