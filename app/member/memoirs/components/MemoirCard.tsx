@@ -18,7 +18,7 @@ const typeClassMap: Record<
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
     },
-    pull_request: {
+    "pull-request": {
         label: "PR",
         bg: "bg-[#FEF9C3]",
         text: "text-[#854D0E]",
