@@ -26,7 +26,7 @@ export default function DetailMemoir() {
 
     // 회고록 값 불러오기기
     const load = async () => {
-        const res = await fetch(`/api/memoir/${id}`);
+        const res = await fetch(`/api/memoirs/${id}`);
         const data = (await res.json()) as GetMemoirResponseDto;
         setTitle(data.title);
         setTags(data.tags ?? []);
