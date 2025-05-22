@@ -5,7 +5,8 @@ import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
-import FileTree from "@/app/member/components/CreateMemoir/FileTree";
+import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
+import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { COMMITS } from "@/constants/mockCommits";
 import { useMemoirForm } from "@/hooks/useMemoirForm";
@@ -50,7 +51,12 @@ export default function CommitMemoir() {
                     <AiSummary setShowModal={setShowModal} />
                 </div>
             )}
-            <FileTree files={COMMITS.files} onSelect={setSelectedFile} />
+
+            <AccordionSidebar
+                files={useExtractFilenames(COMMITS.files)}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
 
             <div className="grid grid-cols-2">
                 <ChangeListLayout>
