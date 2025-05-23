@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BottomCard from "./components/BottomCard";
 import StatsCard from "./components/StatsCard";
 import { useRepoStore } from "@/store/repoStore";
@@ -24,6 +24,18 @@ export default function StatsPage() {
     const [commitChange, setCommitChange] = useState<string | null>(null);
     const [lineChangePercent, setLineChangePercent] = useState<string | null>(null);
 
+    const cacheRef = useRef<Map<string, {
+        data: {
+            totalCommits: number;
+            totalLines: number;
+            totalMemoirs: number;
+            weeklyCommits: { date: string; count: number }[];
+            commitChange: string;
+            lineChangePercent: string;
+        };
+        timestamp: number;
+    }>>(new Map());
+
     useEffect(() => {
         const fetchTopRepos = async () => {
             setLoadingTopRepos(true);
@@ -44,6 +56,23 @@ export default function StatsPage() {
 
     useEffect(() => {
         if (!selectedRepo) return;
+
+        const cacheKey = selectedRepo?.nameWithOwner;
+        const cached = cacheRef.current.get(cacheKey);
+        const now = Date.now();
+
+        if (cached && now - cached.timestamp < 1000 * 60 * 10) {
+            const data = cached.data;
+            setTotalCommits(data.totalCommits);
+            setTotalLines(data.totalLines);
+            setTotalMemoirs(data.totalMemoirs);
+            setWeeklyCommits(data.weeklyCommits);
+            setCommitChange(data.commitChange);
+            setLineChangePercent(data.lineChangePercent);
+            setLoadingWeekly(false);
+            setIsFirstLoad(false);
+            return;
+        }
 
         setTotalCommits(null);
         setTotalLines(null);
@@ -82,6 +111,18 @@ export default function StatsPage() {
 
                 setCommitChange(`${commitDiff}`);
                 setLineChangePercent(`${lineDiff}`);
+
+                cacheRef.current.set(cacheKey, {
+                    data: {
+                        totalCommits: commitData.totalCommits,
+                        totalLines: lineData.totalLines,
+                        totalMemoirs: memoirData.totalMemoirs,
+                        weeklyCommits: weeklyData,
+                        commitChange: `${commitDiff}`,
+                        lineChangePercent: `${lineDiff}`,
+                    },
+                    timestamp: Date.now(),
+                });
             } catch (err) {
                 console.error("Stats fetch 실패", err);
             } finally {
