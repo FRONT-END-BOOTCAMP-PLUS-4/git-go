@@ -4,7 +4,7 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 const prisma = new PrismaClient();
 
 export class PrUserRepository implements UserRepository {
-    // 회원가입(중복확인 기능 포함)
+    // 회원가입(중복확인 기능 포함)    
     async create({ githubId, username, profileUrl }: {
         githubId: string;
         username: string;
@@ -13,10 +13,19 @@ export class PrUserRepository implements UserRepository {
         const existing = await prisma.user.findFirst({
             where: {
                 githubId,
-                deletedAt: null, // 삭제되지 않은 사용자만
+                deletedAt: null,
             },
         });
-        if (existing) return existing;
+
+        if (existing) {
+            if (profileUrl && existing.profileUrl !== profileUrl) {
+                return prisma.user.update({
+                    where: { id: existing.id },
+                    data: { profileUrl },
+                });
+            }
+            return existing;
+        }
 
         return prisma.user.create({
             data: { githubId, username, profileUrl },
