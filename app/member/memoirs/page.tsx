@@ -3,7 +3,7 @@
 import MemoirCard from "@/app/member/memoirs/components/MemoirCard";
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { useRepoStore } from "@/store/repoStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
 import MemoirSkeleton from "./components/MemoirSkeleton";
 import Pagination from "@/app/components/Pagination";
@@ -19,6 +19,16 @@ export default function MemoirPage() {
     const perPage = 10;
     const handlePageChange = (newPage: number) => setCurrentPage(newPage);
     const { timePeriod, filterType, tags, searchKeyword } = useFilterStore();
+    const cacheRef = useRef<
+        Map<
+            string,
+            {
+                list: MemoirListDto[];
+                totalCount: number;
+                timestamp: number;
+            }
+        >
+    >(new Map());
 
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -32,6 +42,26 @@ export default function MemoirPage() {
 
     useEffect(() => {
         if (!selectedRepo) return;
+
+        const cacheKey = JSON.stringify({
+            repoId: selectedRepo.id,
+            page: currentPage,
+            period: timePeriod,
+            type: filterType,
+            tags: [...tags].sort(),
+            keyword: searchKeyword?.trim(),
+        });
+
+        const cached = cacheRef.current.get(cacheKey);
+        const now = Date.now();
+        const CACHE_TTL = 10 * 60 * 1000;
+
+        if (cached && now - cached.timestamp < CACHE_TTL) {
+            setMemoirs(cached.list);
+            setTotalCount(cached.totalCount);
+            setLoading(false);
+            return;
+        }
 
         const queryParams = [
             `repo=${selectedRepo.id}`,
@@ -54,6 +84,11 @@ export default function MemoirPage() {
                 }));
                 setMemoirs(updatedData);
                 setTotalCount(totalCount);
+                cacheRef.current.set(cacheKey, {
+                    list: updatedData,
+                    totalCount,
+                    timestamp: now,
+                });
             } catch (e) {
                 console.error("회고 목록 로딩 실패", e);
                 setMemoirs([]);
