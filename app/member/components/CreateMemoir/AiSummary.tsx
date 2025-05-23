@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
 import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
 import { COMMITS } from "@/constants/mockCommits";
 import { PROMPT } from "@/constants/aiPrompt";
 import ReactMarkdown from "react-markdown";
+import { useSummaryStore } from "@/store/AiSummaryStore";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -15,13 +16,15 @@ type AiSummaryProps = {
 };
 
 export default function AiSummary({ setShowModal }: AiSummaryProps) {
-    const [isSummarized, setIsSummarized] = useState(false);
+    const { aiSummary, setSummary, setSummarized, isSummarized } =
+        useSummaryStore();
+    const alreadySummarized = isSummarized(COMMITS.sha);
     const [markdown, setMarkdown] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleSummarize = async () => {
-        setIsSummarized(true);
         setLoading(true);
+        setSummarized(COMMITS.sha, true);
 
         const simplified = useSimplifyCommitData(COMMITS);
         const prompt = `
@@ -36,12 +39,16 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
             contents: prompt,
         });
 
+        let fullText = "";
+
         for await (const chunk of response) {
+            fullText += chunk.text;
             flushSync(() => {
-                setMarkdown((prev) => prev + chunk.text);
-                console.log("AI 요약 중간 결과: ", chunk.text);
+                setSummary(fullText);
             });
         }
+        setSummary(fullText);
+        setSummarized(COMMITS.sha, true);
         setLoading(false);
     };
 
@@ -61,7 +68,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
             >
                 ✖
             </button>
-            {!isSummarized ? (
+            {!alreadySummarized ? (
                 <div
                     className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
                     style={{ maxHeight: "100%" }}
@@ -78,7 +85,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                         AI 요약
                     </button>
                 </div>
-            ) : loading && markdown === "" ? (
+            ) : loading && markdown === "" && aiSummary === "" ? (
                 <div className="flex flex-1 animate-pulse items-center justify-center text-gray-400">
                     요약 생성 중입니다...
                 </div>
@@ -95,7 +102,7 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                             <div className="text-primary7">AI 요약</div>
                         </div> */}
                     <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
-                        <ReactMarkdown>{markdown}</ReactMarkdown>
+                        <ReactMarkdown>{aiSummary}</ReactMarkdown>
                     </div>
                 </>
             )}

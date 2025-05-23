@@ -1,7 +1,7 @@
 "use client";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
-import { AiSummaryStore } from "@/store/AiSummaryStore";
+import { useSummaryStore } from "@/store/AiSummaryStore";
 import type { EditorFormHandle } from "@/types/github/ShareType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
@@ -34,7 +34,7 @@ export function useMemoirForm(
 
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
-    const summary = AiSummaryStore((state) => state.aiSummary);
+    const summary = useSummaryStore((state) => state.aiSummary);
 
     // const disabled = true;
 
