@@ -42,7 +42,8 @@ export class PrMemoirRepository implements MemoirRepository {
         perPage = 10,
         createdAfter?: Date,
         filterType: "commits" | "pullRequests" | "all" = "all",
-        tags?: string[]
+        tags?: string[],
+        searchKeyword?: string
     ): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
@@ -80,6 +81,13 @@ export class PrMemoirRepository implements MemoirRepository {
                     },
                 })),
             ];
+        }
+
+        if (searchKeyword) {
+            where.title = {
+                contains: searchKeyword,
+                mode: "insensitive",
+            };
         }
 
         const [memoirs, totalCount] = await Promise.all([
