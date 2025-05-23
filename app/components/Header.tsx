@@ -10,10 +10,11 @@ import { MEMBER_URL } from "@/constants/url";
 export default function Header() {
     const { data: session, status } = useSession();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLButtonElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
 
     const moveToMyPage = () => {
+        console.log("click");
         setDropdownOpen(false);
         router.push(MEMBER_URL.commits);
     };
@@ -55,11 +56,13 @@ export default function Header() {
                 {status === "loading" ? null : status === "unauthenticated" ? (
                     <LoginWithGitHubButton />
                 ) : (
-                    <div className="relative inline-block text-left">
+                    <div
+                        className="relative inline-block text-left"
+                        ref={dropdownRef}
+                    >
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
                             className="flex cursor-pointer items-center gap-2 rounded-lg py-2 transition hover:bg-gray-200"
-                            ref={dropdownRef}
                         >
                             {session?.user?.image ? (
                                 <Image
@@ -112,7 +115,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="w-fulll flex cursor-pointer items-center gap-2 px-2 py-2 text-sm text-red-500 hover:bg-red-50"
+                                    className="flex w-full cursor-pointer items-center gap-2 px-2 py-2 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
                                         className="shrink-0"
