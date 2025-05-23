@@ -63,11 +63,6 @@ export default function SideBar({
 
             setUserRepos(matched);
 
-            // if (selectedRepo) return;
-
-            // if (matched.length > 0) {
-            //     setSelectedRepo(matched[0]);
-            // }
             const stillExists = matched.some(
                 (r) => r.nameWithOwner === selectedRepo?.nameWithOwner
             );
