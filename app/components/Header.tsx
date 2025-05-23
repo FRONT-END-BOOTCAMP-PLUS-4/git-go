@@ -62,7 +62,7 @@ export default function Header() {
                     >
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex cursor-pointer items-center gap-2 rounded-lg py-2 transition hover:bg-gray-200"
+                            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 transition hover:bg-gray-200"
                         >
                             {session?.user?.image ? (
                                 <Image
@@ -98,7 +98,7 @@ export default function Header() {
                             <div className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
-                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center gap-2 px-2 py-2 text-sm"
+                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <Image
                                         className="shrink-0"
@@ -115,7 +115,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full cursor-pointer items-center gap-2 px-2 py-2 text-sm text-red-500 hover:bg-red-50"
+                                    className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
                                         className="shrink-0"
