@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
 import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
-import { COMMITS } from "@/constants/mockCommits";
 import { PROMPT } from "@/constants/aiPrompt";
 import ReactMarkdown from "react-markdown";
 import { useSummaryStore } from "@/store/AiSummaryStore";
@@ -20,12 +19,12 @@ type AiSummaryProps = {
 export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const { aiSummary, setSummary, setSummarized, isSummarized } =
         useSummaryStore();
-    const alreadySummarized = isSummarized(COMMITS.sha);
+    const alreadySummarized = isSummarized(commit.sha);
     const [loading, setLoading] = useState(false);
 
     const handleSummarize = async () => {
         setLoading(true);
-        setSummarized(COMMITS.sha, true);
+        setSummarized(commit.sha, true);
 
         const simplified = useSimplifyCommitData(commit);
         const prompt = `
@@ -49,7 +48,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             });
         }
         setSummary(fullText);
-        setSummarized(COMMITS.sha, true);
+        setSummarized(commit.sha, true);
         setLoading(false);
     };
 
