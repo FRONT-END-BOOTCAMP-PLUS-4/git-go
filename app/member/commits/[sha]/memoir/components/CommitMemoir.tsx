@@ -5,13 +5,13 @@ import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
 
+import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -74,10 +74,6 @@ export default function CommitMemoir() {
             <button
                 onClick={() => setShowModal(true)}
                 className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
-                // style={{
-                //     background:
-                //         "linear-gradient(180deg, #3730a3 0%, #4f46e5 100%)",
-                // }}
             >
                 ✨ AI 요약 시작하기
             </button>
@@ -108,13 +104,7 @@ export default function CommitMemoir() {
                 </ChangeListLayout>
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
-                    <EditorForm
-                        initialTitle=""
-                        initialTags={[]}
-                        initialContent={[]}
-                        sourceId={sha}
-                        typeId={1}
-                    />
+                    <CreateEditorForm source={sha} typeId={1} />
                 </div>
             </div>
         </CreateMemoirLayout>
