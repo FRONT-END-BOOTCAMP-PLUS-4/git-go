@@ -1,8 +1,8 @@
 import { CommitType } from "@/types/github/CommitType";
 
 export function useSimplifyCommitData(commit: CommitType) {
-    const message = commit.commit.message;
-    const filesInfo = commit.files.map((file) => {
+    const message = commit.message;
+    const filesInfo = commit.changeDetail.map((file) => {
         return {
             filename: file.filename,
             patch: file.patch,
