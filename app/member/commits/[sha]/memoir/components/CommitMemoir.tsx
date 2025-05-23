@@ -84,7 +84,10 @@ export default function CommitMemoir() {
             </button>
             {showModal && (
                 <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
-                    <AiSummary setShowModal={setShowModal} />
+                    <AiSummary
+                        setShowModal={setShowModal}
+                        commit={commitData}
+                    />
                 </div>
             )}
 
