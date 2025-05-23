@@ -8,11 +8,15 @@ import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormR
 import Select from "@/app/member/components/Select";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { COMMITS } from "@/constants/mockCommits";
-import { MOCK_COMMITS, MOCK_PR, options } from "@/constants/mockPullRequests";
+import { MOCK_COMMITS, MOCK_PR } from "@/constants/mockPullRequests";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
+import { useRepoStore } from "@/store/repoStore";
+import { CommitType } from "@/types/github/CommitType";
+import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function PullRequestDetailMemoir() {
@@ -22,7 +26,7 @@ export default function PullRequestDetailMemoir() {
 
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-    const { pr_no, id }: { pr_no: string; id: string } = useParams();
+    const { id }: { id: string } = useParams();
 
     const [isEditing, setIsEditing] = useState(false);
     const parseId = Number(id);
@@ -31,6 +35,84 @@ export default function PullRequestDetailMemoir() {
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
+    const [prNo, setPrNo] = useState<string>("");
+
+    const [prData, setPrData] = useState<PullRequestType[]>([]);
+
+    const [commitData, setCommitData] = useState<CommitType | null>(null);
+
+    const repo = useRepoStore((s) => s.selectedRepo);
+    const { data: session } = useSession();
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    // 1) PR 커밋 목록 fetch
+    useEffect(() => {
+        const fetchPrCommits = async () => {
+            if (!repo?.nameWithOwner || !session?.accessToken || !prNo) return;
+
+            try {
+                const res = await fetch("/api/github/pull-requests/commits", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        accessToken: session.accessToken,
+                        author: session.user.githubId,
+                        repoFullName: repo.nameWithOwner,
+                        prNumber: Number(prNo),
+                    }),
+                });
+                if (!res.ok) throw new Error("PR commits fetch failed");
+
+                // **여기가 핵심**: API가 { commitList: [...] } 를 반환하니까 꺼내주세요.
+                const json = (await res.json()) as {
+                    commitList: PullRequestType[];
+                };
+                const list = Array.isArray(json.commitList)
+                    ? json.commitList
+                    : [];
+                setPrData(list);
+
+                // 첫 번째 SHA 기본 선택
+                if (list.length > 0) {
+                    setSelectedSha(list[0].sha);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchPrCommits();
+    }, [repo?.nameWithOwner, session?.accessToken, prNo]);
+
+    // 2) selectedSha 가 바뀔 때마다 커밋 상세 fetch
+    useEffect(() => {
+        const fetchDetail = async () => {
+            if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
+                return;
+
+            try {
+                const res = await fetch("/api/github/commits/detail", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        nameWithOwner: repo.nameWithOwner,
+                        sha: selectedSha,
+                        accessToken: session.accessToken,
+                    }),
+                });
+                if (!res.ok) throw new Error("Commit detail fetch failed");
+
+                const data = (await res.json()) as CommitType;
+                setCommitData(data);
+                setSelectedFile(null); // 파일 선택 초기화
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchDetail();
+    }, [repo?.nameWithOwner, session?.accessToken, selectedSha]);
 
     // 마운트 및 id 변경 시
     useEffect(() => {
@@ -40,6 +122,16 @@ export default function PullRequestDetailMemoir() {
     useEffect(() => {
         setSelectedFile(null);
     }, [selectedSha]);
+
+    // selectedSha가 바뀔 때마다 스크롤을 최상단으로 이동
+    useEffect(() => {
+        containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }, [selectedSha]);
+    // 드롭다운 옵션
+    const prOptions = prData.map((pr) => ({
+        value: pr.sha,
+        label: pr.message,
+    }));
 
     function handleChange(sha: string) {
         setSelectedSha(sha); // 선택 상태 업데이트
@@ -51,6 +143,7 @@ export default function PullRequestDetailMemoir() {
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);
+        setPrNo(data.source);
     };
 
     // 수정 모드 토글 핸들러
@@ -60,6 +153,9 @@ export default function PullRequestDetailMemoir() {
         }
         setIsEditing((prev) => !prev);
     };
+
+    if (!commitData)
+        return <div className="p-8 text-center">Loading commit details…</div>;
 
     return (
         <DetailMemoirLayout>
@@ -72,13 +168,14 @@ export default function PullRequestDetailMemoir() {
             <div className="grid flex-1 grid-cols-2">
                 <ChangeListLayout>
                     <Select
-                        options={options}
+                        options={prOptions}
                         value={selectedSha}
                         onChange={handleChange}
                     />
                     <ChangeList
-                        changes={currentCommit.files}
+                        changes={commitData.changeDetail}
                         selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
                     />
                 </ChangeListLayout>
 
@@ -88,7 +185,7 @@ export default function PullRequestDetailMemoir() {
                             initialTitle={title}
                             initialTags={tags}
                             initialContent={content}
-                            sourceId={pr_no}
+                            sourceId={prNo}
                             typeId={1}
                             isEditing={isEditing}
                             onToggleEdit={handleToggleEdit}
