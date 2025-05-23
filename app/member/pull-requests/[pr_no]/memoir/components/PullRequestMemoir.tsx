@@ -9,6 +9,8 @@ import Select from "@/app/member/components/Select";
 import { COMMITS } from "@/constants/mockCommits";
 import { MOCK_COMMITS, MOCK_PR, options } from "@/constants/mockPullRequests";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
+import { useRepoStore } from "@/store/repoStore";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -28,6 +30,82 @@ export default function PullRequestMemoir() {
     useEffect(() => {
         setSelectedFile(null);
     }, [selectedSha]);
+
+    const { data: session } = useSession();
+    const { selectedRepo } = useRepoStore();
+    console.log(selectedRepo);
+
+    // Pull Request 에 해당하는 커밋 목록 호출 함수
+    const fetchPrCommitList = async (
+        selectedRepo: string | undefined,
+        prNo: number
+    ) => {
+        if (!selectedRepo || !prNo) return;
+
+        const accessToken = session?.accessToken;
+        const author = session?.user.githubId;
+        try {
+            const res = await fetch("/api/github/pull-requests/commits", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    accessToken,
+                    author,
+                    repoFullName: selectedRepo,
+                    prNumber: prNo,
+                }),
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                // 응답 데이터 콘솔 출력
+                console.log(result.commitList);
+            }
+        } catch (error) {
+            console.error(
+                "Failed to fetch commit list from current PR: ",
+                error
+            );
+        } finally {
+        }
+    };
+
+    // 커밋 상세 내역 호출 함수
+    const fetchCommitDetail = async (
+        nameWithOwner: string | undefined,
+        sha: string,
+        accessToken: string | undefined
+    ) => {
+        if (!nameWithOwner || !sha) return;
+
+        try {
+            const res = await fetch("/api/github/commits/detail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nameWithOwner,
+                    sha,
+                    accessToken,
+                }),
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                console.log(result);
+            }
+        } catch (error) {
+            console.error("Failed to fetch commit detail", error);
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        fetchPrCommitList(selectedRepo?.nameWithOwner, Number(pr_no));
+    });
 
     return (
         <CreateMemoirLayout>

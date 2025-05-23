@@ -29,6 +29,7 @@ export default function CommitMemoir() {
 
     const { data: session } = useSession();
 
+    // 커밋 상세 내역 호출 함수
     const fetchCommitDetail = async (
         nameWithOwner: string | undefined,
         sha: string,
