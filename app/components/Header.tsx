@@ -95,7 +95,7 @@ export default function Header() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 z-50 mt-2 w-fit rounded-lg border border-gray-200 bg-white shadow-lg">
+                            <div className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
                                     className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center gap-2 px-2 py-2 text-sm"
