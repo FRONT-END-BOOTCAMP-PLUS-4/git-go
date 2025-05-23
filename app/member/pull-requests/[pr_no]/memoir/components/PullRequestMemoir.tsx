@@ -112,7 +112,7 @@ export default function PullRequestMemoir() {
     return (
         <CreateMemoirLayout>
             <AccordionSidebar
-                files={useExtractFilenames(filesChanged)}
+                files={useExtractFilenames(COMMITS.files)}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
