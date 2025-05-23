@@ -143,7 +143,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 type="checkbox"
                                                 checked={selected.has(repo.id)}
                                                 onChange={() => toggleRepo(repo.id)}
-                                                className="mt-0.5"
+                                                className="mt-0.5 cursor-pointer"
                                             />
                                             <div className="flex items-center gap-2 font-semibold text-sm text-gray-900 truncate">
                                                 {repo.nameWithOwner}
@@ -173,12 +173,12 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 )}
 
                 <div className="mt-6 flex justify-end gap-2">
-                    <button onClick={onClose} className="text-sm px-4 py-2 rounded-md border border-gray-300">
+                    <button onClick={onClose} className="text-sm px-4 py-2 rounded-md border border-gray-300 cursor-pointer">
                         취소
                     </button>
                     <button
                         onClick={handleSave}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md font-semibold"
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md font-semibold cursor-pointer"
                     >
                         {selected.size}개 저장소 연동하기
                     </button>
