@@ -45,10 +45,12 @@ export default function Select({
         <div className="relative mb-2 inline-block w-full" ref={containerRef}>
             {/* 선택된 값 표시하는 박스 */}
             <div
-                className="border-border-primary1 flex cursor-pointer items-center justify-between rounded border bg-white px-3 py-2"
+                className="border-border-primary1 flex h-10 cursor-pointer items-center justify-between rounded border bg-white px-3 py-2"
                 onClick={() => setIsOpen((o) => !o)}
             >
-                <span className={`${value ? "text-black" : "text-gray-400"}`}>
+                <span
+                    className={`truncate ${value ? "text-black" : "text-gray-400"}`}
+                >
                     {selectedLabel}
                 </span>
                 <svg
