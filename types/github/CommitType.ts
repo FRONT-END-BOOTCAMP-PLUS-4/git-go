@@ -1,18 +1,24 @@
-import { GitObjectType } from "./ShareType";
-
-export type FileChangeType = {
+export type CommitType = {
+    authorDate: string;
+    authorName: string;
+    changeDetail: ChangeDetail[];
+    filesChanged: FileChangeNode[];
+    message: string;
     sha: string;
-    filename: string;
-    status: string;
-    additions: number;
-    deletions: number;
-    changes: number;
-    blob_url: string;
-    raw_url: string;
-    contents_url: string;
-    patch: string;
 };
 
-export type CommitType = GitObjectType & {
-    files: FileChangeType[];
+export type FileChangeNode = {
+    name: string;
+    type: "file" | "directory";
+    children?: FileChangeNode[];
+};
+
+export type ChangeDetail = {
+    additions: number;
+    changes: number;
+    deletions: number;
+    filename: string;
+    patch: string;
+    raw_url: string;
+    status: string;
 };

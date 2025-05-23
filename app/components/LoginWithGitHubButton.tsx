@@ -7,7 +7,7 @@ import { MEMBER_URL } from "@/constants/url";
 
 export default function LoginWithGitHubButton() {
     return (
-        <div className="flex justify-center px-0">
+        <div className="flex cursor-pointer justify-center px-0">
             <Button
                 type="default"
                 size="regular"
