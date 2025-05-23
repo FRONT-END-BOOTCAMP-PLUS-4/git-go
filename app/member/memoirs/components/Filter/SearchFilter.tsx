@@ -35,7 +35,7 @@ export default function SearchFilter() {
             <input
                 className="text-text-secondary1 placeholder-text-secondary2 ml-2 w-full text-sm outline-none"
                 type="text"
-                placeholder="회고록 검색..."
+                placeholder="회고록 검색"
                 value={localInput}
                 onChange={(e) => setLocalInput(e.target.value)}
                 onKeyDown={handleKeyDown}
