@@ -63,10 +63,18 @@ export default function SideBar({
 
             setUserRepos(matched);
 
-            if (selectedRepo) return;
+            // if (selectedRepo) return;
 
-            if (matched.length > 0) {
+            // if (matched.length > 0) {
+            //     setSelectedRepo(matched[0]);
+            // }
+            const stillExists = matched.some(
+                (r) => r.nameWithOwner === selectedRepo?.nameWithOwner
+            );
+            if (!stillExists && matched.length > 0) {
                 setSelectedRepo(matched[0]);
+            } else if (matched.length === 0) {
+                setSelectedRepo(null); // 아무 저장소도 없을 경우
             }
         } catch (error) {
             console.error("레포 불러오기 실패:", error);
