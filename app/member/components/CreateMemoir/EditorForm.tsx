@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/Button";
-import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/ui/plate-editor";
 import { useMemoirForm } from "@/hooks/useMemoirForm";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
@@ -169,11 +168,11 @@ const EditorFormInner: ForwardRefRenderFunction<
             </div>
 
             {/* 에디터 */}
-            <PlateEditor
+            {/* <PlateEditor
                 ref={editorRef}
                 initialContent={initialContent}
                 handleEditorChange={handleEditorChange}
-            />
+            /> */}
 
             <div className="flex justify-end gap-2">
                 <Button type="lined" onClick={onCancel}>
