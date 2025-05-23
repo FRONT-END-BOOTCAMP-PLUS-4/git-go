@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+"use client";
 
 import { ChangeDetail } from "@/types/github/CommitType";
 import clsx from "clsx";
+import { useEffect, useRef } from "react";
 
 const statusClassMap: Record<string, string> = {
     added: "bg-[var(--color-code-status-add-bg)] text-[var(--color-code-status-add-text)]",
@@ -53,36 +54,35 @@ export default function ChangeList({
             className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain pr-2"
             ref={containerRef}
         >
-            {changes.map((commit) => (
+            {changes.map((change) => (
                 <div
                     className="border-border-primary1 mb-5 min-w-[400px] rounded-md border"
-                    key={commit.raw_url}
+                    key={change.raw_url}
                 >
                     <div
                         className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
                         ref={(el) => {
-                            refs.current[commit.filename] = el;
+                            refs.current[change.filename] = el;
                         }}
                     >
                         <div className="flex items-center gap-5">
-                            <div>{commit.filename}</div>
+                            <div>{change.filename}</div>
                             <div className="flex items-center gap-2 text-[12px]">
-                                <div className="text-code-add-symbol">{`+${commit.additions}`}</div>
-                                <div className="text-code-delete-symbol">{`-${commit.deletions}`}</div>
+                                <div className="text-code-add-symbol">{`+${change.additions}`}</div>
+                                <div className="text-code-delete-symbol">{`-${change.deletions}`}</div>
                             </div>
                         </div>
                         <div
                             className={clsx(
                                 "rounded-lg px-2 py-1 text-sm font-semibold",
-                                statusClassMap[commit.status]
+                                statusClassMap[change.status]
                             )}
                         >
-                            {commit.status}
+                            {change.status}
                         </div>
                     </div>
                     <code className="text-sm break-words whitespace-pre-wrap">
-                        {commit.patch.split("\n").map((line, idx) => {
-                            // '+' 로 시작하면 녹색, '-' 로 시작하면 빨강, 그 외는 기본 텍스트
+                        {(change.patch?.split("\n") ?? []).map((line, idx) => {
                             let lineClass = "py-1 ";
                             if (line.startsWith("+")) {
                                 lineClass +=
