@@ -1,7 +1,6 @@
-import { FileChangeType } from "@/types/github/CommitType";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 
+import { ChangeDetail } from "@/types/github/CommitType";
 import clsx from "clsx";
 
 const statusClassMap: Record<string, string> = {
@@ -15,7 +14,7 @@ const statusClassMap: Record<string, string> = {
 };
 
 type ChangeListProps = {
-    changes: FileChangeType[];
+    changes: ChangeDetail[];
     selectedFile: string | null;
     selectedCommitId?: string | null;
 };
@@ -50,11 +49,14 @@ export default function ChangeList({
     }, [selectedCommitId]);
 
     return (
-        <div ref={containerRef}>
+        <div
+            className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain pr-2"
+            ref={containerRef}
+        >
             {changes.map((commit) => (
                 <div
                     className="border-border-primary1 mb-5 min-w-[400px] rounded-md border"
-                    key={commit.sha}
+                    key={commit.raw_url}
                 >
                     <div
                         className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
@@ -63,13 +65,7 @@ export default function ChangeList({
                         }}
                     >
                         <div className="flex items-center gap-5">
-                            <Link
-                                className="hover:underline"
-                                href={commit.blob_url}
-                                target="_blank"
-                            >
-                                {commit.filename}
-                            </Link>
+                            <div>{commit.filename}</div>
                             <div className="flex items-center gap-2 text-[12px]">
                                 <div className="text-code-add-symbol">{`+${commit.additions}`}</div>
                                 <div className="text-code-delete-symbol">{`-${commit.deletions}`}</div>
