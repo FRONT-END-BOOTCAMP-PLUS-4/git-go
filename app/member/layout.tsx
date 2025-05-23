@@ -26,7 +26,7 @@ export default function MemberLayout({
         return (
             <div className="layout-padding bg-bg-primary1 flex gap-x-6 py-6">
                 <RepoSelectModal open={open} onClose={() => setOpen(false)} />
-                <div className="sticky top-[89px] h-[calc(100vh-89px)] w-fit overflow-y-auto pr-10">
+                <div className="sticky top-[89px] h-[calc(100vh-89px)] w-fit overflow-x-hidden overflow-y-auto pr-10">
                     <SideBar setOpen={setOpen} />
                 </div>
 
