@@ -213,9 +213,9 @@ export default function StatsPage() {
                                             <span>{repo.name}</span>
                                             <span>{repo.commits} commits</span>
                                         </div>
-                                        <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
+                                        <div className="bg-bg-primary2 h-2 w-full rounded-full">
                                             <div
-                                                className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
+                                                className="h-full rounded-full bg-indigo-500"
                                                 style={{
                                                     width: `${(repo.commits / Math.max(...topRepos.map(r => r.commits), 1)) * 100}%`,
                                                 }}
