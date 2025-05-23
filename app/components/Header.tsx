@@ -2,17 +2,47 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
+import { useRouter } from "next/navigation";
+import { MEMBER_URL } from "@/constants/url";
 
 export default function Header() {
     const { data: session, status } = useSession();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
+    const moveToMyPage = () => {
+        console.log("click");
+        setDropdownOpen(false);
+        router.push(MEMBER_URL.commits);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
         <div className="border-border-primary1 sticky top-0 z-50 h-[65px] w-full border-b bg-white">
             <div className="layout-flex mx-0 flex h-[65px] flex-row items-center justify-between px-4 xl:mx-auto xl:max-w-screen-xl">
-                <div className="flex items-center justify-center">
+                <div
+                    className="flex cursor-pointer items-center justify-center"
+                    onClick={() => {
+                        router.push("/");
+                    }}
+                >
                     <Image
                         className="mr-3"
                         src="/logo.svg"
@@ -26,10 +56,13 @@ export default function Header() {
                 {status === "loading" ? null : status === "unauthenticated" ? (
                     <LoginWithGitHubButton />
                 ) : (
-                    <div className="relative inline-block text-left">
+                    <div
+                        className="relative inline-block text-left"
+                        ref={dropdownRef}
+                    >
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex items-center gap-2 rounded-lg py-2 transition hover:bg-gray-200"
+                            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 transition hover:bg-gray-200"
                         >
                             {session?.user?.image ? (
                                 <Image
@@ -64,18 +97,36 @@ export default function Header() {
                         {dropdownOpen && (
                             <div className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
                                 <button
+                                    onClick={moveToMyPage}
+                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                >
+                                    <Image
+                                        className="shrink-0"
+                                        src="/profile.svg"
+                                        alt="profile icon"
+                                        width={16}
+                                        height={16}
+                                    />
+                                    <span className="whitespace-nowrap">
+                                        마이페이지
+                                    </span>
+                                </button>
+                                <button
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full items-center gap-2 px-2 py-2 text-sm text-red-500 hover:bg-red-50"
+                                    className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
+                                        className="shrink-0"
                                         src="/logout.svg"
                                         alt="logout icon"
                                         width={16}
                                         height={16}
                                     />
-                                    로그아웃
+                                    <span className="whitespace-nowrap">
+                                        로그아웃
+                                    </span>
                                 </button>
                             </div>
                         )}
