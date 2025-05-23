@@ -8,36 +8,30 @@ import {
 } from "@/app/member/components/CreateMemoir/plate-editor/ui/editor";
 import { useCreateEditor } from "@/hooks/useCreateEditor";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
-import { Value } from "@udecode/plate";
 import { forwardRef, memo, useImperativeHandle } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 type PlateEditorProps = {
     readOnly?: boolean;
-    initialContent: Value;
     handleEditorChange: () => void;
 };
 
 function PlateEditorInner(
-    { readOnly, initialContent, handleEditorChange }: PlateEditorProps,
+    { readOnly, handleEditorChange }: PlateEditorProps,
     ref: React.Ref<EditorFormHandle>
 ) {
-    const editor = useCreateEditor({ readOnly, value: initialContent }, [
-        initialContent,
-    ]);
+    const editor = useCreateEditor({ readOnly });
 
     useImperativeHandle(ref, () => ({
         getContent: () => editor.children,
     }));
 
+    console.log("plate-editor 렌더링");
+
     return (
         <DndProvider backend={HTML5Backend}>
-            <Plate
-                editor={editor}
-                readOnly={readOnly}
-                onChange={handleEditorChange}
-            >
+            <Plate editor={editor} onChange={handleEditorChange}>
                 <EditorContainer className="flex flex-1 flex-col">
                     {/* 본문 editor */}
                     <div className="flex flex-1 flex-col gap-1">
