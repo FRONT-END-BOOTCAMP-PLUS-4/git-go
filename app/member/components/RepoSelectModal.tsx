@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRepoStore } from "@/store/repoStore";
 import RepoSkeleton from "./RepoSkeleton";
 import ConfirmDialog from "./ConfirmDialog";
+import AlertDialog from "./AlertDialog";
 
 type Props = {
     open: boolean;
@@ -19,6 +20,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
     const [showConfirm, setShowConfirm] = useState(false);
     const [confirmMessage, setConfirmMessage] = useState("");
     const [pendingForceSave, setPendingForceSave] = useState<{ repoIds: string[] } | null>(null);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         if (!open) return;
@@ -65,9 +67,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
             });
 
             if (res.ok) {
-                alert("저장소가 성공적으로 연동되었습니다!");
-                useRepoStore.getState().triggerReload();
-                onClose();
+                setShowAlert(true);
             } else {
                 const result = await res.text();
                 if (result.startsWith("memoirs-exist:")) {
@@ -96,9 +96,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 body: JSON.stringify({ ...pendingForceSave, force: true }),
             });
             if (res.ok) {
-                alert("저장소가 성공적으로 연동되었습니다!");
-                useRepoStore.getState().triggerReload();
-                onClose();
+                setShowAlert(true);
             } else {
                 alert("강제 연동에 실패했습니다.");
             }
@@ -145,7 +143,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 type="checkbox"
                                                 checked={selected.has(repo.id)}
                                                 onChange={() => toggleRepo(repo.id)}
-                                                className="mt-0.5"
+                                                className="mt-0.5 cursor-pointer"
                                             />
                                             <div className="flex items-center gap-2 font-semibold text-sm text-gray-900 truncate">
                                                 {repo.nameWithOwner}
@@ -175,12 +173,12 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 )}
 
                 <div className="mt-6 flex justify-end gap-2">
-                    <button onClick={onClose} className="text-sm px-4 py-2 rounded-md border border-gray-300">
+                    <button onClick={onClose} className="text-sm px-4 py-2 rounded-md border border-gray-300 cursor-pointer">
                         취소
                     </button>
                     <button
                         onClick={handleSave}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md font-semibold"
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md font-semibold cursor-pointer"
                     >
                         {selected.size}개 저장소 연동하기
                     </button>
@@ -193,6 +191,17 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 imageSrc="/trash.png"
                 onCancel={() => setShowConfirm(false)}
                 onConfirm={handleConfirm}
+            />
+            <AlertDialog
+                open={showAlert}
+                title="연동 완료"
+                description="저장소가 성공적으로 연동되었습니다!"
+                imageSrc="/success.png"
+                onClose={() => {
+                    setShowAlert(false);
+                    useRepoStore.getState().triggerReload();
+                    onClose();
+                }}
             />
         </div>
     );

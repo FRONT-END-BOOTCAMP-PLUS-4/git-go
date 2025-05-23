@@ -8,25 +8,26 @@ import { COMMITS } from "@/constants/mockCommits";
 import { PROMPT } from "@/constants/aiPrompt";
 import ReactMarkdown from "react-markdown";
 import { useSummaryStore } from "@/store/AiSummaryStore";
+import { CommitType } from "@/types/github/CommitType";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
 type AiSummaryProps = {
     setShowModal: (value: boolean) => void;
+    commit: CommitType;
 };
 
-export default function AiSummary({ setShowModal }: AiSummaryProps) {
+export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const { aiSummary, setSummary, setSummarized, isSummarized } =
         useSummaryStore();
     const alreadySummarized = isSummarized(COMMITS.sha);
-    const [markdown, setMarkdown] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleSummarize = async () => {
         setLoading(true);
         setSummarized(COMMITS.sha, true);
 
-        const simplified = useSimplifyCommitData(COMMITS);
+        const simplified = useSimplifyCommitData(commit);
         const prompt = `
                         ${PROMPT}
                         \`\`\`json
@@ -85,22 +86,12 @@ export default function AiSummary({ setShowModal }: AiSummaryProps) {
                         AI 요약
                     </button>
                 </div>
-            ) : loading && markdown === "" && aiSummary === "" ? (
+            ) : loading && aiSummary === "" ? (
                 <div className="flex flex-1 animate-pulse items-center justify-center text-gray-400">
                     요약 생성 중입니다...
                 </div>
             ) : (
                 <>
-                    {/* <div className="flex items-center gap-2">
-                            <Image
-                                className="h-6 w-6"
-                                src="/ai-summaries.svg"
-                                alt="ai_image"
-                                width={24}
-                                height={24}
-                            />
-                            <div className="text-primary7">AI 요약</div>
-                        </div> */}
                     <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
                     </div>
