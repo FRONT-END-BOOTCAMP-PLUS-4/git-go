@@ -56,12 +56,15 @@ export default function SideBar({
                     };
                 })
                 .filter(Boolean) as {
-                    dbId: number;
-                    id: string;
-                    nameWithOwner: string;
-                }[];
+                dbId: number;
+                id: string;
+                nameWithOwner: string;
+            }[];
 
             setUserRepos(matched);
+
+            if (selectedRepo) return;
+
             if (matched.length > 0) {
                 setSelectedRepo(matched[0]);
             }
@@ -89,7 +92,9 @@ export default function SideBar({
 
         const fetchTags = async () => {
             try {
-                const res = await fetch(`/api/memoirs/tags?repo=${selectedRepo.dbId}`);
+                const res = await fetch(
+                    `/api/memoirs/tags?repo=${selectedRepo.dbId}`
+                );
                 const tags: string[] = await res.json();
                 setRepoTags(tags);
             } catch (err) {
@@ -121,10 +126,11 @@ export default function SideBar({
                                     className="border-border-primary1"
                                 >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${isSelected
-                                            ? "bg-primary2 text-primary7"
-                                            : ""
-                                            }`}
+                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
+                                            isSelected
+                                                ? "bg-primary2 text-primary7"
+                                                : ""
+                                        }`}
                                         onClick={() => setSelectedRepo(repo)}
                                     >
                                         <Image
@@ -138,10 +144,11 @@ export default function SideBar({
                                             alt="브랜치 아이콘"
                                         />
                                         <span
-                                            className={`text-sm break-all hover:line-clamp-none ${isSelected
-                                                ? "line-clamp-none"
-                                                : "line-clamp-2"
-                                                }`}
+                                            className={`text-sm break-all hover:line-clamp-none ${
+                                                isSelected
+                                                    ? "line-clamp-none"
+                                                    : "line-clamp-2"
+                                            }`}
                                         >
                                             {repo.nameWithOwner}
                                         </span>
