@@ -27,9 +27,10 @@ export async function GET(req: NextRequest) {
         }
     }
     const filterType = searchParams.get("type") as "commits" | "pullRequests" | "all";
+    const tags = searchParams.getAll("tags");
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter, filterType);
+    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter, filterType, tags);
     return NextResponse.json(result);
 }
 

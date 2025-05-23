@@ -41,7 +41,8 @@ export class PrMemoirRepository implements MemoirRepository {
         page = 1,
         perPage = 10,
         createdAfter?: Date,
-        filterType: "commits" | "pullRequests" | "all" = "all"
+        filterType: "commits" | "pullRequests" | "all" = "all",
+        tags?: string[]
     ): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
@@ -65,6 +66,21 @@ export class PrMemoirRepository implements MemoirRepository {
 
         if (filterType === "commits") where.typeId = 1;
         else if (filterType === "pullRequests") where.typeId = 2;
+
+        if (tags && tags.length > 0) {
+            where.AND = [
+                ...(where.AND ?? []),
+                ...tags.map((tag) => ({
+                    tags: {
+                        some: {
+                            tag: {
+                                name: tag,
+                            },
+                        },
+                    },
+                })),
+            ];
+        }
 
         const [memoirs, totalCount] = await Promise.all([
             prisma.memoir.findMany({
