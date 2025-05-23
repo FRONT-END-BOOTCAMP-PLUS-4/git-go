@@ -8,12 +8,12 @@ import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSide
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
 import Select from "@/app/member/components/Select";
 
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 
+import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 
@@ -138,13 +138,7 @@ export default function PullRequestMemoir() {
 
                 {/* 회고 작성 폼 */}
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
-                    <EditorForm
-                        initialTitle=""
-                        initialTags={[]}
-                        initialContent={[]}
-                        sourceId={selectedSha}
-                        typeId={2}
-                    />
+                    <CreateEditorForm source={pr_no} typeId={2} />
                 </div>
             </div>
         </CreateMemoirLayout>
