@@ -17,7 +17,8 @@ export default function SearchFilter() {
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            setSearchKeyword(localInput);
+            const trimmedKeyword = localInput.trim();
+            setSearchKeyword(trimmedKeyword);
             setFilterType("all");
             setTimePeriod("all");
             resetTags();
