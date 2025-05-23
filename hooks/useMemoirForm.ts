@@ -1,6 +1,7 @@
 "use client";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
+import { useSummaryStore } from "@/store/AiSummaryStore";
 import type { EditorFormHandle } from "@/types/github/ShareType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
@@ -33,6 +34,7 @@ export function useMemoirForm(
 
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
+    const summary = useSummaryStore((state) => state.aiSummary);
 
     // const disabled = true;
 
@@ -44,7 +46,7 @@ export function useMemoirForm(
         tags,
         content: editorRef.current?.getContent() ?? [],
         source: sourceName,
-        aiSum: "AI 요약 텍스트",
+        aiSum: summary,
         userId: session!.user.id,
         typeId,
         repoId: repo!.dbId,
