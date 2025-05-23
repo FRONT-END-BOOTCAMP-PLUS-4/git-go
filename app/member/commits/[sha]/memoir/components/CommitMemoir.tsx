@@ -96,7 +96,7 @@ export default function CommitMemoir() {
 
             <div className="grid grid-cols-2">
                 <ChangeListLayout>
-                    <div className="mb-2 px-3 py-2 font-semibold">
+                    <div className="shadow- mb-2 truncate px-3 py-2 font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
                         {commitData.message}
                     </div>
                     <ChangeList
