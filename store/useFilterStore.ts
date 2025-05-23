@@ -14,6 +14,11 @@ interface FilterState {
     tags: string[]; // 태그 배열 상태
     addTag: (tag: string) => void; // 태그 추가 메서드
     removeTag: (tag: string) => void; // 태그 제거 메서드
+    resetTags: () => void;
+
+    searchKeyword: string;
+    setSearchKeyword: (keyword: string) => void;
+    resetSearch: () => void;
 }
 
 export const useFilterStore = create<FilterState>((set) => ({
@@ -31,4 +36,9 @@ export const useFilterStore = create<FilterState>((set) => ({
         set((state) => ({
             tags: state.tags.filter((t) => t !== tag), // 태그 제거
         })),
+    resetTags: () => set({ tags: [] }),
+
+    searchKeyword: "",
+    setSearchKeyword: (keyword) => set({ searchKeyword: keyword }),
+    resetSearch: () => set({ searchKeyword: "" }),
 }));

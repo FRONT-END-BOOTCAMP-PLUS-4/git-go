@@ -18,7 +18,7 @@ export default function MemoirPage() {
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
     const handlePageChange = (newPage: number) => setCurrentPage(newPage);
-    const { timePeriod, filterType, tags } = useFilterStore();
+    const { timePeriod, filterType, tags, searchKeyword } = useFilterStore();
 
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -28,18 +28,25 @@ export default function MemoirPage() {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [timePeriod, filterType, tags]);
+    }, [timePeriod, filterType, tags, searchKeyword]);
 
     useEffect(() => {
         if (!selectedRepo) return;
 
+        const queryParams = [
+            `repo=${selectedRepo.id}`,
+            `page=${currentPage}`,
+            `perPage=${perPage}`,
+            `period=${timePeriod}`,
+            `type=${filterType}`,
+            ...(tags.length > 0 ? tags.map((t) => `tags=${encodeURIComponent(t)}`) : []),
+            ...(searchKeyword ? [`keyword=${encodeURIComponent(searchKeyword)}`] : []),
+        ].join("&");
+
         const fetchMemoirs = async () => {
             setLoading(true);
             try {
-                const res = await fetch(
-                    `/api/memoirs?repo=${selectedRepo.id}&page=${currentPage}&perPage=${perPage}&period=${timePeriod}&type=${filterType}${tags.length > 0 ? tags.map((t) => `&tags=${encodeURIComponent(t)}`).join("") : ""
-                    }`
-                );
+                const res = await fetch(`/api/memoirs?${queryParams}`);
                 const { list, totalCount } = await res.json();
                 const updatedData = list.map((memoir: any) => ({
                     ...memoir,
@@ -56,7 +63,7 @@ export default function MemoirPage() {
         };
 
         fetchMemoirs();
-    }, [selectedRepo, currentPage, timePeriod, filterType, tags]);
+    }, [selectedRepo, currentPage, timePeriod, filterType, tags, searchKeyword]);
 
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">
