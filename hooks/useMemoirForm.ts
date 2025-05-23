@@ -1,8 +1,9 @@
 "use client";
 import { MEMBER_URL } from "@/constants/url";
-import { useRepoStore } from "@/store/repoStore";
 import { useSummaryStore } from "@/store/AiSummaryStore";
-import type { EditorFormHandle } from "@/types/github/ShareType";
+import { useRepoStore } from "@/store/repoStore";
+import { EditorFormHandle } from "@/types/memoir/Memoir";
+
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
