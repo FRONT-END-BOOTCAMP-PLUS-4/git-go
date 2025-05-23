@@ -8,21 +8,30 @@ import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormR
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { COMMITS } from "@/constants/mockCommits";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
+import { useRepoStore } from "@/store/repoStore";
+import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
-    const { sha, id }: { sha: string; id: string } = useParams();
+    const { id }: { id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+
+    const [commitData, setCommitData] = useState<CommitType>();
+    const repo = useRepoStore((s) => s.selectedRepo);
+    const { data: session } = useSession();
+
     const parseId = Number(id);
 
     // 부모에서만 관리하는 초기값들
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
+    const [sha, setSha] = useState("");
 
     // 회고록 값 불러오기기
     const load = async () => {
@@ -31,12 +40,47 @@ export default function CommitDetailMemoir() {
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);
+        setSha(data.source);
     };
 
     // 마운트 및 id 변경 시
     useEffect(() => {
         load();
     }, [id]);
+
+    // 커밋 상세 내역 호출 함수
+    const fetchCommitDetail = async (
+        nameWithOwner: string | undefined,
+        sha: string,
+        accessToken: string | undefined
+    ) => {
+        try {
+            const res = await fetch("/api/github/commits/detail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nameWithOwner,
+                    sha,
+                    accessToken,
+                }),
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                setCommitData(result);
+            }
+        } catch (error) {
+            console.error("Failed to fetch commit detail", error);
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        if (!repo?.nameWithOwner || !session?.accessToken) return;
+        fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
+    }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
     // 수정 모드 토글 핸들러
     const handleToggleEdit = async () => {
@@ -45,6 +89,8 @@ export default function CommitDetailMemoir() {
         }
         setIsEditing((prev) => !prev);
     };
+
+    if (!commitData) return <div>Loading...</div>;
 
     return (
         <DetailMemoirLayout>
@@ -57,10 +103,10 @@ export default function CommitDetailMemoir() {
             <div className="grid flex-1 grid-cols-2">
                 <ChangeListLayout>
                     <div className="px-3 py-2 font-semibold">
-                        {COMMITS.commit.message}
+                        {commitData.message}
                     </div>
                     <ChangeList
-                        changes={COMMITS.files}
+                        changes={commitData.changeDetail}
                         selectedFile={selectedFile}
                     />
                 </ChangeListLayout>
