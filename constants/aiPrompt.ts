@@ -7,6 +7,8 @@ export const PROMPT = `다음은 Git 변경 내역입니다. 이 변경 내역�
 - 너무 긴 문장은 **적절히 끊어서** 가독성을 높여주세요.
 - 각 섹션(요약, 파일1, 파일2, …) 사이에도 **빈 줄 1개**를 추가하세요.
 - 출력은 반드시 아래 형식을 따르세요.
+- Please do not use markdown code blocks (triple backticks).
+- Instead of wrapping content with \`\`\`, format any code or data as plain text.
 
 
 형식 예시:

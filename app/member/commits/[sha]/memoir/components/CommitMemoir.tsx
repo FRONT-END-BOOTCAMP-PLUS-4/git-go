@@ -10,6 +10,7 @@ import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
+import { useSummaryStore } from "@/store/AiSummaryStore";
 
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
@@ -23,8 +24,15 @@ export default function CommitMemoir() {
 
     const { selectedRepo } = useRepoStore();
     const { sha }: { sha: string } = useParams();
+    const { clearSummarized, setSummary } = useSummaryStore();
 
     const { data: session } = useSession();
+
+    useEffect(() => {
+        console.log("effect");
+        clearSummarized();
+        setSummary("");
+    }, []);
 
     // 커밋 상세 내역 호출 함수
     const fetchCommitDetail = async (
