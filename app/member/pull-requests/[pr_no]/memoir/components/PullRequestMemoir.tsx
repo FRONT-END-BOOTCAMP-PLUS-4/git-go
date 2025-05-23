@@ -20,7 +20,7 @@ import { PullRequestType } from "@/types/github/PullRequestType";
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
     const { data: session } = useSession();
-    const { selectedRepo } = useRepoStore();
+    const repo = useRepoStore((s) => s.selectedRepo);
 
     // PR 커밋 리스트 (API는 { commitList: PullRequestType[] } 반환)
     const [prData, setPrData] = useState<PullRequestType[]>([]);
@@ -33,8 +33,7 @@ export default function PullRequestMemoir() {
     // 1) PR 커밋 목록 fetch
     useEffect(() => {
         const fetchPrCommits = async () => {
-            if (!selectedRepo?.nameWithOwner || !session?.accessToken || !pr_no)
-                return;
+            if (!repo?.nameWithOwner || !session?.accessToken || !pr_no) return;
 
             try {
                 const res = await fetch("/api/github/pull-requests/commits", {
@@ -43,7 +42,7 @@ export default function PullRequestMemoir() {
                     body: JSON.stringify({
                         accessToken: session.accessToken,
                         author: session.user.githubId,
-                        repoFullName: selectedRepo.nameWithOwner,
+                        repoFullName: repo.nameWithOwner,
                         prNumber: Number(pr_no),
                     }),
                 });
@@ -68,16 +67,12 @@ export default function PullRequestMemoir() {
         };
 
         fetchPrCommits();
-    }, [selectedRepo?.nameWithOwner, session?.accessToken, pr_no]);
+    }, [repo?.nameWithOwner, session?.accessToken, pr_no]);
 
     // 2) selectedSha 가 바뀔 때마다 커밋 상세 fetch
     useEffect(() => {
         const fetchDetail = async () => {
-            if (
-                !selectedRepo?.nameWithOwner ||
-                !session?.accessToken ||
-                !selectedSha
-            )
+            if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
                 return;
 
             try {
@@ -85,7 +80,7 @@ export default function PullRequestMemoir() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        nameWithOwner: selectedRepo.nameWithOwner,
+                        nameWithOwner: repo.nameWithOwner,
                         sha: selectedSha,
                         accessToken: session.accessToken,
                     }),
@@ -101,7 +96,7 @@ export default function PullRequestMemoir() {
         };
 
         fetchDetail();
-    }, [selectedRepo?.nameWithOwner, session?.accessToken, selectedSha]);
+    }, [repo?.nameWithOwner, session?.accessToken, selectedSha]);
 
     // selectedSha가 바뀔 때마다 스크롤을 최상단으로 이동
     useEffect(() => {
@@ -114,13 +109,8 @@ export default function PullRequestMemoir() {
     }));
 
     // 로딩 처리
-    if (!commitData) {
-        return (
-            <CreateMemoirLayout>
-                <div className="p-8 text-center">Loading commit details…</div>
-            </CreateMemoirLayout>
-        );
-    }
+    if (!commitData)
+        return <div className="p-8 text-center">Loading commit details…</div>;
 
     return (
         <CreateMemoirLayout>
@@ -138,7 +128,6 @@ export default function PullRequestMemoir() {
                         options={prOptions}
                         value={selectedSha}
                         onChange={setSelectedSha}
-                        placeholder="커밋을 선택하세요"
                     />
                     <ChangeList
                         changes={commitData.changeDetail}

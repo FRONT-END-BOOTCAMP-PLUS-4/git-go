@@ -22,11 +22,10 @@ export default function CommitMemoir() {
     const [showModal, setShowModal] = useState(false);
     const [commitData, setCommitData] = useState<CommitType>();
 
-    const { selectedRepo } = useRepoStore();
+    const repo = useRepoStore((s) => s.selectedRepo);
+    const { data: session } = useSession();
     const { sha }: { sha: string } = useParams();
     const { clearSummarized, setSummary } = useSummaryStore();
-
-    const { data: session } = useSession();
 
     useEffect(() => {
         console.log("effect");
@@ -64,9 +63,9 @@ export default function CommitMemoir() {
     };
 
     useEffect(() => {
-        if (!selectedRepo?.nameWithOwner || !session?.accessToken) return;
-        fetchCommitDetail(selectedRepo.nameWithOwner, sha, session.accessToken);
-    }, [selectedRepo?.nameWithOwner, sha, session?.accessToken]);
+        if (!repo?.nameWithOwner || !session?.accessToken) return;
+        fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
+    }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
     if (!commitData) return <div>Loading...</div>;
 
