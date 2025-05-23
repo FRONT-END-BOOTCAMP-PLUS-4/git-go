@@ -20,6 +20,7 @@ export default function PullRequestMemoir() {
     const currentCommit = MOCK_COMMITS[selectedSha];
 
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    const [filesChanged, setFilesChanged] = useState([]);
 
     const { pr_no }: { pr_no: string } = useParams();
 
@@ -95,6 +96,7 @@ export default function PullRequestMemoir() {
 
             if (res.ok) {
                 const result = await res.json();
+                setFilesChanged(result.changeDetail);
                 console.log(result);
             }
         } catch (error) {
@@ -110,7 +112,7 @@ export default function PullRequestMemoir() {
     return (
         <CreateMemoirLayout>
             <AccordionSidebar
-                files={useExtractFilenames(COMMITS.files)}
+                files={useExtractFilenames(filesChanged)}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
