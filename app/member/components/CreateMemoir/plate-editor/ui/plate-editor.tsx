@@ -7,7 +7,7 @@ import {
     EditorContainer,
 } from "@/app/member/components/CreateMemoir/plate-editor/ui/editor";
 import { useCreateEditor } from "@/hooks/useCreateEditor";
-import { EditorFormHandle } from "@/types/github/ShareType";
+import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { forwardRef, memo, useImperativeHandle } from "react";
 import { DndProvider } from "react-dnd";

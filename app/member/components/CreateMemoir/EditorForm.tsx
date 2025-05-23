@@ -3,7 +3,7 @@
 import Button from "@/app/components/Button";
 import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/ui/plate-editor";
 import { useMemoirForm } from "@/hooks/useMemoirForm";
-import { EditorFormHandle } from "@/types/github/ShareType";
+import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
