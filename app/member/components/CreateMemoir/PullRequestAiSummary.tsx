@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
 import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
@@ -26,6 +26,10 @@ export default function PullRequestAiSummary({
         useSummaryStore();
     const alreadySummarized = isSummarized(prNo || "");
     const [loading, setLoading] = useState(false);
+
+    useLayoutEffect(() => {
+        setSummary("");
+    }, []);
 
     const handleSummarize = async () => {
         setLoading(true);
