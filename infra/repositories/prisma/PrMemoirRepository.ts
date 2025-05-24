@@ -119,7 +119,10 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async findAllTagsByUser(userId: string, repoId?: string): Promise<string[]> {
+    async findAllTagsByUser(
+        userId: string,
+        repoId?: string
+    ): Promise<string[]> {
         const memoirWhere: any = { userId };
         if (repoId) {
             memoirWhere.repoId = Number(repoId);
@@ -248,11 +251,12 @@ export class PrMemoirRepository implements MemoirRepository {
     async edit(data: {
         title: string;
         content: string;
-        memoirId: number;
         tags?: string[];
+        memoirId: number;
+        aiSum?: string;
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
-            const { memoirId, title, content, tags } = data;
+            const { memoirId, title, content, tags, aiSum } = data;
 
             // 1) 기본 필드 업데이트 (updatedAt 필드가 있다면 함께 갱신)
             await tx.memoir.update({
@@ -260,6 +264,7 @@ export class PrMemoirRepository implements MemoirRepository {
                 data: {
                     title,
                     content,
+                    aiSum,
                     updatedAt: new Date(),
                 },
             });

@@ -52,7 +52,7 @@ export default function EditorFormReadOnly({
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
             <div className="flex flex-1 flex-col gap-4">
-                {/* 수정 삭제 버튼 */}
+                {/* 수정, 삭제 버튼 */}
                 <div className="flex items-center justify-end gap-2">
                     <Button onClick={handleDeleteClick} type="danger">
                         삭제
@@ -73,14 +73,20 @@ export default function EditorFormReadOnly({
                         태그
                     </label>
                     <div className="flex flex-wrap gap-1">
-                        {tags.map((tag) => (
-                            <span
-                                key={tag}
-                                className="bg-bg-primary2 rounded-md px-3 py-2 text-base"
-                            >
-                                {tag}
+                        {tags.length > 0 ? (
+                            tags.map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="bg-bg-primary2 rounded-md px-3 py-2 text-base"
+                                >
+                                    {tag}
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-text-gray1 py-2 text-sm">
+                                등록된 태그가 없습니다.
                             </span>
-                        ))}
+                        )}
                     </div>
                 </div>
 
