@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import DetailMemoirLayout from "./DetailMemoirLayout";
+import ViewSummary from "../ViewSummary";
 
 export default function PullRequestDetailMemoir() {
     const [selectedSha, setSelectedSha] = useState<string>("");
@@ -26,6 +27,7 @@ export default function PullRequestDetailMemoir() {
     const { id }: { id: string } = useParams();
 
     const [isEditing, setIsEditing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const parseId = Number(id);
 
     // 부모에서만 관리하는 초기값들
@@ -33,6 +35,7 @@ export default function PullRequestDetailMemoir() {
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
     const [prNo, setPrNo] = useState<string>("");
+    const [summary, setSummary] = useState<string>("");
 
     const [prData, setPrData] = useState<PullRequestType[]>([]);
 
@@ -137,10 +140,12 @@ export default function PullRequestDetailMemoir() {
     const load = async () => {
         const res = await fetch(`/api/memoirs/${id}`);
         const data = (await res.json()) as GetMemoirResponseDto;
+        console.log(data);
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);
         setPrNo(data.source);
+        setSummary(data.aiSum ?? "");
     };
 
     // 수정 모드 토글 핸들러
@@ -156,6 +161,20 @@ export default function PullRequestDetailMemoir() {
 
     return (
         <DetailMemoirLayout>
+            <button
+                onClick={() => setShowModal(true)}
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+            >
+                ✨ 생성된 요약 보기
+            </button>
+            {showModal && (
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
+                    <ViewSummary
+                        setShowModal={setShowModal}
+                        summary={summary}
+                    />
+                </div>
+            )}
             <AccordionSidebar
                 files={useExtractFilenames(COMMITS.files)}
                 selectedFile={selectedFile}
