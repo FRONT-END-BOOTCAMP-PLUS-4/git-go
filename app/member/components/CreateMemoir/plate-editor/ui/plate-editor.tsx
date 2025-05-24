@@ -38,14 +38,14 @@ function PlateEditorInner(
                 onChange={handleEditorChange}
                 readOnly={readOnly}
             >
-                <EditorContainer className="flex flex-1 flex-col">
+                <EditorContainer className="flex flex-1 flex-col bg-green-300">
                     {/* 본문 editor */}
                     <div className="flex flex-1 flex-col gap-1">
                         <label className="block text-sm font-medium">
                             회고록 작성
                         </label>
                         <Editor
-                            className="border-border-primary1 min-h-60 flex-1 overflow-y-auto rounded-md border px-8 py-2 focus:placeholder:text-transparent"
+                            className="border-border-primary1 min-h-0 flex-1 overflow-y-auto rounded-md border bg-amber-300 px-8 py-2 focus:placeholder:text-transparent"
                             variant="demo"
                         />
                     </div>
