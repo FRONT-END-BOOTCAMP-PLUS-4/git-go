@@ -119,11 +119,11 @@ export default function CommitDetailMemoir() {
                             setTags={setTags}
                             content={content}
                             setContent={setContent}
-                            handleToggleEdit={handleToggleEdit}
                             memoirId={parseId}
                             typeId={1}
                             session={session}
                             repo={repo}
+                            setIsEditing={setIsEditing}
                         />
                     ) : (
                         <EditorFormReadOnly
