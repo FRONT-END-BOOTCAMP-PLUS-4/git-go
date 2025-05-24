@@ -3,10 +3,9 @@
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import EditorForm from "@/app/member/components/CreateMemoir/EditorForm";
+import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { COMMITS } from "@/constants/mockCommits";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 import { CommitType } from "@/types/github/CommitType";
@@ -95,7 +94,7 @@ export default function CommitDetailMemoir() {
     return (
         <DetailMemoirLayout>
             <AccordionSidebar
-                files={useExtractFilenames(COMMITS.files)}
+                files={useExtractFilenames(commitData.changeDetail)}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
@@ -113,15 +112,18 @@ export default function CommitDetailMemoir() {
 
                 <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
                     {isEditing ? (
-                        <EditorForm
-                            initialTitle={title}
-                            initialTags={tags}
-                            initialContent={content}
-                            sourceId={sha}
-                            typeId={1}
-                            isEditing={isEditing}
-                            onToggleEdit={handleToggleEdit}
+                        <EditEditorForm
+                            title={title}
+                            setTitle={setTitle}
+                            tags={tags}
+                            setTags={setTags}
+                            content={content}
+                            setContent={setContent}
+                            handleToggleEdit={handleToggleEdit}
                             memoirId={parseId}
+                            typeId={1}
+                            session={session}
+                            repo={repo}
                         />
                     ) : (
                         <EditorFormReadOnly
