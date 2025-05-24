@@ -3,6 +3,7 @@ export class EditMemoirRequestDto {
         public title: string,
         public content: string,
         public memoirId: number,
-        public tags?: string[]
+        public tags?: string[],
+        public aiSum?: string
     ) {}
 }
