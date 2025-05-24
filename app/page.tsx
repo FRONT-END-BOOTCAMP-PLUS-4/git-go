@@ -10,70 +10,84 @@ export default async function HomePage() {
     const isLoggedIn = !!session;
 
     return (
-        <main className="flex flex-col items-center justify-center bg-gray-50 text-center px-4 mt-[15vh]">
+        <main className="mt-[15vh] flex flex-col items-center justify-center bg-gray-50 px-4 text-center">
             <div className="space-y-6">
                 <div className="flex justify-center">
-                    <div className="bg-indigo-100 rounded-full p-6 flex items-center justify-center">
+                    <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
                         <Image
                             src="/home-center.svg"
                             alt="Home Center Icon"
                             width={40}
                             height={40}
-                            className="w-10 h-10"
+                            className="h-10 w-10"
                         />
                     </div>
                 </div>
-                <h1 className="text-2xl font-semibold">코딩 여정을 기록하세요</h1>
-                <p className="text-gray-600 text-sm">
-                    GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI 기반 요약과 함께<br />
+                <h1 className="text-2xl font-semibold">
+                    코딩 여정을 기록하세요
+                </h1>
+                <p className="text-sm text-gray-600">
+                    GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI
+                    기반 요약과 함께
+                    <br />
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
 
                 {isLoggedIn ? (
                     <div className="flex justify-center">
                         <form action={MEMBER_URL.commits}>
-                            <Button type="default" size="regular" label="마이페이지" htmlType="submit" />
+                            <Button
+                                type="default"
+                                size="regular"
+                                label="마이페이지"
+                                htmlType="submit"
+                            />
                         </form>
                     </div>
                 ) : (
                     <LoginWithGitHubButton />
                 )}
 
-                <div className="flex gap-20 mt-10 justify-center">
+                <div className="mt-10 flex justify-center gap-20 leading-10">
                     {[
                         {
-                            title: "Sync Activities",
-                            desc: "Automatically track commits, PRs, and code changes",
+                            title: "활동 동기화",
+                            desc: "커밋, PR 및 코드 변경사항을 자동으로 추적",
                             iconPath: "/sync-activities.svg",
                             bgColor: "bg-green-100",
                         },
                         {
-                            title: "AI Summaries",
-                            desc: "Get intelligent insights about your code changes",
+                            title: "AI 요약",
+                            desc: "코드 변경사항에 대한 지능형 인사이트 제공",
                             iconPath: "/ai-summaries.svg",
                             bgColor: "bg-blue-100",
                         },
                         {
-                            title: "Create Memoirs",
-                            desc: "Document your journey with rich, contextual notes",
+                            title: "회고록 작성",
+                            desc: "풍부한 맥락과 함께 개발 여정을 기록하세요",
                             iconPath: "/create-memoirs.svg",
                             bgColor: "bg-purple-100",
                         },
                     ].map((feature) => (
-                        <div key={feature.title} className="text-center max-w-[350px]">
+                        <div
+                            key={feature.title}
+                            className="max-w-[350px] text-center"
+                        >
                             <div
-                                className={`rounded-full p-4 mb-2 flex items-center justify-center mx-auto w-16 h-16 ${feature.bgColor}`}
+                                className={`mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full p-4 ${feature.bgColor}`}
                             >
                                 <Image
                                     src={feature.iconPath}
                                     alt={feature.title}
                                     width={24}
                                     height={24}
-                                    className="w-6 h-6"
+                                    className="h-6 w-6"
                                 />
                             </div>
                             <h3 className="font-semibold">{feature.title}</h3>
-                            <p className="text-sm text-gray-500">{feature.desc}</p>
+                            <p className="text-sm text-gray-500">
+                                {feature.desc}
+                            </p>
                         </div>
                     ))}
                 </div>

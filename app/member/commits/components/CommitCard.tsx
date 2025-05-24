@@ -163,7 +163,7 @@ export default function CommitCard({
                                     width={12}
                                     height={12}
                                 />
-                                Write Memoir
+                                회고록 작성
                             </Button>
                         </div>
                     </div>

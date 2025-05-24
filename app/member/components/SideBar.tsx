@@ -113,7 +113,7 @@ export default function SideBar({
         <aside className="flex w-50 flex-col gap-y-4">
             <div className="border-border-primary1 h-fit w-50 rounded-lg border-1 bg-white">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
-                    Repositories
+                    등록된 저장소
                 </h2>
                 <ul className="flex w-full flex-col gap-y-1 p-2">
                     {loadingRepos ? (
