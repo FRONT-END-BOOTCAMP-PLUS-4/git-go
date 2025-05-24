@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/Button";
-import { MEMBER_URL } from "@/constants/url";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
@@ -17,11 +16,11 @@ type EditEditorFormProps = {
     setTags: (e: string[]) => void;
     content: Value;
     setContent: (e: Value) => void;
-    handleToggleEdit: () => void;
     memoirId: number;
     typeId: number;
     session: Session | null;
     repo: { dbId: number; id: string; nameWithOwner: string } | null;
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function EditEditorForm({
@@ -31,11 +30,11 @@ export default function EditEditorForm({
     setTags,
     content,
     setContent,
-    handleToggleEdit,
     memoirId,
     typeId,
     session,
     repo,
+    setIsEditing,
 }: EditEditorFormProps) {
     console.log("EditEditorForm 렌더링");
     const router = useRouter();
@@ -113,7 +112,8 @@ export default function EditEditorForm({
             }
             // 성공 후 후속 처리
             let source = typeId === 1 ? "commit" : "pull-request";
-            router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
+            // router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
+            setIsEditing((prev) => !prev);
         } catch (err: any) {
             console.error(err);
             setError(err.message);
@@ -124,7 +124,7 @@ export default function EditEditorForm({
 
     // 취소 버튼
     const handleCancel = () => {
-        handleToggleEdit();
+        setIsEditing((prev) => !prev);
     };
 
     return (
