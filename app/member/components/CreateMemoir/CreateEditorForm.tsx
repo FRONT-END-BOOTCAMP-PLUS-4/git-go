@@ -117,7 +117,7 @@ export default function CreateEditorForm({
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden bg-red-300">
+        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
             {/* 제목 */}
             <div>
                 <label
