@@ -3,31 +3,36 @@
 import { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
-import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
-import { PROMPT } from "@/constants/aiPrompt";
+import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
+import { PROMPT } from "@/constants/aiPullRequestPrompt";
 import ReactMarkdown from "react-markdown";
 import { useSummaryStore } from "@/store/AiSummaryStore";
-import { CommitType } from "@/types/github/CommitType";
+import { PullRequestType } from "@/types/github/PullRequestType";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
 type AiSummaryProps = {
     setShowModal: (value: boolean) => void;
-    commit: CommitType;
+    pullRequest: PullRequestType[];
+    prNo?: string;
 };
 
-export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
+export default function PullRequestAiSummary({
+    setShowModal,
+    pullRequest,
+    prNo,
+}: AiSummaryProps) {
     const { aiSummary, setSummary, setSummarized, isSummarized } =
         useSummaryStore();
-    const alreadySummarized = isSummarized(commit.sha);
+    const alreadySummarized = isSummarized(prNo || "");
     const [loading, setLoading] = useState(false);
 
     const handleSummarize = async () => {
         setSummary("");
         setLoading(true);
-        setSummarized(commit.sha, true);
+        setSummarized(prNo || "", true);
 
-        const simplified = useSimplifyCommitData(commit);
+        const simplified = useSimplifyPullRequestData(pullRequest);
         const prompt = `
                         ${PROMPT}
                         \`\`\`json
@@ -49,7 +54,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             });
         }
         setSummary(fullText);
-        setSummarized(commit.sha, true);
+        setSummarized(prNo || "", true);
         setLoading(false);
     };
 
@@ -75,7 +80,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     style={{ maxHeight: "100%" }}
                 >
                     <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
-                        AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
+                        AI가 PR 내용을 보고 개발 흐름을 요약해드립니다.
                         <br />
                         아래 버튼을 클릭하여 AI 요약을 시작해보세요.
                     </p>

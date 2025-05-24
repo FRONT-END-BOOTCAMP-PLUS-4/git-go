@@ -16,11 +16,14 @@ import { useRepoStore } from "@/store/repoStore";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
+
+    const [showModal, setShowModal] = useState(false);
 
     // PR 커밋 리스트 (API는 { commitList: PullRequestType[] } 반환)
     const [prData, setPrData] = useState<PullRequestType[]>([]);
@@ -56,6 +59,7 @@ export default function PullRequestMemoir() {
                     ? json.commitList
                     : [];
                 setPrData(list);
+                console.log("PR Data:", list);
 
                 // 첫 번째 SHA 기본 선택
                 if (list.length > 0) {
@@ -114,6 +118,21 @@ export default function PullRequestMemoir() {
 
     return (
         <CreateMemoirLayout>
+            <button
+                onClick={() => setShowModal(true)}
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+            >
+                ✨ AI 요약 시작하기
+            </button>
+            {showModal && (
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
+                    <PullRequestAiSummary
+                        setShowModal={setShowModal}
+                        pullRequest={prData}
+                        prNo={pr_no}
+                    />
+                </div>
+            )}
             {/* 사이드바 */}
             <AccordionSidebar
                 files={useExtractFilenames(commitData.changeDetail)}
