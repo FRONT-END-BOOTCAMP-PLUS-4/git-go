@@ -46,7 +46,7 @@ export default function PageTap({ status }: Props) {
                             : "text-text-gray1"
                     }`}
                 >
-                    커밋
+                    Commits
                 </div>
             </div>
             <div

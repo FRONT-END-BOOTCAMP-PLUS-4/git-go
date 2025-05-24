@@ -14,11 +14,13 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DetailMemoirLayout from "./DetailMemoirLayout";
+import ViewSummary from "../ViewSummary";
 
 export default function CommitDetailMemoir() {
     const { id }: { id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const [commitData, setCommitData] = useState<CommitType>();
     const repo = useRepoStore((s) => s.selectedRepo);
@@ -31,15 +33,18 @@ export default function CommitDetailMemoir() {
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
     const [sha, setSha] = useState("");
+    const [summary, setSummary] = useState<string>("");
 
     // 회고록 값 불러오기기
     const load = async () => {
         const res = await fetch(`/api/memoirs/${id}`);
         const data = (await res.json()) as GetMemoirResponseDto;
+        console.log(data);
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);
         setSha(data.source);
+        setSummary(data.aiSum ?? "");
     };
 
     // 마운트 및 id 변경 시
@@ -93,6 +98,20 @@ export default function CommitDetailMemoir() {
 
     return (
         <DetailMemoirLayout>
+            <button
+                onClick={() => setShowModal(true)}
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+            >
+                ✨ 생성된 요약 보기
+            </button>
+            {showModal && (
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
+                    <ViewSummary
+                        setShowModal={setShowModal}
+                        summary={summary}
+                    />
+                </div>
+            )}
             <AccordionSidebar
                 files={useExtractFilenames(commitData.changeDetail)}
                 selectedFile={selectedFile}
