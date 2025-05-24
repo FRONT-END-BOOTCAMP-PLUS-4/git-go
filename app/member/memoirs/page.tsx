@@ -38,7 +38,7 @@ export default function MemoirPage() {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [timePeriod, filterType, tags, searchKeyword]);
+    }, [selectedRepo, timePeriod, filterType, tags, searchKeyword]);
 
     useEffect(() => {
         if (!selectedRepo) return;
