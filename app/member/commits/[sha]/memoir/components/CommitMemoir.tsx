@@ -103,7 +103,7 @@ export default function CommitMemoir() {
                     />
                 </ChangeListLayout>
 
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 bg-fuchsia-400 p-4">
+                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     <CreateEditorForm source={sha} typeId={1} />
                 </div>
             </div>
