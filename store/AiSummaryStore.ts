@@ -3,6 +3,8 @@ import { create } from "zustand";
 
 interface SummaryState {
     aiSummary: string;
+    retryCount: number;
+    setRetryCount: (count: number) => void;
     setSummary: (summary: string) => void;
 
     summarizedMap: Record<string, boolean>;
@@ -13,6 +15,8 @@ interface SummaryState {
 
 export const useSummaryStore = create<SummaryState>((set, get) => ({
     aiSummary: "",
+    retryCount: 2,
+    setRetryCount: (count) => set({ retryCount: count }),
     setSummary: (summary) => set({ aiSummary: summary }),
 
     summarizedMap: {},
