@@ -2,50 +2,59 @@
 
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
-type CreateEditorFormProps = {
-    source: string;
+type EditEditorFormProps = {
+    title: string;
+    setTitle: (e: string) => void;
+    tags: string[];
+    setTags: (e: string[]) => void;
+    content: Value;
+    setContent: (e: Value) => void;
+    handleToggleEdit: () => void;
+    memoirId: number;
     typeId: number;
+    session: Session | null;
+    repo: { dbId: number; id: string; nameWithOwner: string } | null;
 };
 
-export default function CreateEditorForm({
-    source,
+export default function EditEditorForm({
+    title,
+    setTitle,
+    tags,
+    setTags,
+    content,
+    setContent,
+    handleToggleEdit,
+    memoirId,
     typeId,
-}: CreateEditorFormProps) {
-    console.log("CreateEditorForm 렌더링");
+    session,
+    repo,
+}: EditEditorFormProps) {
+    console.log("EditEditorForm 렌더링");
+    const router = useRouter();
 
-    const [title, setTitle] = useState<string>("");
-    const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState<string>("");
-    const [content, setContent] = useState<Value>([]);
+
     const editorRef = useRef<EditorFormHandle>(null);
+
+    const [initialContent] = useState(() => content); // mount 시점에만 세팅
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const router = useRouter();
-    const { data: session } = useSession();
-    const repo = useRepoStore((s) => s.selectedRepo);
-    const summary = useSummaryStore((s) => s.aiSummary);
 
     const buildPayload = () => ({
         title,
         tags,
         content: editorRef.current?.getContent() ?? [],
-        source,
-        aiSum: summary,
-        userId: session!.user.id,
-        typeId,
-        repoId: repo!.dbId,
+        // aiSum: summary,
+        memoirId,
     });
 
     // 에디터가 바뀔 때마다 호출할 onChange 핸들러
@@ -81,28 +90,30 @@ export default function CreateEditorForm({
         setTags(tags.filter((t) => t !== tag));
     };
 
-    // 회고록 저장
-    const handleSave = async () => {
+    const handleEdit = async () => {
         if (!session || !repo) {
             setError("로그인이 필요합니다.");
             return;
         }
+        console.log("handleEdit 진행");
         setLoading(true);
         setError(null);
 
         try {
-            const res = await fetch("/api/memoirs", {
-                method: "POST",
+            if (!memoirId) throw new Error("memoirId is required");
+            const res = await fetch(`/api/memoirs/${memoirId}`, {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(buildPayload()),
             });
             if (!res.ok) {
                 // 서버가 200번대가 아니면 에러로 처리
                 const body = await res.json().catch(() => null);
-                throw new Error(body?.message || `저장 실패: ${res.status}`);
+                throw new Error(body?.message || `수정 실패: ${res.status}`);
             }
             // 성공 후 후속 처리
-            router.push(MEMBER_URL.memoirs);
+            let source = typeId === 1 ? "commit" : "pull-request";
+            router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
         } catch (err: any) {
             console.error(err);
             setError(err.message);
@@ -113,7 +124,7 @@ export default function CreateEditorForm({
 
     // 취소 버튼
     const handleCancel = () => {
-        router.back();
+        handleToggleEdit();
     };
 
     return (
@@ -172,6 +183,7 @@ export default function CreateEditorForm({
             {/* 에디터 */}
             <PlateEditor
                 ref={editorRef}
+                initialContent={initialContent}
                 handleEditorChange={handleEditorChange}
             />
 
@@ -182,10 +194,10 @@ export default function CreateEditorForm({
                 </Button>
                 <Button
                     type={disabled ? "disabled" : "default"}
-                    onClick={handleSave}
+                    onClick={handleEdit}
                     isLoading={loading}
                 >
-                    {loading ? "저장 중" : "저장하기"}
+                    {loading ? "수정 중" : "수정하기"}
                 </Button>
             </div>
         </div>
