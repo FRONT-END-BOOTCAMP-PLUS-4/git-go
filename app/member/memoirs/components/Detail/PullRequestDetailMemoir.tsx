@@ -185,11 +185,11 @@ export default function PullRequestDetailMemoir() {
                             setTags={setTags}
                             content={content}
                             setContent={setContent}
-                            handleToggleEdit={handleToggleEdit}
                             memoirId={parseId}
                             typeId={2}
                             session={session}
                             repo={repo}
+                            setIsEditing={setIsEditing}
                         />
                     ) : (
                         <EditorFormReadOnly
