@@ -12,7 +12,7 @@ import { useFilterStore } from "@/store/useFilterStore";
 export default function MemoirPage() {
     const now = new Date();
     const { selectedRepo } = useRepoStore();
-    const [memoirs, setMemoirs] = useState<MemoirListDto[]>([]);
+    const [memoirs, setMemoirs] = useState<MemoirListDto[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
@@ -126,7 +126,7 @@ export default function MemoirPage() {
             </section>
 
             <ul>
-                {loading ? (
+                {loading || memoirs === null ? (
                     Array.from({ length: 5 }).map((_, i) => (
                         <MemoirSkeleton key={i} />
                     ))
@@ -138,7 +138,7 @@ export default function MemoirPage() {
                     ))
                 )}
             </ul>
-            {!loading && memoirs.length > 0 && (
+            {!loading && memoirs && memoirs.length > 0 && (
                 <Pagination
                     currentPage={currentPage}
                     totalCount={totalCount}
