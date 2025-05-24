@@ -14,9 +14,9 @@ import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
+import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
-import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -156,7 +156,7 @@ export default function PullRequestMemoir() {
                 </ChangeListLayout>
 
                 {/* 회고 작성 폼 */}
-                <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
+                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     <CreateEditorForm source={pr_no} typeId={2} />
                 </div>
             </div>
