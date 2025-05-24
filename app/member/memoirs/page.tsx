@@ -72,14 +72,20 @@ export default function MemoirPage() {
             `perPage=${perPage}`,
             `period=${timePeriod}`,
             `type=${filterType}`,
-            ...(tags.length > 0 ? tags.map((t) => `tags=${encodeURIComponent(t)}`) : []),
-            ...(searchKeyword ? [`keyword=${encodeURIComponent(searchKeyword)}`] : []),
+            ...(tags.length > 0
+                ? tags.map((t) => `tags=${encodeURIComponent(t)}`)
+                : []),
+            ...(searchKeyword
+                ? [`keyword=${encodeURIComponent(searchKeyword)}`]
+                : []),
         ].join("&");
 
         const fetchMemoirs = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/memoirs?${queryParams}`, { signal });
+                const res = await fetch(`/api/memoirs?${queryParams}`, {
+                    signal,
+                });
                 const { list, totalCount } = await res.json();
                 const updatedData = list.map((memoir: any) => ({
                     ...memoir,
@@ -93,8 +99,8 @@ export default function MemoirPage() {
                     timestamp: now,
                 });
             } catch (e) {
-                if (e instanceof DOMException && e.name === 'AbortError') {
-                    console.log('요청 취소됨');
+                if (e instanceof DOMException && e.name === "AbortError") {
+                    console.log("요청 취소됨");
                 } else {
                     console.error("회고 목록 로딩 실패", e);
                     setMemoirs([]);
@@ -109,13 +115,20 @@ export default function MemoirPage() {
         return () => {
             controller.abort();
         };
-    }, [selectedRepo, currentPage, timePeriod, filterType, tags, searchKeyword]);
+    }, [
+        selectedRepo,
+        currentPage,
+        timePeriod,
+        filterType,
+        tags,
+        searchKeyword,
+    ]);
 
     return (
         <div className="border-border-primary1 rounded-lg border-1 bg-white">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-x-3">
-                    <h2 className="font-bold">My Memoirs</h2>
+                    <h2 className="font-bold">내 회고록</h2>
                     {(totalCount ?? 0) > 0 && (
                         <span className="text-text-secondary2 text-sm">
                             전체 {totalCount}개
