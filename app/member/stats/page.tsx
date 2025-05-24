@@ -18,7 +18,7 @@ export default function StatsPage() {
         { name: string; commits: number }[]
     >([]);
     const [loadingTopRepos, setLoadingTopRepos] = useState(false);
-    const [weeklyCommits, setWeeklyCommits] = useState<{ date: string; count: number }[]>([]);
+    const [weeklyCommits, setWeeklyCommits] = useState<{ date: string; count: number }[] | null>(null);
     const [loadingWeekly, setLoadingWeekly] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [commitChange, setCommitChange] = useState<string | null>(null);
@@ -82,7 +82,7 @@ export default function StatsPage() {
         setTotalMemoirs(null);
         setLoadingWeekly(true);
         setIsFirstLoad(true);
-        setWeeklyCommits([]);
+        setWeeklyCommits(null);
 
         const fetchStats = async () => {
             try {
@@ -183,32 +183,11 @@ export default function StatsPage() {
                     </div>
                 ) : (
                     <BottomCard title="커밋 활동" subtitle="최근 7일">
-                        {weeklyCommits.length > 0 ? (
-                            <div className="w-full h-64">
-                                <WeeklyCommitChart data={weeklyCommits} />
-                            </div>
-                        ) : (
-                            <div className="flex h-32 items-center justify-center text-sm text-gray-400">
-                                커밋 정보 없음
-                            </div>
-                        )}
+                        <div className="w-full h-64">
+                            <WeeklyCommitChart data={weeklyCommits ?? []} />
+                        </div>
                     </BottomCard>
                 )}
-                {/* <BottomCard title="커밋 활동" subtitle="최근 7일">
-                    <div className="space-y-4">
-                        {loadingWeekly || isFirstLoad ? (
-                            <ChartSkeleton />
-                        ) : weeklyCommits.length > 0 ? (
-                            <div className="w-full h-64">
-                                <WeeklyCommitChart data={weeklyCommits} />
-                            </div>
-                        ) : (
-                            <div className="flex h-32 items-center justify-center text-sm text-gray-400">
-                                커밋 정보 없음
-                            </div>
-                        )}
-                    </div>
-                </BottomCard> */}
                 {/* Most active repos */}
                 {loadingTopRepos ? (
                     <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
