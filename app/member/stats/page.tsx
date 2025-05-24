@@ -57,6 +57,9 @@ export default function StatsPage() {
     useEffect(() => {
         if (!selectedRepo) return;
 
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         const cacheKey = selectedRepo?.nameWithOwner;
         const cached = cacheRef.current.get(cacheKey);
         const now = Date.now();
@@ -84,10 +87,10 @@ export default function StatsPage() {
         const fetchStats = async () => {
             try {
                 const [commitRes, lineRes, memoirRes, weeklyRes] = await Promise.all([
-                    fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`),
-                    fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`),
-                    fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`),
-                    fetch(`/api/stats/weekly-commits?repo=${selectedRepo.nameWithOwner}`),
+                    fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`, { signal }),
+                    fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`, { signal }),
+                    fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`, { signal }),
+                    fetch(`/api/stats/weekly-commits?repo=${selectedRepo.nameWithOwner}`, { signal }),
                 ]);
 
                 const commitData = await commitRes.json();
@@ -124,7 +127,11 @@ export default function StatsPage() {
                     timestamp: Date.now(),
                 });
             } catch (err) {
-                console.error("Stats fetch 실패", err);
+                if (err instanceof DOMException && err.name === 'AbortError') {
+                    console.log('요청 취소됨');
+                } else {
+                    console.error('Stats fetch 실패', err);
+                }
             } finally {
                 setLoadingWeekly(false);
                 setIsFirstLoad(false)
@@ -132,6 +139,10 @@ export default function StatsPage() {
         }
 
         fetchStats();
+
+        return () => {
+            controller.abort();
+        };
     }, [selectedRepo]);
 
     return (
