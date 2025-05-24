@@ -43,6 +43,9 @@ export default function MemoirPage() {
     useEffect(() => {
         if (!selectedRepo) return;
 
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         const cacheKey = JSON.stringify({
             repoId: selectedRepo.id,
             page: currentPage,
@@ -76,7 +79,7 @@ export default function MemoirPage() {
         const fetchMemoirs = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/memoirs?${queryParams}`);
+                const res = await fetch(`/api/memoirs?${queryParams}`, { signal });
                 const { list, totalCount } = await res.json();
                 const updatedData = list.map((memoir: any) => ({
                     ...memoir,
@@ -90,14 +93,22 @@ export default function MemoirPage() {
                     timestamp: now,
                 });
             } catch (e) {
-                console.error("회고 목록 로딩 실패", e);
-                setMemoirs([]);
+                if (e instanceof DOMException && e.name === 'AbortError') {
+                    console.log('요청 취소됨');
+                } else {
+                    console.error("회고 목록 로딩 실패", e);
+                    setMemoirs([]);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchMemoirs();
+
+        return () => {
+            controller.abort();
+        };
     }, [selectedRepo, currentPage, timePeriod, filterType, tags, searchKeyword]);
 
     return (
