@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { flushSync } from "react-dom";
 import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
@@ -23,9 +23,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const [loading, setLoading] = useState(false);
 
     const handleSummarize = async () => {
-        useLayoutEffect(() => {
-            setSummary("");
-        }, []);
+        setSummary("");
         setLoading(true);
         setSummarized(commit.sha, true);
 
