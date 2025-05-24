@@ -25,12 +25,13 @@ export default function CommitMemoir() {
     const repo = useRepoStore((s) => s.selectedRepo);
     const { data: session } = useSession();
     const { sha }: { sha: string } = useParams();
-    const { clearSummarized, setSummary } = useSummaryStore();
+    const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
     useEffect(() => {
         console.log("effect");
         clearSummarized();
         setSummary("");
+        setRetryCount(2);
     }, []);
 
     // 커밋 상세 내역 호출 함수

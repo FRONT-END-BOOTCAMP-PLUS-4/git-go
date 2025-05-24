@@ -12,6 +12,7 @@ import Select from "@/app/member/components/Select";
 
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
+import { useSummaryStore } from "@/store/AiSummaryStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import { CommitType } from "@/types/github/CommitType";
@@ -22,6 +23,7 @@ export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
+    const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
     const [showModal, setShowModal] = useState(false);
 
@@ -33,6 +35,12 @@ export default function PullRequestMemoir() {
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
+    useEffect(() => {
+        console.log("effect");
+        clearSummarized();
+        setSummary("");
+        setRetryCount(2);
+    }, []);
     // 1) PR 커밋 목록 fetch
     useEffect(() => {
         const fetchPrCommits = async () => {
