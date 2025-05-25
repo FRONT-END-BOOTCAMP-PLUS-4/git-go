@@ -59,7 +59,8 @@ export default function CreateEditorForm({
         node.children.some((ch: any) => ch.text?.trim() !== "")
     );
 
-    const disabled = !title.trim() || !hasText;
+    // 폼 입력 유효성 검사 (제목, 내용)
+    const formDisabled = !title.trim() || !hasText;
 
     // tag에서 Enter 입력 시 tag 등록
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -83,10 +84,12 @@ export default function CreateEditorForm({
 
     // 회고록 저장
     const handleSave = async () => {
-        if (!session || !repo) {
-            setError("로그인이 필요합니다.");
+        // 이미 로딩 중이거나 필수 데이터가 없으면 함수 실행 중지
+        if (loading || !session || !repo) {
+            setError("로그인이 필요하거나 저장 중입니다.");
             return;
         }
+
         setLoading(true);
         setError(null);
 
@@ -96,11 +99,13 @@ export default function CreateEditorForm({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(buildPayload()),
             });
+
             if (!res.ok) {
                 // 서버가 200번대가 아니면 에러로 처리
                 const body = await res.json().catch(() => null);
                 throw new Error(body?.message || `저장 실패: ${res.status}`);
             }
+
             // 성공 후 후속 처리
             router.push(MEMBER_URL.memoirs);
         } catch (err: any) {
@@ -135,7 +140,6 @@ export default function CreateEditorForm({
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </div>
-
             {/* 태그 */}
             <div>
                 <label
@@ -168,7 +172,6 @@ export default function CreateEditorForm({
                     />
                 </div>
             </div>
-
             {/* 에디터 */}
             <div className="min-h-0 flex-1">
                 <PlateEditor
@@ -176,14 +179,19 @@ export default function CreateEditorForm({
                     handleEditorChange={handleEditorChange}
                 />
             </div>
-
             {/* 버튼 */}
             <div className="flex justify-end gap-2">
                 <Button type="lined" onClick={handleCancel}>
                     취소
                 </Button>
                 <Button
-                    type={disabled ? "disabled" : "default"}
+                    type={
+                        loading
+                            ? "disabled"
+                            : formDisabled
+                              ? "disabled"
+                              : "default"
+                    }
                     onClick={handleSave}
                     isLoading={loading}
                 >
