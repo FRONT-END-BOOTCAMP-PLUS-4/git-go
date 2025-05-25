@@ -11,8 +11,8 @@ import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoi
 import Select from "@/app/member/components/Select";
 
 import useExtractFilenames from "@/hooks/useExtractFileNames";
-import { useRepoStore } from "@/store/repoStore";
 import { useSummaryStore } from "@/store/AiSummaryStore";
+import { useRepoStore } from "@/store/repoStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
@@ -27,7 +27,6 @@ export default function PullRequestMemoir() {
 
     const [showModal, setShowModal] = useState(false);
 
-    // PR 커밋 리스트 (API는 { commitList: PullRequestType[] } 반환)
     const [prData, setPrData] = useState<PullRequestType[]>([]);
     const [selectedSha, setSelectedSha] = useState<string>("");
     const [commitData, setCommitData] = useState<CommitType | null>(null);
@@ -59,7 +58,6 @@ export default function PullRequestMemoir() {
                 });
                 if (!res.ok) throw new Error("PR commits fetch failed");
 
-                // **여기가 핵심**: API가 { commitList: [...] } 를 반환하니까 꺼내주세요.
                 const json = (await res.json()) as {
                     commitList: PullRequestType[];
                 };
@@ -114,6 +112,7 @@ export default function PullRequestMemoir() {
     useEffect(() => {
         containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }, [selectedSha]);
+
     // 드롭다운 옵션
     const prOptions = prData.map((pr) => ({
         value: pr.sha,
