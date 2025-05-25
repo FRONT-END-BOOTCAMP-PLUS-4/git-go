@@ -128,7 +128,7 @@ export default function EditEditorForm({
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
             {/* 제목 */}
             <div>
                 <label
@@ -181,11 +181,13 @@ export default function EditEditorForm({
             </div>
 
             {/* 에디터 */}
-            <PlateEditor
-                ref={editorRef}
-                initialContent={initialContent}
-                handleEditorChange={handleEditorChange}
-            />
+            <div className="min-h-0 flex-1">
+                <PlateEditor
+                    ref={editorRef}
+                    initialContent={initialContent}
+                    handleEditorChange={handleEditorChange}
+                />
+            </div>
 
             {/* 버튼 */}
             <div className="flex justify-end gap-2">

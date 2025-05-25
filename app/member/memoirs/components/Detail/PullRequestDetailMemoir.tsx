@@ -195,7 +195,7 @@ export default function PullRequestDetailMemoir() {
                     />
                 </ChangeListLayout>
 
-                <div className="col-span-1 flex flex-col justify-between gap-4 p-4">
+                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     {isEditing ? (
                         <EditEditorForm
                             title={title}
