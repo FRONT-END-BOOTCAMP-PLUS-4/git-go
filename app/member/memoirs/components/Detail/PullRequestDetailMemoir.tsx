@@ -205,7 +205,6 @@ export default function PullRequestDetailMemoir() {
                             content={content}
                             setContent={setContent}
                             memoirId={parseId}
-                            typeId={2}
                             session={session}
                             repo={repo}
                             setIsEditing={setIsEditing}
