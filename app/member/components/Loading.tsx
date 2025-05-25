@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export default function Loading() {
     return (
-        <div className="flex flex-col items-center justify-center py-8">
+        <div className="bg-bg-primary1 fixed inset-0 top-[65px] z-10 flex flex-col items-center justify-center">
             <div
-                className="w-[100px] h-[100px]"
+                className="h-[100px] w-[100px]"
                 style={{
                     animation: "shake 1.2s ease-in-out infinite",
                     transformOrigin: "bottom center",
@@ -20,7 +20,7 @@ export default function Loading() {
                     priority
                 />
             </div>
-            <p className="mt-4 text-sm text-gray-600 relative sparkle-text">
+            <p className="sparkle-text relative mt-4 text-sm text-gray-600">
                 로딩 중<span className="loading-dots" />
             </p>
 
@@ -66,7 +66,8 @@ export default function Loading() {
                 }
 
                 @keyframes sparkle {
-                    0%, 100% {
+                    0%,
+                    100% {
                         opacity: 1;
                         filter: brightness(1);
                     }
