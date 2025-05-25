@@ -8,6 +8,7 @@ import { PROMPT } from "@/constants/aiPrompt";
 import ReactMarkdown from "react-markdown";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
+import { RotateCcw } from "lucide-react";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -17,8 +18,14 @@ type AiSummaryProps = {
 };
 
 export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
-    const { aiSummary, setSummary, setSummarized, isSummarized } =
-        useSummaryStore();
+    const {
+        aiSummary,
+        setSummary,
+        setSummarized,
+        isSummarized,
+        retryCount,
+        setRetryCount,
+    } = useSummaryStore();
     const alreadySummarized = isSummarized(commit.sha);
     const [loading, setLoading] = useState(false);
 
@@ -52,6 +59,13 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
         setSummarized(commit.sha, true);
         setLoading(false);
     };
+    const handleRetry = async () => {
+        console.log(retryCount);
+        if (retryCount <= 2) {
+            setRetryCount(retryCount - 1);
+            await handleSummarize();
+        }
+    };
 
     return (
         <div
@@ -60,11 +74,13 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
             }}
-            onClick={(e) => e.stopPropagation()}
         >
             <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                onClick={(e) => {
+                    setShowModal(false);
+                    e.stopPropagation();
+                }}
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 ✖
@@ -92,8 +108,19 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                 </div>
             ) : (
                 <>
-                    <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
+                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
+
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                onClick={handleRetry}
+                                disabled={retryCount === 0 || loading}
+                                className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${retryCount === 0 || loading ? "opacity-50" : ""} `}
+                            >
+                                <RotateCcw width={14} height={14} />
+                                <span>재시도 ({retryCount}회 남음)</span>
+                            </button>
+                        </div>
                     </div>
                 </>
             )}

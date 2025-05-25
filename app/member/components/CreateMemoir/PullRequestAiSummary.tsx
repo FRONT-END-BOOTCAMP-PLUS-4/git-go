@@ -8,6 +8,7 @@ import { PROMPT } from "@/constants/aiPullRequestPrompt";
 import ReactMarkdown from "react-markdown";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import { RotateCcw } from "lucide-react";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -22,8 +23,14 @@ export default function PullRequestAiSummary({
     pullRequest,
     prNo,
 }: AiSummaryProps) {
-    const { aiSummary, setSummary, setSummarized, isSummarized } =
-        useSummaryStore();
+    const {
+        aiSummary,
+        setSummary,
+        setSummarized,
+        isSummarized,
+        retryCount,
+        setRetryCount,
+    } = useSummaryStore();
     const alreadySummarized = isSummarized(prNo || "");
     const [loading, setLoading] = useState(false);
 
@@ -56,6 +63,13 @@ export default function PullRequestAiSummary({
         setSummary(fullText);
         setSummarized(prNo || "", true);
         setLoading(false);
+    };
+    const handleRetry = async () => {
+        console.log(retryCount);
+        if (retryCount <= 2) {
+            setRetryCount(retryCount - 1);
+            await handleSummarize();
+        }
     };
 
     return (
@@ -97,8 +111,19 @@ export default function PullRequestAiSummary({
                 </div>
             ) : (
                 <>
-                    <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
+                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
+
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                onClick={handleRetry}
+                                disabled={retryCount === 0 || loading}
+                                className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${retryCount === 0 || loading ? "cursor-not-allowed opacity-50" : ""} `}
+                            >
+                                <RotateCcw width={14} height={14} />
+                                <span>재시도 ({retryCount}회 남음)</span>
+                            </button>
+                        </div>
                     </div>
                 </>
             )}
