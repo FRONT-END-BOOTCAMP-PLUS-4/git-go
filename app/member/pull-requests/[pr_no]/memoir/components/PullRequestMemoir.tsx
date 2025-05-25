@@ -16,6 +16,7 @@ import { useRepoStore } from "@/store/repoStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
+import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 
@@ -120,8 +121,7 @@ export default function PullRequestMemoir() {
     }));
 
     // 로딩 처리
-    if (!commitData)
-        return <div className="p-8 text-center">Loading commit details…</div>;
+    if (!commitData) return <Loading />;
 
     return (
         <CreateMemoirLayout>

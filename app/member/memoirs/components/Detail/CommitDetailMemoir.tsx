@@ -5,6 +5,7 @@ import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
+import Loading from "@/app/member/components/Loading";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
@@ -13,8 +14,8 @@ import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import DetailMemoirLayout from "./DetailMemoirLayout";
 import ViewSummary from "../ViewSummary";
+import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
     const { id }: { id: string } = useParams();
@@ -94,7 +95,7 @@ export default function CommitDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
-    if (!commitData) return <div>Loading...</div>;
+    if (!commitData) return <Loading />;
 
     return (
         <DetailMemoirLayout>

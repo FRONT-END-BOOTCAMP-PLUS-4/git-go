@@ -5,6 +5,7 @@ import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
+import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { COMMITS } from "@/constants/mockCommits";
@@ -16,8 +17,8 @@ import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import DetailMemoirLayout from "./DetailMemoirLayout";
 import ViewSummary from "../ViewSummary";
+import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function PullRequestDetailMemoir() {
     const [selectedSha, setSelectedSha] = useState<string>("");
@@ -156,8 +157,7 @@ export default function PullRequestDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
-    if (!commitData)
-        return <div className="p-8 text-center">Loading commit details…</div>;
+    if (!commitData) return <Loading />;
 
     return (
         <DetailMemoirLayout>

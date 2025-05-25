@@ -12,6 +12,7 @@ import { useRepoStore } from "@/store/repoStore";
 import { useParams } from "next/navigation";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
+import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -68,7 +69,7 @@ export default function CommitMemoir() {
         fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
     }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
-    if (!commitData) return <div>Loading...</div>;
+    if (!commitData) return <Loading />;
 
     return (
         <CreateMemoirLayout>
