@@ -5,7 +5,6 @@ import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { Session } from "next-auth";
-import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
@@ -17,7 +16,6 @@ type EditEditorFormProps = {
     content: Value;
     setContent: (e: Value) => void;
     memoirId: number;
-    typeId: number;
     session: Session | null;
     repo: { dbId: number; id: string; nameWithOwner: string } | null;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,19 +29,17 @@ export default function EditEditorForm({
     content,
     setContent,
     memoirId,
-    typeId,
     session,
     repo,
     setIsEditing,
 }: EditEditorFormProps) {
     console.log("EditEditorForm 렌더링");
-    const router = useRouter();
 
     const [tagInput, setTagInput] = useState<string>("");
 
     const editorRef = useRef<EditorFormHandle>(null);
 
-    const [initialContent] = useState(() => content); // mount 시점에만 세팅
+    const [initialContent] = useState(() => content);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -52,7 +48,7 @@ export default function EditEditorForm({
         title,
         tags,
         content: editorRef.current?.getContent() ?? [],
-        // aiSum: summary,
+        // aiSum: summary, // 주석 처리된 부분 유지
         memoirId,
     });
 
@@ -67,7 +63,8 @@ export default function EditEditorForm({
         node.children.some((ch: any) => ch.text?.trim() !== "")
     );
 
-    const disabled = !title.trim() || !hasText;
+    // 폼 입력 유효성 검사 (제목, 내용)
+    const formDisabled = !title.trim() || !hasText;
 
     // tag에서 Enter 입력 시 tag 등록
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -90,8 +87,9 @@ export default function EditEditorForm({
     };
 
     const handleEdit = async () => {
-        if (!session || !repo) {
-            setError("로그인이 필요합니다.");
+        // 이미 로딩 중이거나 필수 데이터가 없으면 함수 실행 중지
+        if (loading || !session || !repo) {
+            setError("로그인이 필요하거나 수정 중입니다.");
             return;
         }
         console.log("handleEdit 진행");
@@ -111,9 +109,7 @@ export default function EditEditorForm({
                 throw new Error(body?.message || `수정 실패: ${res.status}`);
             }
             // 성공 후 후속 처리
-            let source = typeId === 1 ? "commit" : "pull-request";
-            // router.push(`${MEMBER_URL.memoirs_detail(source, memoirId)}`);
-            setIsEditing((prev) => !prev);
+            setIsEditing(false); // 수정 모드 종료
         } catch (err: any) {
             console.error(err);
             setError(err.message);
@@ -124,7 +120,7 @@ export default function EditEditorForm({
 
     // 취소 버튼
     const handleCancel = () => {
-        setIsEditing((prev) => !prev);
+        setIsEditing(false);
     };
 
     return (
@@ -146,7 +142,6 @@ export default function EditEditorForm({
                     onChange={(e) => setTitle(e.target.value)}
                 />
             </div>
-
             {/* 태그 */}
             <div>
                 <label
@@ -179,7 +174,6 @@ export default function EditEditorForm({
                     />
                 </div>
             </div>
-
             {/* 에디터 */}
             <div className="min-h-0 flex-1">
                 <PlateEditor
@@ -188,14 +182,19 @@ export default function EditEditorForm({
                     handleEditorChange={handleEditorChange}
                 />
             </div>
-
             {/* 버튼 */}
             <div className="flex justify-end gap-2">
                 <Button type="lined" onClick={handleCancel}>
                     취소
                 </Button>
                 <Button
-                    type={disabled ? "disabled" : "default"}
+                    type={
+                        loading
+                            ? "disabled"
+                            : formDisabled
+                              ? "disabled"
+                              : "default"
+                    }
                     onClick={handleEdit}
                     isLoading={loading}
                 >
