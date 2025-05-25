@@ -140,7 +140,6 @@ export default function CommitDetailMemoir() {
                             content={content}
                             setContent={setContent}
                             memoirId={parseId}
-                            typeId={1}
                             session={session}
                             repo={repo}
                             setIsEditing={setIsEditing}
