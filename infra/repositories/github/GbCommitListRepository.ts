@@ -1,5 +1,9 @@
 import { GithubCommit } from "@/domain/entities/GithubCommitList";
 import { GithubCommitListRepository } from "@/domain/repositories/GithubCommitListRepository";
+import { PrismaClient } from "@/prisma/generated/prisma";
+
+
+const prisma = new PrismaClient();
 
 export class GbCommitListRepository implements GithubCommitListRepository {
     async fetchCommitList({
@@ -9,7 +13,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         token,
         page = 1,
         perPage = 10,
-        isDefaultOnly = true,
+        userId,
     }: {
         owner: string;
         repo: string;
@@ -17,15 +21,22 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         token?: string;
         page?: number;
         perPage?: number;
-        isDefaultOnly?: boolean;
+        userId?: string;
     }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }> {
         const headers: Record<string, string> = {
             Accept: "application/vnd.github+json",
         };
 
+
         if (token) {
             headers.Authorization = `Bearer ${token}`;
         }
+
+        const userDefaultSetting = await prisma.user.findUnique({
+            where: { id: userId },
+            // select: { isDefaultOnly: true }, // 사용자 설정 컬럼
+        });
+
 
         // 👉 디폴트 브랜치 가져오기
         const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
@@ -36,8 +47,9 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         const repoInfo = await repoRes.json();
         const defaultBranch = repoInfo.default_branch;
 
+
         // 👉 default 브랜치만 조회
-        if (isDefaultOnly) {
+        if (userDefaultSetting?.isDefaultOnly) {
             const commitsRes = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${defaultBranch}`,
                 { headers }
