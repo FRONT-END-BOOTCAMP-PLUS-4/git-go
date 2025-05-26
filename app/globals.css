@@ -57,8 +57,8 @@
     --color-code-status-renamed-text: #0366d6;
 
     /* danger 컬러 */
-    --color-danger1: #d64545;
-    --color-danger2: #b83232;
+    --color-danger1: #ef4444;
+    --color-danger2: #d64545;
 
     /* editor 컬러 */
     --radius-sm: calc(var(--radius) - 4px);
