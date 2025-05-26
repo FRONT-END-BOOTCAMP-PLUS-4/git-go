@@ -5,7 +5,6 @@ import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import useExtractFilenames from "@/hooks/useExtractFileNames";
 
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { useRepoStore } from "@/store/repoStore";
@@ -15,7 +14,7 @@ import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorF
 import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -68,6 +67,11 @@ export default function CommitMemoir() {
         fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
     }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
+
     if (!commitData) return <Loading />;
 
     return (
@@ -88,7 +92,7 @@ export default function CommitMemoir() {
             )}
 
             <AccordionSidebar
-                files={useExtractFilenames(commitData.changeDetail)}
+                files={files}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
