@@ -104,13 +104,13 @@ export default function Header() {
                                     className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <Image
-                                        className="shrink-0"
+                                        className="mr-auto ml-2 shrink-0"
                                         src="/profile.svg"
                                         alt="profile icon"
                                         width={16}
                                         height={16}
                                     />
-                                    <span className="whitespace-nowrap">
+                                    <span className="flex-1 text-center whitespace-nowrap">
                                         대시보드
                                     </span>
                                 </button>
@@ -119,13 +119,13 @@ export default function Header() {
                                     className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <Image
-                                        className="shrink-0"
+                                        className="mr-auto ml-2 shrink-0"
                                         src="/setting.svg"
                                         alt="setting icon"
                                         width={16}
                                         height={16}
                                     />
-                                    <span className="whitespace-nowrap">
+                                    <span className="flex-1 text-center whitespace-nowrap">
                                         설정
                                     </span>
                                 </button>
@@ -136,13 +136,13 @@ export default function Header() {
                                     className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
-                                        className="shrink-0"
+                                        className="mr-auto ml-2 shrink-0"
                                         src="/logout.svg"
                                         alt="logout icon"
                                         width={16}
                                         height={16}
                                     />
-                                    <span className="whitespace-nowrap">
+                                    <span className="flex-1 text-center whitespace-nowrap">
                                         로그아웃
                                     </span>
                                 </button>
