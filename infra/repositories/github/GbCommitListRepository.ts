@@ -183,7 +183,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         token,
         page = 1,
         perPage = 10,
-        isDefaultOnly = false,
+        isDefaultOnly = true,
     }: {
         owner: string;
         repo: string;
@@ -226,7 +226,7 @@ export class GbCommitListRepository implements GithubCommitListRepository {
                 GithubCommit.fromJson({ ...c, branch: defaultBranch })
             );
 
-            const sortedCommits = mappedCommits.sort(
+            const sortedCommits = (mappedCommits as GithubCommit[]).sort(
                 (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
             );
 
