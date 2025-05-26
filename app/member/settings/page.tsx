@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import AlertDialog from "../components/AlertDialog";
 
 export default function Settings() {
     const [theme, setTheme] = useState("light");
     const [branchSetting, setBranchSetting] = useState("default");
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertContent, setAlertContent] = useState<{
+        title: string;
+        description: string;
+        imageSrc?: string;
+    }>({
+        title: "",
+        description: "",
+    });
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -17,9 +27,18 @@ export default function Settings() {
         });
 
         if (res.ok) {
-            alert("설정이 저장되었습니다.");
+            setAlertContent({
+                title: "저장 완료",
+                description: "커밋 가져오기 설정이 성공적으로 저장되었습니다.",
+                imageSrc: "/success.png",
+            });
+            setAlertOpen(true);
         } else {
-            alert("설정 저장에 실패했습니다.");
+            setAlertContent({
+                title: "저장 실패",
+                description: "설정 저장에 실패했습니다. 다시 시도해주세요.",
+            });
+            setAlertOpen(true);
         }
     };
 
@@ -164,6 +183,14 @@ export default function Settings() {
                     </div>
                 </div>
             </div>
+
+            <AlertDialog
+                open={alertOpen}
+                title={alertContent.title}
+                description={alertContent.description}
+                imageSrc={alertContent.imageSrc}
+                onClose={() => setAlertOpen(false)}
+            />
         </div>
     );
 }
