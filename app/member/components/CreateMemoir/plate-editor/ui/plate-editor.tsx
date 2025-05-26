@@ -29,8 +29,6 @@ function PlateEditorInner(
         getContent: () => editor.children,
     }));
 
-    console.log("plate-editor 렌더링");
-
     return (
         <DndProvider backend={HTML5Backend}>
             <Plate

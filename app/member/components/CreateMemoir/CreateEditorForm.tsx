@@ -21,8 +21,6 @@ export default function CreateEditorForm({
     source,
     typeId,
 }: CreateEditorFormProps) {
-    console.log("CreateEditorForm 렌더링");
-
     const [title, setTitle] = useState<string>("");
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState<string>("");

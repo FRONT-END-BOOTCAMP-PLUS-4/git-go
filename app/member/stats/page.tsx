@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import BottomCard from "./components/BottomCard";
-import StatsCard from "./components/StatsCard";
 import { useRepoStore } from "@/store/repoStore";
+import { useEffect, useRef, useState } from "react";
 import StatsCardSkeleton from "../components/StatsCardSkeleton";
+import BottomCard from "./components/BottomCard";
+import ChartSkeleton from "./components/ChartSkeleton";
+import StatsCard from "./components/StatsCard";
 import TopReposSkeleton from "./components/TopReposSkeleton";
 import WeeklyCommitChart from "./components/WeeklyCommitChart";
-import ChartSkeleton from "./components/ChartSkeleton";
 
 export default function StatsPage() {
     const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
@@ -18,23 +18,32 @@ export default function StatsPage() {
         { name: string; commits: number }[]
     >([]);
     const [loadingTopRepos, setLoadingTopRepos] = useState(false);
-    const [weeklyCommits, setWeeklyCommits] = useState<{ date: string; count: number }[] | null>(null);
+    const [weeklyCommits, setWeeklyCommits] = useState<
+        { date: string; count: number }[] | null
+    >(null);
     const [loadingWeekly, setLoadingWeekly] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
     const [commitChange, setCommitChange] = useState<string | null>(null);
-    const [lineChangePercent, setLineChangePercent] = useState<string | null>(null);
+    const [lineChangePercent, setLineChangePercent] = useState<string | null>(
+        null
+    );
 
-    const cacheRef = useRef<Map<string, {
-        data: {
-            totalCommits: number;
-            totalLines: number;
-            totalMemoirs: number;
-            weeklyCommits: { date: string; count: number }[];
-            commitChange: string;
-            lineChangePercent: string;
-        };
-        timestamp: number;
-    }>>(new Map());
+    const cacheRef = useRef<
+        Map<
+            string,
+            {
+                data: {
+                    totalCommits: number;
+                    totalLines: number;
+                    totalMemoirs: number;
+                    weeklyCommits: { date: string; count: number }[];
+                    commitChange: string;
+                    lineChangePercent: string;
+                };
+                timestamp: number;
+            }
+        >
+    >(new Map());
 
     useEffect(() => {
         const fetchTopRepos = async () => {
@@ -86,12 +95,24 @@ export default function StatsPage() {
 
         const fetchStats = async () => {
             try {
-                const [commitRes, lineRes, memoirRes, weeklyRes] = await Promise.all([
-                    fetch(`/api/stats/commits?repo=${selectedRepo.nameWithOwner}`, { signal }),
-                    fetch(`/api/stats/lines?repo=${selectedRepo.nameWithOwner}`, { signal }),
-                    fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`, { signal }),
-                    fetch(`/api/stats/weekly-commits?repo=${selectedRepo.nameWithOwner}`, { signal }),
-                ]);
+                const [commitRes, lineRes, memoirRes, weeklyRes] =
+                    await Promise.all([
+                        fetch(
+                            `/api/stats/commits?repo=${selectedRepo.nameWithOwner}`,
+                            { signal }
+                        ),
+                        fetch(
+                            `/api/stats/lines?repo=${selectedRepo.nameWithOwner}`,
+                            { signal }
+                        ),
+                        fetch(`/api/stats/memoirs?repo=${selectedRepo.id}`, {
+                            signal,
+                        }),
+                        fetch(
+                            `/api/stats/weekly-commits?repo=${selectedRepo.nameWithOwner}`,
+                            { signal }
+                        ),
+                    ]);
 
                 const commitData = await commitRes.json();
                 const lineData = await lineRes.json();
@@ -105,11 +126,12 @@ export default function StatsPage() {
 
                 // 전체 커밋과 7일전 커밋 비교해서 변화량 계산
                 const commitDiff = weeklyData.reduce(
-                    (sum: number, d: { date: string; count: number }) => sum + d.count,
+                    (sum: number, d: { date: string; count: number }) =>
+                        sum + d.count,
                     0
                 );
 
-                // 전체 코드라인 수와 7일전 코드라인 수 비교해서 변화량 계산                
+                // 전체 코드라인 수와 7일전 코드라인 수 비교해서 변화량 계산
                 const lineDiff = lineData.totalLines - lineData.prevLines;
 
                 setCommitChange(`${commitDiff}`);
@@ -127,16 +149,15 @@ export default function StatsPage() {
                     timestamp: Date.now(),
                 });
             } catch (err) {
-                if (err instanceof DOMException && err.name === 'AbortError') {
-                    console.log('요청 취소됨');
+                if (err instanceof DOMException && err.name === "AbortError") {
                 } else {
-                    console.error('Stats fetch 실패', err);
+                    console.error("Stats fetch 실패", err);
                 }
             } finally {
                 setLoadingWeekly(false);
-                setIsFirstLoad(false)
+                setIsFirstLoad(false);
             }
-        }
+        };
 
         fetchStats();
 
@@ -170,7 +191,11 @@ export default function StatsPage() {
                 {totalMemoirs === null ? (
                     <StatsCardSkeleton />
                 ) : (
-                    <StatsCard title="작성된 회고록" value={totalMemoirs.toLocaleString()} change="hide" />
+                    <StatsCard
+                        title="작성된 회고록"
+                        value={totalMemoirs.toLocaleString()}
+                        change="hide"
+                    />
                 )}
             </div>
 
@@ -183,7 +208,7 @@ export default function StatsPage() {
                     </div>
                 ) : (
                     <BottomCard title="커밋 활동" subtitle="최근 7일">
-                        <div className="w-full h-64">
+                        <div className="h-64 w-full">
                             <WeeklyCommitChart data={weeklyCommits ?? []} />
                         </div>
                     </BottomCard>
@@ -194,11 +219,17 @@ export default function StatsPage() {
                         <TopReposSkeleton />
                     </div>
                 ) : (
-                    <BottomCard title="가장 활발한 저장소" subtitle="커밋 수 기준">
+                    <BottomCard
+                        title="가장 활발한 저장소"
+                        subtitle="커밋 수 기준"
+                    >
                         <div className="space-y-4">
                             {topRepos.length > 0 ? (
                                 topRepos.map((repo) => (
-                                    <div key={repo.name} className="h-10 space-y-1">
+                                    <div
+                                        key={repo.name}
+                                        className="h-10 space-y-1"
+                                    >
                                         <div className="text-text-secondary2 flex justify-between text-sm font-medium">
                                             <span>{repo.name}</span>
                                             <span>{repo.commits} commits</span>
@@ -207,14 +238,14 @@ export default function StatsPage() {
                                             <div
                                                 className="h-full rounded-full bg-indigo-500"
                                                 style={{
-                                                    width: `${(repo.commits / Math.max(...topRepos.map(r => r.commits), 1)) * 100}%`,
+                                                    width: `${(repo.commits / Math.max(...topRepos.map((r) => r.commits), 1)) * 100}%`,
                                                 }}
                                             ></div>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <p className="text-sm text-gray-400 text-center mt-4">
+                                <p className="mt-4 text-center text-sm text-gray-400">
                                     연동된 저장소가 없거나 커밋 정보가 없습니다.
                                 </p>
                             )}

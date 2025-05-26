@@ -4,21 +4,18 @@ import { GetMemoirUsecase } from "@/application/usecase/memoir/GetMemoirUsecase"
 import { PrMemoirRepository } from "@/infra/repositories/prisma/PrMemoirRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, context: any) {
     try {
-        const { id } = await params;
+        const { id } = context.params;
         const memoirId = Number(id);
 
         const repo = new PrMemoirRepository();
         const usecase = new GetMemoirUsecase(repo);
         const memoir = await usecase.execute(memoirId);
 
-        return NextResponse.json(memoir, { status: 201 });
+        return NextResponse.json(memoir, { status: 200 });
     } catch (err) {
-        console.error("❌ Error in POST /api/memoirs/[memoirId]:", err);
+        console.error("❌ Error in GET /api/memoirs/[memoirId]:", err);
         return NextResponse.json(
             {
                 message:
@@ -31,13 +28,10 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, context: any) {
     try {
         const payload = await req.json();
-        const { id } = await params;
+        const { id } = context.params;
         const memoirId = Number(id);
 
         const dto = { ...payload, memoirId };
@@ -45,9 +39,8 @@ export async function PUT(
         const repo = new PrMemoirRepository();
         const usecase = new EditMemoirUsecase(repo);
         const updated = await usecase.execute(dto);
-        console.log("updated: ", updated);
 
-        return NextResponse.json(updated, { status: 201 });
+        return NextResponse.json(updated, { status: 200 });
     } catch (err) {
         console.error("❌ Error in PUT /api/memoirs/[memoirId]:", err);
         return NextResponse.json(
@@ -62,18 +55,14 @@ export async function PUT(
     }
 }
 
-export async function DELETE(
-    req: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
     try {
-        const { id } = await params;
+        const { id } = context.params;
         const memoirId = Number(id);
 
         const repo = new PrMemoirRepository();
         const usecase = new DeleteMemoirUsecase(repo);
         const deleted = await usecase.execute(memoirId);
-        console.log("deleted: ", deleted);
 
         return NextResponse.json(
             { message: "삭제가 완료되었습니다." },

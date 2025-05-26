@@ -8,7 +8,6 @@ import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormR
 import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { COMMITS } from "@/constants/mockCommits";
 import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 import { CommitType } from "@/types/github/CommitType";
@@ -134,14 +133,10 @@ export default function PullRequestDetailMemoir() {
         label: pr.message,
     }));
 
-    function handleChange(sha: string) {
-        setSelectedSha(sha); // 선택 상태 업데이트
-    }
     // 회고록 값 불러오기기
     const load = async () => {
         const res = await fetch(`/api/memoirs/${id}`);
         const data = (await res.json()) as GetMemoirResponseDto;
-        console.log(data);
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);
@@ -176,7 +171,7 @@ export default function PullRequestDetailMemoir() {
                 </div>
             )}
             <AccordionSidebar
-                files={useExtractFilenames(COMMITS.files)}
+                files={useExtractFilenames(commitData.changeDetail)}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />

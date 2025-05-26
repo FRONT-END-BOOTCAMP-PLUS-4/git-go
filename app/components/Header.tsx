@@ -1,11 +1,11 @@
 "use client";
 
+import { MEMBER_URL } from "@/constants/url";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
-import { useRouter } from "next/navigation";
-import { MEMBER_URL } from "@/constants/url";
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -14,7 +14,6 @@ export default function Header() {
     const router = useRouter();
 
     const moveToMyPage = () => {
-        console.log("click");
         setDropdownOpen(false);
         router.push(MEMBER_URL.commits);
     };

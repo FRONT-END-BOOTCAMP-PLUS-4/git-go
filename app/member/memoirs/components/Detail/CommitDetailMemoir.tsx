@@ -40,7 +40,6 @@ export default function CommitDetailMemoir() {
     const load = async () => {
         const res = await fetch(`/api/memoirs/${id}`);
         const data = (await res.json()) as GetMemoirResponseDto;
-        console.log(data);
         setTitle(data.title);
         setTags(data.tags ?? []);
         setContent(data.content as Value);

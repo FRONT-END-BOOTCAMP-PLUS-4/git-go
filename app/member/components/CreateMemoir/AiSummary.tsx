@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { GoogleGenAI } from "@google/genai";
-import { flushSync } from "react-dom";
-import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
 import { PROMPT } from "@/constants/aiPrompt";
-import ReactMarkdown from "react-markdown";
+import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
+import { GoogleGenAI } from "@google/genai";
 import { RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { flushSync } from "react-dom";
+import ReactMarkdown from "react-markdown";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -60,7 +60,6 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
         setLoading(false);
     };
     const handleRetry = async () => {
-        console.log(retryCount);
         if (retryCount <= 2) {
             setRetryCount(retryCount - 1);
             await handleSummarize();
