@@ -21,7 +21,7 @@ type PlateEditorProps = {
 
 function PlateEditorInner(
     { readOnly, handleEditorChange, initialContent }: PlateEditorProps,
-    ref: React.Ref<EditorFormHandle> // ref 타입 명시
+    ref: React.Ref<EditorFormHandle>
 ) {
     const editor = useCreateEditor({ readOnly, value: initialContent });
 
@@ -60,4 +60,4 @@ export const PlateEditor = memo(
     forwardRef<EditorFormHandle, PlateEditorProps>(PlateEditorInner)
 );
 
-PlateEditor.displayName = "PlateEditor"; // React DevTools에서 컴포넌트 이름 확인을 위함
+PlateEditor.displayName = "PlateEditor";
