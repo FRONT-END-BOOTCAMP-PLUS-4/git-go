@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrUserRepository } from "@/infra/repositories/prisma/PrUserRepository";
-import { WithdrawUser } from "@/application/usecase/user/WithdrawUser";
+import { WithdrawUserUsecase } from "@/application/usecase/user/WithdrawUserUsecase";
 import { getToken } from "next-auth/jwt";
 
 export async function PATCH(req: NextRequest) {
@@ -10,7 +10,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const repo = new PrUserRepository();
-    const usecase = new WithdrawUser(repo);
+    const usecase = new WithdrawUserUsecase(repo);
     await usecase.execute(token.id);
 
     return NextResponse.json({ message: "withdrawn" });
