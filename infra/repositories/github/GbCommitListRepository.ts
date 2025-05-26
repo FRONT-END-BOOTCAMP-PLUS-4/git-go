@@ -117,14 +117,18 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         perPage?: number;
         userId?: string;
     }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }> {
-        const headers: Record<string, string> = {
-            Accept: "application/vnd.github+json",
-        };
-
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
+        if (!token) {
+            throw new Error("GitHub access token is required.");
         }
 
+        const headers: Record<string, string> = {
+            Accept: "application/vnd.github+json",
+            Authorization: `Bearer ${token}`,
+        };
+
+        // if (token) {
+        //     headers.Authorization = `Bearer ${token}`;
+        // }
         console.log("▶ [AccessToken 확인]", token);
         console.log("▶ [요청 Headers]", headers);
 
