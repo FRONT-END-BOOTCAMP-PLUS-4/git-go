@@ -139,8 +139,8 @@ export default function SideBar({
                                         <Image
                                             src={
                                                 isSelected
-                                                    ? "/branch-blue.svg"
-                                                    : "/branch.svg"
+                                                    ? "/box-archive-solid-blue.svg"
+                                                    : "/box-archive-solid.svg"
                                             }
                                             width={14}
                                             height={14}
