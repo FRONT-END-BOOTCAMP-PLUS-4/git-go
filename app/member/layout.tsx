@@ -19,7 +19,12 @@ export default function MemberLayout({
     const { id, memoirId } = useParams();
 
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
-    if (pathname.endsWith("memoir") || id || memoirId) {
+    if (
+        pathname.endsWith("memoir") ||
+        id ||
+        memoirId ||
+        pathname.endsWith("settings")
+    ) {
         // 작성 페이지는 사이드바 탭 미표시
         return <>{children}</>;
     } else {
