@@ -1,5 +1,5 @@
 
-import { GithubCommitDetailRequestDto, GithubCommitDetailResponseDto } from '@/application/usecase/github/dto/GithubCommitListDto';
+import { GithubCommitDetailRequestDto, GithubCommitDetailResponseDto } from '@/application/usecase/github/dto/GithubCommitDetailDto';
 import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
 
 export class FetchCommitDetailUsecase {
@@ -9,7 +9,7 @@ export class FetchCommitDetailUsecase {
         const commit = await this.repository.getCommitDetail(
             input.nameWithOwner,
             input.sha,
-            input.accessToken
+            input.accessToken,
         );
 
         return {
