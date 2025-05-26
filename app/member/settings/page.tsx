@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import AlertDialog from "../components/AlertDialog";
 
@@ -41,6 +41,17 @@ export default function Settings() {
             setAlertOpen(true);
         }
     };
+
+    useEffect(() => {
+        const fetchSetting = async () => {
+            const res = await fetch("/api/settings/commits");
+            if (res.ok) {
+                const data = await res.json();
+                setBranchSetting(data.isDefaultOnly ? "default" : "all");
+            }
+        };
+        fetchSetting();
+    }, []);
 
     return (
         <div className="flex justify-center">

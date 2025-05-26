@@ -7,5 +7,6 @@ export interface UserRepository {
         profileUrl?: string;
     }): Promise<User>;
     withdrawUser(userId: string): Promise<void>;
+    getCommitSetting(userId: string): Promise<boolean>;
     updateCommitSetting(userId: string, isDefaultOnly: boolean): Promise<void>;
 }

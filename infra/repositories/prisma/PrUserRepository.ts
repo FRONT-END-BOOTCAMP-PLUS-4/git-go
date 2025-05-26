@@ -44,6 +44,17 @@ export class PrUserRepository implements UserRepository {
         });
     }
 
+    // 커밋 설정 불러오기
+    async getCommitSetting(userId: string): Promise<boolean> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { isDefaultOnly: true },
+        });
+
+        if (!user) throw new Error("User not found");
+        return user.isDefaultOnly;
+    }
+
     // 커밋 설정 업데이트
     async updateCommitSetting(
         userId: string,
