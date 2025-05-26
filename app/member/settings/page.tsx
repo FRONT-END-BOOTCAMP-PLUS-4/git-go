@@ -6,7 +6,9 @@ import AlertDialog from "../components/AlertDialog";
 
 export default function Settings() {
     const [theme, setTheme] = useState("light");
-    const [branchSetting, setBranchSetting] = useState("default");
+    const [branchSetting, setBranchSetting] = useState<
+        "default" | "all" | null
+    >(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const [alertContent, setAlertContent] = useState<{
         title: string;
