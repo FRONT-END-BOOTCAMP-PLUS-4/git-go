@@ -140,13 +140,7 @@ export default function Settings() {
                             취소
                         </button>
                         <button className="hover:bg-primary7 bg-primary7 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white">
-                            <Image
-                                src={"/save.svg"}
-                                alt={"save"}
-                                width={20}
-                                height={20}
-                            />
-                            설정 저장
+                            저장
                         </button>
                     </div>
                 </div>
