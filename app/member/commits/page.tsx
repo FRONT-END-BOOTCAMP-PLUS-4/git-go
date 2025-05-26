@@ -80,6 +80,7 @@ export default function CommitPage() {
 
         const accessToken = session.accessToken;
         const author = session.user?.githubId;
+        const userId = session.user?.id;
 
         try {
             const res = await fetch("/api/github/commits", {
@@ -94,6 +95,7 @@ export default function CommitPage() {
                     token: accessToken,
                     page,
                     perPage,
+                    userId,
                 }),
             });
 
