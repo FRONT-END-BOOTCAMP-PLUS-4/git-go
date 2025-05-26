@@ -17,6 +17,7 @@ export interface ChangedFile {
 export interface GithubCommitDetailRequestDto {
     nameWithOwner: string;
     sha: string;
+    accessToken: string;
 }
 
 export interface GithubCommitDetailResponseDto {

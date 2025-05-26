@@ -11,6 +11,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <title>GitGo - 기록이 남는 개발</title>
+            </head>
             <body className="bg-bg-primary1">
                 <Providers>
                     <Header />
