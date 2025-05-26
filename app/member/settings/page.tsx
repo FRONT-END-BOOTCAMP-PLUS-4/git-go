@@ -7,6 +7,22 @@ export default function Settings() {
     const [theme, setTheme] = useState("light");
     const [branchSetting, setBranchSetting] = useState("default");
 
+    const handleSave = async () => {
+        const res = await fetch("/api/settings/commits", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                isDefaultOnly: branchSetting === "default",
+            }),
+        });
+
+        if (res.ok) {
+            alert("설정이 저장되었습니다.");
+        } else {
+            alert("설정 저장에 실패했습니다.");
+        }
+    };
+
     return (
         <div className="flex justify-center">
             <div className="border-border-primary1 m-4 w-full max-w-[880px] items-center justify-center rounded-lg border-1 bg-white">
@@ -139,7 +155,10 @@ export default function Settings() {
                         <button className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">
                             취소
                         </button>
-                        <button className="hover:bg-primary7 bg-primary7 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white">
+                        <button
+                            onClick={handleSave}
+                            className="hover:bg-primary7 bg-primary7 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white"
+                        >
                             저장
                         </button>
                     </div>
