@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import AlertDialog from "../components/AlertDialog";
+import WithdrawButton from "@/app/components/WithdrawButton";
 
 export default function Settings() {
     const [theme, setTheme] = useState("light");
@@ -168,15 +169,7 @@ export default function Settings() {
                         <p className="mb-2 text-[16px] font-normal">
                             계정 관리
                         </p>
-                        <button className="bg-danger1 hover:bg-danger2 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white">
-                            <Image
-                                src={"/sign-out.svg"}
-                                alt={"sign out"}
-                                width={20}
-                                height={20}
-                            />
-                            회원 탈퇴
-                        </button>
+                        <WithdrawButton />
                         <p className="text-text-gray1 mt-2 text-[14px]">
                             회원 탈퇴 시 모든 데이터가 영구적으로 삭제됩니다.
                         </p>
