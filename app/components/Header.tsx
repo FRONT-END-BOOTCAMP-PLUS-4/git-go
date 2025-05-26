@@ -17,6 +17,10 @@ export default function Header() {
         setDropdownOpen(false);
         router.push(MEMBER_URL.commits);
     };
+    const moveToSettingsPage = () => {
+        setDropdownOpen(false);
+        router.push(MEMBER_URL.settings);
+    };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -107,7 +111,22 @@ export default function Header() {
                                         height={16}
                                     />
                                     <span className="whitespace-nowrap">
-                                        마이페이지
+                                        대시보드
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={moveToSettingsPage}
+                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                >
+                                    <Image
+                                        className="shrink-0"
+                                        src="/setting.svg"
+                                        alt="setting icon"
+                                        width={16}
+                                        height={16}
+                                    />
+                                    <span className="whitespace-nowrap">
+                                        설정
                                     </span>
                                 </button>
                                 <button
