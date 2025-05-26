@@ -6,4 +6,5 @@ export const MEMBER_URL = {
     memoirs_detail: (source: string, memoirId: number) =>
         `/member/memoirs/${source}/${memoirId}`,
     stats: "/member/stats",
+    settings: "/member/settings",
 };
