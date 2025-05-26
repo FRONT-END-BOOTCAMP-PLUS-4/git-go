@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
+import { LayoutDashboard } from "lucide-react";
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -103,12 +104,10 @@ export default function Header() {
                                     onClick={moveToMyPage}
                                     className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
-                                    <Image
-                                        className="mr-auto ml-2 shrink-0"
-                                        src="/profile.svg"
-                                        alt="profile icon"
+                                    <LayoutDashboard
                                         width={16}
                                         height={16}
+                                        className="mr-auto ml-2 shrink-0"
                                     />
                                     <span className="flex-1 text-center whitespace-nowrap">
                                         대시보드
