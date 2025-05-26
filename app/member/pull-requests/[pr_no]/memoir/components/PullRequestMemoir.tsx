@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
@@ -10,7 +10,6 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import Select from "@/app/member/components/Select";
 
-import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { useRepoStore } from "@/store/repoStore";
 
@@ -112,11 +111,19 @@ export default function PullRequestMemoir() {
         containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }, [selectedSha]);
 
-    // 드롭다운 옵션
-    const prOptions = prData.map((pr) => ({
-        value: pr.sha,
-        label: pr.message,
-    }));
+    const prOptions = useMemo(
+        () =>
+            prData.map((pr) => ({
+                value: pr.sha,
+                label: pr.message,
+            })),
+        [prData]
+    );
+
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
 
     // 로딩 처리
     if (!commitData) return <Loading />;
@@ -140,7 +147,7 @@ export default function PullRequestMemoir() {
             )}
             {/* 사이드바 */}
             <AccordionSidebar
-                files={useExtractFilenames(commitData.changeDetail)}
+                files={files}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
