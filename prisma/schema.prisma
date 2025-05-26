@@ -45,6 +45,7 @@ model User {
   createdAt  DateTime  @default(now()) @map("created_at")
   deletedAt  DateTime? @map("deleted_at")
   githubId   String
+  isDefaultOnly Boolean @default(true)
   memoirs    Memoir[]
   repos      Repo[]
 
