@@ -7,7 +7,6 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
-import Image from "next/image";
 import EmptyResult from "@/app/member/components/EmptyResult";
 
 interface Commit {
