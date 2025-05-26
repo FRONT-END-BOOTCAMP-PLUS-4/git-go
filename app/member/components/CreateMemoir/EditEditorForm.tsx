@@ -33,8 +33,6 @@ export default function EditEditorForm({
     repo,
     setIsEditing,
 }: EditEditorFormProps) {
-    console.log("EditEditorForm 렌더링");
-
     const [tagInput, setTagInput] = useState<string>("");
 
     const editorRef = useRef<EditorFormHandle>(null);
@@ -92,7 +90,6 @@ export default function EditEditorForm({
             setError("로그인이 필요하거나 수정 중입니다.");
             return;
         }
-        console.log("handleEdit 진행");
         setLoading(true);
         setError(null);
 

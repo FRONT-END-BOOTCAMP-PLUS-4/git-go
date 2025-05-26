@@ -29,7 +29,6 @@ export default function CommitMemoir() {
     const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
     useEffect(() => {
-        console.log("effect");
         clearSummarized();
         setSummary("");
         setRetryCount(2);

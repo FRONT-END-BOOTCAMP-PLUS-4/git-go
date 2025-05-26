@@ -1,13 +1,13 @@
 "use client";
 
+import Pagination from "@/app/components/Pagination";
 import MemoirCard from "@/app/member/memoirs/components/MemoirCard";
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { useRepoStore } from "@/store/repoStore";
+import { useFilterStore } from "@/store/useFilterStore";
 import { useEffect, useRef, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
 import MemoirSkeleton from "./components/MemoirSkeleton";
-import Pagination from "@/app/components/Pagination";
-import { useFilterStore } from "@/store/useFilterStore";
 
 export default function MemoirPage() {
     const now = new Date();
@@ -100,7 +100,6 @@ export default function MemoirPage() {
                 });
             } catch (e) {
                 if (e instanceof DOMException && e.name === "AbortError") {
-                    console.log("요청 취소됨");
                 } else {
                     console.error("회고 목록 로딩 실패", e);
                     setMemoirs([]);

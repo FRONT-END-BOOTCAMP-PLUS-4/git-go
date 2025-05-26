@@ -39,7 +39,6 @@ export async function PUT(req: NextRequest, context: any) {
         const repo = new PrMemoirRepository();
         const usecase = new EditMemoirUsecase(repo);
         const updated = await usecase.execute(dto);
-        console.log("updated: ", updated);
 
         return NextResponse.json(updated, { status: 200 });
     } catch (err) {
@@ -64,7 +63,6 @@ export async function DELETE(req: NextRequest, context: any) {
         const repo = new PrMemoirRepository();
         const usecase = new DeleteMemoirUsecase(repo);
         const deleted = await usecase.execute(memoirId);
-        console.log("deleted: ", deleted);
 
         return NextResponse.json(
             { message: "삭제가 완료되었습니다." },

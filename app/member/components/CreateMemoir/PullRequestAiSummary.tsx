@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { GoogleGenAI } from "@google/genai";
-import { flushSync } from "react-dom";
-import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
 import { PROMPT } from "@/constants/aiPullRequestPrompt";
-import ReactMarkdown from "react-markdown";
+import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import { GoogleGenAI } from "@google/genai";
 import { RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { flushSync } from "react-dom";
+import ReactMarkdown from "react-markdown";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -65,7 +65,6 @@ export default function PullRequestAiSummary({
         setLoading(false);
     };
     const handleRetry = async () => {
-        console.log(retryCount);
         if (retryCount <= 2) {
             setRetryCount(retryCount - 1);
             await handleSummarize();

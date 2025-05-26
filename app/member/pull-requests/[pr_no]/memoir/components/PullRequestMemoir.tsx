@@ -36,7 +36,6 @@ export default function PullRequestMemoir() {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        console.log("effect");
         clearSummarized();
         setSummary("");
         setRetryCount(2);
@@ -66,7 +65,6 @@ export default function PullRequestMemoir() {
                     ? json.commitList
                     : [];
                 setPrData(list);
-                console.log("PR Data:", list);
 
                 // 첫 번째 SHA 기본 선택
                 if (list.length > 0) {
