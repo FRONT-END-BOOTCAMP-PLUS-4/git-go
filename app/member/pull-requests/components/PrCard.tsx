@@ -190,8 +190,8 @@ export default function PrCard({
                             <Image
                                 src="/branch.svg"
                                 alt="브랜치 아이콘"
-                                width={18}
-                                height={14}
+                                width={14}
+                                height={12}
                             />
                             {branchName}
                         </div>

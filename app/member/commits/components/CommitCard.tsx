@@ -146,8 +146,8 @@ export default function CommitCard({
                             <Image
                                 src="/branch.svg"
                                 alt="브랜치 아이콘"
-                                width={18}
-                                height={14}
+                                width={14}
+                                height={12}
                             />
                             {branch}
                         </div>

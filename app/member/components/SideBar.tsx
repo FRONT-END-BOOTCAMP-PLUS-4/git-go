@@ -129,7 +129,7 @@ export default function SideBar({
                                     className="border-border-primary1"
                                 >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
+                                        className={`flex w-full cursor-pointer items-center gap-x-3 rounded-md px-2 py-2 text-left font-semibold ${
                                             isSelected
                                                 ? "bg-primary2 text-primary7"
                                                 : ""
