@@ -24,12 +24,11 @@ export default function EditorFormReadOnly({
     memoirId,
 }: Props) {
     const router = useRouter();
+
     const deleteMemoir = async () => {
         const res = await fetch(`/api/memoirs/${memoirId}`, {
             method: "DELETE",
         });
-        const data = await res.json();
-        // 성공 시 필요 로직(리다이렉트, 상태 갱신 등)
         if (!res.ok) {
             // 에러 던져서 useConfirm 훅의 catch로 보냄
             throw new Error(`삭제 실패: ${res.statusText}`);
