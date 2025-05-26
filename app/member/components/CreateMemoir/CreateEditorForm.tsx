@@ -9,7 +9,7 @@ import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
 type CreateEditorFormProps = {
@@ -53,9 +53,11 @@ export default function CreateEditorForm({
     }, []);
 
     // content에 글씨가 있는지 확인하는 함수
-    const hasText = content.some((node) =>
-        node.children.some((ch: any) => ch.text?.trim() !== "")
-    );
+    const hasText = useMemo(() => {
+        return content.some((node) =>
+            node.children.some((ch: any) => ch.text?.trim() !== "")
+        );
+    }, [content]);
 
     // 폼 입력 유효성 검사 (제목, 내용)
     const formDisabled = !title.trim() || !hasText;
