@@ -2,7 +2,7 @@ import { GithubRepoRepository } from "@/domain/repositories/GithubRepoRepository
 import { GithubRepoDto } from "./dto/GithubRepoDto";
 
 export class FetchReposUsecase {
-    constructor(private readonly repo: GithubRepoRepository) { }
+    constructor(private readonly repo: GithubRepoRepository) {}
 
     async execute(token: string): Promise<GithubRepoDto[]> {
         const repos = await this.repo.fetchAll(token);
@@ -14,7 +14,9 @@ export class FetchReposUsecase {
             repo.url,
             repo.isPrivate,
             repo.description,
-            repo.updatedAt.toISOString(),
+            repo.updatedAt instanceof Date
+                ? repo.updatedAt.toISOString()
+                : String(repo.updatedAt),
             repo.stargazerCount,
             repo.languageName,
             repo.languageColor
