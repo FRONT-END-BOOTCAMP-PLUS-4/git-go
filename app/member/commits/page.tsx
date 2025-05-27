@@ -150,7 +150,9 @@ export default function CommitPage() {
                         <h2 className="font-bold">최근 활동</h2>
                         {totalCount > 0 && (
                             <span className="text-text-secondary2 text-sm">
-                                전체 {totalCount}개
+                                {isLoading
+                                    ? "불러오는 중..."
+                                    : `전체 ${totalCount}개`}
                             </span>
                         )}
                     </div>
