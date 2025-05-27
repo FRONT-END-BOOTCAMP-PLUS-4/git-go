@@ -61,10 +61,13 @@ export default function StatsPage() {
                     signal,
                 });
                 const data = await res.json();
-                console.log("Memoir heatmap data:", data);
                 setMemoirHeatmap(data);
             } catch (e) {
-                console.error("Memoir heatmap fetch 실패", e);
+                if (e instanceof DOMException && e.name === "AbortError") {
+                    console.log("Memoir heatmap fetch aborted");
+                } else {
+                    console.error("Memoir heatmap fetch 실패", e);
+                }
             }
         };
 
