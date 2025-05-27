@@ -146,7 +146,6 @@ export class PrMemoirRepository implements MemoirRepository {
     ): Promise<{ date: string; count: number }[]> {
         const oneYearAgo = new Date();
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
         const rawData = await prisma.memoir.groupBy({
             by: ["createdAt"],
             _count: { id: true },
@@ -155,21 +154,16 @@ export class PrMemoirRepository implements MemoirRepository {
                 createdAt: { gte: oneYearAgo },
             },
         });
-
         const mergedMap = new Map<string, number>();
-
         rawData.forEach((d) => {
             const date = d.createdAt.toISOString().split("T")[0];
             const prev = mergedMap.get(date) ?? 0;
             mergedMap.set(date, prev + d._count.id);
         });
-
         const result = Array.from(mergedMap.entries()).map(([date, count]) => ({
             date,
             count,
         }));
-
-        // 날짜 순 정렬 (옵션)
         result.sort((a, b) => (a.date < b.date ? -1 : 1));
 
         return result;
