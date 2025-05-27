@@ -43,6 +43,7 @@ export class PrUserRepository implements UserRepository {
             data: { deletedAt: new Date() },
         });
     }
+<<<<<<< HEAD
 
     // 커밋 설정 불러오기
     async getCommitSetting(userId: string): Promise<boolean> {
@@ -66,3 +67,6 @@ export class PrUserRepository implements UserRepository {
         });
     }
 }
+=======
+}
+>>>>>>> cfc03bcf1c82719f1de5785850eec78194640679
