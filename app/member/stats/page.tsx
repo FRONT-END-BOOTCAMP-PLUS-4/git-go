@@ -8,6 +8,7 @@ import ChartSkeleton from "./components/ChartSkeleton";
 import StatsCard from "./components/StatsCard";
 import TopReposSkeleton from "./components/TopReposSkeleton";
 import WeeklyCommitChart from "./components/WeeklyCommitChart";
+import MemoirHeatmap from "./components/MemoirHeatmap";
 
 export default function StatsPage() {
     const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
@@ -281,6 +282,9 @@ export default function StatsPage() {
                         </div>
                     </BottomCard>
                 )}
+                <div className="grid grid-cols-1 gap-4">
+                    <MemoirHeatmap data={memoirHeatmap} />
+                </div>
             </div>
         </div>
     );
