@@ -182,3 +182,15 @@
     --brand: oklch(0.707 0.165 254.624);
     --highlight: oklch(0.852 0.199 91.936);
 }
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #dbdbdb;
+}
+::-webkit-scrollbar-thumb {
+    background: #cac7fe;
+    max-height: 6px;
+    border-radius: 6px;
+}
