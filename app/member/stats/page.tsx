@@ -27,6 +27,9 @@ export default function StatsPage() {
     const [lineChangePercent, setLineChangePercent] = useState<string | null>(
         null
     );
+    const [memoirHeatmap, setMemoirHeatmap] = useState<
+        { date: string; count: number }[]
+    >([]);
 
     const cacheRef = useRef<
         Map<
@@ -44,6 +47,32 @@ export default function StatsPage() {
             }
         >
     >(new Map());
+
+    useEffect(() => {
+        if (!selectedRepo) return;
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const fetchMemoirHeatmap = async () => {
+            try {
+                const res = await fetch(`/api/stats/memoir-heatmap`, {
+                    signal,
+                });
+                const data = await res.json();
+                console.log("Memoir heatmap data:", data);
+                setMemoirHeatmap(data);
+            } catch (e) {
+                console.error("Memoir heatmap fetch 실패", e);
+            }
+        };
+
+        fetchMemoirHeatmap();
+
+        return () => {
+            controller.abort();
+        };
+    }, [selectedRepo]);
 
     useEffect(() => {
         const fetchTopRepos = async () => {
