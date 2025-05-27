@@ -135,8 +135,8 @@ export default function CommitCard({
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="/branch.svg"
-                                alt="브랜치 아이콘"
+                                src="/box-archive-solid.svg"
+                                alt="저장소 아이콘"
                                 width={14}
                                 height={12}
                             />
@@ -144,10 +144,10 @@ export default function CommitCard({
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
                             <Image
-                                src="/code.svg"
-                                alt="코드 아이콘"
-                                width={18}
-                                height={14}
+                                src="/branch.svg"
+                                alt="브랜치 아이콘"
+                                width={14}
+                                height={12}
                             />
                             {branch}
                         </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/Button";
-import WithdrawButton from "@/app/components/WithdrawButton";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
 import Image from "next/image";
@@ -129,7 +128,7 @@ export default function SideBar({
                                     className="border-border-primary1"
                                 >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-2 text-left font-semibold ${
+                                        className={`flex w-full cursor-pointer items-center gap-x-3 rounded-md px-2 py-2 text-left font-semibold ${
                                             isSelected
                                                 ? "bg-primary2 text-primary7"
                                                 : ""
@@ -139,8 +138,8 @@ export default function SideBar({
                                         <Image
                                             src={
                                                 isSelected
-                                                    ? "/branch-blue.svg"
-                                                    : "/branch.svg"
+                                                    ? "/box-archive-solid-blue.svg"
+                                                    : "/box-archive-solid.svg"
                                             }
                                             width={14}
                                             height={14}
@@ -192,12 +191,6 @@ export default function SideBar({
                 <div className="border-border-primary1 shadow-sms rounded-lg border-1 bg-white p-4">
                     <CommitPrFilter />
                     <TagFilter tags={repoTags} />
-                </div>
-            )}
-
-            {pathname.includes("stats") && (
-                <div className="mt-auto pb-2">
-                    <WithdrawButton />
                 </div>
             )}
         </aside>

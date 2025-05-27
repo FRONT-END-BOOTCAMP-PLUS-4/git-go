@@ -7,7 +7,6 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
-import Image from "next/image";
 import EmptyResult from "@/app/member/components/EmptyResult";
 
 interface Commit {
@@ -80,6 +79,7 @@ export default function CommitPage() {
 
         const accessToken = session.accessToken;
         const author = session.user?.githubId;
+        const userId = session.user?.id;
 
         try {
             const res = await fetch("/api/github/commits", {
@@ -94,6 +94,7 @@ export default function CommitPage() {
                     token: accessToken,
                     page,
                     perPage,
+                    userId,
                 }),
             });
 
@@ -149,7 +150,9 @@ export default function CommitPage() {
                         <h2 className="font-bold">최근 활동</h2>
                         {totalCount > 0 && (
                             <span className="text-text-secondary2 text-sm">
-                                전체 {totalCount}개
+                                {isLoading
+                                    ? "불러오는 중..."
+                                    : `전체 ${totalCount}개`}
                             </span>
                         )}
                     </div>

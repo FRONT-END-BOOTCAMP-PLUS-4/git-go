@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
+import { LayoutDashboard, Settings } from "lucide-react";
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -16,6 +17,10 @@ export default function Header() {
     const moveToMyPage = () => {
         setDropdownOpen(false);
         router.push(MEMBER_URL.commits);
+    };
+    const moveToSettingsPage = () => {
+        setDropdownOpen(false);
+        router.push(MEMBER_URL.settings);
     };
 
     useEffect(() => {
@@ -99,15 +104,26 @@ export default function Header() {
                                     onClick={moveToMyPage}
                                     className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
-                                    <Image
-                                        className="shrink-0"
-                                        src="/profile.svg"
-                                        alt="profile icon"
+                                    <LayoutDashboard
                                         width={16}
                                         height={16}
+                                        className="mr-auto ml-2 shrink-0"
                                     />
-                                    <span className="whitespace-nowrap">
-                                        마이페이지
+                                    <span className="flex-1 text-center whitespace-nowrap">
+                                        대시보드
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={moveToSettingsPage}
+                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                >
+                                    <Settings
+                                        width={16}
+                                        height={16}
+                                        className="mr-auto ml-2 shrink-0"
+                                    />
+                                    <span className="flex-1 text-center whitespace-nowrap">
+                                        설정
                                     </span>
                                 </button>
                                 <button
@@ -117,13 +133,13 @@ export default function Header() {
                                     className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:bg-red-50"
                                 >
                                     <Image
-                                        className="shrink-0"
+                                        className="mr-auto ml-2 shrink-0"
                                         src="/logout.svg"
                                         alt="logout icon"
                                         width={16}
                                         height={16}
                                     />
-                                    <span className="whitespace-nowrap">
+                                    <span className="flex-1 text-center whitespace-nowrap">
                                         로그아웃
                                     </span>
                                 </button>

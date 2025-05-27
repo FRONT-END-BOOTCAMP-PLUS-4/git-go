@@ -6,7 +6,6 @@ import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface PrCardProps {
@@ -108,7 +107,9 @@ export default function PullRequestPage() {
                     <h2 className="font-bold">Pull Requests</h2>
                     {(totalCount ?? 0) > 0 && (
                         <span className="text-text-secondary2 text-sm">
-                            전체 {totalCount}개
+                            {isLoading
+                                ? "불러오는 중..."
+                                : `전체 ${totalCount}개`}
                         </span>
                     )}
                 </div>
