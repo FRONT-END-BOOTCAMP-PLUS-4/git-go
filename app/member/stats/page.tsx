@@ -236,37 +236,58 @@ export default function StatsPage() {
 
             {/* 아래 좌우 두 칸 */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <BottomCard title="커밋 활동" subtitle="최근 7일">
-                    <div className="h-64 w-full">
-                        <WeeklyCommitChart data={weeklyCommits ?? []} />
+                {/* 커밋 활동 */}
+                {loadingWeekly || isFirstLoad ? (
+                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                        <ChartSkeleton />
                     </div>
-                </BottomCard>
-                <BottomCard title="가장 활발한 저장소" subtitle="커밋 수 기준">
-                    <div className="space-y-4">
-                        {topRepos.length > 0 ? (
-                            topRepos.map((repo) => (
-                                <div key={repo.name} className="h-10 space-y-1">
-                                    <div className="text-text-secondary2 flex justify-between text-sm font-medium">
-                                        <span>{repo.name}</span>
-                                        <span>{repo.commits} commits</span>
-                                    </div>
-                                    <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
-                                        <div
-                                            className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
-                                            style={{
-                                                width: `${(repo.commits / Math.max(...topRepos.map((r) => r.commits), 1)) * 100}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="mt-4 text-center text-sm text-gray-400">
-                                연동된 저장소가 없거나 커밋 정보가 없습니다.
-                            </p>
-                        )}
+                ) : (
+                    <BottomCard title="커밋 활동" subtitle="최근 7일">
+                        <div className="h-64 w-full">
+                            <WeeklyCommitChart data={weeklyCommits ?? []} />
+                        </div>
+                    </BottomCard>
+                )}
+
+                {/* 가장 활발한 저장소 */}
+                {loadingTopRepos ? (
+                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                        <TopReposSkeleton />
                     </div>
-                </BottomCard>
+                ) : (
+                    <BottomCard
+                        title="가장 활발한 저장소"
+                        subtitle="커밋 수 기준"
+                    >
+                        <div className="space-y-4">
+                            {topRepos.length > 0 ? (
+                                topRepos.map((repo) => (
+                                    <div
+                                        key={repo.name}
+                                        className="h-10 space-y-1"
+                                    >
+                                        <div className="text-text-secondary2 flex justify-between text-sm font-medium">
+                                            <span>{repo.name}</span>
+                                            <span>{repo.commits} commits</span>
+                                        </div>
+                                        <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
+                                            <div
+                                                className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
+                                                style={{
+                                                    width: `${(repo.commits / Math.max(...topRepos.map((r) => r.commits), 1)) * 100}%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="mt-4 text-center text-sm text-gray-400">
+                                    연동된 저장소가 없거나 커밋 정보가 없습니다.
+                                </p>
+                            )}
+                        </div>
+                    </BottomCard>
+                )}
             </div>
         </div>
     );
