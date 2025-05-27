@@ -5,6 +5,7 @@ import Image from "next/image";
 import AlertDialog from "../components/AlertDialog";
 import WithdrawButton from "@/app/components/WithdrawButton";
 import { useRouter } from "next/navigation";
+import Button from "@/app/components/Button";
 
 export default function Settings() {
     const [theme, setTheme] = useState("light");
@@ -21,6 +22,10 @@ export default function Settings() {
         description: "",
     });
     const router = useRouter();
+    const [initialBranchSetting, setInitialBranchSetting] = useState<
+        "default" | "all" | null
+    >(null);
+    const isSaveDisabled = branchSetting === initialBranchSetting;
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -32,6 +37,7 @@ export default function Settings() {
         });
 
         if (res.ok) {
+            setInitialBranchSetting(branchSetting);
             setAlertContent({
                 title: "저장 완료",
                 description: "커밋 가져오기 설정이 성공적으로 저장되었습니다.",
@@ -46,6 +52,19 @@ export default function Settings() {
             setAlertOpen(true);
         }
     };
+
+    useEffect(() => {
+        const fetchSetting = async () => {
+            const res = await fetch("/api/settings/commits");
+            if (res.ok) {
+                const data = await res.json();
+                const setting = data.isDefaultOnly ? "default" : "all";
+                setBranchSetting(setting);
+                setInitialBranchSetting(setting);
+            }
+        };
+        fetchSetting();
+    }, []);
 
     useEffect(() => {
         const fetchSetting = async () => {
@@ -179,18 +198,19 @@ export default function Settings() {
 
                     {/* 저장 버튼 */}
                     <div className="flex justify-end gap-3">
-                        <button
-                            onClick={() => router.back()}
-                            className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            취소
-                        </button>
-                        <button
-                            onClick={handleSave}
-                            className="hover:bg-primary7 bg-primary7 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white"
-                        >
-                            저장
-                        </button>
+                        <div className="flex justify-end gap-3">
+                            <Button
+                                type="lined"
+                                onClick={() => router.back()}
+                                label="취소"
+                            />
+
+                            <Button
+                                type={isSaveDisabled ? "disabled" : "default"}
+                                onClick={handleSave}
+                                label="저장"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
