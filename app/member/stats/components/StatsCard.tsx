@@ -26,7 +26,7 @@ export default function StatsCard({
     return (
         <div className="border-border-primary1 h-20 rounded-xl border bg-white p-3 shadow-sm">
             <p className="text-text-secondary2 text-sm">{title}</p>
-            <div className="flex items-baseline space-x-2">
+            <div className="flex items-center space-x-2">
                 <span className="text-text-secondary1 text-2xl font-bold">
                     {value}
                 </span>
