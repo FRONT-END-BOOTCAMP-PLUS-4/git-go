@@ -49,7 +49,7 @@ export default function Header() {
                 >
                     <Image
                         className="mr-3"
-                        src="/logo.svg"
+                        src="/logo.png"
                         alt="logo"
                         width={45}
                         height={45}
