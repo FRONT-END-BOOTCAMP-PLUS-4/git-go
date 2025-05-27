@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import AlertDialog from "../components/AlertDialog";
 import WithdrawButton from "@/app/components/WithdrawButton";
+import { useRouter } from "next/navigation";
 
 export default function Settings() {
     const [theme, setTheme] = useState("light");
@@ -19,6 +20,7 @@ export default function Settings() {
         title: "",
         description: "",
     });
+    const router = useRouter();
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -177,7 +179,10 @@ export default function Settings() {
 
                     {/* 저장 버튼 */}
                     <div className="flex justify-end gap-3">
-                        <button className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50">
+                        <button
+                            onClick={() => router.back()}
+                            className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 hover:bg-gray-50"
+                        >
                             취소
                         </button>
                         <button
