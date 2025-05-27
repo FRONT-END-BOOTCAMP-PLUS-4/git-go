@@ -204,21 +204,33 @@ export default function StatsPage() {
                     <MemoirHeatmap data={memoirHeatmap} />
                 </div>
                 <div className="flex flex-col gap-4 md:w-[30%]">
-                    <StatsCard
-                        title="전체 커밋"
-                        value={totalCommits?.toString() ?? "-"}
-                        change={commitChange ?? "0%"}
-                    />
-                    <StatsCard
-                        title="코드 라인 수"
-                        value={totalLines?.toLocaleString() ?? "-"}
-                        change={lineChangePercent ?? "0%"}
-                    />
-                    <StatsCard
-                        title="작성된 회고록"
-                        value={totalMemoirs?.toLocaleString() ?? "-"}
-                        change="hide"
-                    />
+                    {totalCommits === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="전체 커밋"
+                            value={totalCommits.toString()}
+                            change={commitChange ?? "0%"}
+                        />
+                    )}
+                    {totalLines === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="코드 라인 수"
+                            value={totalLines.toLocaleString()}
+                            change={lineChangePercent ?? "0%"}
+                        />
+                    )}
+                    {totalMemoirs === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="작성된 회고록"
+                            value={totalMemoirs.toLocaleString()}
+                            change="hide"
+                        />
+                    )}
                 </div>
             </div>
 
