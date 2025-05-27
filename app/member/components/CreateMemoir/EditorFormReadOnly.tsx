@@ -7,6 +7,9 @@ import { useConfirm } from "@/hooks/useConfirm";
 import { Value } from "@udecode/plate";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "../ConfirmDialog";
+import { ExportToolbarButton } from "./plate-editor/ui/export-toolbar-button";
+import { FixedToolbar } from "./plate-editor/ui/fixed-toolbar";
+import { ToolbarGroup } from "./plate-editor/ui/toolbar";
 
 interface Props {
     title: string;
@@ -90,7 +93,20 @@ export default function EditorFormReadOnly({
                 </div>
 
                 {/* 읽기 전용 에디터 */}
-                <PlateEditor readOnly initialContent={content} />
+                <PlateEditor
+                    readOnly
+                    initialContent={content}
+                    toolbar={
+                        <div className="flex justify-end">
+                            {/* 툴바 정렬을 위해 div로 감싸기 */}
+                            <FixedToolbar>
+                                <ToolbarGroup>
+                                    <ExportToolbarButton title={title} />
+                                </ToolbarGroup>
+                            </FixedToolbar>
+                        </div>
+                    }
+                />
             </div>
         </>
     );
