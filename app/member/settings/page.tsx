@@ -25,7 +25,13 @@ export default function Settings() {
     const [initialBranchSetting, setInitialBranchSetting] = useState<
         "default" | "all" | null
     >(null);
-    const isSaveDisabled = branchSetting === initialBranchSetting;
+    const [initialTheme, setInitialTheme] = useState("light");
+    const isSaveDisabled =
+        branchSetting === initialBranchSetting && theme === initialTheme;
+    const setThemeAndSave = (themeValue: string) => {
+        setTheme(themeValue);
+        localStorage.setItem("theme", themeValue);
+    };
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -38,6 +44,7 @@ export default function Settings() {
 
         if (res.ok) {
             setInitialBranchSetting(branchSetting);
+            setInitialTheme(theme);
             setAlertContent({
                 title: "저장 완료",
                 description: "커밋 가져오기 설정이 성공적으로 저장되었습니다.",
@@ -77,6 +84,14 @@ export default function Settings() {
         fetchSetting();
     }, []);
 
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+            setTheme(savedTheme);
+            setInitialTheme(savedTheme);
+        }
+    }, []);
+
     return (
         <div className="flex justify-center">
             <div className="border-border-primary1 m-4 w-full max-w-[880px] items-center justify-center rounded-lg border-1 bg-white">
@@ -97,7 +112,7 @@ export default function Settings() {
                                         ? "bg-primary1 text-primary7 border-border-primary1"
                                         : "border-gray-200 bg-white"
                                 }`}
-                                onClick={() => setTheme("light")}
+                                onClick={() => setThemeAndSave("light")}
                             >
                                 <Image
                                     src={
@@ -119,7 +134,7 @@ export default function Settings() {
                                         ? "bg-primary1 text-primary7 border-border-primary1"
                                         : "border-gray-200 bg-white"
                                 }`}
-                                onClick={() => setTheme("dark")}
+                                onClick={() => setThemeAndSave("dark")}
                             >
                                 <Image
                                     src={
