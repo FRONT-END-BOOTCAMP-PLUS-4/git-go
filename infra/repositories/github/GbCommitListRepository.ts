@@ -45,18 +45,73 @@ async function fetchAllCommitsFromDefaultBranch({
     return commits;
 }
 
+// async function fetchAllCommitsFromAllBranches({
+//     owner,
+//     repo,
+//     author,
+//     headers,
+//     defaultBranch,
+// }: {
+//     owner: string;
+//     repo: string;
+//     author: string;
+//     headers: Record<string, string>;
+//     defaultBranch: string;
+// }): Promise<GithubCommit[]> {
+//     const branchesRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches`, { headers });
+
+//     if (!branchesRes.ok) {
+//         const errorData = await branchesRes.json();
+//         throw new Error(`Failed to fetch branches: ${branchesRes.status} - ${errorData.message || "Unknown error"}`);
+//     }
+//     const branches = await branchesRes.json();
+
+//     const commitMap = new Map<string, GithubCommit>();
+
+//     for (const branch of branches) {
+//         const branchName = branch.name;
+
+//         const commitsRes = await fetch(
+//             `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}`,
+//             { headers }
+//         );
+
+//         if (!commitsRes.ok) {
+//             const errorData = await commitsRes.json();
+//             throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`);
+//         }
+
+//         const commits = await commitsRes.json();
+
+//         for (const c of commits) {
+//             const sha = c.sha;
+//             const commit = GithubCommit.fromJson({ ...c, branch: branchName });
+
+//             // default 브랜치 커밋은 항상 우선 등록, 아니면 중복 체크 후 등록
+//             if (branchName === defaultBranch || !commitMap.has(sha)) {
+//                 commitMap.set(sha, commit);
+//             }
+//         }
+//     }
+
+//     return Array.from(commitMap.values()).sort(
+//         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+//     );
+// }
 async function fetchAllCommitsFromAllBranches({
     owner,
     repo,
     author,
     headers,
     defaultBranch,
+    maxCommitsPerBranch = 1000,
 }: {
     owner: string;
     repo: string;
     author: string;
     headers: Record<string, string>;
     defaultBranch: string;
+    maxCommitsPerBranch?: number;
 }): Promise<GithubCommit[]> {
     const branchesRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches`, { headers });
 
@@ -64,33 +119,43 @@ async function fetchAllCommitsFromAllBranches({
         const errorData = await branchesRes.json();
         throw new Error(`Failed to fetch branches: ${branchesRes.status} - ${errorData.message || "Unknown error"}`);
     }
-    const branches = await branchesRes.json();
 
+    const branches = await branchesRes.json();
     const commitMap = new Map<string, GithubCommit>();
+    const perPage = 100;
 
     for (const branch of branches) {
         const branchName = branch.name;
+        let page = 1;
+        let hasMore = true;
+        let branchCommitCount = 0;
 
-        const commitsRes = await fetch(
-            `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}`,
-            { headers }
-        );
+        while (hasMore) {
+            const commitsRes = await fetch(
+                `https://api.github.com/repos/${owner}/${repo}/commits?author=${author}&sha=${branchName}&per_page=${perPage}&page=${page}`,
+                { headers }
+            );
 
-        if (!commitsRes.ok) {
-            const errorData = await commitsRes.json();
-            throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`);
-        }
-
-        const commits = await commitsRes.json();
-
-        for (const c of commits) {
-            const sha = c.sha;
-            const commit = GithubCommit.fromJson({ ...c, branch: branchName });
-
-            // default 브랜치 커밋은 항상 우선 등록, 아니면 중복 체크 후 등록
-            if (branchName === defaultBranch || !commitMap.has(sha)) {
-                commitMap.set(sha, commit);
+            if (!commitsRes.ok) {
+                const errorData = await commitsRes.json();
+                throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`);
             }
+
+            const commits = await commitsRes.json();
+
+            for (const c of commits) {
+                const sha = c.sha;
+                const commit = GithubCommit.fromJson({ ...c, branch: branchName });
+
+                // default 브랜치 커밋은 항상 우선 등록, 아니면 중복 체크 후 등록
+                if (branchName === defaultBranch || !commitMap.has(sha)) {
+                    commitMap.set(sha, commit);
+                }
+            }
+
+            branchCommitCount += commits.length;
+            hasMore = commits.length === perPage && branchCommitCount < maxCommitsPerBranch;
+            page++;
         }
     }
 
@@ -98,6 +163,7 @@ async function fetchAllCommitsFromAllBranches({
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 }
+
 
 export class GbCommitListRepository implements GithubCommitListRepository {
     async fetchCommitList({
