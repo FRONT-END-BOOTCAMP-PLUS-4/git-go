@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export default function VideoSection({
     id,
@@ -8,7 +8,6 @@ export default function VideoSection({
     videoSrc,
     nextSectionId,
     content,
-    snap = false,
 }: {
     id: string;
     title: string;
@@ -36,19 +35,19 @@ export default function VideoSection({
             id={id}
         >
             <h2 className="mb-4 text-2xl font-bold">{title}</h2>
-            <div className="text-xl">{content}</div>
+            <div className="mb-4 text-xl">{content}</div>
             <video
-                className="w-full max-w-3xl rounded-xl shadow-xl"
+                className="w-full max-w-2xl rounded-xl shadow-xl"
                 autoPlay
                 playsInline
                 muted
                 loop
-                // src={videoSrc}
+                src={videoSrc}
             />
             {nextSectionId && (
                 <button
                     onClick={() => scrollToSection(nextSectionId)}
-                    className="absolute bottom-10 cursor-pointer rounded-full p-3"
+                    className="bottom-10 cursor-pointer rounded-full p-3"
                     aria-label="Scroll to next section"
                 >
                     <ChevronDown className="text-border-primary1 h-20 w-30" />

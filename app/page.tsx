@@ -94,7 +94,7 @@ export default async function HomePage() {
                 <VideoSection
                     id="sync"
                     title="활동 동기화"
-                    videoSrc="/videos/sync.mp4"
+                    videoSrc="/video/sync-repo.mp4"
                     nextSectionId="ai"
                     content="커밋, PR 및 코드 변경사항을 자동으로 추적하세요"
                     snap
@@ -102,7 +102,7 @@ export default async function HomePage() {
                 <VideoSection
                     id="ai"
                     title="AI 요약 기능"
-                    videoSrc="/videos/ai.mp4"
+                    videoSrc="/video/ai-summary.mp4"
                     nextSectionId="memoirs"
                     content="코드 변경사항에 대한 지능형 인사이트를 제공합니다"
                     snap
@@ -110,7 +110,7 @@ export default async function HomePage() {
                 <VideoSection
                     id="memoirs"
                     title="회고록 작성"
-                    videoSrc="/videos/memoirs.mp4"
+                    videoSrc="/video/create-memoir.mp4"
                     content="풍부한 맥락과 함께 개발 여정을 기록하세요"
                     snap
                 />
