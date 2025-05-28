@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export class PrMemoirRepository implements MemoirRepository {
     async findByUserId(userId: string, repoName?: string) {
-        let repoFilter: { repoId?: number } = {};
+        const repoFilter: { repoId?: number } = {};
         if (repoName) {
             const repo = await prisma.repo.findFirst({
                 where: {
@@ -47,7 +47,7 @@ export class PrMemoirRepository implements MemoirRepository {
     ): Promise<[any[], number]> {
         const skip = (page - 1) * perPage;
 
-        let repoFilter: { repoId?: number } = {};
+        const repoFilter: { repoId?: number } = {};
         if (repoName) {
             const repo = await prisma.repo.findFirst({
                 where: { name: repoName, userId },
@@ -139,6 +139,34 @@ export class PrMemoirRepository implements MemoirRepository {
             distinct: ["tagId"],
         });
         return tags.map((t) => t.tag.name);
+    }
+
+    async getMemoirHeatmap(
+        userId: string
+    ): Promise<{ date: string; count: number }[]> {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        const rawData = await prisma.memoir.groupBy({
+            by: ["createdAt"],
+            _count: { id: true },
+            where: {
+                userId,
+                createdAt: { gte: oneYearAgo },
+            },
+        });
+        const mergedMap = new Map<string, number>();
+        rawData.forEach((d) => {
+            const date = d.createdAt.toISOString().split("T")[0];
+            const prev = mergedMap.get(date) ?? 0;
+            mergedMap.set(date, prev + d._count.id);
+        });
+        const result = Array.from(mergedMap.entries()).map(([date, count]) => ({
+            date,
+            count,
+        }));
+        result.sort((a, b) => (a.date < b.date ? -1 : 1));
+
+        return result;
     }
 
     async create(data: {
