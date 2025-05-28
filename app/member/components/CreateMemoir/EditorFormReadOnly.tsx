@@ -58,7 +58,7 @@ export default function EditorFormReadOnly({
                 onConfirm={handleConfirm}
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
-            <div className="flex flex-1 flex-col gap-4">
+            <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
                 {/* 제목 */}
                 <div>
                     <label className="mb-1 block text-base font-medium">
@@ -99,20 +99,22 @@ export default function EditorFormReadOnly({
                 </div>
 
                 {/* 읽기 전용 에디터 */}
-                <PlateEditor
-                    readOnly
-                    initialContent={content}
-                    toolbar={
-                        <div className="flex justify-end">
-                            {/* 툴바 정렬을 위해 div로 감싸기 */}
-                            <FixedToolbar>
-                                <ToolbarGroup>
-                                    <ExportToolbarButton title={title} />
-                                </ToolbarGroup>
-                            </FixedToolbar>
-                        </div>
-                    }
-                />
+                <div className="min-h-0 flex-1">
+                    <PlateEditor
+                        readOnly
+                        initialContent={content}
+                        toolbar={
+                            <div className="flex justify-end">
+                                {/* 툴바 정렬을 위해 div로 감싸기 */}
+                                <FixedToolbar>
+                                    <ToolbarGroup>
+                                        <ExportToolbarButton title={title} />
+                                    </ToolbarGroup>
+                                </FixedToolbar>
+                            </div>
+                        }
+                    />
+                </div>
 
                 {/* 수정, 삭제 버튼 */}
                 <div className="flex items-center justify-end gap-2">
