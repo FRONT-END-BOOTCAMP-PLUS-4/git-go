@@ -42,7 +42,7 @@ export function FeatureBox({ feature }: { feature: any }) {
 export function ScrollDownButton({ id }: { id: string }) {
     return (
         <button
-            className="absolute bottom-[75px] cursor-pointer rounded-full p-3"
+            className="absolute bottom-[85px] cursor-pointer rounded-full p-3"
             onClick={() => {
                 const element = document.getElementById(id);
                 if (element) {
@@ -56,7 +56,7 @@ export function ScrollDownButton({ id }: { id: string }) {
             }}
             aria-label="Scroll to next section"
         >
-            <Mouse className="text-border-primary1 h-15 w-15 animate-bounce" />
+            <Mouse className="text-primary3 h-15 w-15 animate-bounce" />
         </button>
     );
 }
