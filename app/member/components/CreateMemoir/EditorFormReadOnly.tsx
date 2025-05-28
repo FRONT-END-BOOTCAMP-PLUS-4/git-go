@@ -5,6 +5,7 @@ import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/u
 import { MEMBER_URL } from "@/constants/url";
 import { useConfirm } from "@/hooks/useConfirm";
 import { Value } from "@udecode/plate";
+import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "../ConfirmDialog";
 import { ExportToolbarButton } from "./plate-editor/ui/export-toolbar-button";
@@ -43,6 +44,10 @@ export default function EditorFormReadOnly({
     const { openConfirm, handleModalCancel, handleConfirm, handleDeleteClick } =
         useConfirm(deleteMemoir);
 
+    const handleCancel = () => {
+        router.back();
+    };
+
     return (
         <>
             <ConfirmDialog
@@ -59,7 +64,15 @@ export default function EditorFormReadOnly({
                     <label className="mb-1 block text-base font-medium">
                         제목
                     </label>
-                    <div className="text-lg font-semibold">{title}</div>
+                    <div className="flex items-center justify-between">
+                        <div className="text-lg font-semibold">{title}</div>
+                        <div
+                            className="hover:text-danger1 hover:cursor-pointer"
+                            onClick={handleDeleteClick}
+                        >
+                            <Trash2 />
+                        </div>
+                    </div>
                 </div>
 
                 {/* 태그 */}
@@ -103,7 +116,7 @@ export default function EditorFormReadOnly({
 
                 {/* 수정, 삭제 버튼 */}
                 <div className="flex items-center justify-end gap-2">
-                    <Button onClick={handleDeleteClick} type="lined">
+                    <Button onClick={handleCancel} type="lined">
                         취소
                     </Button>
                     <Button onClick={handleStatusChange}>수정</Button>
