@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export default function VideoSection({
     id,
@@ -8,7 +8,6 @@ export default function VideoSection({
     videoSrc,
     nextSectionId,
     content,
-    snap = false,
 }: {
     id: string;
     title: string;
