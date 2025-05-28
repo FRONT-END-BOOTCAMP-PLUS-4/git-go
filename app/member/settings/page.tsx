@@ -87,7 +87,7 @@ export default function Settings() {
 
     return (
         <div className="flex justify-center">
-            <div className="border-border-primary1 m-4 w-full max-w-[880px] rounded-lg border bg-white dark:bg-gray-900">
+            <div className="border-border-primary1 m-4 w-full max-w-[880px] rounded-lg border bg-white">
                 <div className="border-border-primary1 border-b p-4 text-xl font-semibold dark:text-white">
                     설정
                 </div>
