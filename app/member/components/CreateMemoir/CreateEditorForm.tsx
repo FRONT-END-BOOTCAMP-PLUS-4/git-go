@@ -117,7 +117,7 @@ export default function CreateEditorForm({
     };
 
     // 취소 버튼
-    const handleCancel = () => {
+    const handleModalCancel = () => {
         router.back();
     };
 
@@ -181,7 +181,7 @@ export default function CreateEditorForm({
             </div>
             {/* 버튼 */}
             <div className="flex justify-end gap-2">
-                <Button type="lined" onClick={handleCancel}>
+                <Button type="lined" onClick={handleModalCancel}>
                     취소
                 </Button>
                 <Button

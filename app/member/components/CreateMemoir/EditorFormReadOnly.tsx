@@ -40,7 +40,7 @@ export default function EditorFormReadOnly({
         router.push(MEMBER_URL.memoirs);
     };
 
-    const { openConfirm, handleCancel, handleConfirm, handleDeleteClick } =
+    const { openConfirm, handleModalCancel, handleConfirm, handleDeleteClick } =
         useConfirm(deleteMemoir);
 
     return (
@@ -49,18 +49,11 @@ export default function EditorFormReadOnly({
                 open={openConfirm}
                 title="정말 삭제하시겠습니까?"
                 description="삭제된 회고록은 복구할 수 없습니다."
-                onCancel={handleCancel}
+                onCancel={handleModalCancel}
                 onConfirm={handleConfirm}
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
             <div className="flex flex-1 flex-col gap-4">
-                {/* 수정, 삭제 버튼 */}
-                <div className="flex items-center justify-end gap-2">
-                    <Button onClick={handleDeleteClick} type="danger">
-                        삭제
-                    </Button>
-                    <Button onClick={handleStatusChange}>수정</Button>
-                </div>
                 {/* 제목 */}
                 <div>
                     <label className="mb-1 block text-base font-medium">
@@ -107,6 +100,14 @@ export default function EditorFormReadOnly({
                         </div>
                     }
                 />
+
+                {/* 수정, 삭제 버튼 */}
+                <div className="flex items-center justify-end gap-2">
+                    <Button onClick={handleDeleteClick} type="lined">
+                        취소
+                    </Button>
+                    <Button onClick={handleStatusChange}>수정</Button>
+                </div>
             </div>
         </>
     );
