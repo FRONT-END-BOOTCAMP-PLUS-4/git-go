@@ -43,7 +43,7 @@ export default function PageTap({ status }: Props) {
                     className={`ml-2 ${
                         status === "commits"
                             ? "text-primary7"
-                            : "text-text-gray1"
+                            : "text-text-secondary2"
                     }`}
                 >
                     Commits
@@ -66,7 +66,7 @@ export default function PageTap({ status }: Props) {
                     className={`ml-2 ${
                         status === "pull-requests"
                             ? "text-primary7"
-                            : "text-text-gray1"
+                            : "text-text-secondary2"
                     }`}
                 >
                     Pull Requests
@@ -89,7 +89,7 @@ export default function PageTap({ status }: Props) {
                     className={`ml-2 ${
                         status === "memoirs"
                             ? "text-primary7"
-                            : "text-text-gray1"
+                            : "text-text-secondary2"
                     }`}
                 >
                     내 회고록
@@ -110,7 +110,9 @@ export default function PageTap({ status }: Props) {
                 />
                 <div
                     className={`ml-2 ${
-                        status === "stats" ? "text-primary7" : "text-text-gray1"
+                        status === "stats"
+                            ? "text-primary7"
+                            : "text-text-secondary2"
                     }`}
                 >
                     통계
