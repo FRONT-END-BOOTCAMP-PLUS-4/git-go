@@ -3,7 +3,7 @@
 import { MEMBER_URL } from "@/constants/url";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
 import { LayoutDashboard, Settings } from "lucide-react";
@@ -13,6 +13,10 @@ export default function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
+    const pathname = usePathname();
+    const { id } = useParams();
+    const isFullPage = pathname.endsWith("/memoir") || id;
+    // 1920
 
     const moveToMyPage = () => {
         setDropdownOpen(false);
@@ -40,7 +44,9 @@ export default function Header() {
     }, []);
     return (
         <div className="border-border-primary1 sticky top-0 z-50 h-[65px] w-full border-b bg-white">
-            <div className="layout-flex mx-0 flex h-[65px] flex-row items-center justify-between px-4 xl:mx-auto xl:max-w-screen-xl">
+            <div
+                className={`mx-auto flex h-[65px] ${isFullPage ? "max-w-[1980px]" : "max-w-[1280px]"} flex-row items-center justify-between px-4`}
+            >
                 <div
                     className="flex cursor-pointer items-center justify-center"
                     onClick={() => {
@@ -49,7 +55,7 @@ export default function Header() {
                 >
                     <Image
                         className="mr-3"
-                        src="/logo.svg"
+                        src="/logo.png"
                         alt="logo"
                         width={45}
                         height={45}

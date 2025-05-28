@@ -6,8 +6,7 @@ import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface PrCardProps {
     title: string;
@@ -20,9 +19,7 @@ interface PrCardProps {
 }
 
 export default function PullRequestPage() {
-    // 현재 날짜 를 한국어 형식으로 포맷팅
     const now = new Date();
-
     const formattedDate = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
         month: "long",
@@ -31,22 +28,42 @@ export default function PullRequestPage() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [prList, setPrList] = useState<PrCardProps[]>([]);
-    const [totalCount, setTotalCount] = useState();
+    const [totalCount, setTotalCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const perPage = 10;
 
     const { selectedRepo } = useRepoStore();
     const { data: session } = useSession();
 
-    // pr 목록 조회 함수
+    const cacheRef = useRef<
+        Map<
+            string,
+            { list: PrCardProps[]; totalCount: number; timestamp: number }
+        >
+    >(new Map());
+
+    const CACHE_TTL = 1000 * 60 * 10; // 10분
+
     const fetchPrList = async (
         repoFullName: string | undefined,
         currentPage: number
     ): Promise<void> => {
         if (!selectedRepo || !session) return;
+
+        const key = `${repoFullName}/page:${currentPage}`;
+        const now = Date.now();
+
+        const cached = cacheRef.current.get(key);
+        if (cached && now - cached.timestamp < CACHE_TTL) {
+            setPrList(cached.list);
+            setTotalCount(cached.totalCount);
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(true);
-        const author = session?.user.githubId;
-        const token = session?.accessToken;
+        const author = session.user.githubId;
+        const token = session.accessToken;
 
         try {
             const res = await fetch("/api/github/pull-requests", {
@@ -57,7 +74,7 @@ export default function PullRequestPage() {
                 body: JSON.stringify({
                     token,
                     author,
-                    repoFullName: repoFullName,
+                    repoFullName,
                     page: currentPage,
                 }),
             });
@@ -66,6 +83,12 @@ export default function PullRequestPage() {
                 const result = await res.json();
                 setPrList(result.list);
                 setTotalCount(result.totalCount);
+
+                cacheRef.current.set(key, {
+                    list: result.list,
+                    totalCount: result.totalCount,
+                    timestamp: now,
+                });
             }
         } catch (error: unknown) {
             console.error("Failed to fetch pull request list: ", error);
@@ -75,10 +98,12 @@ export default function PullRequestPage() {
     };
 
     useEffect(() => {
-        fetchPrList(selectedRepo?.nameWithOwner, currentPage);
+        if (selectedRepo) {
+            setCurrentPage(1);
+            fetchPrList(selectedRepo.nameWithOwner, 1);
+        }
     }, [selectedRepo]);
 
-    // 페이지 변경 시 새로운 데이터 fetch
     useEffect(() => {
         if (selectedRepo) {
             fetchPrList(selectedRepo.nameWithOwner, currentPage);
@@ -89,7 +114,7 @@ export default function PullRequestPage() {
         setCurrentPage(newPage);
     };
 
-    const prCardList = prList?.map((pr) => (
+    const prCardList = prList.map((pr) => (
         <PrCard
             title={pr.title}
             repositoryName={pr.repositoryName}
@@ -106,9 +131,11 @@ export default function PullRequestPage() {
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-x-3">
                     <h2 className="font-bold">Pull Requests</h2>
-                    {(totalCount ?? 0) > 0 && (
+                    {totalCount > 0 && (
                         <span className="text-text-secondary2 text-sm">
-                            전체 {totalCount}개
+                            {isLoading
+                                ? "불러오는 중..."
+                                : `전체 ${totalCount}개`}
                         </span>
                     )}
                 </div>
@@ -120,16 +147,17 @@ export default function PullRequestPage() {
                     Array.from({ length: 5 }).map((_, i) => (
                         <PrCardSkeleton key={i} />
                     ))
-                ) : prList.length !== 0 ? (
+                ) : prList.length > 0 ? (
                     <>{prCardList}</>
                 ) : (
                     <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
                 )}
             </ul>
+
             {!isLoading && prList.length > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalCount={totalCount || 0}
+                    totalCount={totalCount}
                     perPage={perPage}
                     setCurrentPage={handlePageChange}
                 />

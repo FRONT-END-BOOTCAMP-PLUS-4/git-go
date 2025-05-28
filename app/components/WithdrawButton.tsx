@@ -4,6 +4,7 @@ import { useState } from "react";
 import ConfirmDialog from "../member/components/ConfirmDialog";
 import { signOut } from "next-auth/react";
 import AlertDialog from "../member/components/AlertDialog";
+import Image from "next/image";
 
 export default function WithdrawButton() {
     const [openConfirm, setOpenConfirm] = useState(false);
@@ -23,15 +24,23 @@ export default function WithdrawButton() {
         <>
             <button
                 onClick={() => setOpenConfirm(true)}
-                className="w-full text-sm text-gray-400 hover:text-gray-600 cursor-pointer py-2 px-3 rounded-md transition mt-2"
+                className="bg-danger1 hover:bg-danger2 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white"
             >
+                <Image
+                    src={"/sign-out.svg"}
+                    alt={"sign out"}
+                    width={20}
+                    height={20}
+                />
                 회원 탈퇴
             </button>
 
             <ConfirmDialog
                 open={openConfirm}
                 title="회원 탈퇴"
-                description={"정말 탈퇴하시겠습니까?\n탈퇴 시 모든 데이터가 삭제됩니다."}
+                description={
+                    "정말 탈퇴하시겠습니까?\n탈퇴 시 모든 데이터가 삭제됩니다."
+                }
                 imageSrc="/withdraw.png"
                 onCancel={() => setOpenConfirm(false)}
                 onConfirm={() => {
@@ -43,7 +52,9 @@ export default function WithdrawButton() {
             <AlertDialog
                 open={showAlert}
                 title="탈퇴 완료"
-                description={"정상적으로 탈퇴되었습니다.\n그동안 이용해주셔서 감사합니다."}
+                description={
+                    "정상적으로 탈퇴되었습니다.\n그동안 이용해주셔서 감사합니다."
+                }
                 imageSrc="/bye.png"
                 onClose={() => {
                     setShowAlert(false);

@@ -7,7 +7,6 @@ import { useRepoStore } from "@/store/repoStore";
 import { useSession } from "next-auth/react";
 import Pagination from "@/app/components/Pagination";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
-import Image from "next/image";
 import EmptyResult from "@/app/member/components/EmptyResult";
 
 interface Commit {
@@ -50,6 +49,21 @@ export default function CommitPage() {
 
     const { data: session } = useSession();
 
+    // 캐시 저장용 Map (key: "owner/repo/page")
+    const cacheRef = useRef<
+        Map<
+            string,
+            {
+                commits: Commit[];
+                totalCount: number;
+                timestamp: number;
+            }
+        >
+    >(new Map());
+
+    // 캐시 만료 시간 (5분)
+    const CACHE_TTL = 1000 * 60 * 10;
+
     useEffect(() => {
         if (checkedOnceRef.current) return;
 
@@ -76,10 +90,20 @@ export default function CommitPage() {
         page: number
     ): Promise<void> => {
         if (!session || !ownerName || !repoName) return;
-        setIsLoading(true);
 
-        const accessToken = session.accessToken;
-        const author = session.user?.githubId;
+        const key = `${ownerName}/${repoName}/page:${page}`;
+        const now = Date.now();
+
+        // 캐시 확인
+        const cached = cacheRef.current.get(key);
+        if (cached && now - cached.timestamp < CACHE_TTL) {
+            setCommits(cached.commits);
+            setTotalCount(cached.totalCount);
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
 
         try {
             const res = await fetch("/api/github/commits", {
@@ -90,10 +114,11 @@ export default function CommitPage() {
                 body: JSON.stringify({
                     owner: ownerName,
                     repo: repoName,
-                    author: author,
-                    token: accessToken,
+                    author: session.user?.githubId,
+                    token: session.accessToken,
                     page,
                     perPage,
+                    userId: session.user?.id,
                 }),
             });
 
@@ -101,15 +126,27 @@ export default function CommitPage() {
                 const result = await res.json();
                 setCommits(result.commits);
                 setTotalCount(result.totalCount);
+
+                // 캐시에 저장
+                cacheRef.current.set(key, {
+                    commits: result.commits,
+                    totalCount: result.totalCount,
+                    timestamp: now,
+                });
+            } else {
+                setCommits([]);
+                setTotalCount(0);
             }
-        } catch (error: unknown) {
+        } catch (error) {
             console.error("Failed to fetch commits:", error);
+            setCommits([]);
+            setTotalCount(0);
         } finally {
             setIsLoading(false);
         }
     };
 
-    // 저장소 변경 시 새로운 데이터 fetch
+    // 저장소 변경 시 페이지 1부터 fetch
     useEffect(() => {
         if (selectedRepo) {
             setCurrentPage(1);
@@ -117,7 +154,7 @@ export default function CommitPage() {
         }
     }, [selectedRepo]);
 
-    // 페이지 변경 시 새로운 데이터 fetch
+    // 페이지 변경 시 fetch
     useEffect(() => {
         if (selectedRepo) {
             fetchCommitsByRepo(ownerName, repoName, currentPage);
@@ -149,7 +186,9 @@ export default function CommitPage() {
                         <h2 className="font-bold">최근 활동</h2>
                         {totalCount > 0 && (
                             <span className="text-text-secondary2 text-sm">
-                                전체 {totalCount}개
+                                {isLoading
+                                    ? "불러오는 중..."
+                                    : `전체 ${totalCount}개`}
                             </span>
                         )}
                     </div>
