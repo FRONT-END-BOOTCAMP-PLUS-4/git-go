@@ -55,7 +55,7 @@ export default function AccordionSidebar({
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
                     onClick={() => setSidebarOpen(false)}
-                    className="cursor-pointer text-gray-600 hover:text-black"
+                    className="text-text-primary1 hover:text-text-secondary1 cursor-pointer"
                 >
                     <ChevronsLeft />
                 </button>

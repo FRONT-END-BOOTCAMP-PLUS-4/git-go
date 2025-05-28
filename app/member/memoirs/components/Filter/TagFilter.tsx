@@ -1,4 +1,3 @@
-import React from "react";
 import { useFilterStore } from "@/store/useFilterStore";
 
 type TagFilterProps = {
@@ -18,16 +17,16 @@ export default function TagFilter({ tags }: TagFilterProps) {
 
     return (
         <div className="mt-4">
-            <h2 className="text-text-secondary1 mb-2 text-base font-normal">
+            <h2 className="text-text-primary1 mb-2 text-base font-normal">
                 태그
             </h2>
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <div
-                        className={`border-border-primary1 cursor-pointer rounded-lg border px-3 py-1 text-xs font-semibold ${
+                        className={`border-border-primary1 cursor-pointer rounded-md border px-3 py-1 text-xs font-semibold ${
                             selectedTags.includes(tag)
                                 ? "bg-primary2 text-primary7"
-                                : "bg-white"
+                                : "bg-bg-member1"
                         }`}
                         key={tag}
                         onClick={() => handleTagClick(tag)}

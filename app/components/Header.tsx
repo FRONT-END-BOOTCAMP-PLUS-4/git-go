@@ -1,12 +1,12 @@
 "use client";
 
 import { MEMBER_URL } from "@/constants/url";
+import { LayoutDashboard, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LoginWithGitHubButton from "./LoginWithGitHubButton";
-import { LayoutDashboard, Settings } from "lucide-react";
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -43,7 +43,7 @@ export default function Header() {
         };
     }, []);
     return (
-        <div className="border-border-primary1 sticky top-0 z-50 h-[65px] w-full border-b bg-white">
+        <div className="border-border-primary1 bg-bg-header1 text-text-primary1 sticky top-0 z-50 h-[65px] w-full border-b">
             <div
                 className={`mx-auto flex h-[65px] ${isFullPage ? "max-w-[1980px]" : "max-w-[1280px]"} flex-row items-center justify-between px-4`}
             >
@@ -72,7 +72,7 @@ export default function Header() {
                     >
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 transition hover:bg-gray-200"
+                            className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition hover:bg-gray-200"
                         >
                             {session?.user?.image ? (
                                 <Image
@@ -105,10 +105,10 @@ export default function Header() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 z-50 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+                            <div className="absolute right-0 z-50 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
-                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
                                 >
                                     <LayoutDashboard
                                         width={16}
@@ -136,7 +136,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:bg-red-50"
+                                    className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:rounded-br-lg hover:rounded-bl-lg hover:bg-red-50"
                                 >
                                     <Image
                                         className="mr-auto ml-2 shrink-0"

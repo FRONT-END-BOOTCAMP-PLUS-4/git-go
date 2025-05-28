@@ -74,7 +74,7 @@ export default function ChangeList({
                         </div>
                         <div
                             className={clsx(
-                                "rounded-lg px-2 py-1 text-sm font-semibold",
+                                "rounded-md px-2 py-1 text-sm font-semibold",
                                 statusClassMap[change.status]
                             )}
                         >

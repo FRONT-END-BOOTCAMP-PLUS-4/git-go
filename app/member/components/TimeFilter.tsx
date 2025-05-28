@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useFilterStore } from "@/store/useFilterStore";
+import { useState } from "react";
 
 type Option = {
     value: string;
@@ -22,8 +22,8 @@ export default function TimeFilter({ options }: TimeFilterProps) {
     };
 
     return (
-        <div className="border-border-primary1 rounded-lg border bg-white p-4">
-            <label className="text-text-secondary1 text-sm font-normal">
+        <div className="bg-bg-member1 border-border-primary1 rounded-md border p-4">
+            <label className="text-text-primary1 text-sm font-normal">
                 작성 기간
             </label>
             <div className="relative inline-block w-full">
@@ -42,10 +42,10 @@ export default function TimeFilter({ options }: TimeFilterProps) {
                     />
                 </button>
                 {isOpen && (
-                    <ul className="border-border-primary1 absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded border bg-white shadow-lg">
+                    <ul className="border-border-primary1 bg-bg-member1 absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border shadow-lg">
                         {options.map((option) => (
                             <li
-                                className="cursor-pointer px-2 py-2 text-sm hover:bg-gray-100"
+                                className="hover:bg-bg-primary1 cursor-pointer px-2 py-2 text-sm"
                                 key={option.value}
                                 onClick={() => handleOptionClick(option.value)}
                             >

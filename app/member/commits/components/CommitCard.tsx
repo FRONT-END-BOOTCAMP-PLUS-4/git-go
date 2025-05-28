@@ -1,5 +1,6 @@
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
+import { Archive, Pencil } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -118,7 +119,7 @@ export default function CommitCard({
                     <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">
                         <p>{shortSha}</p>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
+                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
                         >
                             {label}
                         </div>
@@ -133,13 +134,14 @@ export default function CommitCard({
                         {message}
                     </h3>
                     <div className="flex items-center gap-x-3">
-                        <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <Image
+                        <div className="text-text-secondary2 flex items-center gap-1">
+                            {/* <Image
                                 src="/box-archive-solid.svg"
                                 alt="저장소 아이콘"
                                 width={14}
                                 height={12}
-                            />
+                            /> */}
+                            <Archive size={18} />
                             <p>{repo}</p>
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
@@ -157,12 +159,13 @@ export default function CommitCard({
                                 htmlType="button"
                                 onClick={moveToCommitMemoir}
                             >
-                                <Image
+                                {/* <Image
                                     src="/write.svg"
                                     alt="회고 등록 아이콘"
                                     width={12}
                                     height={12}
-                                />
+                                /> */}
+                                <Pencil size={18} />
                                 회고록 작성
                             </Button>
                         </div>

@@ -3,7 +3,7 @@ export default function ChartSkeleton() {
         <div className="h-full w-full animate-pulse">
             <div className="mb-2 h-4 w-1/4 rounded bg-gray-300"></div>
             <div className="mb-4 h-4 w-1/5 rounded bg-gray-200"></div>
-            <div className="relative h-[208px] w-full overflow-hidden rounded-lg bg-gray-100">
+            <div className="relative h-[208px] w-full overflow-hidden rounded-md bg-gray-100">
                 {[...Array(4)].map((_, i) => (
                     <div
                         key={i}
