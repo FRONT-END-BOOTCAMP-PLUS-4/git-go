@@ -7,13 +7,15 @@ import Image from "next/image";
 export function FeatureBox({ feature }: { feature: any }) {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
-        if (element) {
-            const yOffset = 0; // 헤더나 padding만큼의 오프셋
+        const container = document.querySelector("main"); // ← snap이 걸린 컨테이너
+
+        if (element && container) {
             const y =
-                element.getBoundingClientRect().top +
-                window.pageYOffset +
-                yOffset;
-            window.scrollTo({ top: y, behavior: "smooth" });
+                element.getBoundingClientRect().top -
+                container.getBoundingClientRect().top +
+                container.scrollTop;
+
+            container.scrollTo({ top: y, behavior: "smooth" });
         }
     };
 
@@ -45,13 +47,15 @@ export function ScrollDownButton({ id }: { id: string }) {
             className="absolute bottom-[85px] cursor-pointer rounded-full p-3"
             onClick={() => {
                 const element = document.getElementById(id);
-                if (element) {
-                    const yOffset = 0; // 헤더나 padding만큼의 오프셋
+                const container = document.querySelector("main"); // ← snap이 걸린 컨테이너
+
+                if (element && container) {
                     const y =
-                        element.getBoundingClientRect().top +
-                        window.pageYOffset +
-                        yOffset;
-                    window.scrollTo({ top: y, behavior: "smooth" });
+                        element.getBoundingClientRect().top -
+                        container.getBoundingClientRect().top +
+                        container.scrollTop;
+
+                    container.scrollTo({ top: y, behavior: "smooth" });
                 }
             }}
             aria-label="Scroll to next section"
