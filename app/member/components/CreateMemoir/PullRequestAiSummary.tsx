@@ -78,11 +78,13 @@ export default function PullRequestAiSummary({
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
             }}
-            onClick={(e) => e.stopPropagation()}
         >
             <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                onClick={(e) => {
+                    setShowModal(false);
+                    e.stopPropagation();
+                }}
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 ✖
