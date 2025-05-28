@@ -68,26 +68,38 @@ export function ScrollDownButton({ id }: { id: string }) {
 export function ScrollTopButton() {
     const [visible, setVisible] = useState(false);
 
+    const topClckHandler = () => {
+        const container = document.querySelector("main");
+        if (!container) return;
+
+        container.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
+
     useEffect(() => {
+        const container = document.querySelector("main");
+        if (!container) return;
+
         const toggleVisibility = () => {
-            setVisible(window.scrollY > 300);
+            setVisible(container.scrollTop > 300);
         };
 
-        window.addEventListener("scroll", toggleVisibility);
-        return () => window.removeEventListener("scroll", toggleVisibility);
+        container.addEventListener("scroll", toggleVisibility);
+
+        // 초기 실행 한 번 해주기
+        toggleVisibility();
+
+        return () => container.removeEventListener("scroll", toggleVisibility);
     }, []);
 
     if (!visible) return null;
 
     return (
         <button
-            className="bg-primary7 hover:bg-primary8 fixed right-6 bottom-6 z-50 flex cursor-pointer items-center justify-center rounded-full p-3 text-white shadow-md transition"
-            onClick={() =>
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                })
-            }
+            className="bg-primary7 hover:bg-primary8 fixed right-6 bottom-10 z-50 flex cursor-pointer items-center justify-center rounded-full p-3 text-white shadow-md transition"
+            onClick={topClckHandler}
         >
             <ArrowUp className="h-5 w-5" />
         </button>

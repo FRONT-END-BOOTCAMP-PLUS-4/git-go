@@ -6,7 +6,6 @@ import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
 import Button from "./components/Button";
 import { MEMBER_URL } from "@/constants/url";
 import { authOptions } from "./api/auth/authOptions";
-import { ArrowUp, Mouse } from "lucide-react";
 import VideoSection from "./components/VideoSection";
 import {
     FeatureBox,
@@ -116,7 +115,6 @@ export default async function HomePage() {
                     snap
                 />
             </div>
-
             <ScrollTopButton />
         </main>
     );
