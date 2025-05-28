@@ -1,15 +1,17 @@
 export default function TopReposSkeleton() {
     return (
-        <div className="space-y-4">
-            <div className="h-4 bg-gray-300 rounded w-1/3 mt-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/6 mt-4"></div>
+        <div className="h-full w-full animate-pulse space-y-4">
+            <div className="mb-2 h-4 w-1/3 rounded bg-gray-300"></div>
+            <div className="h-4 w-1/5 rounded bg-gray-200"></div>
             {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="space-y-1 animate-pulse">
+                <div key={i} className="space-y-2">
                     <div className="flex justify-between text-sm">
-                        <div className="h-4 bg-gray-300 rounded w-1/3 mt-4"></div>
-                        <div className="h-4 bg-gray-300 rounded w-1/6 mt-4"></div>
+                        <div className="h-4 w-1/3 rounded bg-gray-200"></div>
+                        <div className="h-4 w-1/6 rounded bg-gray-200"></div>
                     </div>
-                    <div className="bg-gray-200 h-2 w-full rounded-full"></div>
+                    <div className="relative h-2 w-full rounded-full bg-gray-100">
+                        <div className="absolute top-0 left-0 h-full w-1/4 rounded-full bg-gray-300"></div>
+                    </div>
                 </div>
             ))}
         </div>
