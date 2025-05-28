@@ -38,7 +38,7 @@ export default function VideoSection({
             <h2 className="mb-4 text-2xl font-bold">{title}</h2>
             <div className="mb-4 text-xl">{content}</div>
             <video
-                className="w-full max-w-3xl rounded-xl shadow-xl"
+                className="w-full max-w-2xl rounded-xl shadow-xl"
                 autoPlay
                 playsInline
                 muted
