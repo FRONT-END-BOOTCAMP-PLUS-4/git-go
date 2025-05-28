@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import ConfirmDialog from "../member/components/ConfirmDialog";
 import { signOut } from "next-auth/react";
-import AlertDialog from "../member/components/AlertDialog";
 import Image from "next/image";
+import { useState } from "react";
+import AlertDialog from "../member/components/AlertDialog";
+import ConfirmDialog from "../member/components/ConfirmDialog";
+import Button from "./Button";
 
 export default function WithdrawButton() {
     const [openConfirm, setOpenConfirm] = useState(false);
@@ -22,9 +23,10 @@ export default function WithdrawButton() {
 
     return (
         <>
-            <button
+            <Button
                 onClick={() => setOpenConfirm(true)}
-                className="bg-danger1 hover:bg-danger2 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white"
+                type="danger"
+                // className="bg-danger1 hover:bg-danger2 flex cursor-pointer items-center gap-2 rounded px-4 py-2 font-semibold text-white"
             >
                 <Image
                     src={"/sign-out.svg"}
@@ -33,7 +35,7 @@ export default function WithdrawButton() {
                     height={20}
                 />
                 회원 탈퇴
-            </button>
+            </Button>
 
             <ConfirmDialog
                 open={openConfirm}

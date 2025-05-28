@@ -145,7 +145,7 @@ export default function PullRequestMemoir() {
                 onSelect={setSelectedFile}
             />
 
-            <div className="grid grid-cols-2">
+            <div className="grid h-full grid-cols-2">
                 {/* 변경 목록 + 커밋 선택 */}
                 <ChangeListLayout>
                     <Select
@@ -161,7 +161,7 @@ export default function PullRequestMemoir() {
                 </ChangeListLayout>
 
                 {/* 회고 작성 폼 */}
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     <CreateEditorForm source={pr_no} typeId={2} />
                 </div>
             </div>

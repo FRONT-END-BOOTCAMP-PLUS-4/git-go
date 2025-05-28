@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 type FileNode = {
     name: string;
@@ -28,7 +28,7 @@ export default function FileNodeComponent({
         return (
             <li
                 className={`my-0.5 cursor-pointer pl-2 text-sm hover:underline ${
-                    isSelected ? "text-primary7" : "text-text-secondary1"
+                    isSelected ? "text-primary7" : "text-text-primary1"
                 }`}
                 onClick={() => onSelect(node.path)}
             >

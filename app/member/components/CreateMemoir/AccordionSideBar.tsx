@@ -42,7 +42,7 @@ export default function AccordionSidebar({
         return (
             <button
                 onClick={() => setSidebarOpen(true)}
-                className="bg-bg-primary1 top-[65px] left-0 flex min-w-14 cursor-pointer rounded p-4 text-gray-600 shadow-md"
+                className="bg-bg-primary1 text-text-primary1 hover:text-text-secondary1 top-[65px] left-0 flex min-w-14 cursor-pointer p-4 shadow-md"
             >
                 <ChevronsRight />
             </button>

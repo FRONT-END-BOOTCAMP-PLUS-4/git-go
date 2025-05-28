@@ -22,7 +22,7 @@ const typeClassMap: Record<ButtonStyleType, string> = {
     lined: "border border-[var(--color-border-primary1)] text-text-1 hover:bg-bg-primary1 cursor-pointer bg-transparent",
     disabled:
         "bg-[var(--color-border-primary2)] text-[var(--color-text-secondary2)] cursor-not-allowed bg-transparent",
-    danger: "bg-[var(--color-danger1)] text-[var(--color-text-primary1)] hover:bg-[var(--color-danger2)] cursor-pointer ",
+    danger: "bg-[var(--color-danger1)] text-white hover:bg-[var(--color-danger2)] cursor-pointer ",
 };
 
 const sizeClassMap: Record<ButtonSize, string> = {

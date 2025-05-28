@@ -150,7 +150,7 @@ export default function CreateEditorForm({
                     {tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-bg-primary2 flex items-center rounded-md px-2 py-1 text-sm"
+                            className="bg-bg-primary1 flex items-center rounded-md px-2 py-1 text-sm"
                         >
                             {tag}
                             <X
