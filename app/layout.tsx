@@ -2,15 +2,13 @@ import Header from "./components/Header";
 import { Providers } from "./components/Providers";
 import "./globals.css";
 
-import Link from "next/link";
-
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <title>GitGo - 기록이 남는 개발</title>
             </head>
