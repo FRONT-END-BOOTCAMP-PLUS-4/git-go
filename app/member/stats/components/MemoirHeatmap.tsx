@@ -33,9 +33,14 @@ export default function MemoirHeatmap({ data }: { data: HeatmapValue[] }) {
                 }}
                 tooltipDataAttrs={(value: HeatmapValue | undefined) => {
                     if (!value || !value.date) return null;
+                    const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    }).format(new Date(value.date));
                     return {
                         "data-tooltip-id": "memoir-tooltip",
-                        "data-tooltip-content": `${value.date}: ${value.count}회`,
+                        "data-tooltip-content": `${formattedDate}: ${value.count}회`,
                     };
                 }}
                 showWeekdayLabels={true}
