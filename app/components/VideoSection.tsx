@@ -36,14 +36,14 @@ export default function VideoSection({
             id={id}
         >
             <h2 className="mb-4 text-2xl font-bold">{title}</h2>
-            <div className="text-xl">{content}</div>
+            <div className="mb-4 text-xl">{content}</div>
             <video
-                className="w-full max-w-3xl rounded-xl shadow-xl"
+                className="mb-4 w-full max-w-3xl rounded-xl shadow-xl"
                 autoPlay
                 playsInline
                 muted
                 loop
-                // src={videoSrc}
+                src={videoSrc}
             />
             {nextSectionId && (
                 <button
