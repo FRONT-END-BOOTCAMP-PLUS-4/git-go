@@ -80,6 +80,9 @@
     /* 잔디 */
     --color-fill-empty: #ebedf0;
 
+    /* 그림자 */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
     /* 에디터 관련 색상 */
     --radius: 0.625rem;
     --background: oklch(1 0 0);
@@ -126,6 +129,7 @@
     /* 배경 컬러 */
     --background-main: #000;
     --background-1: #17171c;
+    --background-2: #2d2d31;
 
     --background-header-1: #211f21;
 
@@ -146,6 +150,9 @@
 
     /* 잔디 */
     --color-fill-empty: #4a4c4e;
+
+    /* 그림자 */
+    --shadow-color: rgba(255, 255, 255, 0.15);
 
     --background: oklch(0.129 0.042 264.695);
     --foreground: oklch(0.984 0.003 247.858);
@@ -247,6 +254,9 @@
     /* danger 컬러 */
     --color-danger1: var(--danger-1);
     --color-danger2: var(--danger-2);
+
+    /* 그림자 */
+    --shadow-primary: 0 4px 6px -1px var(--shadow-color);
 
     /* editor 컬러 */
     --radius-sm: calc(var(--radius) - 4px);
