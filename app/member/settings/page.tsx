@@ -95,7 +95,7 @@ export default function Settings() {
                 <div className="p-6">
                     {/* 테마 설정 */}
                     <div className="border-border-primary1 border-b pb-4">
-                        <p className="mb-3 text-[16px] font-normal dark:text-white">
+                        <p className="mb-3 text-[16px] font-normal">
                             테마 설정
                         </p>
                         <div className="grid grid-cols-2 gap-4">
@@ -103,7 +103,7 @@ export default function Settings() {
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "light"
                                         ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white dark:bg-gray-800 dark:text-white"
+                                        : "border-gray-200 bg-white"
                                 }`}
                                 onClick={() => setSelectedTheme("light")}
                             >
@@ -124,7 +124,7 @@ export default function Settings() {
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "dark"
                                         ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white dark:bg-gray-800 dark:text-white"
+                                        : "border-gray-200 bg-white"
                                 }`}
                                 onClick={() => setSelectedTheme("dark")}
                             >
@@ -145,7 +145,7 @@ export default function Settings() {
 
                     {/* 커밋 가져오기 설정 */}
                     <div className="border-border-primary1 border-b py-4">
-                        <p className="mb-3 text-[16px] font-normal dark:text-white">
+                        <p className="mb-3 text-[16px] font-normal">
                             커밋 가져오기 설정
                         </p>
                         <div className="grid grid-cols-2 gap-4">
@@ -154,7 +154,7 @@ export default function Settings() {
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "default"
                                         ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white dark:bg-gray-800 dark:text-white"
+                                        : "border-gray-200 bg-white"
                                 }`}
                             >
                                 <Image
@@ -174,7 +174,7 @@ export default function Settings() {
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "all"
                                         ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white dark:bg-gray-800 dark:text-white"
+                                        : "border-gray-200 bg-white"
                                 }`}
                             >
                                 <Image
@@ -194,11 +194,11 @@ export default function Settings() {
 
                     {/* 계정 관리 */}
                     <div className="py-4">
-                        <p className="mb-2 text-[16px] font-normal dark:text-white">
+                        <p className="mb-2 text-[16px] font-normal">
                             계정 관리
                         </p>
                         <WithdrawButton />
-                        <p className="text-text-gray1 mt-2 text-[14px] dark:text-gray-300">
+                        <p className="text-text-gray1 mt-2 text-[14px]">
                             회원 탈퇴 시 모든 데이터가 영구적으로 삭제됩니다.
                         </p>
                     </div>
