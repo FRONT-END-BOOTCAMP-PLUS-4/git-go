@@ -105,10 +105,10 @@ export default function Header() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute right-0 z-50 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                            <div className="bg-bg-primary1 border-border-primary1 absolute right-0 z-50 mt-2 w-full rounded-md border shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
-                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
+                                    className="text-text-primary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
                                 >
                                     <LayoutDashboard
                                         width={16}
@@ -121,7 +121,7 @@ export default function Header() {
                                 </button>
                                 <button
                                     onClick={moveToSettingsPage}
-                                    className="text-text-secondary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                    className="text-text-primary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <Settings
                                         width={16}
