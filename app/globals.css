@@ -140,6 +140,7 @@
     /* 텍스트 컬러 */
     --text-1: #fff;
     --text-2: #000;
+    --text-3: #afafaf;
 
     /* 코드 변경사항 */
     --code-add-text-1: #30ad49;
