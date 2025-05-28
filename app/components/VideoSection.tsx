@@ -19,20 +19,20 @@ export default function VideoSection({
 }) {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
-        if (element) {
-            const yOffset = 0; // 헤더나 padding만큼의 오프셋
+        const container = document.querySelector("main"); // ← snap이 걸린 컨테이너
+
+        if (element && container) {
             const y =
-                element.getBoundingClientRect().top +
-                window.pageYOffset +
-                yOffset;
-            window.scrollTo({ top: y, behavior: "smooth" });
+                element.getBoundingClientRect().top -
+                container.getBoundingClientRect().top +
+                container.scrollTop;
+
+            container.scrollTo({ top: y, behavior: "smooth" });
         }
     };
     return (
         <section
-            className={`relative flex min-h-screen flex-col items-center justify-center px-4 ${
-                snap ? "snap-start" : ""
-            }`}
+            className={`relative flex min-h-screen snap-start scroll-mt-[-40] flex-col items-center justify-center px-4`}
             id={id}
         >
             <h2 className="mb-4 text-2xl font-bold">{title}</h2>

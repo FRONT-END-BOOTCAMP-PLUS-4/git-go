@@ -43,8 +43,8 @@ export default async function HomePage() {
     ];
 
     return (
-        <main className="relative snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
-            <div className="relative flex min-h-screen flex-col items-center space-y-6 px-4 pt-[15vh]">
+        <main className="h-screen snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
+            <div className="relative flex min-h-screen snap-start flex-col items-center space-y-6 px-4 pt-[15vh]">
                 <div className="flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
                         <Image
@@ -92,35 +92,29 @@ export default async function HomePage() {
 
             {/* 설명 영상 섹션들 */}
             <div>
-                <div className="snap-start">
-                    <VideoSection
-                        id="sync"
-                        title="활동 동기화"
-                        videoSrc="/videos/sync.mp4"
-                        nextSectionId="ai"
-                        content="커밋, PR 및 코드 변경사항을 자동으로 추적하세요"
-                        snap
-                    />
-                </div>
-                <div className="snap-start">
-                    <VideoSection
-                        id="ai"
-                        title="AI 요약 기능"
-                        videoSrc="/videos/ai.mp4"
-                        nextSectionId="memoirs"
-                        content="코드 변경사항에 대한 지능형 인사이트를 제공합니다"
-                        snap
-                    />
-                </div>
-                <div className="snap-start">
-                    <VideoSection
-                        id="memoirs"
-                        title="회고록 작성"
-                        videoSrc="/videos/memoirs.mp4"
-                        content="풍부한 맥락과 함께 개발 여정을 기록하세요"
-                        snap
-                    />
-                </div>
+                <VideoSection
+                    id="sync"
+                    title="활동 동기화"
+                    videoSrc="/videos/sync.mp4"
+                    nextSectionId="ai"
+                    content="커밋, PR 및 코드 변경사항을 자동으로 추적하세요"
+                    snap
+                />
+                <VideoSection
+                    id="ai"
+                    title="AI 요약 기능"
+                    videoSrc="/videos/ai.mp4"
+                    nextSectionId="memoirs"
+                    content="코드 변경사항에 대한 지능형 인사이트를 제공합니다"
+                    snap
+                />
+                <VideoSection
+                    id="memoirs"
+                    title="회고록 작성"
+                    videoSrc="/videos/memoirs.mp4"
+                    content="풍부한 맥락과 함께 개발 여정을 기록하세요"
+                    snap
+                />
             </div>
 
             <ScrollTopButton />
