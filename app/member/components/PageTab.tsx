@@ -37,6 +37,7 @@ export default function PageTap({ status }: Props) {
                     alt={`${status}`}
                     width={20}
                     height={20}
+                    priority
                 />
                 <div
                     className={`ml-2 ${
@@ -59,6 +60,7 @@ export default function PageTap({ status }: Props) {
                     alt={`${status}`}
                     width={20}
                     height={20}
+                    priority
                 />
                 <div
                     className={`ml-2 ${
@@ -81,6 +83,7 @@ export default function PageTap({ status }: Props) {
                     alt={`${status}`}
                     width={20}
                     height={20}
+                    priority
                 />
                 <div
                     className={`ml-2 ${
@@ -103,6 +106,7 @@ export default function PageTap({ status }: Props) {
                     alt={`${status}`}
                     width={20}
                     height={20}
+                    priority
                 />
                 <div
                     className={`ml-2 ${
