@@ -38,7 +38,7 @@ export default function VideoSection({
             <h2 className="mb-4 text-2xl font-bold">{title}</h2>
             <div className="mb-4 text-xl">{content}</div>
             <video
-                className="mb-4 w-full max-w-3xl rounded-xl shadow-xl"
+                className="w-full max-w-3xl rounded-xl shadow-xl"
                 autoPlay
                 playsInline
                 muted
@@ -48,7 +48,7 @@ export default function VideoSection({
             {nextSectionId && (
                 <button
                     onClick={() => scrollToSection(nextSectionId)}
-                    className="absolute bottom-10 cursor-pointer rounded-full p-3"
+                    className="bottom-10 cursor-pointer rounded-full p-3"
                     aria-label="Scroll to next section"
                 >
                     <ChevronDown className="text-border-primary1 h-20 w-30" />
