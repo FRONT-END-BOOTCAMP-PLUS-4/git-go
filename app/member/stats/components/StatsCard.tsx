@@ -40,7 +40,7 @@ export default function StatsCard({
                     }`}
                 >
                     {isZero ? "⬆" : isNegative ? "⬇" : "⬆"}{" "}
-                    {Math.abs(changeNumber)}
+                    {Math.abs(changeNumber).toLocaleString()}
                 </span>
                 {/* <span className="text-sm text-green-600">⬆ {change}</span> */}
             </div>
