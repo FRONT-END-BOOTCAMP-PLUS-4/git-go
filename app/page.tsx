@@ -43,7 +43,7 @@ export default async function HomePage() {
     ];
 
     return (
-        <main className="h-screen snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
+        <main className="h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
             <div className="relative flex min-h-screen snap-start flex-col items-center space-y-6 px-4 pt-[15vh]">
                 <div className="flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
