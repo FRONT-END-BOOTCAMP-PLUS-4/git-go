@@ -186,6 +186,7 @@ export default function EditEditorForm({
                 <Button type="lined" onClick={handleModalCancel}>
                     취소
                 </Button>
+
                 <Button
                     type={
                         loading
@@ -197,7 +198,7 @@ export default function EditEditorForm({
                     onClick={handleEdit}
                     isLoading={loading}
                 >
-                    {loading ? "수정 중" : "수정하기"}
+                    {loading ? "수정 중" : "완료"}
                 </Button>
             </div>
         </div>
