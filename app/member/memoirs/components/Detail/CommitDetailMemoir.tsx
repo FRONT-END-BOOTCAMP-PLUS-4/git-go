@@ -7,13 +7,12 @@ import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm"
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -94,6 +93,11 @@ export default function CommitDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
+
     if (!commitData) return <Loading />;
 
     return (
@@ -113,7 +117,7 @@ export default function CommitDetailMemoir() {
                 </div>
             )}
             <AccordionSidebar
-                files={useExtractFilenames(commitData.changeDetail)}
+                files={files}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />

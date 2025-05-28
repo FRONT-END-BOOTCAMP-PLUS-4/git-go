@@ -9,7 +9,7 @@ import {
 import { useCreateEditor } from "@/hooks/useCreateEditor";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
-import React, { forwardRef, memo, useImperativeHandle } from "react";
+import React, { forwardRef, memo, ReactNode, useImperativeHandle } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -17,11 +17,12 @@ type PlateEditorProps = {
     readOnly?: boolean;
     handleEditorChange?: () => void;
     initialContent?: Value;
+    toolbar?: ReactNode;
 };
 
 function PlateEditorInner(
-    { readOnly, handleEditorChange, initialContent }: PlateEditorProps,
-    ref: React.Ref<EditorFormHandle> // ref 타입 명시
+    { readOnly, handleEditorChange, initialContent, toolbar }: PlateEditorProps,
+    ref: React.Ref<EditorFormHandle>
 ) {
     const editor = useCreateEditor({ readOnly, value: initialContent });
 
@@ -37,10 +38,14 @@ function PlateEditorInner(
                 readOnly={readOnly}
             >
                 <EditorContainer className="flex flex-1 flex-col">
-                    <div className="flex-shrink-0">
-                        <label className="mb-1 block text-sm font-medium">
-                            회고록 작성
-                        </label>
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex-shrink-0">
+                            <label className="mb-1 block text-sm font-medium">
+                                회고록 작성
+                            </label>
+                        </div>
+
+                        {toolbar && <div className="mb-2">{toolbar}</div>}
                     </div>
 
                     <div className="border-border-primary1 flex min-h-0 flex-1 flex-col overflow-y-auto rounded-md border">
@@ -60,4 +65,4 @@ export const PlateEditor = memo(
     forwardRef<EditorFormHandle, PlateEditorProps>(PlateEditorInner)
 );
 
-PlateEditor.displayName = "PlateEditor"; // React DevTools에서 컴포넌트 이름 확인을 위함
+PlateEditor.displayName = "PlateEditor";

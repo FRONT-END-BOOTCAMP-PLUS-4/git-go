@@ -5,7 +5,7 @@ import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { Session } from "next-auth";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
 type EditEditorFormProps = {
@@ -57,9 +57,11 @@ export default function EditEditorForm({
     }, []);
 
     // content에 글씨가 있는지 확인하는 함수
-    const hasText = content.some((node) =>
-        node.children.some((ch: any) => ch.text?.trim() !== "")
-    );
+    const hasText = useMemo(() => {
+        return content.some((node) =>
+            node.children.some((ch: any) => ch.text?.trim() !== "")
+        );
+    }, [content]);
 
     // 폼 입력 유효성 검사 (제목, 내용)
     const formDisabled = !title.trim() || !hasText;
@@ -116,7 +118,7 @@ export default function EditEditorForm({
     };
 
     // 취소 버튼
-    const handleCancel = () => {
+    const handleModalCancel = () => {
         setIsEditing(false);
     };
 
@@ -181,9 +183,10 @@ export default function EditEditorForm({
             </div>
             {/* 버튼 */}
             <div className="flex justify-end gap-2">
-                <Button type="lined" onClick={handleCancel}>
+                <Button type="lined" onClick={handleModalCancel}>
                     취소
                 </Button>
+
                 <Button
                     type={
                         loading
@@ -195,7 +198,7 @@ export default function EditEditorForm({
                     onClick={handleEdit}
                     isLoading={loading}
                 >
-                    {loading ? "수정 중" : "수정하기"}
+                    {loading ? "수정 중" : "완료"}
                 </Button>
             </div>
         </div>
