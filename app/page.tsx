@@ -1,17 +1,49 @@
+// app/page.tsx (or app/home/page.tsx)
+
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
 import Button from "./components/Button";
 import { MEMBER_URL } from "@/constants/url";
 import { authOptions } from "./api/auth/authOptions";
+import VideoSection from "./components/VideoSection";
+import {
+    FeatureBox,
+    ScrollDownButton,
+    ScrollTopButton,
+} from "./components/ScrollControls";
 
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
     const isLoggedIn = !!session;
 
+    const features = [
+        {
+            id: "sync",
+            title: "활동 동기화",
+            desc: "커밋, PR 및 코드 변경사항을 자동으로 추적",
+            iconPath: "/sync-activities.svg",
+            bgColor: "bg-green-100",
+        },
+        {
+            id: "ai",
+            title: "AI 요약",
+            desc: "코드 변경사항에 대한 지능형 인사이트 제공",
+            iconPath: "/ai-summaries.svg",
+            bgColor: "bg-blue-100",
+        },
+        {
+            id: "memoirs",
+            title: "회고록 작성",
+            desc: "풍부한 맥락과 함께 개발 여정을 기록하세요",
+            iconPath: "/create-memoirs.svg",
+            bgColor: "bg-purple-100",
+        },
+    ];
+
     return (
-        <main className="mt-[15vh] flex flex-col items-center justify-center bg-gray-50 px-4 text-center">
-            <div className="space-y-6">
+        <main className="h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
+            <div className="relative flex min-h-screen snap-start flex-col items-center space-y-6 px-4 pt-[15vh]">
                 <div className="flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
                         <Image
@@ -48,50 +80,42 @@ export default async function HomePage() {
                     <LoginWithGitHubButton />
                 )}
 
-                <div className="mt-10 flex justify-center gap-20 leading-10">
-                    {[
-                        {
-                            title: "활동 동기화",
-                            desc: "커밋, PR 및 코드 변경사항을 자동으로 추적",
-                            iconPath: "/sync-activities.svg",
-                            bgColor: "bg-green-100",
-                        },
-                        {
-                            title: "AI 요약",
-                            desc: "코드 변경사항에 대한 지능형 인사이트 제공",
-                            iconPath: "/ai-summaries.svg",
-                            bgColor: "bg-blue-100",
-                        },
-                        {
-                            title: "회고록 작성",
-                            desc: "풍부한 맥락과 함께 개발 여정을 기록하세요",
-                            iconPath: "/create-memoirs.svg",
-                            bgColor: "bg-purple-100",
-                        },
-                    ].map((feature) => (
-                        <div
-                            key={feature.title}
-                            className="max-w-[350px] text-center"
-                        >
-                            <div
-                                className={`mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full p-4 ${feature.bgColor}`}
-                            >
-                                <Image
-                                    src={feature.iconPath}
-                                    alt={feature.title}
-                                    width={24}
-                                    height={24}
-                                    className="h-6 w-6"
-                                />
-                            </div>
-                            <h3 className="font-semibold">{feature.title}</h3>
-                            <p className="text-sm text-gray-500">
-                                {feature.desc}
-                            </p>
-                        </div>
+                <div className="mt-10 flex flex-wrap justify-center gap-10 leading-10">
+                    {features.map((feature) => (
+                        <FeatureBox key={feature.id} feature={feature} />
                     ))}
                 </div>
+
+                <ScrollDownButton id="sync" />
             </div>
+
+            {/* 설명 영상 섹션들 */}
+            <div>
+                <VideoSection
+                    id="sync"
+                    title="활동 동기화"
+                    videoSrc="/videos/sync.mp4"
+                    nextSectionId="ai"
+                    content="커밋, PR 및 코드 변경사항을 자동으로 추적하세요"
+                    snap
+                />
+                <VideoSection
+                    id="ai"
+                    title="AI 요약 기능"
+                    videoSrc="/videos/ai.mp4"
+                    nextSectionId="memoirs"
+                    content="코드 변경사항에 대한 지능형 인사이트를 제공합니다"
+                    snap
+                />
+                <VideoSection
+                    id="memoirs"
+                    title="회고록 작성"
+                    videoSrc="/videos/memoirs.mp4"
+                    content="풍부한 맥락과 함께 개발 여정을 기록하세요"
+                    snap
+                />
+            </div>
+            <ScrollTopButton />
         </main>
     );
 }

@@ -8,6 +8,7 @@ import ChartSkeleton from "./components/ChartSkeleton";
 import StatsCard from "./components/StatsCard";
 import TopReposSkeleton from "./components/TopReposSkeleton";
 import WeeklyCommitChart from "./components/WeeklyCommitChart";
+import MemoirHeatmap from "./components/MemoirHeatmap";
 
 export default function StatsPage() {
     const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
@@ -27,6 +28,9 @@ export default function StatsPage() {
     const [lineChangePercent, setLineChangePercent] = useState<string | null>(
         null
     );
+    const [memoirHeatmap, setMemoirHeatmap] = useState<
+        { date: string; count: number }[]
+    >([]);
 
     const cacheRef = useRef<
         Map<
@@ -44,6 +48,35 @@ export default function StatsPage() {
             }
         >
     >(new Map());
+
+    useEffect(() => {
+        if (!selectedRepo) return;
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        const fetchMemoirHeatmap = async () => {
+            try {
+                const res = await fetch(`/api/stats/memoir-heatmap`, {
+                    signal,
+                });
+                const data = await res.json();
+                setMemoirHeatmap(data);
+            } catch (e) {
+                if (e instanceof DOMException && e.name === "AbortError") {
+                    console.log("Memoir heatmap fetch aborted");
+                } else {
+                    console.error("Memoir heatmap fetch 실패", e);
+                }
+            }
+        };
+
+        fetchMemoirHeatmap();
+
+        return () => {
+            controller.abort();
+        };
+    }, [selectedRepo]);
 
     useEffect(() => {
         const fetchTopRepos = async () => {
@@ -168,40 +201,45 @@ export default function StatsPage() {
 
     return (
         <div className="space-y-6 bg-gray-50">
-            {/* Top stats */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {totalCommits === null ? (
-                    <StatsCardSkeleton />
-                ) : (
-                    <StatsCard
-                        title="전체 커밋"
-                        value={totalCommits.toString()}
-                        change={commitChange ?? "0%"}
-                    />
-                )}
-                {totalLines === null ? (
-                    <StatsCardSkeleton />
-                ) : (
-                    <StatsCard
-                        title="코드 라인 수"
-                        value={totalLines.toLocaleString()}
-                        change={lineChangePercent ?? "0%"}
-                    />
-                )}
-                {totalMemoirs === null ? (
-                    <StatsCardSkeleton />
-                ) : (
-                    <StatsCard
-                        title="작성된 회고록"
-                        value={totalMemoirs.toLocaleString()}
-                        change="hide"
-                    />
-                )}
+            {/* 히트맵 + 오른쪽 세로 카드 */}
+            <div className="flex flex-col gap-4 md:flex-row">
+                <div className="md:w-[70%]">
+                    <MemoirHeatmap data={memoirHeatmap} />
+                </div>
+                <div className="flex flex-col gap-4 md:w-[30%]">
+                    {totalCommits === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="전체 커밋"
+                            value={totalCommits.toString()}
+                            change={commitChange ?? "0%"}
+                        />
+                    )}
+                    {totalLines === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="코드 라인 수"
+                            value={totalLines.toLocaleString()}
+                            change={lineChangePercent ?? "0%"}
+                        />
+                    )}
+                    {totalMemoirs === null ? (
+                        <StatsCardSkeleton />
+                    ) : (
+                        <StatsCard
+                            title="작성된 회고록"
+                            value={totalMemoirs.toLocaleString()}
+                            change="hide"
+                        />
+                    )}
+                </div>
             </div>
 
-            {/* Bottom section */}
+            {/* 아래 좌우 두 칸 */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                {/* Commit activity */}
+                {/* 커밋 활동 */}
                 {loadingWeekly || isFirstLoad ? (
                     <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
                         <ChartSkeleton />
@@ -213,7 +251,8 @@ export default function StatsPage() {
                         </div>
                     </BottomCard>
                 )}
-                {/* Most active repos */}
+
+                {/* 가장 활발한 저장소 */}
                 {loadingTopRepos ? (
                     <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
                         <TopReposSkeleton />
@@ -234,9 +273,9 @@ export default function StatsPage() {
                                             <span>{repo.name}</span>
                                             <span>{repo.commits} commits</span>
                                         </div>
-                                        <div className="bg-bg-primary2 h-2 w-full rounded-full">
+                                        <div className="bg-bg-primary2 relative h-2 w-full rounded-full">
                                             <div
-                                                className="h-full rounded-full bg-indigo-500"
+                                                className="absolute top-0 left-0 h-full rounded-full bg-indigo-500"
                                                 style={{
                                                     width: `${(repo.commits / Math.max(...topRepos.map((r) => r.commits), 1)) * 100}%`,
                                                 }}

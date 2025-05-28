@@ -14,6 +14,9 @@ export interface MemoirRepository {
     ): Promise<[any[], number]>;
     countByRepoName(name: string, userId: string): Promise<number>;
     findAllTagsByUser(userId: string, repoId?: string): Promise<string[]>;
+    getMemoirHeatmap(
+        userId: string
+    ): Promise<{ date: string; count: number }[]>;
 
     create(data: {
         title: string;
