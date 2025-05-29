@@ -39,18 +39,12 @@ function PlateEditorInner(
             >
                 <EditorContainer className="flex flex-1 flex-col">
                     <div className="flex items-center justify-between gap-2">
-                        <div className="flex-shrink-0">
-                            <label className="mb-1 block text-sm font-medium">
-                                회고록 작성
-                            </label>
-                        </div>
-
                         {toolbar && <div className="mb-2">{toolbar}</div>}
                     </div>
 
-                    <div className="border-border-primary1 flex min-h-0 flex-1 flex-col overflow-y-auto rounded-md border">
+                    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
                         <Editor
-                            className="flex-1 px-8 py-2 focus:placeholder:text-transparent"
+                            className="border-border-primary1 flex-1 border-b-[2px] px-5 py-2"
                             variant="demo"
                         />
                     </div>
