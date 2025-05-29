@@ -1,13 +1,13 @@
 "use client";
 
-import CommitCard from "@/app/member/commits/components/CommitCard";
-import { useEffect, useRef, useState } from "react";
-import RepoSelectModal from "../components/RepoSelectModal";
-import { useRepoStore } from "@/store/repoStore";
-import { useSession } from "next-auth/react";
 import Pagination from "@/app/components/Pagination";
+import CommitCard from "@/app/member/commits/components/CommitCard";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 import EmptyResult from "@/app/member/components/EmptyResult";
+import { useRepoStore } from "@/store/repoStore";
+import { useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
+import RepoSelectModal from "../components/RepoSelectModal";
 
 interface Commit {
     sha: string;
@@ -180,7 +180,7 @@ export default function CommitPage() {
     return (
         <>
             <RepoSelectModal open={open} onClose={() => setOpen(false)} />
-            <div className="border-border-primary1 rounded-lg border-1 bg-white">
+            <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
                 <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                     <div className="flex items-center gap-x-3">
                         <h2 className="font-bold">최근 활동</h2>

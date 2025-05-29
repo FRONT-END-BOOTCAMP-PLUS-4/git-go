@@ -124,7 +124,7 @@ export default function CommitDetailMemoir() {
 
             <div className="grid h-full grid-cols-2">
                 <ChangeListLayout>
-                    <div className="shadow- mb-2 truncate px-3 py-2 font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
                         {commitData.message}
                     </div>
                     <ChangeList
@@ -133,7 +133,7 @@ export default function CommitDetailMemoir() {
                     />
                 </ChangeListLayout>
 
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     {isEditing ? (
                         <EditEditorForm
                             title={title}

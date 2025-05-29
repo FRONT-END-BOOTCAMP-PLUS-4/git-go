@@ -3,7 +3,7 @@
 import Button from "@/app/components/Button";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
 import { useRepoStore } from "@/store/repoStore";
-import Image from "next/image";
+import { Archive, Plus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import CommitPrFilter from "../memoirs/components/Filter/CommitPrFilter";
@@ -110,7 +110,7 @@ export default function SideBar({
 
     return (
         <aside className="flex w-50 flex-col gap-y-4">
-            <div className="border-border-primary1 h-fit w-50 rounded-lg border-1 bg-white">
+            <div className="bg-bg-member1 border-border-primary1 h-fit w-50 rounded-md border-1">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     등록된 저장소
                 </h2>
@@ -128,14 +128,14 @@ export default function SideBar({
                                     className="border-border-primary1"
                                 >
                                     <button
-                                        className={`flex w-full cursor-pointer items-center gap-x-3 rounded-md px-2 py-2 text-left font-semibold ${
+                                        className={`hover:${isSelected ? "" : "bg-bg-primary2"} flex w-full cursor-pointer items-center gap-x-3 rounded-md px-2 py-2 text-left font-semibold ${
                                             isSelected
                                                 ? "bg-primary2 text-primary7"
                                                 : ""
                                         }`}
                                         onClick={() => setSelectedRepo(repo)}
                                     >
-                                        <Image
+                                        {/* <Image
                                             src={
                                                 isSelected
                                                     ? "/box-archive-solid-blue.svg"
@@ -144,6 +144,10 @@ export default function SideBar({
                                             width={14}
                                             height={14}
                                             alt="브랜치 아이콘"
+                                        /> */}
+                                        <Archive
+                                            className="shrink-0"
+                                            size={18}
                                         />
                                         <span
                                             className={`text-sm break-all hover:line-clamp-none ${
@@ -166,12 +170,13 @@ export default function SideBar({
                         size="full"
                         onClick={() => setOpen(true)}
                     >
-                        <Image
+                        {/* <Image
                             src="/plus-gray.svg"
                             width={10.5}
                             height={16}
                             alt="저장소 추가 아이콘"
-                        />
+                        /> */}
+                        <Plus size={18} />
                         저장소 추가
                     </Button>
                 </section>
@@ -188,7 +193,7 @@ export default function SideBar({
             )}
 
             {pathname.includes("memoirs") && (
-                <div className="border-border-primary1 shadow-sms rounded-lg border-1 bg-white p-4">
+                <div className="border-border-primary1 shadow-sms bg-bg-member1 rounded-md border-1 p-4">
                     <CommitPrFilter />
                     <TagFilter tags={repoTags} />
                 </div>

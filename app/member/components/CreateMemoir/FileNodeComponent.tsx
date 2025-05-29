@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 type FileNode = {
     name: string;
@@ -28,7 +28,7 @@ export default function FileNodeComponent({
         return (
             <li
                 className={`my-0.5 cursor-pointer pl-2 text-sm hover:underline ${
-                    isSelected ? "text-primary7" : "text-text-secondary1"
+                    isSelected ? "text-primary7" : "text-text-primary1"
                 }`}
                 onClick={() => onSelect(node.path)}
             >
@@ -40,7 +40,7 @@ export default function FileNodeComponent({
     return (
         <div>
             <button
-                className="flex w-full cursor-pointer items-center py-1 text-left text-sm hover:bg-gray-200"
+                className="hover:bg-hover-gray1 flex w-full cursor-pointer items-center rounded py-1 text-left text-sm"
                 onClick={() => setOpen(!open)}
             >
                 {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}

@@ -1,17 +1,17 @@
 // app/page.tsx (or app/home/page.tsx)
 
+import { MEMBER_URL } from "@/constants/url";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
-import Button from "./components/Button";
-import { MEMBER_URL } from "@/constants/url";
 import { authOptions } from "./api/auth/authOptions";
-import VideoSection from "./components/VideoSection";
+import Button from "./components/Button";
+import LoginWithGitHubButton from "./components/LoginWithGitHubButton";
 import {
     FeatureBox,
     ScrollDownButton,
     ScrollTopButton,
 } from "./components/ScrollControls";
+import VideoSection from "./components/VideoSection";
 
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
@@ -42,7 +42,7 @@ export default async function HomePage() {
     ];
 
     return (
-        <main className="h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll bg-gray-50 text-center">
+        <main className="bg-bg-primary1 text-text-primary1 h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll text-center">
             <div className="relative flex min-h-screen snap-start flex-col items-center space-y-6 px-4 pt-[15vh]">
                 <div className="flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
@@ -58,7 +58,7 @@ export default async function HomePage() {
                 <h1 className="text-2xl font-semibold">
                     코딩 여정을 기록하세요
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-text-gray1 text-sm">
                     GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI
                     기반 요약과 함께
                     <br />

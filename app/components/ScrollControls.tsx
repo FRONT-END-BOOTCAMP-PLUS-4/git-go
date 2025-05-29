@@ -25,7 +25,7 @@ export function FeatureBox({ feature }: { feature: any }) {
             onClick={() => scrollToSection(feature.id)}
         >
             <div
-                className={`mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full p-4 ${feature.bgColor}`}
+                className={`text-text-gray1 mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full p-4 ${feature.bgColor}`}
             >
                 <Image
                     src={feature.iconPath}
@@ -36,7 +36,7 @@ export function FeatureBox({ feature }: { feature: any }) {
                 />
             </div>
             <h3 className="font-semibold">{feature.title}</h3>
-            <p className="text-sm text-gray-500">{feature.desc}</p>
+            <p className="text-sm">{feature.desc}</p>
         </div>
     );
 }
