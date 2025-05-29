@@ -96,7 +96,7 @@ export default function MemoirCard({ memoir }: Props) {
                         {memoir.tags.map((tag, index) => (
                             <li
                                 key={index}
-                                className="border-border-primary1 bg-bg-member1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
+                                className="border-border-primary1 bg-bg-tag1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
                             >
                                 {tag}
                             </li>
