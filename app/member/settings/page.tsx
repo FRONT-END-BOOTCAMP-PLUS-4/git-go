@@ -103,7 +103,7 @@ export default function Settings() {
                             <button
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "light"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
                                         : "bg-bg-member1 border-border-primary1"
                                 } `}
                                 onClick={() => setSelectedTheme("light")}
@@ -125,7 +125,7 @@ export default function Settings() {
                             <button
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "dark"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
                                         : "bg-bg-member1 border-border-primary1"
                                 }`}
                                 onClick={() => setSelectedTheme("dark")}
@@ -156,7 +156,7 @@ export default function Settings() {
                                 onClick={() => setBranchSetting("default")}
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "default"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
                                         : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
@@ -176,7 +176,7 @@ export default function Settings() {
                                 onClick={() => setBranchSetting("all")}
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "all"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
                                         : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
