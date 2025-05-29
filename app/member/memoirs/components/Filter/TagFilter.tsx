@@ -23,7 +23,7 @@ export default function TagFilter({ tags }: TagFilterProps) {
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <div
-                        className={`border-border-primary1 cursor-pointer rounded-md border px-3 py-1 text-xs font-semibold ${
+                        className={`border-border-primary1 bg-bg-tag1 cursor-pointer rounded-md border px-3 py-1 text-xs font-semibold ${
                             selectedTags.includes(tag)
                                 ? "bg-primary2 text-primary7"
                                 : "bg-bg-member1"
