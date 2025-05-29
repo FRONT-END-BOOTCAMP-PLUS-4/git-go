@@ -200,7 +200,7 @@ export default function StatsPage() {
     }, [selectedRepo]);
 
     return (
-        <div className="bg-bg-member1 space-y-6">
+        <div className="space-y-6">
             {/* 히트맵 + 오른쪽 세로 카드 */}
             <div className="flex flex-col gap-4 md:flex-row">
                 <div className="md:w-[70%]">
