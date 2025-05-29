@@ -7,6 +7,7 @@ import WithdrawButton from "@/app/components/WithdrawButton";
 import { useRouter } from "next/navigation";
 import Button from "@/app/components/Button";
 import { useTheme } from "next-themes";
+import SettingsSkeleton from "../stats/components/SettingsSkeleton";
 
 export default function Settings() {
     const { setTheme } = useTheme();
@@ -34,6 +35,7 @@ export default function Settings() {
     const isSaveDisabled =
         branchSetting === initialBranchSetting &&
         selectedTheme === initialTheme;
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -81,9 +83,14 @@ export default function Settings() {
                 setBranchSetting(setting);
                 setInitialBranchSetting(setting);
             }
+            setIsLoading(false);
         };
         fetchSetting();
     }, []);
+
+    if (isLoading) {
+        return <SettingsSkeleton />;
+    }
 
     return (
         <div className="flex justify-center">
