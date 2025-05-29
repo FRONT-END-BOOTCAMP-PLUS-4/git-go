@@ -58,7 +58,7 @@ export default async function HomePage() {
                 <h1 className="text-2xl font-semibold">
                     코딩 여정을 기록하세요
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-text-gray1 text-sm">
                     GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI
                     기반 요약과 함께
                     <br />
