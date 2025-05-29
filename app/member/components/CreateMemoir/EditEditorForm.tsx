@@ -41,6 +41,7 @@ export default function EditEditorForm({
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isComposing, setIsComposing] = useState(false);
 
     const buildPayload = () => ({
         title,
@@ -68,13 +69,13 @@ export default function EditEditorForm({
 
     // tag에서 Enter 입력 시 tag 등록
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (tags.length >= 10) {
-            return;
-        }
+        if (isComposing) return; // 한글 조합 중에는 무시
+
+        if (tags.length >= 10) return;
 
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
-            const lowerCase = tagInput.trim().toLocaleLowerCase();
+            const lowerCase = tagInput.trim().toLowerCase();
             const next = Array.from(new Set([...tags, lowerCase]));
             setTags(next);
             setTagInput("");
@@ -170,6 +171,8 @@ export default function EditEditorForm({
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyDown={handleTagKeyDown}
+                        onCompositionStart={() => setIsComposing(true)}
+                        onCompositionEnd={() => setIsComposing(false)}
                     />
                 </div>
             </div>
