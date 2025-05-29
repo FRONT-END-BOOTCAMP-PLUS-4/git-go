@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
 import { useFilterStore } from "@/store/useFilterStore";
 import { Search, X } from "lucide-react";
+import { useState } from "react";
 
 export default function SearchFilter() {
     const {
@@ -31,10 +31,10 @@ export default function SearchFilter() {
     };
 
     return (
-        <div className="border-border-primary1 ml-4 flex h-9 items-center rounded-lg border bg-white px-3 py-2">
+        <div className="border-border-primary1 bg-bg-member1 ml-4 flex h-9 items-center rounded-md border px-3 py-2">
             <Search className="text-text-secondary2" />
             <input
-                className="text-text-secondary1 placeholder-text-secondary2 ml-2 w-full text-sm outline-none"
+                className="placeholder-text-secondary2 ml-2 w-full text-sm outline-none"
                 type="text"
                 placeholder="회고록 검색"
                 value={localInput}
@@ -43,7 +43,7 @@ export default function SearchFilter() {
             />
             {searchKeyword && (
                 <button onClick={handleReset} className="ml-2">
-                    <X size={16} className="text-gray-400" />
+                    <X size={18} className="text-gray-400" />
                 </button>
             )}
         </div>

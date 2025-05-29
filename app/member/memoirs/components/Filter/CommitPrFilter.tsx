@@ -27,8 +27,8 @@ export default function CommitPrFilter() {
                                 {type === "all"
                                     ? "전체보기"
                                     : type === "commits"
-                                        ? "Commits"
-                                        : "Pull Requests"}
+                                      ? "Commits"
+                                      : "Pull Requests"}
                             </label>
                         </div>
                     );

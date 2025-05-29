@@ -60,12 +60,12 @@ export default function ChangeList({
                     key={change.filename}
                 >
                     <div
-                        className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
+                        className="bg-bg-primary2 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
                         ref={(el) => {
                             refs.current[change.filename] = el;
                         }}
                     >
-                        <div className="flex items-center gap-5">
+                        <div className="flex items-center gap-5 truncate">
                             <div>{change.filename}</div>
                             <div className="flex items-center gap-2 text-[12px]">
                                 <div className="text-code-add-symbol">{`+${change.additions}`}</div>
@@ -74,13 +74,14 @@ export default function ChangeList({
                         </div>
                         <div
                             className={clsx(
-                                "rounded-lg px-2 py-1 text-sm font-semibold",
+                                "rounded-md px-2 py-1 text-sm font-semibold",
                                 statusClassMap[change.status]
                             )}
                         >
                             {change.status}
                         </div>
                     </div>
+
                     <code className="text-sm break-words whitespace-pre-wrap">
                         {(change.patch?.split("\n") ?? []).map((line, idx) => {
                             let lineClass = "py-1 ";

@@ -27,7 +27,7 @@ export default function Pagination({
             <button
                 onClick={() => setCurrentPage(1)}
                 disabled={currentPage === 1}
-                className="text-text-secondary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm"
+                className="text-text-primary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm hover:text-black"
             >
                 {"<<"}
             </button>
@@ -36,7 +36,7 @@ export default function Pagination({
             <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="text-text-secondary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm"
+                className="text-text-primary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm hover:text-black"
             >
                 {"<"}
             </button>
@@ -50,7 +50,7 @@ export default function Pagination({
                         className={`cursor-pointer rounded-md px-3 py-2 text-sm ${
                             currentPage === page
                                 ? "bg-primary7 text-white"
-                                : "text-text-secondary1 hover:bg-primary1"
+                                : "text-text-primary1 hover:bg-primary1 hover:text-black"
                         }`}
                     >
                         {page}
@@ -62,7 +62,7 @@ export default function Pagination({
             <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="text-text-secondary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm"
+                className="text-text-primary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm hover:text-black"
             >
                 {">"}
             </button>
@@ -71,7 +71,7 @@ export default function Pagination({
             <button
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={currentPage === totalPages}
-                className="text-text-secondary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm"
+                className="text-text-primary1 hover:bg-primary1 disabled:text-text-secondary2 cursor-pointer rounded-md px-2 py-2 text-sm hover:text-black"
             >
                 {">>"}
             </button>

@@ -16,7 +16,7 @@ export default function MemoirHeatmap({ data }: { data: HeatmapValue[] }) {
     oneYearAgo.setFullYear(today.getFullYear() - 1);
 
     return (
-        <div className="border-border-primary1 h-[272px] rounded-xl border bg-white p-4 shadow-sm">
+        <div className="border-border-primary1 bg-bg-member1 h-[272px] rounded-xl border p-4 shadow-sm">
             <h3 className="mt-6 mb-4 text-center text-lg font-semibold">
                 회고 히트맵
             </h3>

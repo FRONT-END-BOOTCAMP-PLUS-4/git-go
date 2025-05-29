@@ -4,7 +4,7 @@ export default function SideBarRepoSkeleton() {
             {Array.from({ length: 3 }).map((_, i) => (
                 <li
                     key={i}
-                    className="animate-pulse h-10 w-full bg-gray-200 rounded-md"
+                    className="bg-bg-skeleton1 h-10 w-full animate-pulse rounded-md"
                 />
             ))}
         </ul>
