@@ -84,6 +84,7 @@
         "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^19.0.0",
         "react-markdown": "^10.1.0",
+        "react-resizable-panels": "^3.0.2",
         "react-tooltip": "^5.28.1",
         "remark-gfm": "^4.0.1",
         "remark-math": "^6.0.0",
