@@ -65,7 +65,7 @@ export default function ChangeList({
                             refs.current[change.filename] = el;
                         }}
                     >
-                        <div className="flex items-center gap-5">
+                        <div className="flex items-center gap-5 truncate">
                             <div>{change.filename}</div>
                             <div className="flex items-center gap-2 text-[12px]">
                                 <div className="text-code-add-symbol">{`+${change.additions}`}</div>
