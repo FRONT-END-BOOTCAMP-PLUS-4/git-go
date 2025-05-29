@@ -2,7 +2,7 @@
 
 import Button from "@/app/components/Button";
 import WithdrawButton from "@/app/components/WithdrawButton";
-import { Moon, Sun } from "lucide-react";
+import { GitBranch, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -160,7 +160,7 @@ export default function Settings() {
                                         : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         branchSetting === "default"
                                             ? "/branch-blue.svg"
@@ -169,7 +169,8 @@ export default function Settings() {
                                     alt="branch"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <GitBranch size={18} />
                                 기본 브랜치만
                             </button>
                             <button
@@ -180,7 +181,7 @@ export default function Settings() {
                                         : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         branchSetting === "all"
                                             ? "/branch-blue.svg"
@@ -189,7 +190,8 @@ export default function Settings() {
                                     alt="branch"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <GitBranch size={18} />
                                 모든 브랜치
                             </button>
                         </div>
