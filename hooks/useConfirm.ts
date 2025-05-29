@@ -9,7 +9,7 @@ export function useConfirm(onConfirmCallback: () => Promise<void> | void) {
         setOpenConfirm(true);
     };
 
-    const handleCancel = () => {
+    const handleModalCancel = () => {
         setOpenConfirm(false);
     };
 
@@ -23,5 +23,5 @@ export function useConfirm(onConfirmCallback: () => Promise<void> | void) {
         }
     };
 
-    return { openConfirm, handleDeleteClick, handleCancel, handleConfirm };
+    return { openConfirm, handleDeleteClick, handleModalCancel, handleConfirm };
 }

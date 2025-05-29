@@ -1,13 +1,13 @@
 export default function ChartSkeleton() {
     return (
-        <div>
-            <div className="h-4 bg-gray-300 rounded w-1/6 mt-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/8 mt-2 mb-2"></div>
-            <div className="w-full h-56 bg-gray-100 rounded-lg relative overflow-hidden">
+        <div className="h-full w-full animate-pulse">
+            <div className="bg-bg-skeleton2 mb-2 h-4 w-1/4 rounded"></div>
+            <div className="bg-bg-skeleton1 mb-4 h-4 w-1/5 rounded"></div>
+            <div className="bg-bg-skeleton1 relative h-[208px] w-full overflow-hidden rounded-md">
                 {[...Array(4)].map((_, i) => (
                     <div
                         key={i}
-                        className="absolute left-0 w-full h-[1px] bg-gray-200"
+                        className="bg-bg-skeleton1 absolute left-0 h-[1px] w-full"
                         style={{ top: `${(i + 1) * 20}%` }}
                     />
                 ))}
@@ -15,7 +15,7 @@ export default function ChartSkeleton() {
                 <svg
                     viewBox="0 0 100 40"
                     preserveAspectRatio="none"
-                    className="w-full h-full"
+                    className="h-full w-full"
                 >
                     <path
                         d="M0,35 C20,30 40,10 60,20 C80,30 100,15 120,25"

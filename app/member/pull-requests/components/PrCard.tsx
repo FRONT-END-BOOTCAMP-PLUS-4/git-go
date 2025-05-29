@@ -1,13 +1,11 @@
 "use client";
 import Button from "@/app/components/Button";
-import Loading from "@/app/member/components/Loading";
 import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
-
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
+import { Archive, GitBranch, Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -29,21 +27,26 @@ interface PrCommitCardProps {
     authoredDate: string;
 }
 
+// ✅ 커밋 캐시: 컴포넌트 바깥에 위치 (페이지 내 공유)
+const commitCacheRef = new Map<
+    string,
+    { list: PrCommitCardProps[]; timestamp: number }
+>();
+const COMMIT_CACHE_TTL = 1000 * 60 * 10; // 10분
+
 const typeClassMap: Record<
     PrCardProps["state"],
-    { bg: string; text: string; label: string; icon: string }
+    { bg: string; text: string; label: string }
 > = {
     open: {
         label: "open",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
-        icon: "/pull-request-green.svg",
     },
     closed: {
         label: "closed",
         bg: "bg-[#e0f2fe]",
         text: "text-[#1e40af]",
-        icon: "/pull-request-blue.svg",
     },
 };
 
@@ -56,32 +59,42 @@ export default function PrCard({
     state,
 }: PrCardProps) {
     const router = useRouter();
-
     const { selectedRepo } = useRepoStore();
-
     const [listIsOpen, setListIsOpen] = useState(false);
     const [prCommits, setPrCommits] = useState<PrCommitCardProps[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-
     const { data: session } = useSession();
+
     const moveToPrMemoir = () => {
         router.push(`${MEMBER_URL.prs}/${prNumber}/memoir`);
     };
 
     const fetchPrCommitList = async (
-        selectedRepo: string | undefined,
+        repoFullName: string | undefined,
         prNo: number
     ) => {
-        if (listIsOpen === true) {
+        if (!repoFullName || !session) return;
+
+        const cacheKey = `${repoFullName}/pr:${prNo}`;
+        const now = Date.now();
+
+        // 닫기 동작
+        if (listIsOpen) {
             setListIsOpen(false);
             return;
         }
 
-        setListIsOpen(!listIsOpen);
-        setIsLoading(true);
+        // 캐시 확인
+        const cached = commitCacheRef.get(cacheKey);
+        if (cached && now - cached.timestamp < COMMIT_CACHE_TTL) {
+            setPrCommits(cached.list);
+            setListIsOpen(true);
+            return;
+        }
 
-        const accessToken = session?.accessToken;
-        const author = session?.user.githubId;
+        setIsLoading(true);
+        setListIsOpen(true);
+
         try {
             const res = await fetch("/api/github/pull-requests/commits", {
                 method: "POST",
@@ -89,9 +102,9 @@ export default function PrCard({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    accessToken,
-                    author,
-                    repoFullName: selectedRepo,
+                    accessToken: session.accessToken,
+                    author: session.user.githubId,
+                    repoFullName,
                     prNumber: prNo,
                 }),
             });
@@ -99,7 +112,12 @@ export default function PrCard({
             if (res.ok) {
                 const result = await res.json();
                 setPrCommits(result.commitList);
-                setIsLoading(false);
+
+                // ✅ 캐시 저장
+                commitCacheRef.set(cacheKey, {
+                    list: result.commitList,
+                    timestamp: now,
+                });
             }
         } catch (error) {
             console.error(
@@ -141,12 +159,7 @@ export default function PrCard({
                 <div
                     className={`${typeClassMap[state].bg} flex h-10 w-10 items-center justify-center rounded-full`}
                 >
-                    <Image
-                        src={typeClassMap[state].icon}
-                        width={14}
-                        height={16}
-                        alt="커밋 아이콘"
-                    />
+                    <GitBranch size={18} className={typeClassMap[state].text} />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="relative mb-1 flex items-center gap-x-3">
@@ -157,7 +170,7 @@ export default function PrCard({
                             {title}
                         </h3>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
                         >
                             {typeClassMap[state].label}
                         </div>
@@ -178,21 +191,17 @@ export default function PrCard({
                     </a>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <Image
-                                src="/box-archive-solid.svg"
-                                alt="저장소 아이콘"
-                                width={14}
-                                height={12}
-                            />
+                            <Archive size={18} />
                             <p>{repositoryName}</p>
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <Image
+                            {/* <Image
                                 src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
-                            />
+                            /> */}
+                            <GitBranch size={18} />
                             {branchName}
                         </div>
                         <div className="ml-auto">
@@ -202,12 +211,13 @@ export default function PrCard({
                                     htmlType="button"
                                     onClick={moveToPrMemoir}
                                 >
-                                    <Image
+                                    {/* <Image
                                         src="/write.svg"
                                         alt="회고 등록 아이콘"
                                         width={12}
                                         height={12}
-                                    />
+                                    /> */}
+                                    <Pencil size={18} />
                                     회고록 작성
                                 </Button>
                             </div>
@@ -216,7 +226,7 @@ export default function PrCard({
 
                     {listIsOpen && (
                         <div className="border-border-primary1 mt-4 rounded-md border">
-                            <div className="bg-border-primary2 border-border-primary1 flex items-center justify-between border-b p-4">
+                            <div className="bg-bg-primary1 border-border-primary1 flex items-center justify-between border-b p-4">
                                 <h3 className="text-sm font-semibold">
                                     Commit in this PR
                                 </h3>

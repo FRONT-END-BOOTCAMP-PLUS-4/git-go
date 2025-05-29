@@ -30,7 +30,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
                     생성된 요약이 없습니다
                 </div>
             ) : (
-                <div className="flex flex-col gap-1 p-4 pt-8 leading-10">
+                <div className="flex flex-col gap-1 p-4 pt-8 leading-10 text-black">
                     <ReactMarkdown>{summary}</ReactMarkdown>
                 </div>
             )}

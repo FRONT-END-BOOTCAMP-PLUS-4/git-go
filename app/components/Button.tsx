@@ -18,11 +18,11 @@ interface ButtonProps {
 
 const typeClassMap: Record<ButtonStyleType, string> = {
     default:
-        "bg-[var(--color-primary7)] text-[var(--color-text-primary1)] hover:bg-[var(--color-primary8)] cursor-pointer ",
-    lined: "border border-[var(--color-border-primary1)] text-[var(--color-text-secondary1)] hover:bg-[var(--color-primary1)] cursor-pointer bg-white",
+        "bg-[var(--color-primary7)] text-white hover:bg-[var(--color-primary8)] cursor-pointer ",
+    lined: "border border-[var(--color-border-primary1)] text-text-1 hover:bg-bg-primary1 cursor-pointer bg-transparent",
     disabled:
-        "bg-[var(--color-border-primary2)] text-[var(--color-text-secondary2)] cursor-not-allowed bg-white",
-    danger: "bg-[var(--color-danger1)] text-[var(--color-text-primary1)] hover:bg-[var(--color-danger2)] cursor-pointer ",
+        "bg-[var(--color-border-primary2)] text-[var(--color-text-secondary2)] cursor-not-allowed bg-transparent",
+    danger: "bg-[var(--color-danger1)] text-white hover:bg-[var(--color-danger2)] cursor-pointer ",
 };
 
 const sizeClassMap: Record<ButtonSize, string> = {

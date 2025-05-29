@@ -6,7 +6,7 @@ export default function DetailMemoirLayout({
     children: ReactNode;
 }) {
     return (
-        <div className="mx-auto flex h-[calc(100vh-65px)] w-full max-w-[1920px] overflow-hidden bg-white">
+        <div className="mx-auto flex h-[calc(100vh-65px)] w-full max-w-[1920px] overflow-hidden">
             {children}
         </div>
     );

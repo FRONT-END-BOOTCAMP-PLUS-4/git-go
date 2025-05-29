@@ -7,13 +7,12 @@ import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm"
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -94,6 +93,11 @@ export default function CommitDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
+
     if (!commitData) return <Loading />;
 
     return (
@@ -113,14 +117,14 @@ export default function CommitDetailMemoir() {
                 </div>
             )}
             <AccordionSidebar
-                files={useExtractFilenames(commitData.changeDetail)}
+                files={files}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />
 
             <div className="grid h-full grid-cols-2">
                 <ChangeListLayout>
-                    <div className="px-3 py-2 font-semibold">
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
                         {commitData.message}
                     </div>
                     <ChangeList
@@ -129,7 +133,7 @@ export default function CommitDetailMemoir() {
                     />
                 </ChangeListLayout>
 
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                     {isEditing ? (
                         <EditEditorForm
                             title={title}

@@ -78,11 +78,13 @@ export default function PullRequestAiSummary({
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
             }}
-            onClick={(e) => e.stopPropagation()}
         >
             <button
-                onClick={() => setShowModal(false)}
-                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                onClick={(e) => {
+                    setShowModal(false);
+                    e.stopPropagation();
+                }}
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 ✖
@@ -110,7 +112,7 @@ export default function PullRequestAiSummary({
                 </div>
             ) : (
                 <>
-                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10">
+                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
 
                         <div className="mt-4 flex justify-end">

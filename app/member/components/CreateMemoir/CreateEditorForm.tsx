@@ -9,7 +9,7 @@ import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
 type CreateEditorFormProps = {
@@ -53,9 +53,11 @@ export default function CreateEditorForm({
     }, []);
 
     // content에 글씨가 있는지 확인하는 함수
-    const hasText = content.some((node) =>
-        node.children.some((ch: any) => ch.text?.trim() !== "")
-    );
+    const hasText = useMemo(() => {
+        return content.some((node) =>
+            node.children.some((ch: any) => ch.text?.trim() !== "")
+        );
+    }, [content]);
 
     // 폼 입력 유효성 검사 (제목, 내용)
     const formDisabled = !title.trim() || !hasText;
@@ -115,7 +117,7 @@ export default function CreateEditorForm({
     };
 
     // 취소 버튼
-    const handleCancel = () => {
+    const handleModalCancel = () => {
         router.back();
     };
 
@@ -150,7 +152,7 @@ export default function CreateEditorForm({
                     {tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-bg-primary2 flex items-center rounded-md px-2 py-1 text-sm"
+                            className="bg-bg-tag1 flex items-center rounded-md px-2 py-1 text-sm"
                         >
                             {tag}
                             <X
@@ -179,7 +181,7 @@ export default function CreateEditorForm({
             </div>
             {/* 버튼 */}
             <div className="flex justify-end gap-2">
-                <Button type="lined" onClick={handleCancel}>
+                <Button type="lined" onClick={handleModalCancel}>
                     취소
                 </Button>
                 <Button
