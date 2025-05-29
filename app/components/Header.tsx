@@ -105,10 +105,10 @@ export default function Header() {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="bg-bg-primary1 border-border-primary1 absolute right-0 z-50 mt-2 w-full rounded-md border shadow-lg">
+                            <div className="bg-bg-primary1 border-border-primary1 absolute right-0 z-50 mt-2 w-full overflow-hidden rounded-md border shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
-                                    className="text-text-primary1 hover:bg-hover-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
+                                    className="text-text-primary1 hover:bg-hover-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <LayoutDashboard
                                         width={16}
@@ -136,7 +136,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="hover:bg-hover-secondary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:rounded-br-lg hover:rounded-bl-lg"
+                                    className="hover:bg-hover-secondary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500"
                                 >
                                     <Image
                                         className="mr-auto ml-2 shrink-0"
