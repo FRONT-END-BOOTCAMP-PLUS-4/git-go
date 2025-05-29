@@ -162,6 +162,9 @@ export default function CommitPage() {
     }, [currentPage]);
 
     const handlePageChange = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+        });
         setCurrentPage(newPage);
     };
 
