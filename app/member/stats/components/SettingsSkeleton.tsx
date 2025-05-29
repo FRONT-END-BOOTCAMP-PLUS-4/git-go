@@ -1,7 +1,7 @@
 export default function SettingsSkeleton() {
     return (
         <div className="flex justify-center">
-            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] animate-pulse rounded-lg">
+            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] animate-pulse rounded-lg border">
                 {/* 상단 제목 */}
                 <div className="border-border-primary1 border-b p-4 text-xl font-semibold">
                     <div className="h-6 w-12 rounded bg-gray-300"></div>
