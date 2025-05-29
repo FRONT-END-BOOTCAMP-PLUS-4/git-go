@@ -132,7 +132,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                         <X className="opacity-60 hover:opacity-100" />
                     </button>
                 </div>
-                <p className="m-4 text-xs text-gray-500">
+                <p className="m-4 text-xs text-gray-400">
                     회고록을 작성할 GitHub 저장소를 선택해주세요. 선택한
                     저장소의 커밋 기록이 자동으로 동기화됩니다.
                 </p>
@@ -157,22 +157,22 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 }
                                                 className="mt-0.5 cursor-pointer"
                                             />
-                                            <div className="text-text-secondary2 flex items-center gap-2 truncate text-sm font-semibold">
+                                            <div className="text-text-primary1 flex items-center gap-2 truncate text-sm font-semibold">
                                                 {repo.nameWithOwner}
                                                 <span className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-yellow-500">
                                                     ⭐ {repo.stargazerCount}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="text-xs whitespace-nowrap text-gray-400">
+                                        <div className="text-text-primary1 text-xs whitespace-nowrap">
                                             Last updated:{" "}
                                             {repo.updatedAt.slice(0, 10)}
                                         </div>
                                     </div>
-                                    <p className="ml-6 truncate text-sm text-gray-500">
+                                    <p className="text-text-primary1 ml-6 truncate text-sm">
                                         {repo.description || "설명이 없습니다."}
                                     </p>
-                                    <p className="mt-1 ml-6 flex items-center gap-1 text-xs text-gray-600">
+                                    <p className="text-text-primary1 mt-1 ml-6 flex items-center gap-1 text-xs">
                                         <span
                                             className="inline-block h-2 w-2 rounded-full"
                                             style={{
