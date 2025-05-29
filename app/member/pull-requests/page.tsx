@@ -111,6 +111,9 @@ export default function PullRequestPage() {
     }, [currentPage]);
 
     const handlePageChange = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+        });
         setCurrentPage(newPage);
     };
 

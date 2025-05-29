@@ -17,7 +17,12 @@ export default function MemoirPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
-    const handlePageChange = (newPage: number) => setCurrentPage(newPage);
+    const handlePageChange = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+        });
+        setCurrentPage(newPage);
+    };
     const { timePeriod, filterType, tags, searchKeyword } = useFilterStore();
     const cacheRef = useRef<
         Map<
