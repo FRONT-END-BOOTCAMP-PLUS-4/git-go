@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, context: any) {
     try {
-        const { id } = context.params;
+        const { id } = await context.params;
         const memoirId = Number(id);
 
         const repo = new PrMemoirRepository();
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, context: any) {
 export async function PUT(req: NextRequest, context: any) {
     try {
         const payload = await req.json();
-        const { id } = context.params;
+        const { id } = await context.params;
         const memoirId = Number(id);
 
         const dto = { ...payload, memoirId };
@@ -57,7 +57,7 @@ export async function PUT(req: NextRequest, context: any) {
 
 export async function DELETE(req: NextRequest, context: any) {
     try {
-        const { id } = context.params;
+        const { id } = await context.params;
         const memoirId = Number(id);
 
         const repo = new PrMemoirRepository();

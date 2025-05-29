@@ -8,14 +8,13 @@ import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormR
 import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import useExtractFilenames from "@/hooks/useExtractFileNames";
 import { useRepoStore } from "@/store/repoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -127,11 +126,6 @@ export default function PullRequestDetailMemoir() {
     useEffect(() => {
         containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }, [selectedSha]);
-    // 드롭다운 옵션
-    const prOptions = prData.map((pr) => ({
-        value: pr.sha,
-        label: pr.message,
-    }));
 
     // 회고록 값 불러오기기
     const load = async () => {
@@ -152,6 +146,20 @@ export default function PullRequestDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
+    const prOptions = useMemo(
+        () =>
+            prData.map((pr) => ({
+                value: pr.sha,
+                label: pr.message,
+            })),
+        [prData]
+    );
+
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
+
     if (!commitData) return <Loading />;
 
     return (
@@ -171,7 +179,7 @@ export default function PullRequestDetailMemoir() {
                 </div>
             )}
             <AccordionSidebar
-                files={useExtractFilenames(commitData.changeDetail)}
+                files={files}
                 selectedFile={selectedFile}
                 onSelect={setSelectedFile}
             />

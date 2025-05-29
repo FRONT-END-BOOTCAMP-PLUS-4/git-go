@@ -5,8 +5,12 @@ import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/u
 import { MEMBER_URL } from "@/constants/url";
 import { useConfirm } from "@/hooks/useConfirm";
 import { Value } from "@udecode/plate";
+import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "../ConfirmDialog";
+import { ExportToolbarButton } from "./plate-editor/ui/export-toolbar-button";
+import { FixedToolbar } from "./plate-editor/ui/fixed-toolbar";
+import { ToolbarGroup } from "./plate-editor/ui/toolbar";
 
 interface Props {
     title: string;
@@ -24,12 +28,11 @@ export default function EditorFormReadOnly({
     memoirId,
 }: Props) {
     const router = useRouter();
+
     const deleteMemoir = async () => {
         const res = await fetch(`/api/memoirs/${memoirId}`, {
             method: "DELETE",
         });
-        const data = await res.json();
-        // 성공 시 필요 로직(리다이렉트, 상태 갱신 등)
         if (!res.ok) {
             // 에러 던져서 useConfirm 훅의 catch로 보냄
             throw new Error(`삭제 실패: ${res.statusText}`);
@@ -38,8 +41,12 @@ export default function EditorFormReadOnly({
         router.push(MEMBER_URL.memoirs);
     };
 
-    const { openConfirm, handleCancel, handleConfirm, handleDeleteClick } =
+    const { openConfirm, handleModalCancel, handleConfirm, handleDeleteClick } =
         useConfirm(deleteMemoir);
+
+    const handleCancel = () => {
+        router.back();
+    };
 
     return (
         <>
@@ -47,24 +54,25 @@ export default function EditorFormReadOnly({
                 open={openConfirm}
                 title="정말 삭제하시겠습니까?"
                 description="삭제된 회고록은 복구할 수 없습니다."
-                onCancel={handleCancel}
+                onCancel={handleModalCancel}
                 onConfirm={handleConfirm}
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
-            <div className="flex flex-1 flex-col gap-4">
-                {/* 수정, 삭제 버튼 */}
-                <div className="flex items-center justify-end gap-2">
-                    <Button onClick={handleDeleteClick} type="danger">
-                        삭제
-                    </Button>
-                    <Button onClick={handleStatusChange}>수정</Button>
-                </div>
+            <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
                 {/* 제목 */}
                 <div>
                     <label className="mb-1 block text-base font-medium">
                         제목
                     </label>
-                    <div className="text-lg font-semibold">{title}</div>
+                    <div className="flex items-center justify-between">
+                        <div className="text-lg font-semibold">{title}</div>
+                        <div
+                            className="hover:text-danger1 hover:cursor-pointer"
+                            onClick={handleDeleteClick}
+                        >
+                            <Trash2 />
+                        </div>
+                    </div>
                 </div>
 
                 {/* 태그 */}
@@ -91,7 +99,30 @@ export default function EditorFormReadOnly({
                 </div>
 
                 {/* 읽기 전용 에디터 */}
-                <PlateEditor readOnly initialContent={content} />
+                <div className="min-h-0 flex-1">
+                    <PlateEditor
+                        readOnly
+                        initialContent={content}
+                        toolbar={
+                            <div className="flex justify-end">
+                                {/* 툴바 정렬을 위해 div로 감싸기 */}
+                                <FixedToolbar>
+                                    <ToolbarGroup>
+                                        <ExportToolbarButton title={title} />
+                                    </ToolbarGroup>
+                                </FixedToolbar>
+                            </div>
+                        }
+                    />
+                </div>
+
+                {/* 수정, 삭제 버튼 */}
+                <div className="flex items-center justify-end gap-2">
+                    <Button onClick={handleCancel} type="lined">
+                        취소
+                    </Button>
+                    <Button onClick={handleStatusChange}>수정</Button>
+                </div>
             </div>
         </>
     );

@@ -57,7 +57,7 @@ export default function ChangeList({
             {changes.map((change) => (
                 <div
                     className="border-border-primary1 mb-5 min-w-[400px] rounded-md border"
-                    key={change.raw_url}
+                    key={change.filename}
                 >
                     <div
                         className="bg-bg-primary1 border-b-border-primary1 flex items-center justify-between rounded-tl-md rounded-tr-md border-b px-5 py-4"
@@ -96,7 +96,6 @@ export default function ChangeList({
                             return (
                                 <div key={idx} className={lineClass}>
                                     {line}
-                                    <br />
                                 </div>
                             );
                         })}
