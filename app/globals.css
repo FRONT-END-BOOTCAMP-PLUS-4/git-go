@@ -25,6 +25,10 @@
     --primary-10: #332e81;
     --primary-11: #1e1b4b;
 
+    /* hover 색상 */
+    --hover-primary-1: #efeeff;
+    --hover-secondary-1: #fef2f2;
+
     /* border 컬러 */
     --border-1: #e5e7eb;
     --border-2: #f5f5f5;
@@ -34,6 +38,9 @@
     --background-1: #f9fafb;
     --background-2: #f5f5f5;
     --background-3: #eef2ff;
+
+    --skeletion-bg-1: #f3f4f6;
+    --skeletion-bg-2: #e5e7eb;
 
     --background-header-1: #fff;
 
@@ -46,6 +53,9 @@
     --text-2: #fff;
     --text-3: #6b7280;
     --text-4: #737373;
+
+    /* select text color*/
+    --text-select-1: #4f46e5;
 
     /* 코드 변경사항 */
     --code-add-text-1: #238636;
@@ -126,6 +136,23 @@
     /* border 컬러 */
     --border-1: #454545;
 
+    /* 메인 컬러*/
+    --primary-1: #efeeff;
+    --primary-2: #e2e0ff;
+    --primary-3: #cac7fe;
+    --primary-4: #aaa5fc;
+    --primary-5: #8881f8;
+    --primary-6: #6b63f1;
+    --primary-7: #4f46e5;
+    --primary-8: #4038ca;
+    --primary-9: #3730a3;
+    --primary-10: #332e81;
+    --primary-11: #1e1b4b;
+
+    /* hover 색상 */
+    --hover-primary-1: #8881f8;
+    --hover-secondary-1: #4b1e1e;
+
     /* 배경 컬러 */
     --background-main: #000;
     --background-1: #17171c;
@@ -137,10 +164,16 @@
 
     --background-sidebar-1: #211f21;
 
+    --skeletion-bg-1: #4b4d55;
+    --skeletion-bg-2: #3d3f45;
+
     /* 텍스트 컬러 */
     --text-1: #fff;
     --text-2: #000;
     --text-3: #afafaf;
+
+    /* select text color*/
+    --text-select-1: #fff;
 
     /* 코드 변경사항 */
     --code-add-text-1: #30ad49;
@@ -204,6 +237,10 @@
     --color-primary10: var(--primary-10);
     --color-primary11: var(--primary-11);
 
+    /* hover 색상 */
+    --color-hover-primary1: var(--hover-primary-1);
+    --color-hover-secondary1: var(--hover-secondary-1);
+
     /* border 컬러 */
     --color-border-primary1: var(--border-1);
     --color-border-primary2: var(--border-2);
@@ -213,6 +250,9 @@
     --color-bg-primary1: var(--background-1);
     --color-bg-primary2: var(--background-2);
     --color-bg-secondary1: var(--background-3);
+
+    --color-bg-skeleton1: var(--skeletion-bg-1);
+    --color-bg-skeleton2: var(--skeletion-bg-2);
 
     --color-bg-header1: var(--background-header-1);
 
@@ -225,6 +265,9 @@
     --color-text-secondary1: var(--text-2);
     --color-text-secondary2: var(--text-3);
     --color-text-gray1: var(--text-4);
+
+    /* select text color*/
+    --color-text-select1: var(--text-select-1);
 
     /* 코드 변경사항 */
     --color-code-add-text: var(--code-add-text-1);
