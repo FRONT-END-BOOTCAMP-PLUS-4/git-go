@@ -4,7 +4,7 @@ import Button from "@/app/components/Button";
 import WithdrawButton from "@/app/components/WithdrawButton";
 import { GitBranch, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
+import SettingsSkeleton from "../stats/components/SettingsSkeleton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AlertDialog from "../components/AlertDialog";
@@ -35,6 +35,7 @@ export default function Settings() {
     const isSaveDisabled =
         branchSetting === initialBranchSetting &&
         selectedTheme === initialTheme;
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -82,9 +83,14 @@ export default function Settings() {
                 setBranchSetting(setting);
                 setInitialBranchSetting(setting);
             }
+            setIsLoading(false);
         };
         fetchSetting();
     }, []);
+
+    if (isLoading) {
+        return <SettingsSkeleton />;
+    }
 
     return (
         <div className="flex justify-center">
