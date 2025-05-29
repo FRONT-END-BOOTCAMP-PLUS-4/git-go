@@ -28,6 +28,7 @@
     /* hover 색상 */
     --hover-primary-1: #efeeff;
     --hover-secondary-1: #fef2f2;
+    --hover-gray-1: #e5e7eb;
 
     /* border 컬러 */
     --border-1: #e5e7eb;
@@ -159,6 +160,7 @@
     /* hover 색상 */
     --hover-primary-1: #8881f8;
     --hover-secondary-1: #4b1e1e;
+    --hover-gray-1: #374151;
 
     /* 배경 컬러 */
     --background-main: #000;
@@ -194,7 +196,7 @@
     --code-delete-text-1: #fc4238;
     --code-add-bg-1: #19362a;
     --code-delete-bg-1: #3a272c;
-    --code-gray-1: #444e5c;
+    --code-gray-1: #afafaf;
 
     /* 잔디 */
     --color-fill-empty: #4a4c4e;
@@ -254,6 +256,7 @@
     /* hover 색상 */
     --color-hover-primary1: var(--hover-primary-1);
     --color-hover-secondary1: var(--hover-secondary-1);
+    --color-hover-gray1: var(--hover-gray-1);
 
     /* border 컬러 */
     --color-border-primary1: var(--border-1);
