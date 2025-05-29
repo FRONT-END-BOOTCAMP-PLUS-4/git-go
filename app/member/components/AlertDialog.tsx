@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/app/components/Button";
 import Image from "next/image";
 
 interface AlertDialogProps {
@@ -20,7 +21,7 @@ export default function AlertDialog({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
             <div className="bg-bg-primary2 relative w-full max-w-md rounded-xl p-6 shadow-xl">
                 {imageSrc && (
                     <div className="absolute top-4 right-4">
@@ -39,12 +40,7 @@ export default function AlertDialog({
                     {description}
                 </p>
                 <div className="mt-6 flex justify-end">
-                    <button
-                        onClick={onClose}
-                        className="cursor-pointer rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700"
-                    >
-                        확인
-                    </button>
+                    <Button onClick={onClose}>확인</Button>
                 </div>
             </div>
         </div>
