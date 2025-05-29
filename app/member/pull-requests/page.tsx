@@ -127,7 +127,7 @@ export default function PullRequestPage() {
     ));
 
     return (
-        <div className="bg-bg-member1">
+        <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-x-3">
                     <h2 className="font-bold">Pull Requests</h2>
