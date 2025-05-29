@@ -40,7 +40,7 @@ export default function FileNodeComponent({
     return (
         <div>
             <button
-                className="flex w-full cursor-pointer items-center py-1 text-left text-sm hover:bg-gray-200"
+                className="hover:bg-hover-gray1 flex w-full cursor-pointer items-center rounded py-1 text-left text-sm"
                 onClick={() => setOpen(!open)}
             >
                 {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
