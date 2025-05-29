@@ -1,7 +1,6 @@
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
-import { Archive, GitBranch, Pencil } from "lucide-react";
-import Image from "next/image";
+import { Archive, GitBranch, GitCommitHorizontal, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -108,12 +107,13 @@ export default function CommitCard({
         <li className="border-border-primary1 border-b p-4">
             <article className="flex items-start gap-x-4">
                 <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                    <Image
+                    {/* <Image
                         src="/commit-blue.svg"
                         width={20}
                         height={16}
                         alt="커밋 아이콘"
-                    />
+                    /> */}
+                    <GitCommitHorizontal className="text-primary7" />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">

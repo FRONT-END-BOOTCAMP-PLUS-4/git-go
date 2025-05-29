@@ -6,7 +6,6 @@ import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
 import { Archive, GitBranch, Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -37,19 +36,17 @@ const COMMIT_CACHE_TTL = 1000 * 60 * 10; // 10분
 
 const typeClassMap: Record<
     PrCardProps["state"],
-    { bg: string; text: string; label: string; icon: string }
+    { bg: string; text: string; label: string }
 > = {
     open: {
         label: "open",
         bg: "bg-[#d1fae5]",
         text: "text-[#065f46]",
-        icon: "/pull-request-green.svg",
     },
     closed: {
         label: "closed",
         bg: "bg-[#e0f2fe]",
         text: "text-[#1e40af]",
-        icon: "/pull-request-blue.svg",
     },
 };
 
@@ -162,12 +159,7 @@ export default function PrCard({
                 <div
                     className={`${typeClassMap[state].bg} flex h-10 w-10 items-center justify-center rounded-full`}
                 >
-                    <Image
-                        src={typeClassMap[state].icon}
-                        width={14}
-                        height={16}
-                        alt="커밋 아이콘"
-                    />
+                    <GitBranch size={18} className={typeClassMap[state].text} />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-1">
                     <div className="relative mb-1 flex items-center gap-x-3">

@@ -2,7 +2,7 @@
 
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { MEMBER_URL } from "@/constants/url";
-import { Archive } from "lucide-react";
+import { Archive, BookText } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -72,12 +72,7 @@ export default function MemoirCard({ memoir }: Props) {
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
-                    <Image
-                        src="/memoir-purple.svg"
-                        width={14}
-                        height={16}
-                        alt="커밋 아이콘"
-                    />
+                    <BookText size={18} className="text-[#9333EA]" />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-2">
                     <div className="flex items-center gap-x-3">
