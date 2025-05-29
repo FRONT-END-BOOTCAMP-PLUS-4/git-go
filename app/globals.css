@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @theme {
     /* 메인 컬러 */
     --color-primary1: #efeeff;
@@ -112,8 +113,6 @@
 /* 에디터 관련 색상 */
 :root {
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.129 0.042 264.695);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.129 0.042 264.695);
     --popover: oklch(1 0 0);
@@ -145,6 +144,8 @@
     --sidebar-ring: oklch(0.704 0.04 256.788);
     --brand: oklch(0.623 0.214 259.815);
     --highlight: oklch(0.852 0.199 91.936);
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.129 0.042 264.695);
 }
 
 .dark {

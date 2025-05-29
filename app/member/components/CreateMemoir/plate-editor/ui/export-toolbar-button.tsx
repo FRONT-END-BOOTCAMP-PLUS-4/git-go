@@ -109,7 +109,9 @@ import { ToolbarButton } from "./toolbar";
 const siteUrl = "https://platejs.org";
 const lowlight = createLowlight(all);
 
-export function ExportToolbarButton(props: DropdownMenuProps) {
+export function ExportToolbarButton(
+    props: DropdownMenuProps & { title: string }
+) {
     const editor = useEditorRef();
     const [open, setOpen] = React.useState(false);
 

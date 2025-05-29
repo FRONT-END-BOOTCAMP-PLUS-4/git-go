@@ -44,6 +44,7 @@ import {
     tablePlugin,
     tocPlugin,
 } from "./index";
+import { mediaPlugins } from "./media-plugins";
 
 const lowlight = createLowlight(all);
 
@@ -75,6 +76,9 @@ export const viewPlugins = [
     tablePlugin,
     tocPlugin,
 
+    // 이미지
+    ...mediaPlugins,
+
     // 토글
     TogglePlugin,
 
@@ -93,6 +97,7 @@ export const editorPlugins = [
 
     ...dndPlugins,
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     EmojiPlugin.configure({ options: { data: emojiMartData as any } }),
     exitBreakPlugin,
 
