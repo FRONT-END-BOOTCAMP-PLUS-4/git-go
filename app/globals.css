@@ -188,6 +188,7 @@
     --text-2: #000;
     --text-3: #afafaf;
     --text-4: #e5e7eb;
+    --text-gray-2: #4b5563;
 
     /* select text color*/
     --text-select-1: #fff;
@@ -290,6 +291,7 @@
     --color-text-secondary1: var(--text-2);
     --color-text-secondary2: var(--text-3);
     --color-text-gray1: var(--text-4);
+    --color-text-gray2: var(--text-gray-2);
 
     /* select text color*/
     --color-text-select1: var(--text-select-1);
