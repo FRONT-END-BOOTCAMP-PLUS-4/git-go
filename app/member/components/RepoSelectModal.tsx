@@ -118,7 +118,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-bg-main w-full max-w-2xl rounded-xl p-6 shadow-lg">
+            <div className="bg-bg-primary2 w-full max-w-2xl rounded-xl p-6 shadow-lg">
                 <div className="mb-1 flex items-center justify-between">
                     <h2 className="text-xl font-bold">연동할 저장소 선택</h2>
                     <button onClick={onClose}>
