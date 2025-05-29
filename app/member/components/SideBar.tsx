@@ -109,8 +109,8 @@ export default function SideBar({
     }, [selectedRepo]);
 
     return (
-        <aside className="bg-bg-sidebar1 flex w-50 flex-col gap-y-4">
-            <div className="border-border-primary1 h-fit w-50 rounded-md border-1">
+        <aside className="flex w-50 flex-col gap-y-4">
+            <div className="bg-bg-member1 border-border-primary1 h-fit w-50 rounded-md border-1">
                 <h2 className="border-border-primary1 border-b p-4 font-semibold">
                     등록된 저장소
                 </h2>
