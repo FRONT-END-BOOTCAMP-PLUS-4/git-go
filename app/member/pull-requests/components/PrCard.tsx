@@ -4,7 +4,7 @@ import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
-import { Archive, Pencil } from "lucide-react";
+import { Archive, GitBranch, Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -199,22 +199,17 @@ export default function PrCard({
                     </a>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            {/* <Image
-                                src="/box-archive-solid.svg"
-                                alt="저장소 아이콘"
-                                width={14}
-                                height={12}
-                            /> */}
                             <Archive size={18} />
                             <p>{repositoryName}</p>
                         </div>
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <Image
+                            {/* <Image
                                 src="/branch.svg"
                                 alt="브랜치 아이콘"
                                 width={14}
                                 height={12}
-                            />
+                            /> */}
+                            <GitBranch size={18} />
                             {branchName}
                         </div>
                         <div className="ml-auto">
