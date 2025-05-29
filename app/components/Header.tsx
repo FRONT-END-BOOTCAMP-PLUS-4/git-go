@@ -72,7 +72,7 @@ export default function Header() {
                     >
                         <button
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition hover:bg-gray-200"
+                            className="hover:bg-bg-primary2 flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition"
                         >
                             {session?.user?.image ? (
                                 <Image
@@ -108,7 +108,7 @@ export default function Header() {
                             <div className="bg-bg-primary1 border-border-primary1 absolute right-0 z-50 mt-2 w-full rounded-md border shadow-lg">
                                 <button
                                     onClick={moveToMyPage}
-                                    className="text-text-primary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
+                                    className="text-text-primary1 hover:bg-hover-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm hover:rounded-tl-lg hover:rounded-tr-lg"
                                 >
                                     <LayoutDashboard
                                         width={16}
@@ -121,7 +121,7 @@ export default function Header() {
                                 </button>
                                 <button
                                     onClick={moveToSettingsPage}
-                                    className="text-text-primary1 hover:bg-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
+                                    className="text-text-primary1 hover:bg-hover-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
                                     <Settings
                                         width={16}
@@ -136,7 +136,7 @@ export default function Header() {
                                     onClick={() =>
                                         signOut({ callbackUrl: "/" })
                                     }
-                                    className="flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:rounded-br-lg hover:rounded-bl-lg hover:bg-red-50"
+                                    className="hover:bg-hover-secondary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm text-red-500 hover:rounded-br-lg hover:rounded-bl-lg"
                                 >
                                     <Image
                                         className="mr-auto ml-2 shrink-0"

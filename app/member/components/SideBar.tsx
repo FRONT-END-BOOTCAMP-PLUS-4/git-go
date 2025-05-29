@@ -145,7 +145,10 @@ export default function SideBar({
                                             height={14}
                                             alt="브랜치 아이콘"
                                         /> */}
-                                        <Archive size={18} />
+                                        <Archive
+                                            className="shrink-0"
+                                            size={18}
+                                        />
                                         <span
                                             className={`text-sm break-all hover:line-clamp-none ${
                                                 isSelected
