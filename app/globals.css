@@ -51,6 +51,10 @@
 
     --background-sidebar-1: #fff;
 
+    /* gradient color*/
+    --background-gradient-1: #eff6ff;
+    --background-gradient-2: #ffffff;
+
     /* 텍스트 컬러 */
     --text-1: #000;
     --text-2: #fff;
@@ -173,6 +177,10 @@
     --skeletion-bg-1: #4b4d55;
     --skeletion-bg-2: #3d3f45;
 
+    /* gradient color*/
+    --background-gradient-1: #1e2633;
+    --background-gradient-2: ##111827;
+
     /* 텍스트 컬러 */
     --text-1: #fff;
     --text-2: #000;
@@ -268,6 +276,10 @@
     --color-bg-member1: var(--background-member-1);
 
     --color-bg-sidebar1: var(--background-sidebar-1);
+
+    /* gradient color*/
+    --color-bg-gradient1: var(--background-gradient-1);
+    --color-bg-gradient2: var(--background-gradient-2);
 
     /* 텍스트 컬러 */
     --color-text-primary1: var(--text-1);
