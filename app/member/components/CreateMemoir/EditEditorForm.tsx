@@ -123,17 +123,11 @@ export default function EditEditorForm({
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
+        <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden">
             {/* 제목 */}
             <div>
-                <label
-                    className="mb-1 block text-sm font-medium"
-                    htmlFor="title"
-                >
-                    제목
-                </label>
                 <input
-                    className="border-border-primary1 w-full rounded-md border px-3 py-2.5"
+                    className="w-full px-3 py-2.5 text-3xl font-semibold outline-none"
                     id="title"
                     type="text"
                     placeholder="회고록 제목을 입력하세요..."
@@ -143,17 +137,11 @@ export default function EditEditorForm({
             </div>
             {/* 태그 */}
             <div>
-                <label
-                    className="black mb-1 text-sm font-medium"
-                    htmlFor="tags"
-                >
-                    태그
-                </label>
-                <div className="border-border-primary1 flex flex-wrap items-center gap-1 rounded-md border px-3 py-2">
+                <div className="flex flex-wrap items-center gap-1 px-3 py-2">
                     {tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-bg-primary2 flex items-center rounded-md px-2 py-1 text-sm"
+                            className="bg-bg-tag1 flex items-center rounded-md px-2 py-1 text-base"
                         >
                             {tag}
                             <X

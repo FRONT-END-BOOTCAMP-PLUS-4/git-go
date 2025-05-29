@@ -58,14 +58,13 @@ export default function EditorFormReadOnly({
                 onConfirm={handleConfirm}
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
-            <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
+            <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden">
                 {/* 제목 */}
                 <div>
-                    <label className="mb-1 block text-base font-medium">
-                        제목
-                    </label>
                     <div className="flex items-center justify-between">
-                        <div className="text-lg font-semibold">{title}</div>
+                        <div className="px-3 py-2.5 text-3xl font-semibold">
+                            {title}
+                        </div>
                         <div
                             className="hover:text-danger1 hover:cursor-pointer"
                             onClick={handleDeleteClick}
@@ -77,15 +76,12 @@ export default function EditorFormReadOnly({
 
                 {/* 태그 */}
                 <div>
-                    <label className="mb-1 block text-base font-medium">
-                        태그
-                    </label>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap items-center gap-1 px-3 py-2">
                         {tags.length > 0 ? (
                             tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="bg-bg-primary2 rounded-md px-3 py-2 text-base"
+                                    className="bg-bg-tag1 flex items-center rounded-md px-2 py-1 text-base"
                                 >
                                     {tag}
                                 </span>
