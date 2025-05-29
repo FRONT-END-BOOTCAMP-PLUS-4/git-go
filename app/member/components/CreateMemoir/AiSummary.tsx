@@ -107,7 +107,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                 </div>
             ) : (
                 <>
-                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10">
+                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
 
                         <div className="mt-4 flex justify-end">
