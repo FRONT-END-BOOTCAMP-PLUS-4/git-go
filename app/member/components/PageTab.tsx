@@ -1,6 +1,12 @@
 "use client";
 
 import { MEMBER_URL } from "@/constants/url";
+import {
+    BookText,
+    ChartBar,
+    GitBranch,
+    GitCommitHorizontal,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 type Status = "commits" | "pull-requests" | "memoirs" | "stats" | string;
@@ -32,12 +38,13 @@ export default function PageTap({ status }: Props) {
                 }`}
                 onClick={commitClickHandler}
             >
-                <Image
-                    src={`/${status === "commits" ? "commit-blue" : "commit"}.svg`}
-                    alt={`${status}`}
-                    width={20}
-                    height={20}
-                    priority
+                <GitCommitHorizontal
+                    size={20}
+                    className={`${
+                        status === "commits"
+                            ? "text-primary7"
+                            : "text-text-secondary2"
+                    }`}
                 />
                 <div
                     className={`ml-2 ${
@@ -55,12 +62,13 @@ export default function PageTap({ status }: Props) {
                 }`}
                 onClick={pullRequestClickHandler}
             >
-                <Image
-                    src={`/${status === "pull-requests" ? "pull-request-blue" : "pull-request"}.svg`}
-                    alt={`${status}`}
-                    width={20}
-                    height={20}
-                    priority
+                <GitBranch
+                    size={20}
+                    className={`${
+                        status === "pull-requests"
+                            ? "text-primary7"
+                            : "text-text-secondary2"
+                    }`}
                 />
                 <div
                     className={`ml-2 ${
@@ -78,12 +86,13 @@ export default function PageTap({ status }: Props) {
                 }`}
                 onClick={memoirClickHandler}
             >
-                <Image
-                    src={`/${status === "memoirs" ? "memoir-blue" : "memoir"}.svg`}
-                    alt={`${status}`}
-                    width={20}
-                    height={20}
-                    priority
+                <BookText
+                    size={20}
+                    className={`${
+                        status === "memoirs"
+                            ? "text-primary7"
+                            : "text-text-secondary2"
+                    }`}
                 />
                 <div
                     className={`ml-2 ${
@@ -101,12 +110,13 @@ export default function PageTap({ status }: Props) {
                 }`}
                 onClick={statClickHandler}
             >
-                <Image
-                    src={`/${status === "stats" ? "static-blue" : "static"}.svg`}
-                    alt={`${status}`}
-                    width={20}
-                    height={20}
-                    priority
+                <ChartBar
+                    size={20}
+                    className={`${
+                        status === "stats"
+                            ? "text-primary7"
+                            : "text-text-secondary2"
+                    }`}
                 />
                 <div
                     className={`ml-2 ${
