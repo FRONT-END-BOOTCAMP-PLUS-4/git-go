@@ -114,11 +114,12 @@ export function ExportToolbarButton(
     const editor = useEditorRef();
     const [open, setOpen] = useState(false);
 
-    const [theme, setTheme] = useState<string>("#000");
+    const [bgColor, setBgColor] = useState<string>("#fff");
 
+    // 마운트 후에 한 번만 읽어서 상태에 저장
     useEffect(() => {
         const saved = localStorage.getItem("theme");
-        setTheme(saved === "light" ? "#fff" : "#000");
+        setBgColor(saved === "light" ? "#fff" : "#000");
     }, []);
 
     const getCanvas = async () => {
@@ -141,7 +142,7 @@ export function ExportToolbarButton(
             height: clone.scrollHeight,
             scrollX: 0,
             scrollY: 0,
-            backgroundColor: theme,
+            backgroundColor: bgColor,
             onclone: (doc) => {
                 // 폰트 강제 주입
                 const styleEl = doc.createElement("style");
