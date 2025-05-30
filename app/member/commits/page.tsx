@@ -206,7 +206,9 @@ export default function CommitPage() {
                             <CommitCardSkeleton key={index} />
                         ))
                     ) : totalCount !== 0 ? (
-                        <>{commitList}</>
+                        commitList.length > 0 ? (
+                            <>{commitList}</>
+                        ) : null
                     ) : (
                         <EmptyResult message="선택한 저장소에 표시할 커밋이 없습니다." />
                     )}
