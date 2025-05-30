@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
 import { withProps } from "@udecode/cn";
@@ -82,6 +80,7 @@ import {
 
 import { LinkElementStatic } from "@/app/member/components/CreateMemoir/plate-editor/ui/link-element-static";
 
+import { useEffect, useState } from "react";
 import { BlockquoteElementStatic } from "./blockquote-element-static";
 import { CodeBlockElementStatic } from "./code-block-element-static";
 import { CodeLeafStatic } from "./code-leaf-static";
@@ -113,34 +112,60 @@ export function ExportToolbarButton(
     props: DropdownMenuProps & { title?: string }
 ) {
     const editor = useEditorRef();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+
+    const [theme, setTheme] = useState<string>("#000");
+
+    useEffect(() => {
+        const saved = localStorage.getItem("theme");
+        setTheme(saved === "light" ? "#fff" : "#000");
+    }, []);
 
     const getCanvas = async () => {
         const { default: html2canvas } = await import("html2canvas-pro");
+        const orig = editor.api.toDOMNode(editor)!;
 
-        const style = document.createElement("style");
-        document.head.append(style);
+        // 1) 오프스크린에 복제본 생성
+        const clone = orig.cloneNode(true) as HTMLElement;
+        clone.style.position = "absolute";
+        clone.style.top = "-9999px";
+        clone.style.left = "0";
+        clone.style.width = `${orig.scrollWidth}px`;
+        clone.style.height = `${orig.scrollHeight}px`;
+        clone.style.overflow = "visible";
+        document.body.append(clone);
 
-        const canvas = await html2canvas(editor.api.toDOMNode(editor)!, {
-            onclone: (document: Document) => {
-                const editorElement = document.querySelector(
+        // 2) 캡처
+        const canvas = await html2canvas(clone, {
+            width: clone.scrollWidth,
+            height: clone.scrollHeight,
+            scrollX: 0,
+            scrollY: 0,
+            backgroundColor: theme,
+            onclone: (doc) => {
+                // 폰트 강제 주입
+                const styleEl = doc.createElement("style");
+                doc.head.append(styleEl);
+                const editorNode = doc.querySelector(
                     '[contenteditable="true"]'
                 );
-                if (editorElement) {
-                    Array.from(editorElement.querySelectorAll("*")).forEach(
-                        (element) => {
-                            const existingStyle =
-                                element.getAttribute("style") || "";
-                            element.setAttribute(
+                if (editorNode) {
+                    Array.from(editorNode.querySelectorAll("*")).forEach(
+                        (el) => {
+                            const existing = el.getAttribute("style") || "";
+                            el.setAttribute(
                                 "style",
-                                `${existingStyle}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important`
+                                `${existing}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important`
                             );
                         }
                     );
                 }
+                styleEl.remove();
             },
         });
-        style.remove();
+
+        // 3) 복제본 제거
+        clone.remove();
 
         return canvas;
     };
