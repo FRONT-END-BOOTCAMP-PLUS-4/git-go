@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
@@ -178,51 +179,54 @@ export default function PullRequestDetailMemoir() {
                     />
                 </div>
             )}
-            <AccordionSidebar
-                files={files}
-                selectedFile={selectedFile}
-                onSelect={setSelectedFile}
-            />
-
-            <div className="grid flex-1 grid-cols-2">
-                <ChangeListLayout>
-                    <Select
-                        options={prOptions}
-                        value={selectedSha}
-                        onChange={setSelectedSha}
-                    />
-                    <ChangeList
-                        changes={commitData.changeDetail}
-                        selectedFile={selectedFile}
-                        selectedCommitId={selectedSha}
-                    />
-                </ChangeListLayout>
-
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
-                    {isEditing ? (
-                        <EditEditorForm
-                            title={title}
-                            setTitle={setTitle}
-                            tags={tags}
-                            setTags={setTags}
-                            content={content}
-                            setContent={setContent}
-                            memoirId={parseId}
-                            session={session}
-                            repo={repo}
-                            setIsEditing={setIsEditing}
+            <PanelGroup direction="horizontal" className="h-full w-full">
+                <AccordionSidebar
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />
+                <Panel defaultSize={40} minSize={20}>
+                    <ChangeListLayout>
+                        <Select
+                            options={prOptions}
+                            value={selectedSha}
+                            onChange={setSelectedSha}
                         />
-                    ) : (
-                        <EditorFormReadOnly
-                            title={title}
-                            tags={tags}
-                            content={content}
-                            handleStatusChange={handleToggleEdit}
-                            memoirId={parseId}
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                            selectedCommitId={selectedSha}
                         />
-                    )}
-                </div>
-            </div>
+                    </ChangeListLayout>
+                </Panel>
+                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+                <Panel defaultSize={40} minSize={20}>
+                    <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                        {isEditing ? (
+                            <EditEditorForm
+                                title={title}
+                                setTitle={setTitle}
+                                tags={tags}
+                                setTags={setTags}
+                                content={content}
+                                setContent={setContent}
+                                memoirId={parseId}
+                                session={session}
+                                repo={repo}
+                                setIsEditing={setIsEditing}
+                            />
+                        ) : (
+                            <EditorFormReadOnly
+                                title={title}
+                                tags={tags}
+                                content={content}
+                                handleStatusChange={handleToggleEdit}
+                                memoirId={parseId}
+                            />
+                        )}
+                    </div>
+                </Panel>
+            </PanelGroup>
         </DetailMemoirLayout>
     );
 }
