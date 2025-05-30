@@ -18,10 +18,17 @@ type PlateEditorProps = {
     handleEditorChange?: () => void;
     initialContent?: Value;
     toolbar?: ReactNode;
+    className?: string;
 };
 
 function PlateEditorInner(
-    { readOnly, handleEditorChange, initialContent, toolbar }: PlateEditorProps,
+    {
+        readOnly,
+        handleEditorChange,
+        initialContent,
+        toolbar,
+        className,
+    }: PlateEditorProps,
     ref: React.Ref<EditorFormHandle>
 ) {
     const editor = useCreateEditor({ readOnly, value: initialContent });
@@ -37,7 +44,9 @@ function PlateEditorInner(
                 onChange={handleEditorChange}
                 readOnly={readOnly}
             >
-                <EditorContainer className="border-border-primary1 flex flex-1 flex-col rounded-md border">
+                <EditorContainer
+                    className={`border-border-primary1 flex flex-1 flex-col rounded-md border ${className}`}
+                >
                     <div className="flex items-center justify-between gap-2">
                         {toolbar && <div className="mb-2">{toolbar}</div>}
                     </div>

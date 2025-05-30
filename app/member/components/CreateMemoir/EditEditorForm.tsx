@@ -128,7 +128,7 @@ export default function EditEditorForm({
             {/* 제목 */}
             <div>
                 <input
-                    className="w-full px-3 py-2.5 text-3xl font-semibold"
+                    className="w-full px-3 py-2.5 text-3xl font-semibold outline-none"
                     id="title"
                     type="text"
                     placeholder="회고록 제목을 입력하세요..."
