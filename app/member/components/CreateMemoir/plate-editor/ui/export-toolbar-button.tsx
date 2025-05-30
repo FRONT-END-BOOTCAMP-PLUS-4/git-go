@@ -128,6 +128,13 @@ export function ExportToolbarButton(
 
         // 1) 오프스크린에 복제본 생성
         const clone = orig.cloneNode(true) as HTMLElement;
+
+        // Pretendard 변수 클래스 추가
+        clone.classList.add("__font-pretendard");
+        clone.style.position = "absolute";
+        /* …생략… */
+        document.body.append(clone);
+
         clone.style.position = "absolute";
         clone.style.top = "-9999px";
         clone.style.left = "0";
@@ -144,30 +151,38 @@ export function ExportToolbarButton(
             scrollY: 0,
             backgroundColor: bgColor,
             onclone: (doc) => {
-                // 폰트 강제 주입
-                const styleEl = doc.createElement("style");
-                doc.head.append(styleEl);
+                // 1) Pretendard @font-face 정의 삽입
+                const style = doc.createElement("style");
+                style.textContent = `
+        @font-face {
+          font-family: 'Pretendard';
+          font-display: swap;
+          src: url('PretendardVariable.woff2') format('woff2');
+          font-weight: 100 900;
+        }
+        .__font-pretendard { font-family: 'Pretendard'; }
+      `;
+                doc.head.append(style);
+
+                // 2) 기존 폰트 강제 주입 로직
                 const editorNode = doc.querySelector(
                     '[contenteditable="true"]'
                 );
                 if (editorNode) {
                     Array.from(editorNode.querySelectorAll("*")).forEach(
                         (el) => {
-                            const existing = el.getAttribute("style") || "";
+                            const ex = el.getAttribute("style") || "";
                             el.setAttribute(
                                 "style",
-                                `${existing}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important`
+                                `${ex}; font-family: Pretendard !important;`
                             );
                         }
                     );
                 }
-                styleEl.remove();
             },
         });
 
-        // 3) 복제본 제거
         clone.remove();
-
         return canvas;
     };
 
@@ -378,11 +393,14 @@ export function ExportToolbarButton(
         ${tailwindCss}
         ${katexCss}
         <style>
-          :root {
-            --font-sans: 'Inter', 'Inter Fallback';
-            --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback';
-          }
-        </style>
+            @font-face {
+                font-family: 'Pretendard';
+                font-display: swap;
+                src: url('PretendardVariable.woff2') format('woff2');
+                font-weight: 100 900;
+        }
+        body { font-family: 'Pretendard', sans-serif; }
+  </style>
       </head>
       <body>
         ${editorHtml}
