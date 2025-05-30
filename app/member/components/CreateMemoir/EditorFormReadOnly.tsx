@@ -62,7 +62,7 @@ export default function EditorFormReadOnly({
                 {/* 제목 */}
                 <div>
                     <div className="flex items-center justify-between">
-                        <div className="border-border-primary1 rounded-md border px-3 py-2.5 text-3xl font-semibold">
+                        <div className="px-3 py-2.5 text-3xl font-semibold">
                             {title}
                         </div>
                         <div
@@ -76,7 +76,7 @@ export default function EditorFormReadOnly({
 
                 {/* 태그 */}
                 <div>
-                    <div className="border-border-primary1 flex flex-wrap items-center gap-1 rounded-md border px-3 py-2">
+                    <div className="flex flex-wrap items-center gap-1 px-3 py-2">
                         {tags.length > 0 ? (
                             tags.map((tag) => (
                                 <span
