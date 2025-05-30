@@ -37,16 +37,13 @@ function PlateEditorInner(
                 onChange={handleEditorChange}
                 readOnly={readOnly}
             >
-                <EditorContainer className="flex flex-1 flex-col">
+                <EditorContainer className="border-border-primary1 flex flex-1 flex-col rounded-md border">
                     <div className="flex items-center justify-between gap-2">
                         {toolbar && <div className="mb-2">{toolbar}</div>}
                     </div>
 
                     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-                        <Editor
-                            className="border-border-primary1 flex-1 rounded-md border border-b-[2px] px-5 py-2"
-                            variant="demo"
-                        />
+                        <Editor className="flex-1 px-5 py-2" variant="demo" />
                     </div>
                 </EditorContainer>
             </Plate>

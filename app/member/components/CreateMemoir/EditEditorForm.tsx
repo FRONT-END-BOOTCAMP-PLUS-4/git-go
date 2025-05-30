@@ -128,7 +128,7 @@ export default function EditEditorForm({
             {/* 제목 */}
             <div>
                 <input
-                    className="border-border-primary1 w-full rounded-md border px-3 py-2.5 text-3xl font-semibold"
+                    className="w-full px-3 py-2.5 text-3xl font-semibold"
                     id="title"
                     type="text"
                     placeholder="회고록 제목을 입력하세요..."
@@ -139,7 +139,7 @@ export default function EditEditorForm({
             </div>
             {/* 태그 */}
             <div>
-                <div className="border-border-primary1 flex flex-wrap items-center gap-1 rounded-md border px-3 py-2">
+                <div className="flex flex-wrap items-center gap-1 px-3 py-2">
                     {tags.map((tag) => (
                         <span
                             key={tag}
