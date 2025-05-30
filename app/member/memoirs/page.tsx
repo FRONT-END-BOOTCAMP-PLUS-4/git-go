@@ -17,7 +17,12 @@ export default function MemoirPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
-    const handlePageChange = (newPage: number) => setCurrentPage(newPage);
+    const handlePageChange = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+        });
+        setCurrentPage(newPage);
+    };
     const { timePeriod, filterType, tags, searchKeyword } = useFilterStore();
     const cacheRef = useRef<
         Map<
@@ -124,7 +129,7 @@ export default function MemoirPage() {
     ]);
 
     return (
-        <div className="border-border-primary1 rounded-lg border-1 bg-white">
+        <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-x-3">
                     <h2 className="font-bold">내 회고록</h2>

@@ -45,11 +45,11 @@ export default function Select({
         <div className="relative mb-2 inline-block w-full" ref={containerRef}>
             {/* 선택된 값 표시하는 박스 */}
             <div
-                className="border-border-primary1 flex h-10 cursor-pointer items-center justify-between rounded border bg-white px-3 py-2"
+                className="border-border-primary1 bg-bg-primary1 text-text-primary1 flex h-10 cursor-pointer items-center justify-between rounded border px-3 py-2"
                 onClick={() => setIsOpen((o) => !o)}
             >
                 <span
-                    className={`truncate ${value ? "text-black" : "text-gray-400"}`}
+                    className={`truncate ${value ? "text-text-primary1" : "text-gray-400"}`}
                 >
                     {selectedLabel}
                 </span>
@@ -72,12 +72,12 @@ export default function Select({
 
             {/* 옵션 리스트 */}
             {isOpen && (
-                <ul className="border-border-primary1 absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded border bg-white shadow-lg">
+                <ul className="border-border-primary1 bg-bg-primary1 absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded border shadow-lg">
                     {options.map((opt) => (
                         <li
                             key={opt.value}
-                            className={`cursor-pointer px-3 py-2 hover:bg-gray-100 ${
-                                opt.value === value ? "bg-gray-100" : ""
+                            className={`bg-bg-primary1 hover:bg-bg-primary2 cursor-pointer px-3 py-2 ${
+                                opt.value === value ? "" : ""
                             }`}
                             onClick={() => {
                                 onChange(opt.value);

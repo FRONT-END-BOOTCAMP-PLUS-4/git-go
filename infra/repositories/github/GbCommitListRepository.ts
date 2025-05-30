@@ -31,6 +31,9 @@ async function fetchAllCommitsFromDefaultBranch({
         );
 
         if (!res.ok) {
+            if (res.status === 409) {
+                return [];
+            }
             const errorData = await res.json();
             throw new Error(`Failed to fetch commits: ${res.status} - ${errorData.message || "Unknown error"}`);
         }
@@ -192,20 +195,12 @@ export class GbCommitListRepository implements GithubCommitListRepository {
             Authorization: `Bearer ${token}`,
         };
 
-        // if (token) {
-        //     headers.Authorization = `Bearer ${token}`;
-        // }
-        console.log("▶ [AccessToken 확인]", token);
-        console.log("▶ [요청 Headers]", headers);
-
         const userDefaultSetting = await prisma.user.findUnique({
             where: { id: userId },
             // select: { isDefaultOnly: true }, // 필요시 활성화
         });
 
         const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
-
-        console.log("남은 요청 횟수:", repoRes.headers.get("x-ratelimit-remaining"));
 
         if (!repoRes.ok) {
             const errorData = await repoRes.json();

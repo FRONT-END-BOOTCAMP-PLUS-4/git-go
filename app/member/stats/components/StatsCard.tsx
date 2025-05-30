@@ -9,10 +9,10 @@ export default function StatsCard({
 }) {
     if (change === "hide") {
         return (
-            <div className="border-border-primary1 h-20 rounded-xl border bg-white p-3 shadow-sm">
-                <p className="text-text-secondary2 text-sm">{title}</p>
+            <div className="border-border-primary1 bg-bg-member1 h-20 rounded-xl border p-3 shadow-sm">
+                <p className="text-text-primary1 text-sm">{title}</p>
                 <div className="flex items-baseline">
-                    <span className="text-text-secondary1 text-2xl font-bold">
+                    <span className="text-text-primary1 text-2xl font-bold">
                         {value}
                     </span>
                 </div>
@@ -24,10 +24,10 @@ export default function StatsCard({
     const isZero = changeNumber === 0;
 
     return (
-        <div className="border-border-primary1 h-20 rounded-xl border bg-white p-3 shadow-sm">
-            <p className="text-text-secondary2 text-sm">{title}</p>
+        <div className="border-border-primary1 bg-bg-member1 h-20 rounded-xl border p-3 shadow-sm">
+            <p className="text-text-primary1 text-sm">{title}</p>
             <div className="flex items-center space-x-2">
-                <span className="text-text-secondary1 text-2xl font-bold">
+                <span className="text-text-primary1 text-2xl font-bold">
                     {value}
                 </span>
                 <span

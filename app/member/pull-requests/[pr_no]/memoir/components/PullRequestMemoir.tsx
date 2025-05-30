@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -145,33 +146,37 @@ export default function PullRequestMemoir() {
                     />
                 </div>
             )}
-            {/* 사이드바 */}
-            <AccordionSidebar
-                files={files}
-                selectedFile={selectedFile}
-                onSelect={setSelectedFile}
-            />
-
-            <div className="grid grid-cols-2">
-                {/* 변경 목록 + 커밋 선택 */}
-                <ChangeListLayout>
-                    <Select
-                        options={prOptions}
-                        value={selectedSha}
-                        onChange={setSelectedSha}
-                    />
-                    <ChangeList
-                        changes={commitData.changeDetail}
-                        selectedFile={selectedFile}
-                        selectedCommitId={selectedSha}
-                    />
-                </ChangeListLayout>
+            <PanelGroup direction="horizontal" className="h-full w-full">
+                {/* 사이드바 */}
+                <AccordionSidebar
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />
+                <Panel defaultSize={40} minSize={20}>
+                    {/* 변경 목록 + 커밋 선택 */}
+                    <ChangeListLayout>
+                        <Select
+                            options={prOptions}
+                            value={selectedSha}
+                            onChange={setSelectedSha}
+                        />
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                            selectedCommitId={selectedSha}
+                        />
+                    </ChangeListLayout>
+                </Panel>
+                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
 
                 {/* 회고 작성 폼 */}
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
-                    <CreateEditorForm source={pr_no} typeId={2} />
-                </div>
-            </div>
+                <Panel defaultSize={40} minSize={20}>
+                    <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                        <CreateEditorForm source={pr_no} typeId={2} />
+                    </div>
+                </Panel>
+            </PanelGroup>
         </CreateMemoirLayout>
     );
 }

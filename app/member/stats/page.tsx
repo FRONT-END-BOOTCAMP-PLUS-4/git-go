@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import StatsCardSkeleton from "../components/StatsCardSkeleton";
 import BottomCard from "./components/BottomCard";
 import ChartSkeleton from "./components/ChartSkeleton";
+import MemoirHeatmap from "./components/MemoirHeatmap";
 import StatsCard from "./components/StatsCard";
 import TopReposSkeleton from "./components/TopReposSkeleton";
 import WeeklyCommitChart from "./components/WeeklyCommitChart";
-import MemoirHeatmap from "./components/MemoirHeatmap";
 
 export default function StatsPage() {
     const { selectedRepo, reloadRepoList, resetReload } = useRepoStore();
@@ -200,7 +200,7 @@ export default function StatsPage() {
     }, [selectedRepo]);
 
     return (
-        <div className="space-y-6 bg-gray-50">
+        <div className="space-y-6">
             {/* 히트맵 + 오른쪽 세로 카드 */}
             <div className="flex flex-col gap-4 md:flex-row">
                 <div className="md:w-[70%]">
@@ -241,7 +241,7 @@ export default function StatsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* 커밋 활동 */}
                 {loadingWeekly || isFirstLoad ? (
-                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                    <div className="border-border-primary1 bg-bg-member1 h-79 rounded-xl border p-4 shadow-sm">
                         <ChartSkeleton />
                     </div>
                 ) : (
@@ -254,7 +254,7 @@ export default function StatsPage() {
 
                 {/* 가장 활발한 저장소 */}
                 {loadingTopRepos ? (
-                    <div className="border-border-primary1 h-79 rounded-xl border bg-white p-4 shadow-sm">
+                    <div className="border-border-primary1 bg-bg-member1 h-79 rounded-xl border p-4 shadow-sm">
                         <TopReposSkeleton />
                     </div>
                 ) : (

@@ -1,65 +1,333 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@layer utilities {
+    .layout-padding {
+        @apply mx-auto;
+        @apply max-w-[1280px];
+        @apply px-4;
+        @apply w-full;
+    }
+}
+
+:root {
+    /* 프로젝트 커스텀 색상 */
+    /* 메인 컬러 */
+    --primary-1: #efeeff;
+    --primary-2: #e2e0ff;
+    --primary-3: #cac7fe;
+    --primary-4: #aaa5fc;
+    --primary-5: #8881f8;
+    --primary-6: #6b63f1;
+    --primary-7: #4f46e5;
+    --primary-8: #4038ca;
+    --primary-9: #3730a3;
+    --primary-10: #332e81;
+    --primary-11: #1e1b4b;
+
+    /* hover 색상 */
+    --hover-primary-1: #efeeff;
+    --hover-secondary-1: #fef2f2;
+    --hover-gray-1: #e5e7eb;
+
+    /* border 컬러 */
+    --border-1: #e5e7eb;
+    --border-2: #f5f5f5;
+
+    /* 배경 컬러 */
+    --background-main: #fff;
+    --background-1: #f9fafb;
+    --background-2: #f5f5f5;
+    --background-3: #eef2ff;
+
+    /* 태그 배경 컬러*/
+    --background-tag-1: #f5f5f5;
+
+    --skeletion-bg-1: #f3f4f6;
+    --skeletion-bg-2: #e5e7eb;
+
+    --background-header-1: #fff;
+
+    --background-member-1: #fff;
+
+    --background-sidebar-1: #fff;
+
+    /* gradient color*/
+    --background-gradient-1: #eff6ff;
+    --background-gradient-2: #ffffff;
+
+    /* 텍스트 컬러 */
+    --text-1: #000;
+    --text-2: #fff;
+    --text-3: #6b7280;
+    --text-4: #737373;
+
+    /* select text color*/
+    --text-select-1: #4f46e5;
+
+    /* 코드 변경사항 */
+    --code-add-text-1: #238636;
+    --code-delete-text-1: #f85149;
+    --code-add-bg-1: #d9fbe1;
+    --code-delete-bg-1: #ffebe9;
+    --code-gray-1: #444e5c;
+
+    --code-add-symbol-1: #30b950;
+    --code-delete-symbol-1: #a01b23;
+
+    /* added */
+    --code-status-add-bg-1: #dcffe4;
+    --code-status-add-text-1: #22863a;
+
+    /* modified */
+    --code-status-modified-bg-1: #fff5b1;
+    --code-status-modified-text-1: #b08800;
+
+    /* removed */
+    --code-status-removed-bg-1: #ffdce0;
+    --code-status-removed-text-1: #cb2431;
+
+    /* renamed */
+    --code-status-renamed-bg-1: #d1ecff;
+    --code-status-renamed-text-1: #0366d6;
+
+    /* danger 컬러 */
+    --danger-1: #ef4444;
+    --danger-2: #d64545;
+
+    /* 잔디 */
+    --color-fill-empty: #ebedf0;
+
+    /* 그림자 */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* 에디터 관련 색상 */
+    --radius: 0.625rem;
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.129 0.042 264.695);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.129 0.042 264.695);
+    --primary: oklch(0.208 0.042 265.755);
+    --primary-foreground: oklch(0.984 0.003 247.858);
+    --secondary: oklch(0.968 0.007 247.896);
+    --secondary-foreground: oklch(0.208 0.042 265.755);
+    --muted: oklch(0.968 0.007 247.896);
+    --muted-foreground: oklch(0.554 0.046 257.417);
+    --accent: oklch(0.968 0.007 247.896);
+    --accent-foreground: oklch(0.208 0.042 265.755);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.929 0.013 255.508);
+    --input: oklch(0.929 0.013 255.508);
+    --ring: oklch(0.704 0.04 256.788);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.984 0.003 247.858);
+    --sidebar-foreground: oklch(0.129 0.042 264.695);
+    --sidebar-primary: oklch(0.208 0.042 265.755);
+    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+    --sidebar-accent: oklch(0.968 0.007 247.896);
+    --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+    --sidebar-border: oklch(0.929 0.013 255.508);
+    --sidebar-ring: oklch(0.704 0.04 256.788);
+    --brand: oklch(0.623 0.214 259.815);
+    --highlight: oklch(0.852 0.199 91.936);
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.129 0.042 264.695);
+}
+
+.dark {
+    /* 프로젝트 커스텀 색상 */
+
+    /* border 컬러 */
+    --border-1: #454545;
+
+    /* 메인 컬러*/
+    --primary-1: #efeeff;
+    --primary-2: #e2e0ff;
+    --primary-3: #cac7fe;
+    --primary-4: #aaa5fc;
+    --primary-5: #8881f8;
+    --primary-6: #6b63f1;
+    --primary-7: #4f46e5;
+    --primary-8: #4038ca;
+    --primary-9: #3730a3;
+    --primary-10: #332e81;
+    --primary-11: #1e1b4b;
+
+    /* hover 색상 */
+    --hover-primary-1: #8881f8;
+    --hover-secondary-1: #4b1e1e;
+    --hover-gray-1: #374151;
+
+    /* 배경 컬러 */
+    --background-main: #000;
+    --background-1: #17171c;
+    --background-2: #2d2d31;
+
+    --background-header-1: #211f21;
+
+    --background-member-1: #211f21;
+
+    --background-sidebar-1: #211f21;
+
+    /* 태그 배경 컬러*/
+    --background-tag-1: #3d3f45;
+
+    --skeletion-bg-1: #4b4d55;
+    --skeletion-bg-2: #3d3f45;
+
+    /* gradient color*/
+    --background-gradient-1: #1e2633;
+    --background-gradient-2: ##111827;
+
+    /* 텍스트 컬러 */
+    --text-1: #fff;
+    --text-2: #000;
+    --text-3: #afafaf;
+    --text-4: #e5e7eb;
+    --text-gray-2: #4b5563;
+
+    /* select text color*/
+    --text-select-1: #fff;
+
+    /* 코드 변경사항 */
+    --code-add-text-1: #30ad49;
+    --code-delete-text-1: #fc4238;
+    --code-add-bg-1: #19362a;
+    --code-delete-bg-1: #3a272c;
+    --code-gray-1: #afafaf;
+
+    /* 잔디 */
+    --color-fill-empty: #4a4c4e;
+
+    /* 그림자 */
+    --shadow-color: rgba(255, 255, 255, 0.15);
+
+    --background: oklch(0.129 0.042 264.695);
+    --foreground: oklch(0.984 0.003 247.858);
+    --card: oklch(0.208 0.042 265.755);
+    --card-foreground: oklch(0.984 0.003 247.858);
+    --popover: oklch(0.208 0.042 265.755);
+    --popover-foreground: oklch(0.984 0.003 247.858);
+    --primary: oklch(0.929 0.013 255.508);
+    --primary-foreground: oklch(0.208 0.042 265.755);
+    --secondary: oklch(0.279 0.041 260.031);
+    --secondary-foreground: oklch(0.984 0.003 247.858);
+    --muted: oklch(0.279 0.041 260.031);
+    --muted-foreground: oklch(0.704 0.04 256.788);
+    --accent: oklch(0.279 0.041 260.031);
+    --accent-foreground: oklch(0.984 0.003 247.858);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.551 0.027 264.364);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.208 0.042 265.755);
+    --sidebar-foreground: oklch(0.984 0.003 247.858);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+    --sidebar-accent: oklch(0.279 0.041 260.031);
+    --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.551 0.027 264.364);
+    --brand: oklch(0.707 0.165 254.624);
+    --highlight: oklch(0.852 0.199 91.936);
+}
 
 @theme {
     /* 메인 컬러 */
-    --color-primary1: #efeeff;
-    --color-primary2: #e2e0ff;
-    --color-primary3: #cac7fe;
-    --color-primary4: #aaa5fc;
-    --color-primary5: #8881f8;
-    --color-primary6: #6b63f1;
-    --color-primary7: #4f46e5;
-    --color-primary8: #4038ca;
-    --color-primary9: #3730a3;
-    --color-primary10: #332e81;
-    --color-primary11: #1e1b4b;
+    --color-primary1: var(--primary-1);
+    --color-primary2: var(--primary-2);
+    --color-primary3: var(--primary-3);
+    --color-primary4: var(--primary-4);
+    --color-primary5: var(--primary-5);
+    --color-primary6: var(--primary-6);
+    --color-primary7: var(--primary-7);
+    --color-primary8: var(--primary-8);
+    --color-primary9: var(--primary-9);
+    --color-primary10: var(--primary-10);
+    --color-primary11: var(--primary-11);
+
+    /* hover 색상 */
+    --color-hover-primary1: var(--hover-primary-1);
+    --color-hover-secondary1: var(--hover-secondary-1);
+    --color-hover-gray1: var(--hover-gray-1);
 
     /* border 컬러 */
-    --color-border-primary1: #e5e7eb;
-    --color-border-primary2: #f5f5f5;
+    --color-border-primary1: var(--border-1);
+    --color-border-primary2: var(--border-2);
 
     /* 배경 컬러 */
-    --color-bg-primary1: #f9fafb;
-    --color-bg-primary2: #f5f5f5;
-    --color-bg-secondary1: #eef2ff;
+    --color-bg-main: var(--background-main);
+    --color-bg-primary1: var(--background-1);
+    --color-bg-primary2: var(--background-2);
+    --color-bg-secondary1: var(--background-3);
+
+    /* 태그 배경 컬러*/
+    --color-bg-tag1: var(--background-tag-1);
+
+    --color-bg-skeleton1: var(--skeletion-bg-1);
+    --color-bg-skeleton2: var(--skeletion-bg-2);
+
+    --color-bg-header1: var(--background-header-1);
+
+    --color-bg-member1: var(--background-member-1);
+
+    --color-bg-sidebar1: var(--background-sidebar-1);
+
+    /* gradient color*/
+    --color-bg-gradient1: var(--background-gradient-1);
+    --color-bg-gradient2: var(--background-gradient-2);
 
     /* 텍스트 컬러 */
-    --color-text-primary1: #fff;
-    --color-text-secondary1: #000;
-    --color-text-secondary2: #6b7280;
-    --color-text-gray1: #737373;
+    --color-text-primary1: var(--text-1);
+    --color-text-secondary1: var(--text-2);
+    --color-text-secondary2: var(--text-3);
+    --color-text-gray1: var(--text-4);
+    --color-text-gray2: var(--text-gray-2);
+
+    /* select text color*/
+    --color-text-select1: var(--text-select-1);
 
     /* 코드 변경사항 */
-    --color-code-add-text: #238636;
-    --color-code-delete-text: #f85149;
-    --color-code-add-bg: #d9fbe1;
-    --color-code-delete-bg: #ffebe9;
-    --color-code-gray: #444e5c;
+    --color-code-add-text: var(--code-add-text-1);
+    --color-code-delete-text: var(--code-delete-text-1);
+    --color-code-add-bg: var(--code-add-bg-1);
+    --color-code-delete-bg: var(--code-delete-bg-1);
+    --color-code-gray: var(--code-gray-1);
 
-    --color-code-add-symbol: #30b950;
-    --color-code-delete-symbol: #a01b23;
+    --color-code-add-symbol: var(--code-add-symbol-1);
+    --color-code-delete-symbol: var(--code-delete-symbol-1);
 
     /* added */
-    --color-code-status-add-bg: #dcffe4;
-    --color-code-status-add-text: #22863a;
+    --color-code-status-add-bg: var(--code-status-add-bg-1);
+    --color-code-status-add-text: var(--code-status-add-text-1);
 
     /* modified */
-    --color-code-status-modified-bg: #fff5b1;
-    --color-code-status-modified-text: #b08800;
+    --color-code-status-modified-bg: var(--code-status-modified-bg-1);
+    --color-code-status-modified-text: var(--code-status-modified-text-1);
 
     /* removed */
-    --color-code-status-removed-bg: #ffdce0;
-    --color-code-status-removed-text: #cb2431;
+    --color-code-status-removed-bg: var(--code-status-removed-bg-1);
+    --color-code-status-removed-text: var(--code-status-removed-text-1);
 
     /* renamed */
-    --color-code-status-renamed-bg: #d1ecff;
-    --color-code-status-renamed-text: #0366d6;
+    --color-code-status-renamed-bg: var(--code-status-renamed-bg-1);
+    --color-code-status-renamed-text: var(--code-status-renamed-text-1);
 
     /* danger 컬러 */
-    --color-danger1: #ef4444;
-    --color-danger2: #d64545;
+    --color-danger1: var(--danger-1);
+    --color-danger2: var(--danger-2);
+
+    /* 그림자 */
+    --shadow-primary: 0 4px 6px -1px var(--shadow-color);
 
     /* editor 컬러 */
     --radius-sm: calc(var(--radius) - 4px);
@@ -101,91 +369,8 @@
     --color-highlight: var(--highlight);
 }
 
-@layer utilities {
-    .layout-padding {
-        @apply mx-auto;
-        @apply max-w-[1280px];
-        @apply px-4;
-        @apply w-full;
-    }
-}
-
-/* 에디터 관련 색상 */
-:root {
-    --radius: 0.625rem;
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.129 0.042 264.695);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.129 0.042 264.695);
-    --primary: oklch(0.208 0.042 265.755);
-    --primary-foreground: oklch(0.984 0.003 247.858);
-    --secondary: oklch(0.968 0.007 247.896);
-    --secondary-foreground: oklch(0.208 0.042 265.755);
-    --muted: oklch(0.968 0.007 247.896);
-    --muted-foreground: oklch(0.554 0.046 257.417);
-    --accent: oklch(0.968 0.007 247.896);
-    --accent-foreground: oklch(0.208 0.042 265.755);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.929 0.013 255.508);
-    --input: oklch(0.929 0.013 255.508);
-    --ring: oklch(0.704 0.04 256.788);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.984 0.003 247.858);
-    --sidebar-foreground: oklch(0.129 0.042 264.695);
-    --sidebar-primary: oklch(0.208 0.042 265.755);
-    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-accent: oklch(0.968 0.007 247.896);
-    --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-    --sidebar-border: oklch(0.929 0.013 255.508);
-    --sidebar-ring: oklch(0.704 0.04 256.788);
-    --brand: oklch(0.623 0.214 259.815);
-    --highlight: oklch(0.852 0.199 91.936);
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.129 0.042 264.695);
-}
-
-.dark {
-    --background: oklch(0.129 0.042 264.695);
-    --foreground: oklch(0.984 0.003 247.858);
-    --card: oklch(0.208 0.042 265.755);
-    --card-foreground: oklch(0.984 0.003 247.858);
-    --popover: oklch(0.208 0.042 265.755);
-    --popover-foreground: oklch(0.984 0.003 247.858);
-    --primary: oklch(0.929 0.013 255.508);
-    --primary-foreground: oklch(0.208 0.042 265.755);
-    --secondary: oklch(0.279 0.041 260.031);
-    --secondary-foreground: oklch(0.984 0.003 247.858);
-    --muted: oklch(0.279 0.041 260.031);
-    --muted-foreground: oklch(0.704 0.04 256.788);
-    --accent: oklch(0.279 0.041 260.031);
-    --accent-foreground: oklch(0.984 0.003 247.858);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.551 0.027 264.364);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.208 0.042 265.755);
-    --sidebar-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-accent: oklch(0.279 0.041 260.031);
-    --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.551 0.027 264.364);
-    --brand: oklch(0.707 0.165 254.624);
-    --highlight: oklch(0.852 0.199 91.936);
-}
-
 .color-empty {
-    fill: #ebedf0;
+    fill: var(--color-fill-empty) !important;
 }
 .color-scale-1 {
     fill: #c6e48b;

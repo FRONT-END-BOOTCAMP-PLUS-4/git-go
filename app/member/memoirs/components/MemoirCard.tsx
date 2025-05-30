@@ -2,6 +2,7 @@
 
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { MEMBER_URL } from "@/constants/url";
+import { Archive, BookText } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -71,18 +72,13 @@ export default function MemoirCard({ memoir }: Props) {
         >
             <article className="flex items-start gap-x-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
-                    <Image
-                        src="/memoir-purple.svg"
-                        width={14}
-                        height={16}
-                        alt="커밋 아이콘"
-                    />
+                    <BookText size={18} className="text-[#9333EA]" />
                 </div>
                 <div className="flex flex-1 flex-col gap-y-2">
                     <div className="flex items-center gap-x-3">
                         <h3 className="font-semibold">{memoir.title}</h3>
                         <div
-                            className={`shadow-border-primary1 rounded-lg px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} text-xs shadow-sm`}
                         >
                             {typeInfo.label}
                         </div>
@@ -100,7 +96,7 @@ export default function MemoirCard({ memoir }: Props) {
                         {memoir.tags.map((tag, index) => (
                             <li
                                 key={index}
-                                className="border-border-primary1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
+                                className="border-border-primary1 bg-bg-tag1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
                             >
                                 {tag}
                             </li>
@@ -111,12 +107,13 @@ export default function MemoirCard({ memoir }: Props) {
                     </p>
                     <div className="flex items-center gap-x-3">
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <Image
+                            {/* <Image
                                 src="/box-archive-solid.svg"
                                 alt="저장소 아이콘"
                                 width={14}
                                 height={12}
-                            />
+                            /> */}
+                            <Archive size={18} />
                             <p>{memoir.repoName}</p>
                         </div>
                     </div>

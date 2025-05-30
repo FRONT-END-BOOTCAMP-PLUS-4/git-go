@@ -35,6 +35,7 @@ export default function CreateEditorForm({
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
     const summary = useSummaryStore((s) => s.aiSummary);
+    const [isComposing, setIsComposing] = useState(false);
 
     const buildPayload = () => ({
         title,
@@ -65,13 +66,13 @@ export default function CreateEditorForm({
 
     // tag에서 Enter 입력 시 tag 등록
     const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (tags.length >= 10) {
-            return;
-        }
+        if (isComposing) return; // 한글 조합 중에는 무시
+
+        if (tags.length >= 10) return;
 
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
-            const lowerCase = tagInput.trim().toLocaleLowerCase();
+            const lowerCase = tagInput.trim().toLowerCase();
             const next = Array.from(new Set([...tags, lowerCase]));
             setTags(next);
             setTagInput("");
@@ -128,37 +129,25 @@ export default function CreateEditorForm({
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-hidden">
+        <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden">
             {/* 제목 */}
             <div>
-                <label
-                    className="mb-1 block text-sm font-medium"
-                    htmlFor="title"
-                >
-                    제목
-                </label>
                 <input
-                    className="border-border-primary1 w-full rounded-md border px-3 py-2.5"
-                    id="title"
+                    className="w-full px-3 py-2.5 text-3xl font-semibold outline-none"
                     type="text"
-                    placeholder="회고록 제목을 입력하세요..."
+                    placeholder="제목을 입력하세요"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    autoFocus
                 />
             </div>
             {/* 태그 */}
             <div>
-                <label
-                    className="black mb-1 text-sm font-medium"
-                    htmlFor="tags"
-                >
-                    태그
-                </label>
-                <div className="border-border-primary1 flex flex-wrap items-center gap-1 rounded-md border px-3 py-2">
+                <div className="flex flex-wrap items-center gap-1 px-3 py-2">
                     {tags.map((tag) => (
                         <span
                             key={tag}
-                            className="bg-bg-primary2 flex items-center rounded-md px-2 py-1 text-sm"
+                            className="bg-bg-tag1 flex items-center rounded-md px-2 py-1 text-base"
                         >
                             {tag}
                             <X
@@ -175,6 +164,8 @@ export default function CreateEditorForm({
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyDown={handleTagKeyDown}
+                        onCompositionStart={() => setIsComposing(true)}
+                        onCompositionEnd={() => setIsComposing(false)}
                     />
                 </div>
             </div>

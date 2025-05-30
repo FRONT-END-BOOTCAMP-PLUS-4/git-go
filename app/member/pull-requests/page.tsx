@@ -111,6 +111,9 @@ export default function PullRequestPage() {
     }, [currentPage]);
 
     const handlePageChange = (newPage: number) => {
+        window.scrollTo({
+            top: 0,
+        });
         setCurrentPage(newPage);
     };
 
@@ -127,7 +130,7 @@ export default function PullRequestPage() {
     ));
 
     return (
-        <div className="border-border-primary1 rounded-lg border-1 bg-white">
+        <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
             <section className="border-border-primary1 flex items-center justify-between border-b p-4">
                 <div className="flex items-center gap-x-3">
                     <h2 className="font-bold">Pull Requests</h2>

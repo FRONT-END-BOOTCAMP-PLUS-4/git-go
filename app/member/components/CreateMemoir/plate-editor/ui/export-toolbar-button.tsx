@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import type { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 
 import { withProps } from "@udecode/cn";
@@ -82,6 +80,7 @@ import {
 
 import { LinkElementStatic } from "@/app/member/components/CreateMemoir/plate-editor/ui/link-element-static";
 
+import { useEffect, useState } from "react";
 import { BlockquoteElementStatic } from "./blockquote-element-static";
 import { CodeBlockElementStatic } from "./code-block-element-static";
 import { CodeLeafStatic } from "./code-leaf-static";
@@ -110,38 +109,80 @@ const siteUrl = "https://platejs.org";
 const lowlight = createLowlight(all);
 
 export function ExportToolbarButton(
-    props: DropdownMenuProps & { title: string }
+    props: DropdownMenuProps & { title?: string }
 ) {
     const editor = useEditorRef();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+
+    const [bgColor, setBgColor] = useState<string>("#fff");
+
+    // 마운트 후에 한 번만 읽어서 상태에 저장
+    useEffect(() => {
+        const saved = localStorage.getItem("theme");
+        setBgColor(saved === "light" ? "#fff" : "#000");
+    }, []);
 
     const getCanvas = async () => {
         const { default: html2canvas } = await import("html2canvas-pro");
+        const orig = editor.api.toDOMNode(editor)!;
 
-        const style = document.createElement("style");
-        document.head.append(style);
+        // 1) 오프스크린에 복제본 생성
+        const clone = orig.cloneNode(true) as HTMLElement;
 
-        const canvas = await html2canvas(editor.api.toDOMNode(editor)!, {
-            onclone: (document: Document) => {
-                const editorElement = document.querySelector(
+        // Pretendard 변수 클래스 추가
+        clone.classList.add("__font-pretendard");
+        clone.style.position = "absolute";
+        /* …생략… */
+        document.body.append(clone);
+
+        clone.style.position = "absolute";
+        clone.style.top = "-9999px";
+        clone.style.left = "0";
+        clone.style.width = `${orig.scrollWidth}px`;
+        clone.style.height = `${orig.scrollHeight}px`;
+        clone.style.overflow = "visible";
+        document.body.append(clone);
+
+        // 2) 캡처
+        const canvas = await html2canvas(clone, {
+            width: clone.scrollWidth,
+            height: clone.scrollHeight,
+            scrollX: 0,
+            scrollY: 0,
+            backgroundColor: bgColor,
+            onclone: (doc) => {
+                // 1) Pretendard @font-face 정의 삽입
+                const style = doc.createElement("style");
+                style.textContent = `
+        @font-face {
+          font-family: 'Pretendard';
+          font-display: swap;
+          src: url('PretendardVariable.woff2') format('woff2');
+          font-weight: 100 900;
+        }
+        .__font-pretendard { font-family: 'Pretendard'; }
+      `;
+                doc.head.append(style);
+
+                // 2) 기존 폰트 강제 주입 로직
+                const editorNode = doc.querySelector(
                     '[contenteditable="true"]'
                 );
-                if (editorElement) {
-                    Array.from(editorElement.querySelectorAll("*")).forEach(
-                        (element) => {
-                            const existingStyle =
-                                element.getAttribute("style") || "";
-                            element.setAttribute(
+                if (editorNode) {
+                    Array.from(editorNode.querySelectorAll("*")).forEach(
+                        (el) => {
+                            const ex = el.getAttribute("style") || "";
+                            el.setAttribute(
                                 "style",
-                                `${existingStyle}; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important`
+                                `${ex}; font-family: Pretendard !important;`
                             );
                         }
                     );
                 }
             },
         });
-        style.remove();
 
+        clone.remove();
         return canvas;
     };
 
@@ -352,11 +393,14 @@ export function ExportToolbarButton(
         ${tailwindCss}
         ${katexCss}
         <style>
-          :root {
-            --font-sans: 'Inter', 'Inter Fallback';
-            --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback';
-          }
-        </style>
+            @font-face {
+                font-family: 'Pretendard';
+                font-display: swap;
+                src: url('PretendardVariable.woff2') format('woff2');
+                font-weight: 100 900;
+        }
+        body { font-family: 'Pretendard', sans-serif; }
+  </style>
       </head>
       <body>
         ${editorHtml}

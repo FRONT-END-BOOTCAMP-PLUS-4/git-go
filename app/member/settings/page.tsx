@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import AlertDialog from "../components/AlertDialog";
-import WithdrawButton from "@/app/components/WithdrawButton";
-import { useRouter } from "next/navigation";
 import Button from "@/app/components/Button";
+import WithdrawButton from "@/app/components/WithdrawButton";
+import { GitBranch, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import SettingsSkeleton from "../stats/components/SettingsSkeleton";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import AlertDialog from "../components/AlertDialog";
 
 export default function Settings() {
     const { setTheme } = useTheme();
@@ -34,6 +35,7 @@ export default function Settings() {
     const isSaveDisabled =
         branchSetting === initialBranchSetting &&
         selectedTheme === initialTheme;
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleSave = async () => {
         const res = await fetch("/api/settings/commits", {
@@ -81,13 +83,18 @@ export default function Settings() {
                 setBranchSetting(setting);
                 setInitialBranchSetting(setting);
             }
+            setIsLoading(false);
         };
         fetchSetting();
     }, []);
 
+    if (isLoading) {
+        return <SettingsSkeleton />;
+    }
+
     return (
         <div className="flex justify-center">
-            <div className="border-border-primary1 m-4 w-full max-w-[880px] rounded-lg border bg-white">
+            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] rounded-md border">
                 <div className="border-border-primary1 border-b p-4 text-xl font-semibold">
                     설정
                 </div>
@@ -102,12 +109,12 @@ export default function Settings() {
                             <button
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "light"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white"
-                                }`}
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
+                                        : "bg-bg-member1 border-border-primary1"
+                                } `}
                                 onClick={() => setSelectedTheme("light")}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         selectedTheme === "light"
                                             ? "/light-mode-blue.svg"
@@ -116,19 +123,20 @@ export default function Settings() {
                                     alt="light mode"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <Sun size={18} />
                                 라이트 모드
                             </button>
 
                             <button
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     selectedTheme === "dark"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
+                                        : "bg-bg-member1 border-border-primary1"
                                 }`}
                                 onClick={() => setSelectedTheme("dark")}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         selectedTheme === "dark"
                                             ? "/dark-mode-blue.svg"
@@ -137,7 +145,8 @@ export default function Settings() {
                                     alt="dark mode"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <Moon size={18} />
                                 다크 모드
                             </button>
                         </div>
@@ -153,11 +162,11 @@ export default function Settings() {
                                 onClick={() => setBranchSetting("default")}
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "default"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
+                                        : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         branchSetting === "default"
                                             ? "/branch-blue.svg"
@@ -166,18 +175,19 @@ export default function Settings() {
                                     alt="branch"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <GitBranch size={18} />
                                 기본 브랜치만
                             </button>
                             <button
                                 onClick={() => setBranchSetting("all")}
                                 className={`flex cursor-pointer items-center justify-center gap-2 rounded border px-4 py-2 ${
                                     branchSetting === "all"
-                                        ? "bg-primary1 text-primary7 border-border-primary1"
-                                        : "border-gray-200 bg-white"
+                                        ? "bg-hover-primary1 text-text-select1 border-border-primary1"
+                                        : "bg-bg-member1 border-border-primary1"
                                 }`}
                             >
-                                <Image
+                                {/* <Image
                                     src={
                                         branchSetting === "all"
                                             ? "/branch-blue.svg"
@@ -186,7 +196,8 @@ export default function Settings() {
                                     alt="branch"
                                     width={20}
                                     height={20}
-                                />
+                                /> */}
+                                <GitBranch size={18} />
                                 모든 브랜치
                             </button>
                         </div>

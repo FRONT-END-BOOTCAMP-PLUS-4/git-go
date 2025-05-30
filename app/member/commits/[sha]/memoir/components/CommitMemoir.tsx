@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
@@ -76,6 +77,7 @@ export default function CommitMemoir() {
 
     return (
         <CreateMemoirLayout>
+            {/* AI 요약 모달 */}
             <button
                 onClick={() => setShowModal(true)}
                 className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
@@ -91,27 +93,36 @@ export default function CommitMemoir() {
                 </div>
             )}
 
-            <AccordionSidebar
-                files={files}
-                selectedFile={selectedFile}
-                onSelect={setSelectedFile}
-            />
+            {/* Resizable layout 시작 */}
+            <PanelGroup direction="horizontal" className="h-full w-full">
+                {/* Accordion Sidebar */}
+                <AccordionSidebar
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />
 
-            <div className="grid h-full grid-cols-2">
-                <ChangeListLayout>
-                    <div className="shadow- mb-2 truncate px-3 py-2 font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
-                        {commitData.message}
+                {/* Change List */}
+                <Panel defaultSize={40} minSize={20}>
+                    <ChangeListLayout>
+                        <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                            {commitData.message}
+                        </div>
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                        />
+                    </ChangeListLayout>
+                </Panel>
+                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+
+                {/* Editor */}
+                <Panel defaultSize={40} minSize={20}>
+                    <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
+                        <CreateEditorForm source={sha} typeId={1} />
                     </div>
-                    <ChangeList
-                        changes={commitData.changeDetail}
-                        selectedFile={selectedFile}
-                    />
-                </ChangeListLayout>
-
-                <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
-                    <CreateEditorForm source={sha} typeId={1} />
-                </div>
-            </div>
+                </Panel>
+            </PanelGroup>
         </CreateMemoirLayout>
     );
 }
