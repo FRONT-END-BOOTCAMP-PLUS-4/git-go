@@ -41,7 +41,13 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                     await userRes.json();
                 const userRepoIds = new Set(userRepos.map((r) => r.name));
 
-                setRepos(githubRepos);
+                setRepos(
+                    githubRepos.sort(
+                        (a, b) =>
+                            new Date(b.updatedAt).getTime() -
+                            new Date(a.updatedAt).getTime()
+                    )
+                );
                 setSelected(userRepoIds);
             } catch {
                 alert("레포지토리를 불러오는 데 실패했습니다.");
