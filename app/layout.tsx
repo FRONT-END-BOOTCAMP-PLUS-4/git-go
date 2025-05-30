@@ -1,6 +1,14 @@
+import localFont from "next/font/local";
 import Header from "./components/Header";
 import { Providers } from "./components/Providers";
 import "./globals.css";
+
+const pretendard = localFont({
+    src: "../static/fonts/PretendardVariable.woff2",
+    display: "swap",
+    weight: "100 900",
+    variable: "--font-pretendard",
+});
 
 export const metadata = {
     title: "GITGO - 기록이 남는 개발",
@@ -37,8 +45,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className="bg-bg-primary1">
+        <html
+            lang="kr"
+            suppressHydrationWarning
+            className={pretendard.variable}
+        >
+            <body className={`bg-bg-primary1 ${pretendard.className}`}>
                 <Providers>
                     <Header />
                     {children}
