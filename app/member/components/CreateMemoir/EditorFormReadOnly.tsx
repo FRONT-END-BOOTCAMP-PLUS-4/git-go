@@ -76,7 +76,7 @@ export default function EditorFormReadOnly({
 
                 {/* 태그 */}
                 <div>
-                    <div className="flex flex-wrap items-center gap-1 px-3 py-2">
+                    <div className="border-border-primary1 flex flex-wrap items-center gap-1 border-b px-3 pt-2 pb-5">
                         {tags.length > 0 ? (
                             tags.map((tag) => (
                                 <span
@@ -100,8 +100,7 @@ export default function EditorFormReadOnly({
                         readOnly
                         initialContent={content}
                         toolbar={
-                            <div className="flex justify-end">
-                                {/* 툴바 정렬을 위해 div로 감싸기 */}
+                            <div>
                                 <FixedToolbar>
                                     <ToolbarGroup>
                                         <ExportToolbarButton title={title} />

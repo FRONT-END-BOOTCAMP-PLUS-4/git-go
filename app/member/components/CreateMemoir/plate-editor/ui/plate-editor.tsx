@@ -47,8 +47,13 @@ function PlateEditorInner(
                 <EditorContainer
                     className={`border-border-primary1 flex flex-1 flex-col rounded-md border ${className}`}
                 >
-                    <div className="flex items-center justify-between gap-2">
-                        {toolbar && <div className="mb-2">{toolbar}</div>}
+                    <div className="flex items-center justify-end">
+                        {toolbar && (
+                            <div className="mb-2 flex items-center gap-2">
+                                <div>회고록 내보내기</div>
+                                <div>{toolbar}</div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
