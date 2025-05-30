@@ -31,6 +31,9 @@ async function fetchAllCommitsFromDefaultBranch({
         );
 
         if (!res.ok) {
+            if (res.status === 409) {
+                return [];
+            }
             const errorData = await res.json();
             throw new Error(`Failed to fetch commits: ${res.status} - ${errorData.message || "Unknown error"}`);
         }
