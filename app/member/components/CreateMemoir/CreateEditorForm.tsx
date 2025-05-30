@@ -189,7 +189,7 @@ export default function CreateEditorForm({
                               ? "disabled"
                               : "default"
                     }
-                    onClick={handleTest}
+                    onClick={handleSave}
                     isLoading={loading}
                 >
                     {loading ? "저장 중" : "저장하기"}
