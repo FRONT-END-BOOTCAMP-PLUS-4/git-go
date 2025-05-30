@@ -54,7 +54,15 @@ export default function SideBar({
                         nameWithOwner: repo.nameWithOwner,
                     };
                 })
-                .filter(Boolean)
+                .filter(
+                    (
+                        r
+                    ): r is {
+                        dbId: number;
+                        id: string;
+                        nameWithOwner: string;
+                    } => r !== null
+                )
                 .sort((a, b) => a.dbId - b.dbId) as {
                 dbId: number;
                 id: string;
