@@ -44,7 +44,7 @@ function PlateEditorInner(
 
                     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
                         <Editor
-                            className="border-border-primary1 flex-1 border-b-[2px] px-5 py-2"
+                            className="border-border-primary1 flex-1 rounded-md border border-b-[2px] px-5 py-2"
                             variant="demo"
                         />
                     </div>
