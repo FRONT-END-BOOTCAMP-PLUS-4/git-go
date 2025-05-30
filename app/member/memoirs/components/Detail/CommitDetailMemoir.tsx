@@ -82,7 +82,7 @@ export default function CommitDetailMemoir() {
     };
 
     useEffect(() => {
-        if (!repo?.nameWithOwner || !session?.accessToken) return;
+        if (!repo?.nameWithOwner || !session?.accessToken || !sha) return;
         fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
     }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
