@@ -127,11 +127,12 @@ export default function CreateEditorForm({
             {/* 제목 */}
             <div>
                 <input
-                    className="w-full px-3 py-2.5 text-3xl font-semibold"
+                    className="w-full px-3 py-2.5 text-3xl font-semibold outline-none"
                     type="text"
                     placeholder="제목을 입력하세요"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    autoFocus
                 />
             </div>
             {/* 태그 */}

@@ -109,6 +109,7 @@ export default function EditorFormReadOnly({
                                 </FixedToolbar>
                             </div>
                         }
+                        className="border-none"
                     />
                 </div>
 
