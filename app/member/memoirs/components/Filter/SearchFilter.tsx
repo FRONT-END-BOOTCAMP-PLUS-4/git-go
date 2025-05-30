@@ -42,7 +42,7 @@ export default function SearchFilter() {
                 onKeyDown={handleKeyDown}
             />
             {searchKeyword && (
-                <button onClick={handleReset} className="ml-2">
+                <button onClick={handleReset} className="ml-2 cursor-pointer">
                     <X size={18} className="text-gray-400" />
                 </button>
             )}
