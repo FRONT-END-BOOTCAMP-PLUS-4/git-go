@@ -9,6 +9,7 @@ import { RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
+import Image from "next/image";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -38,31 +39,39 @@ export default function PullRequestAiSummary({
         setSummary("");
         setLoading(true);
         setSummarized(prNo || "", true);
+        try {
+            const simplified = useSimplifyPullRequestData(pullRequest);
+            const prompt = `
+                            ${PROMPT}
+                            \`\`\`json
+                            ${JSON.stringify(simplified, null, 2)}
+                            \`\`\`
+                            `;
 
-        const simplified = useSimplifyPullRequestData(pullRequest);
-        const prompt = `
-                        ${PROMPT}
-                        \`\`\`json
-                        ${JSON.stringify(simplified, null, 2)}
-                        \`\`\`
-                        `;
-
-        const response = await ai.models.generateContentStream({
-            model: "gemini-2.5-flash-preview-04-17",
-            contents: prompt,
-        });
-
-        let fullText = "";
-
-        for await (const chunk of response) {
-            fullText += chunk.text;
-            flushSync(() => {
-                setSummary(fullText);
+            const response = await ai.models.generateContentStream({
+                model: "gemini-2.5-flash-preview-05-20",
+                contents: prompt,
             });
+
+            let fullText = "";
+
+            for await (const chunk of response) {
+                fullText += chunk.text;
+                flushSync(() => {
+                    setSummary(fullText);
+                });
+            }
+            setSummary(fullText);
+            setSummarized(prNo || "", true);
+        } catch (error: any) {
+            console.error("AI 요약 실패:", error);
+            setSummary(
+                "❌ 요약을 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+            );
+            setSummarized(prNo || "", false);
+        } finally {
+            setLoading(false);
         }
-        setSummary(fullText);
-        setSummarized(prNo || "", true);
-        setLoading(false);
     };
     const handleRetry = async () => {
         if (retryCount <= 2) {
@@ -107,8 +116,17 @@ export default function PullRequestAiSummary({
                     </button>
                 </div>
             ) : loading && aiSummary === "" ? (
-                <div className="flex flex-1 animate-pulse items-center justify-center text-gray-400">
-                    요약 생성 중입니다...
+                <div className="flex flex-col items-center justify-center">
+                    <div className="mb-6 flex animate-pulse items-center justify-center text-gray-400">
+                        요약 생성 중입니다...
+                    </div>
+                    <Image
+                        src={"/cat-run.gif"}
+                        alt="로딩 중"
+                        width={250}
+                        height={100}
+                        unoptimized
+                    />
                 </div>
             ) : (
                 <>

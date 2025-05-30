@@ -126,6 +126,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                         alt="로딩 중"
                         width={250}
                         height={100}
+                        unoptimized
                     />
                 </div>
             ) : (
