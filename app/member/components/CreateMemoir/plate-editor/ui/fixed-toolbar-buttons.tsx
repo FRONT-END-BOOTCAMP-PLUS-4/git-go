@@ -27,6 +27,7 @@ import {
 
 import { MoreDropdownMenu } from "@/app/member/components/CreateMemoir/plate-editor/ui/more-dropdown-menu";
 
+import { ImagePlugin } from "@udecode/plate-media/react";
 import { AlignDropdownMenu } from "./align-dropdown-menu";
 import { ColorDropdownMenu } from "./color-dropdown-menu";
 import { EmojiDropdownMenu } from "./emoji-dropdown-menu";
@@ -44,6 +45,7 @@ import { InsertDropdownMenu } from "./insert-dropdown-menu";
 import { LineHeightDropdownMenu } from "./line-height-dropdown-menu";
 import { LinkToolbarButton } from "./link-toolbar-button";
 import { MarkToolbarButton } from "./mark-toolbar-button";
+import { MediaToolbarButton } from "./media-toolbar-button";
 import { OutdentToolbarButton } from "./outdent-toolbar-button";
 import { TableDropdownMenu } from "./table-dropdown-menu";
 import { ToggleToolbarButton } from "./toggle-toolbar-button";
@@ -145,6 +147,10 @@ export function FixedToolbarButtons() {
                         <LinkToolbarButton />
                         <TableDropdownMenu />
                         <EmojiDropdownMenu />
+                    </ToolbarGroup>
+
+                    <ToolbarGroup>
+                        <MediaToolbarButton nodeType={ImagePlugin.key} />
                     </ToolbarGroup>
 
                     <ToolbarGroup>

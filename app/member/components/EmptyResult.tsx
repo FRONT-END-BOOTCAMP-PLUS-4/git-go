@@ -7,7 +7,10 @@ interface Props {
     imageSrc?: string;
 }
 
-export default function EmptyResult({ message, imageSrc = "/no-result.png" }: Props) {
+export default function EmptyResult({
+    message,
+    imageSrc = "/no-result.png",
+}: Props) {
     return (
         <li className="m-auto w-fit p-8 text-center text-sm text-gray-500">
             <Image

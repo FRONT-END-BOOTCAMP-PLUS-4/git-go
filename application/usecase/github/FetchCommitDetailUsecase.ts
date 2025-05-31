@@ -1,15 +1,19 @@
-
-import { GithubCommitDetailRequestDto, GithubCommitDetailResponseDto } from '@/application/usecase/github/dto/GithubCommitDetailDto';
-import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
+import {
+    GithubCommitDetailRequestDto,
+    GithubCommitDetailResponseDto,
+} from "@/application/usecase/github/dto/GithubCommitDetailDto";
+import { GithubCommitDetailRepository } from "@/domain/repositories/GithubCommitDetailRepository";
 
 export class FetchCommitDetailUsecase {
-    constructor(private readonly repository: GithubCommitDetailRepository) { }
+    constructor(private readonly repository: GithubCommitDetailRepository) {}
 
-    async execute(input: GithubCommitDetailRequestDto): Promise<GithubCommitDetailResponseDto> {
+    async execute(
+        input: GithubCommitDetailRequestDto
+    ): Promise<GithubCommitDetailResponseDto> {
         const commit = await this.repository.getCommitDetail(
             input.nameWithOwner,
             input.sha,
-            input.accessToken,
+            input.accessToken
         );
 
         return {

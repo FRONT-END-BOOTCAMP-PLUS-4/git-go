@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
         const perPage = parseInt(body.perPage) || 10;
 
         if (!owner || !repo || !author) {
-            return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
+            return NextResponse.json(
+                { error: "Missing required parameters" },
+                { status: 400 }
+            );
         }
 
         const repository = new GbCommitListRepository();
@@ -33,6 +36,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(commitList);
     } catch (error) {
         console.error("Fetch commit list failed", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
     }
 }

@@ -3,5 +3,5 @@ export class SaveReposDto {
         public userId: string,
         public repoIds: string[],
         public force: boolean = false
-    ) { }
+    ) {}
 }

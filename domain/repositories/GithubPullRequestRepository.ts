@@ -6,5 +6,5 @@ export interface GithubPullRequestRepository {
         author: string,
         page?: number,
         perPage?: number
-    ): Promise<{ list: GithubPullRequestList[]; totalCount: number; }>;
+    ): Promise<{ list: GithubPullRequestList[]; totalCount: number }>;
 }
