@@ -3,7 +3,7 @@ import { SaveReposDto } from "./dto/SaveReposDto";
 import { RepoRepository } from "@/domain/repositories/RepoRepository";
 
 export class SaveReposUsecase {
-    constructor(private readonly repoRepo: RepoRepository) { }
+    constructor(private readonly repoRepo: RepoRepository) {}
 
     async execute(dto: SaveReposDto) {
         const userId = dto.userId;
@@ -14,7 +14,10 @@ export class SaveReposUsecase {
 
         const toAdd = dto.repoIds.filter((name) => !existingNames.has(name));
         const toDelete = existingRepos
-            .filter((r): r is Repo & { name: string } => r.name !== null && !incomingNames.has(r.name))
+            .filter(
+                (r): r is Repo & { name: string } =>
+                    r.name !== null && !incomingNames.has(r.name)
+            )
             .map((r) => r.name);
 
         const protectedRepos: string[] = [];

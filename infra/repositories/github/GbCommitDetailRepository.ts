@@ -1,5 +1,9 @@
-import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
-import { GithubCommitDetail, FileTreeNode, ChangedFile } from '@/domain/entities/GithubCommitDetail';
+import { GithubCommitDetailRepository } from "@/domain/repositories/GithubCommitDetailRepository";
+import {
+    GithubCommitDetail,
+    FileTreeNode,
+    ChangedFile,
+} from "@/domain/entities/GithubCommitDetail";
 
 export class GbCommitDetailRepository implements GithubCommitDetailRepository {
     async getCommitDetail(
@@ -7,20 +11,25 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         sha: string,
         accessToken: string // ✅ accessToken 인자로 받음
     ): Promise<GithubCommitDetail> {
-        if (!accessToken) throw new Error('No access token provided');
+        if (!accessToken) throw new Error("No access token provided");
 
-        const res = await fetch(`https://api.github.com/repos/${nameWithOwner}/commits/${sha}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Accept: 'application/vnd.github+json',
-            },
-        });
+        const res = await fetch(
+            `https://api.github.com/repos/${nameWithOwner}/commits/${sha}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/vnd.github+json",
+                },
+            }
+        );
 
-        if (!res.ok) throw new Error('GitHub API 호출 실패');
+        if (!res.ok) throw new Error("GitHub API 호출 실패");
 
         const data = await res.json();
 
-        const filePaths: string[] = data.files.map((file: any) => file.filename);
+        const filePaths: string[] = data.files.map(
+            (file: any) => file.filename
+        );
         const tree = this.buildFileTree(filePaths);
 
         const changeDetail: ChangedFile[] = data.files.map((file: any) => ({
@@ -47,7 +56,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         const root: Record<string, any> = {};
 
         for (const path of paths) {
-            const parts = path.split('/');
+            const parts = path.split("/");
             let current = root;
 
             for (let i = 0; i < parts.length; i++) {
@@ -56,7 +65,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
                 if (!current[part]) {
                     current[part] = {
                         name: part,
-                        type: i === parts.length - 1 ? 'file' : 'directory',
+                        type: i === parts.length - 1 ? "file" : "directory",
                         children: i === parts.length - 1 ? undefined : {},
                     };
                 }
