@@ -1,6 +1,7 @@
 // app/page.tsx (or app/home/page.tsx)
 
 import { MEMBER_URL } from "@/constants/url";
+import { LayoutDashboard } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { authOptions } from "./api/auth/authOptions";
@@ -71,8 +72,9 @@ export default async function HomePage() {
                             <Button
                                 type="default"
                                 size="regular"
-                                label="마이페이지"
+                                label="대시보드"
                                 htmlType="submit"
+                                icon={<LayoutDashboard size={16} />}
                             />
                         </form>
                     </div>
