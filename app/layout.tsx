@@ -28,6 +28,9 @@ export const metadata = {
                 height: 600,
             },
         ],
+        icons: {
+            icon: "/favicon.ico",
+        },
         type: "website",
     },
     twitter: {
