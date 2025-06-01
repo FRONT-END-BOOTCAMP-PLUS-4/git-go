@@ -1,6 +1,5 @@
 import { GithubCommit } from "@/domain/entities/GithubCommitList";
 
-
 export interface GithubCommitListRepository {
     fetchCommitList(params: {
         owner: string;
@@ -10,5 +9,9 @@ export interface GithubCommitListRepository {
         page?: number;
         perPage?: number;
         userId?: string;
-    }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }>;
+    }): Promise<{
+        commits: GithubCommit[];
+        hasNextPage: boolean;
+        totalCount: number;
+    }>;
 }

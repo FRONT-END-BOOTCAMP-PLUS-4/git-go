@@ -4,14 +4,14 @@ import { GithubPullRequestRepository } from "@/domain/repositories/GithubPullReq
 export class GbPullRequestRepository implements GithubPullRequestRepository {
     private GITHUB_API_BASE = "https://api.github.com";
 
-    constructor(private token: string) { }
+    constructor(private token: string) {}
 
     async fetchByUsername(
         repoFullName: string,
         author: string,
         page: number = 1,
         perPage: number = 10
-    ): Promise<{ list: GithubPullRequestList[]; totalCount: number; }> {
+    ): Promise<{ list: GithubPullRequestList[]; totalCount: number }> {
         const [owner, repo] = repoFullName.split("/");
 
         // 1) PR 검색 API 호출 (search/issues)

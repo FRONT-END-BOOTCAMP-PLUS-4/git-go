@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 
 import {
-  useIndentTodoToolBarButton,
-  useIndentTodoToolBarButtonState,
-} from '@udecode/plate-indent-list/react';
-import { ListTodoIcon } from 'lucide-react';
+    useIndentTodoToolBarButton,
+    useIndentTodoToolBarButtonState,
+} from "@udecode/plate-indent-list/react";
+import { ListTodoIcon } from "lucide-react";
 
-import { ToolbarButton } from './toolbar';
+import { ToolbarButton } from "./toolbar";
 
 export function IndentTodoToolbarButton(
-  props: React.ComponentProps<typeof ToolbarButton>
+    props: React.ComponentProps<typeof ToolbarButton>
 ) {
-  const state = useIndentTodoToolBarButtonState({ nodeType: 'todo' });
-  const { props: buttonProps } = useIndentTodoToolBarButton(state);
+    const state = useIndentTodoToolBarButtonState({ nodeType: "todo" });
+    const { props: buttonProps } = useIndentTodoToolBarButton(state);
 
-  return (
-    <ToolbarButton {...props} {...buttonProps} tooltip="Todo">
-      <ListTodoIcon />
-    </ToolbarButton>
-  );
+    return (
+        <ToolbarButton {...props} {...buttonProps} tooltip="Todo">
+            <ListTodoIcon />
+        </ToolbarButton>
+    );
 }

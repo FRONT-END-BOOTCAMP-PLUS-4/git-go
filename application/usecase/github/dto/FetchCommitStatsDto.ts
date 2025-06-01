@@ -1,3 +1,3 @@
 export class FetchCommitStatsDto {
-    constructor(public repo: string) { }
+    constructor(public repo: string) {}
 }
