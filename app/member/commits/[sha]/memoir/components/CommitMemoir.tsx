@@ -16,6 +16,7 @@ import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
+import { useSourceTitleStore } from "@/store/sourceTitleStore";
 
 export default function CommitMemoir() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -27,6 +28,10 @@ export default function CommitMemoir() {
     const { data: session } = useSession();
     const { sha }: { sha: string } = useParams();
     const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
+
+    // 🔥 sourceTitleStore에서 sourceTitle 가져오기(추후 삭제 필요)
+    const { sourceTitle } = useSourceTitleStore();
+    console.log("sourceTitle", sourceTitle);
 
     useEffect(() => {
         clearSummarized();
