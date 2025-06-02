@@ -161,8 +161,8 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                                 <span
                                                     className={`rounded px-2 py-0.5 text-xs font-semibold ${
                                                         repo.isPrivate
-                                                            ? "bg-[#FCE4EC] text-[#880E4F]"
-                                                            : "bg-[#E0F2F1] text-[#004D40]"
+                                                            ? "bg-[#FFF3E0] text-[#E65100]"
+                                                            : "bg-[#E3F2FD] text-[#1565C0]"
                                                     }`}
                                                 >
                                                     {repo.isPrivate
