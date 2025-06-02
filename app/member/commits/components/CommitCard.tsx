@@ -1,5 +1,6 @@
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
+import { useSourceTitleStore } from "@/store/sourceTitleStore";
 import { Archive, GitBranch, GitCommitHorizontal, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -89,10 +90,12 @@ export default function CommitCard({
     const { label, bg, text } = typeClassMap[commitType];
 
     const [isVisible, setIsVisible] = useState(false);
+    const { setSourceTitle } = useSourceTitleStore();
 
     const shortSha = sha.substring(0, 6);
 
     const moveToCommitMemoir = () => {
+        setSourceTitle(message);
         router.push(`${MEMBER_URL.commits}/${shortSha}/memoir`);
     };
 
