@@ -152,7 +152,7 @@ export default function CreateEditorForm({
                             {tag}
                             <X
                                 onClick={() => removeTag(tag)}
-                                className="ml-1 cursor-pointer"
+                                className="ml-1 shrink-0 cursor-pointer"
                                 size={14}
                             />
                         </span>
