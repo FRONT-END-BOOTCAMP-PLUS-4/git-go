@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 "use client";
 
 import * as React from "react";
@@ -10,15 +9,16 @@ import { PlateElement, useEditorPlugin, withHOC } from "@udecode/plate/react";
 import { ImageIcon, Loader2Icon } from "lucide-react";
 import { useFilePicker } from "use-file-picker";
 
-import { useUploadFile } from "@/hooks/useUploadFile";
+import { useS3Upload } from "@/hooks/useS3Upload";
 import { cn } from "@/lib/utils";
 import {
-  FilePlugin,
-  ImagePlugin,
-  PlaceholderPlugin,
-  PlaceholderProvider,
-  updateUploadHistory,
+    FilePlugin,
+    ImagePlugin,
+    PlaceholderPlugin,
+    PlaceholderProvider,
+    updateUploadHistory,
 } from "@udecode/plate-media/react";
+import Image from "next/image";
 
 const CONTENT: Record<
     string,
@@ -41,23 +41,24 @@ export const MediaPlaceholderElement = withHOC(
         props: PlateElementProps<TPlaceholderElement>
     ) {
         const { editor, element } = props;
-
         const { api } = useEditorPlugin(PlaceholderPlugin);
 
+        // useS3Upload 훅 사용
         const {
             isUploading,
             progress,
             uploadedFile,
             uploadFile,
             uploadingFile,
-        } = useUploadFile();
+        } = useS3Upload({
+            onUploadError: (err) => {
+                console.error("업로드 중 에러 발생:", err);
+            },
+        });
 
-        const loading = isUploading && uploadingFile;
-
+        const loading = isUploading && !!uploadingFile;
         const currentContent = CONTENT[element.mediaType];
-
         const isImage = element.mediaType === ImagePlugin.key;
-
         const imageRef = React.useRef<HTMLImageElement>(null);
 
         const { openFilePicker } = useFilePicker({
@@ -68,7 +69,6 @@ export const MediaPlaceholderElement = withHOC(
                 const restFiles = updatedFiles.slice(1);
 
                 replaceCurrentPlaceholder(firstFile);
-
                 if (restFiles.length > 0) {
                     editor
                         .getTransforms(PlaceholderPlugin)
@@ -77,6 +77,7 @@ export const MediaPlaceholderElement = withHOC(
             },
         });
 
+        // 플레이스홀더 자리에 파일을 업로드하고, 편집기 플레이스홀더 API에도 등록
         const replaceCurrentPlaceholder = React.useCallback(
             (file: File) => {
                 void uploadFile(file);
@@ -85,9 +86,9 @@ export const MediaPlaceholderElement = withHOC(
             [api.placeholder, element.id, uploadFile]
         );
 
+        // 업로드가 완료되면, placeholder 노드를 실제 이미지/미디어 노드로 교체
         React.useEffect(() => {
             if (!uploadedFile) return;
-
             const path = editor.api.findPath(element);
 
             editor.tf.withoutSaving(() => {
@@ -108,7 +109,6 @@ export const MediaPlaceholderElement = withHOC(
                 };
 
                 editor.tf.insertNodes(node, { at: path });
-
                 updateUploadHistory(editor, node);
             });
 
@@ -116,27 +116,23 @@ export const MediaPlaceholderElement = withHOC(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [uploadedFile, element.id]);
 
-        // React dev mode will call React.useEffect twice
+        // React Strict Mode에서 effect가 두 번 실행되는 것을 방지
         const isReplaced = React.useRef(false);
-
-        /** Paste and drop */
         React.useEffect(() => {
             if (isReplaced.current) return;
-
             isReplaced.current = true;
+
             const currentFiles = api.placeholder.getUploadingFile(
                 element.id as string
             );
-
             if (!currentFiles) return;
-
             replaceCurrentPlaceholder(currentFiles);
-
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isReplaced]);
 
         return (
             <PlateElement className="my-1" {...props}>
+                {/* “파일 선택” UI */}
                 {(!loading || !isImage) && (
                     <div
                         className={cn(
@@ -154,7 +150,7 @@ export const MediaPlaceholderElement = withHOC(
                                     ? uploadingFile?.name
                                     : currentContent.content}
                             </div>
-
+                            {/* 이미지가 아닌 파일(MediaPlugin.key != ImagePlugin.key)인 경우, 진행률을 표시 */}
                             {loading && !isImage && (
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <div>
@@ -171,14 +167,16 @@ export const MediaPlaceholderElement = withHOC(
                     </div>
                 )}
 
+                {/* 이미지 업로드 중에 미리보기 + 진행률 표시 */}
                 {isImage && loading && (
                     <ImageProgress
-                        file={uploadingFile}
+                        file={uploadingFile!}
                         imageRef={imageRef}
                         progress={progress}
                     />
                 )}
 
+                {/* 실제 placeholder / 미디어 노드를 렌더링 */}
                 {props.children}
             </PlateElement>
         );
@@ -201,23 +199,20 @@ export function ImageProgress({
     React.useEffect(() => {
         const url = URL.createObjectURL(file);
         setObjectUrl(url);
-
         return () => {
             URL.revokeObjectURL(url);
         };
     }, [file]);
 
-    if (!objectUrl) {
-        return null;
-    }
-
+    if (!objectUrl) return null;
     return (
         <div className={cn("relative", className)} contentEditable={false}>
-            <img
+            <Image
                 ref={imageRef}
                 className="h-auto w-full rounded-sm object-cover"
                 alt={file.name}
                 src={objectUrl}
+                fill
             />
             {progress < 100 && (
                 <div className="absolute right-1 bottom-1 flex items-center space-x-2 rounded-full bg-black/50 px-1 py-0.5">
@@ -233,23 +228,15 @@ export function ImageProgress({
 
 export function formatBytes(
     bytes: number,
-    opts: {
-        decimals?: number;
-        sizeType?: "accurate" | "normal";
-    } = {}
+    opts: { decimals?: number; sizeType?: "accurate" | "normal" } = {}
 ) {
     const { decimals = 0, sizeType = "normal" } = opts;
-
     const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     const accurateSizes = ["Bytes", "KiB", "MiB", "GiB", "TiB"];
 
     if (bytes === 0) return "0 Byte";
-
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
-
     return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
-        sizeType === "accurate"
-            ? (accurateSizes[i] ?? "Bytest")
-            : (sizes[i] ?? "Bytes")
+        sizeType === "accurate" ? accurateSizes[i] : sizes[i]
     }`;
 }

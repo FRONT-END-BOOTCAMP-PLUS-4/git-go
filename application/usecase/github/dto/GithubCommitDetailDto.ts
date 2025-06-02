@@ -1,12 +1,12 @@
 export interface FileTreeNode {
     name: string;
-    type: 'file' | 'directory';
+    type: "file" | "directory";
     children?: FileTreeNode[];
 }
 
 export interface ChangedFile {
     filename: string;
-    status: 'added' | 'modified' | 'removed';
+    status: "added" | "modified" | "removed";
     additions: number;
     deletions: number;
     changes: number;

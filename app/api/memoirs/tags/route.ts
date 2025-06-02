@@ -5,7 +5,8 @@ import { GetMemoirTagsUsecase } from "@/application/usecase/memoir/GetMemoirTags
 
 export async function GET(req: NextRequest) {
     const token = await getToken({ req });
-    if (!token?.id) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    if (!token?.id)
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
     const { searchParams } = new URL(req.url);
     const repoId = searchParams.get("repo") ?? undefined;
