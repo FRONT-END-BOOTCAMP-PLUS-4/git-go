@@ -5,7 +5,7 @@ import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
 import { GoogleGenAI } from "@google/genai";
-import { RotateCcw, X } from "lucide-react";
+import { RotateCcw, X, Copy } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { flushSync } from "react-dom";
