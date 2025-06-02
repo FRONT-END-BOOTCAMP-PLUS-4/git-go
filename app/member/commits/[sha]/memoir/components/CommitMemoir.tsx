@@ -7,8 +7,8 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { useParams } from "next/navigation";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";

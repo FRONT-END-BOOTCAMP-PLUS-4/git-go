@@ -2,7 +2,7 @@
 
 import { PROMPT } from "@/constants/aiPullRequestPrompt";
 import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
-import { useSummaryStore } from "@/store/AiSummaryStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { GoogleGenAI } from "@google/genai";
 import { Copy, RotateCcw, X } from "lucide-react";

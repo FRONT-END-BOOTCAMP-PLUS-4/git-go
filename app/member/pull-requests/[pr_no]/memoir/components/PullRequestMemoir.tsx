@@ -11,8 +11,8 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import Select from "@/app/member/components/Select";
 
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";

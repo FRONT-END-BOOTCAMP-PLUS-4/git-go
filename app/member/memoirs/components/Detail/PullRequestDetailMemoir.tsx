@@ -8,7 +8,7 @@ import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormR
 import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
