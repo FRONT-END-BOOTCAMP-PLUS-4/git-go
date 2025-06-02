@@ -1,3 +1,4 @@
+import { IMAGE_MAX_SIZE } from "@/constants/imageSize";
 import { useState } from "react";
 
 /**
@@ -121,11 +122,9 @@ export function useS3Upload({
     async function uploadFile(file: File) {
         // 이미지 파일인지 확인 (필요 시)
         const isImage = file.type.startsWith("image/");
-        // 최대 허용 크기: 5MB
-        const MAX_SIZE = 1 * 1024 * 1024;
 
         // 이미지이고 크기가 5MB 초과하면 경고 후 중단
-        if (isImage && file.size > MAX_SIZE) {
+        if (isImage && file.size > IMAGE_MAX_SIZE) {
             setErrorMessage("이미지는 5MB 이하만 업로드할 수 있습니다.");
             setIsError(true);
             // alert("이미지는 5MB 이하만 업로드할 수 있습니다.");

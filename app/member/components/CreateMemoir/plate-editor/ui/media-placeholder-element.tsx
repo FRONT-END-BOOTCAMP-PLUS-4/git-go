@@ -10,6 +10,7 @@ import { Loader2Icon } from "lucide-react";
 import { useFilePicker } from "use-file-picker";
 
 import AlertDialog from "@/app/member/components/AlertDialog";
+import { IMAGE_MAX_SIZE } from "@/constants/imageSize";
 import { useS3Upload } from "@/hooks/useS3Upload";
 import { cn } from "@/lib/utils";
 import {
@@ -65,9 +66,6 @@ export const MediaPlaceholderElement = withHOC(
         const isImage = element.mediaType === ImagePlugin.key;
         const imageRef = React.useRef<HTMLImageElement>(null);
 
-        // ② 최대 허용 크기: 5MB
-        const MAX_SIZE = 10 * 1024 * 1024;
-
         /**
          * ③ replaceCurrentPlaceholder
          *    “용량 검사 → 플레이스홀더 추가 → uploadFile 호출” 순으로 실행
@@ -89,7 +87,7 @@ export const MediaPlaceholderElement = withHOC(
             accept: currentContent.accept,
             multiple: false,
             limitFilesConfig: {
-                maxSize: MAX_SIZE,
+                maxSize: IMAGE_MAX_SIZE,
                 maxNumberOfFiles: 1,
             },
 
@@ -101,7 +99,7 @@ export const MediaPlaceholderElement = withHOC(
 
                 // ⑤ 직접 용량 검사 (5MB 이하만 통과)
                 const isImg = firstFile.type.startsWith("image/");
-                if (isImg && firstFile.size > MAX_SIZE) {
+                if (isImg && firstFile.size > IMAGE_MAX_SIZE) {
                     alert(
                         "이미지 용량이 5MB를 초과했습니다.\n5MB 이하의 이미지만 업로드해주세요."
                     );
