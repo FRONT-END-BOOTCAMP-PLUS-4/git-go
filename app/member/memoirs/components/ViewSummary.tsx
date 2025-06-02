@@ -1,8 +1,8 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Copy, X } from "lucide-react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Copy } from "lucide-react";
 
 type AiSummaryProps = {
     setShowModal: (value: boolean) => void;
