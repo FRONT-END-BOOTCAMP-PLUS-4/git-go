@@ -114,7 +114,8 @@ export default function MemoirCard({ memoir }: Props) {
                                 height={12}
                             /> */}
                             <Archive size={18} />
-                            <p>{memoir.repoName}</p>
+                            {/* <p>{memoir.repoName}</p> */}
+                            <p>{memoir.sourceTitle}</p>
                         </div>
                     </div>
                 </div>
