@@ -4,7 +4,7 @@ import Pagination from "@/app/components/Pagination";
 import CommitCard from "@/app/member/commits/components/CommitCard";
 import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
 import EmptyResult from "@/app/member/components/EmptyResult";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import RepoSelectModal from "../components/RepoSelectModal";

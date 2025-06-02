@@ -1,5 +1,5 @@
-import { createJSONStorage, persist } from "zustand/middleware";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface SourceTitleProps {
     sourceTitle: string;
@@ -12,6 +12,9 @@ export const useSourceTitleStore = create<SourceTitleProps>()(
             sourceTitle: "",
             setSourceTitle: (sourceTitle: string) => set({ sourceTitle }),
         }),
-        { name: "source-title-store", storage: createJSONStorage(() => sessionStorage) }
+        {
+            name: "source-title-store",
+            storage: createJSONStorage(() => sessionStorage),
+        }
     )
 );

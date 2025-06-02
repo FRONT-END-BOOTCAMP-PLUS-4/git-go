@@ -7,7 +7,7 @@ import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm"
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";

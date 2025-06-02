@@ -32,7 +32,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
         >
             <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 <X size={24} />

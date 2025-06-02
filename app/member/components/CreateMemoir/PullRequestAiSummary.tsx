@@ -2,7 +2,7 @@
 
 import { PROMPT } from "@/constants/aiPullRequestPrompt";
 import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
-import { useSummaryStore } from "@/store/AiSummaryStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { GoogleGenAI } from "@google/genai";
 import { Copy, RotateCcw, X } from "lucide-react";
@@ -104,7 +104,7 @@ export default function PullRequestAiSummary({
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 <X size={24} />

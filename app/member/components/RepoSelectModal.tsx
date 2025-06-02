@@ -2,7 +2,7 @@
 
 import Button from "@/app/components/Button";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import AlertDialog from "./AlertDialog";

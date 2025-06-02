@@ -4,7 +4,7 @@ import Pagination from "@/app/components/Pagination";
 import EmptyResult from "@/app/member/components/EmptyResult";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 

@@ -2,10 +2,10 @@
 
 import { PROMPT } from "@/constants/aiPrompt";
 import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
-import { useSummaryStore } from "@/store/AiSummaryStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
 import { GoogleGenAI } from "@google/genai";
-import { RotateCcw, X, Copy } from "lucide-react";
+import { Copy, RotateCcw, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { flushSync } from "react-dom";
@@ -105,7 +105,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 <X size={24} />

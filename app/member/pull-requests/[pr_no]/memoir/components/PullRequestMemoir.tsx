@@ -1,9 +1,9 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
@@ -11,15 +11,14 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import Select from "@/app/member/components/Select";
 
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
-import { useSourceTitleStore } from "@/store/sourceTitleStore";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -33,10 +32,6 @@ export default function PullRequestMemoir() {
     const [selectedSha, setSelectedSha] = useState<string>("");
     const [commitData, setCommitData] = useState<CommitType | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-
-    // 🔥 sourceTitleStore에서 sourceTitle 가져오기(추후 삭제 필요)
-    const { sourceTitle } = useSourceTitleStore();
-    console.log("sourceTitle", sourceTitle);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
