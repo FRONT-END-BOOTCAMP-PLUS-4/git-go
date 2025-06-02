@@ -122,7 +122,7 @@ export function useS3Upload({
         // 이미지 파일인지 확인 (필요 시)
         const isImage = file.type.startsWith("image/");
         // 최대 허용 크기: 5MB
-        const MAX_SIZE = 5 * 1024 * 1024;
+        const MAX_SIZE = 1 * 1024 * 1024;
 
         // 이미지이고 크기가 5MB 초과하면 경고 후 중단
         if (isImage && file.size > MAX_SIZE) {
