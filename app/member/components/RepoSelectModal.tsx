@@ -127,14 +127,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
             <div className="bg-bg-primary2 w-full max-w-2xl rounded-xl p-6 shadow-lg">
                 <div className="mb-1 flex items-center justify-between">
                     <h2 className="text-xl font-bold">연동할 저장소 선택</h2>
-                    <button onClick={onClose}>
-                        {/* <Image
-                            src="/x-gray.svg"
-                            alt="닫기"
-                            width={16}
-                            height={16}
-                            className="opacity-60 transition hover:opacity-100"
-                        /> */}
+                    <button onClick={onClose} className="cursor-pointer">
                         <X className="opacity-60 hover:opacity-100" />
                     </button>
                 </div>
