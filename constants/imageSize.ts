@@ -1,1 +1,1 @@
-export const IMAGE_MAX_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+export const IMAGE_MAX_SIZE = 4 * 1024 * 1024; // 4MB in bytes
