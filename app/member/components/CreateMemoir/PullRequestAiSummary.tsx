@@ -104,7 +104,7 @@ export default function PullRequestAiSummary({
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 <X size={24} />
