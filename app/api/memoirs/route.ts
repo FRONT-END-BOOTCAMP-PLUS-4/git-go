@@ -26,12 +26,24 @@ export async function GET(req: NextRequest) {
             createdAfter.setDate(createdAfter.getDate() - days);
         }
     }
-    const filterType = searchParams.get("type") as "commits" | "pullRequests" | "all";
+    const filterType = searchParams.get("type") as
+        | "commits"
+        | "pullRequests"
+        | "all";
     const tags = searchParams.getAll("tags");
     const searchKeyword = searchParams.get("keyword") ?? undefined;
     const usecase = new GetMyMemoirsUsecase(new PrMemoirRepository());
 
-    const result = await usecase.execute(token.id, repoId as string, page, perPage, createdAfter, filterType, tags, searchKeyword);
+    const result = await usecase.execute(
+        token.id,
+        repoId as string,
+        page,
+        perPage,
+        createdAfter,
+        filterType,
+        tags,
+        searchKeyword
+    );
     return NextResponse.json(result);
 }
 

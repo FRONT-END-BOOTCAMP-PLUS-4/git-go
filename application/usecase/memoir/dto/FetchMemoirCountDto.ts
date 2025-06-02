@@ -1,3 +1,6 @@
 export class FetchMemoirCountDto {
-  constructor(public repoId: string, public userId: string) { }
+    constructor(
+        public repoId: string,
+        public userId: string
+    ) {}
 }

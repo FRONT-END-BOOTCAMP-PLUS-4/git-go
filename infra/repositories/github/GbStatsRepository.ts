@@ -1,7 +1,7 @@
 import { StatsRepository } from "@/domain/repositories/StatsRepository";
 
 export class GbStatsRepository implements StatsRepository {
-    constructor(private token: string) { }
+    constructor(private token: string) {}
 
     async fetchStats(repo: string): Promise<{ totalCommits: number }> {
         const [owner, name] = repo.split("/");
@@ -32,7 +32,9 @@ export class GbStatsRepository implements StatsRepository {
         return { totalCommits: lastPage };
     }
 
-    async fetchLines(repo: string): Promise<{ totalLines: number; prevLines: number }> {
+    async fetchLines(
+        repo: string
+    ): Promise<{ totalLines: number; prevLines: number }> {
         const [owner, name] = repo.split("/");
         const url = `https://api.github.com/repos/${owner}/${name}/stats/code_frequency`;
         const headers = {
@@ -53,16 +55,29 @@ export class GbStatsRepository implements StatsRepository {
 
             const data = await res.json();
             if (Array.isArray(data)) {
-                const totalAdditions = data.reduce((acc, [_, add]) => acc + add, 0);
-                const totalDeletions = data.reduce((acc, [__, ___, del]) => acc + del, 0);
+                const totalAdditions = data.reduce(
+                    (acc, [_, add]) => acc + add,
+                    0
+                );
+                const totalDeletions = data.reduce(
+                    (acc, [__, ___, del]) => acc + del,
+                    0
+                );
                 const totalLines = totalAdditions + totalDeletions;
 
                 const lastWeek = data[data.length - 1];
-                const isLastWeekZero = lastWeek && lastWeek[1] === 0 && lastWeek[2] === 0;
+                const isLastWeekZero =
+                    lastWeek && lastWeek[1] === 0 && lastWeek[2] === 0;
                 const weeksToExclude = isLastWeekZero ? 2 : 1;
                 const prevData = data.slice(0, -weeksToExclude);
-                const prevAdd = prevData.reduce((sum, [_, add]) => sum + add, 0);
-                const prevDel = prevData.reduce((sum, [__, ___, del]) => sum + del, 0);
+                const prevAdd = prevData.reduce(
+                    (sum, [_, add]) => sum + add,
+                    0
+                );
+                const prevDel = prevData.reduce(
+                    (sum, [__, ___, del]) => sum + del,
+                    0
+                );
                 const prevLines = prevAdd + prevDel;
 
                 return { totalLines, prevLines };
@@ -96,7 +111,9 @@ export class GbStatsRepository implements StatsRepository {
         return json.data?.node?.nameWithOwner ?? "";
     }
 
-    async fetchWeeklyCommits(repo: string): Promise<{ date: string; count: number }[]> {
+    async fetchWeeklyCommits(
+        repo: string
+    ): Promise<{ date: string; count: number }[]> {
         const [owner, name] = repo.split("/");
 
         const since = new Date();
@@ -150,5 +167,4 @@ export class GbStatsRepository implements StatsRepository {
             .map(([date, count]) => ({ date, count }))
             .sort((a, b) => a.date.localeCompare(b.date));
     }
-
 }

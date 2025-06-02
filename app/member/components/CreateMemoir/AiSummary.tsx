@@ -5,11 +5,11 @@ import { useSimplifyCommitData } from "@/hooks/useSimplifyCommitData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
 import { GoogleGenAI } from "@google/genai";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, X, Copy } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
-import Image from "next/image";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -29,6 +29,17 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     } = useSummaryStore();
     const alreadySummarized = isSummarized(commit.sha);
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(aiSummary);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("복사 실패:", err);
+        }
+    };
 
     const handleSummarize = async () => {
         setSummary("");
@@ -83,7 +94,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
 
     return (
         <div
-            className="flex h-full w-full justify-center overflow-y-scroll rounded-xl bg-white shadow-xl"
+            className="flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
             style={{
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
@@ -94,10 +105,10 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
-                ✖
+                <X size={24} />
             </button>
             {!alreadySummarized ? (
                 <div
@@ -134,11 +145,20 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
 
-                        <div className="mt-4 flex justify-end">
+                        <div className="mt-4 flex justify-end gap-2">
+                            <button
+                                onClick={handleCopy}
+                                disabled={!aiSummary}
+                                className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
+                            >
+                                <Copy width={14} height={14} />
+                                <span>{copied ? "복사됨!" : "복사"}</span>
+                            </button>
+
                             <button
                                 onClick={handleRetry}
                                 disabled={retryCount === 0 || loading}
-                                className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${retryCount === 0 || loading ? "opacity-50" : ""} `}
+                                className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${retryCount === 0 || loading ? "opacity-50" : ""}`}
                             >
                                 <RotateCcw width={14} height={14} />
                                 <span>재시도 ({retryCount}회 남음)</span>

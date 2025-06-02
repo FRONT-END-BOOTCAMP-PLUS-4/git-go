@@ -22,6 +22,7 @@ export default function CreateEditorForm({
     typeId,
 }: CreateEditorFormProps) {
     const [title, setTitle] = useState<string>("");
+
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState<string>("");
     const [content, setContent] = useState<Value>([]);
@@ -81,6 +82,11 @@ export default function CreateEditorForm({
     // tag 삭제
     const removeTag = (tag: string) => {
         setTags(tags.filter((t) => t !== tag));
+    };
+
+    const handleTest = () => {
+        console.log("handleTest 동작");
+        console.log("content: ", content);
     };
 
     // 회고록 저장
@@ -146,7 +152,7 @@ export default function CreateEditorForm({
                             {tag}
                             <X
                                 onClick={() => removeTag(tag)}
-                                className="ml-1 cursor-pointer"
+                                className="ml-1 shrink-0 cursor-pointer"
                                 size={14}
                             />
                         </span>

@@ -1,3 +1,3 @@
 export class ResponseCommitStatsDto {
-  constructor(public totalCommits: number) { }
+    constructor(public totalCommits: number) {}
 }
