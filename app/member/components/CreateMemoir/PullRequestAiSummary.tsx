@@ -5,7 +5,7 @@ import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { GoogleGenAI } from "@google/genai";
-import { RotateCcw, Copy } from "lucide-react";
+import { RotateCcw, Copy, X } from "lucide-react";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
@@ -107,7 +107,7 @@ export default function PullRequestAiSummary({
                 className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
-                ✖
+                <X size={24} />
             </button>
             {!alreadySummarized ? (
                 <div
