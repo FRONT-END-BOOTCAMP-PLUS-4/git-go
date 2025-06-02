@@ -1,6 +1,6 @@
 "use client";
 
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { useEffect, useRef, useState } from "react";
 import StatsCardSkeleton from "../components/StatsCardSkeleton";
 import BottomCard from "./components/BottomCard";

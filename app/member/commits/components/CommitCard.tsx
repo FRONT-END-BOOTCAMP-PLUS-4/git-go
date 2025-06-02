@@ -1,6 +1,6 @@
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
-import { useSourceTitleStore } from "@/store/sourceTitleStore";
+import { useSourceTitleStore } from "@/store/useSourceTitleStore";
 import { Archive, GitBranch, GitCommitHorizontal, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

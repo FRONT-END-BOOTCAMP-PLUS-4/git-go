@@ -2,7 +2,7 @@
 
 import Button from "@/app/components/Button";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { Archive, Plus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
