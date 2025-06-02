@@ -44,7 +44,7 @@ export function FeatureBox({ feature }: { feature: any }) {
 export function ScrollDownButton({ id }: { id: string }) {
     return (
         <button
-            className="absolute bottom-[85px] cursor-pointer rounded-full p-3"
+            className="cursor-pointer rounded-full p-3"
             onClick={() => {
                 const element = document.getElementById(id);
                 const container = document.querySelector("main"); // ← snap이 걸린 컨테이너

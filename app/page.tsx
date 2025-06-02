@@ -82,7 +82,7 @@ export default async function HomePage() {
                     <LoginWithGitHubButton />
                 )}
 
-                <div className="mt-10 flex flex-wrap justify-center gap-10 leading-10">
+                <div className="mt-4 flex flex-wrap justify-center gap-10 leading-10">
                     {features.map((feature) => (
                         <FeatureBox key={feature.id} feature={feature} />
                     ))}
