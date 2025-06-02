@@ -16,7 +16,7 @@ export const metadata = {
         "개발자의 커밋과 PR 활동을 기반으로, 회고를 쉽게 작성하고 성장 스토리를 쌓아가는 서비스 — 지금 바로 시작해보세요.",
     metadataBase: new URL("https://git-go.co.kr"),
     icons: {
-        icon: "/favicon.ico",
+        icon: "/favicon.ico?v=2",
     },
     openGraph: {
         title: "GITGO - 기록이 남는 개발",

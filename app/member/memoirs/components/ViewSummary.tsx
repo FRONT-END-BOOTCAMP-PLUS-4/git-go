@@ -1,8 +1,8 @@
 "use client";
 
+import { Copy, X } from "lucide-react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Copy } from "lucide-react";
 
 type AiSummaryProps = {
     setShowModal: (value: boolean) => void;
@@ -23,7 +23,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
     };
     return (
         <div
-            className="flex h-full w-full justify-center overflow-y-scroll rounded-xl bg-white shadow-xl"
+            className="flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
             style={{
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
@@ -32,10 +32,10 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
         >
             <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-2 right-4 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
-                ✖
+                <X size={24} />
             </button>
             {summary === "" ? (
                 <div className="flex flex-1 items-center justify-center text-gray-400">

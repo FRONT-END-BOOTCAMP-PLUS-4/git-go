@@ -150,6 +150,7 @@ export default function CommitDetailMemoir() {
                                 session={session}
                                 repo={repo}
                                 setIsEditing={setIsEditing}
+                                onCancel={handleToggleEdit}
                             />
                         ) : (
                             <EditorFormReadOnly

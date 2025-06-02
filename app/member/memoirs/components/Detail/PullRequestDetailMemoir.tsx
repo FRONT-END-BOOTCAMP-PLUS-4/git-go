@@ -1,6 +1,5 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
@@ -16,6 +15,7 @@ import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -214,6 +214,7 @@ export default function PullRequestDetailMemoir() {
                                 session={session}
                                 repo={repo}
                                 setIsEditing={setIsEditing}
+                                onCancel={handleToggleEdit}
                             />
                         ) : (
                             <EditorFormReadOnly

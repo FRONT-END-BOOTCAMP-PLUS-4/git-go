@@ -19,6 +19,7 @@ type EditEditorFormProps = {
     session: Session | null;
     repo: { dbId: number; id: string; nameWithOwner: string } | null;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+    onCancel: () => void;
 };
 
 export default function EditEditorForm({
@@ -32,6 +33,7 @@ export default function EditEditorForm({
     session,
     repo,
     setIsEditing,
+    onCancel,
 }: EditEditorFormProps) {
     const [tagInput, setTagInput] = useState<string>("");
 
@@ -120,7 +122,7 @@ export default function EditEditorForm({
 
     // 취소 버튼
     const handleModalCancel = () => {
-        setIsEditing(false);
+        onCancel();
     };
 
     return (
