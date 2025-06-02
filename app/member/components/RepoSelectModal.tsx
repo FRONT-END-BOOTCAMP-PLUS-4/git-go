@@ -159,7 +159,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             <div className="text-text-primary1 flex items-center gap-2 truncate text-sm font-semibold">
                                                 {repo.nameWithOwner}
                                                 <span
-                                                    className={`rounded px-2 py-0.5 text-xs font-semibold ${
+                                                    className={`rounded-md px-2 py-0.5 text-xs font-semibold ${
                                                         repo.isPrivate
                                                             ? "bg-[#FFEBEE] text-[#B71C1C]"
                                                             : "bg-[#E3F2FD] text-[#1565C0]"
