@@ -19,6 +19,7 @@ import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullReque
 import Loading from "@/app/member/components/Loading";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import { useSourceTitleStore } from "@/store/sourceTitleStore";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -32,6 +33,10 @@ export default function PullRequestMemoir() {
     const [selectedSha, setSelectedSha] = useState<string>("");
     const [commitData, setCommitData] = useState<CommitType | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
+
+    // 🔥 sourceTitleStore에서 sourceTitle 가져오기(추후 삭제 필요)
+    const { sourceTitle } = useSourceTitleStore();
+    console.log("sourceTitle", sourceTitle);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
