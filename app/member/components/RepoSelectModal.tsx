@@ -165,8 +165,21 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             />
                                             <div className="text-text-primary1 flex items-center gap-2 truncate text-sm font-semibold">
                                                 {repo.nameWithOwner}
-                                                <span className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-yellow-500">
-                                                    ⭐ {repo.stargazerCount}
+                                                <span
+                                                    className="rounded px-2 py-0.5 text-xs font-semibold"
+                                                    style={{
+                                                        backgroundColor:
+                                                            repo.isPrivate
+                                                                ? "var(--color-danger1)"
+                                                                : "var(--color-primary1)",
+                                                        color: repo.isPrivate
+                                                            ? "var(--color-danger2)"
+                                                            : "var(--color-primary7)",
+                                                    }}
+                                                >
+                                                    {repo.isPrivate
+                                                        ? "Private"
+                                                        : "Public"}
                                                 </span>
                                             </div>
                                         </div>
@@ -188,6 +201,9 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             }}
                                         />
                                         {repo.languageName || "언어 미상"}
+                                        <span className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-yellow-500">
+                                            ⭐ {repo.stargazerCount}
+                                        </span>
                                     </p>
                                 </div>
                             </li>
