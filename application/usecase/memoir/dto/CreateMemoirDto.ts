@@ -7,6 +7,7 @@ export class CreateMemoirRequestDto {
         public typeId: number,
         public repoId: number,
         public aiSum?: string,
-        public tags?: string[]
+        public tags?: string[],
+        public sourceTitle?: string
     ) {}
 }

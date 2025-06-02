@@ -178,6 +178,7 @@ export class PrMemoirRepository implements MemoirRepository {
         typeId: number;
         aiSum?: string;
         tags?: string[];
+        sourceTitle?: string;
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
             const {
@@ -188,6 +189,7 @@ export class PrMemoirRepository implements MemoirRepository {
                 repoId,
                 typeId,
                 aiSum,
+                sourceTitle,
                 tags,
             } = data;
             // 1) Memoir 레코드 생성
@@ -200,6 +202,7 @@ export class PrMemoirRepository implements MemoirRepository {
                     repoId,
                     typeId,
                     aiSum,
+                    sourceTitle,
                 },
             });
 
