@@ -4,6 +4,7 @@ import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
 import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/repoStore";
+import { useSourceTitleStore } from "@/store/sourceTitleStore";
 import { Archive, GitBranch, Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -60,12 +61,14 @@ export default function PrCard({
 }: PrCardProps) {
     const router = useRouter();
     const { selectedRepo } = useRepoStore();
+    const { setSourceTitle } = useSourceTitleStore();
     const [listIsOpen, setListIsOpen] = useState(false);
     const [prCommits, setPrCommits] = useState<PrCommitCardProps[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const { data: session } = useSession();
 
     const moveToPrMemoir = () => {
+        setSourceTitle(title);
         router.push(`${MEMBER_URL.prs}/${prNumber}/memoir`);
     };
 
