@@ -189,7 +189,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             }}
                                         />
                                         {repo.languageName || "언어 미상"}
-                                        <span className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-yellow-500">
+                                        <span className="flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold text-yellow-500">
                                             ⭐ {repo.stargazerCount}
                                         </span>
                                     </p>
