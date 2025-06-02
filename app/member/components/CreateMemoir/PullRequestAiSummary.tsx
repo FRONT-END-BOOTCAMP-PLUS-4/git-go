@@ -5,11 +5,11 @@ import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
 import { useSummaryStore } from "@/store/AiSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { GoogleGenAI } from "@google/genai";
-import { RotateCcw, Copy, X } from "lucide-react";
+import { Copy, RotateCcw, X } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
-import Image from "next/image";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -93,7 +93,7 @@ export default function PullRequestAiSummary({
 
     return (
         <div
-            className="flex h-full w-full justify-center overflow-y-scroll rounded-xl bg-white shadow-xl"
+            className="flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
             style={{
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
@@ -104,7 +104,7 @@ export default function PullRequestAiSummary({
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-4 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
                 aria-label="Close"
             >
                 <X size={24} />
