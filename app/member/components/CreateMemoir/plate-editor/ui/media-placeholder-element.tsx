@@ -97,11 +97,11 @@ export const MediaPlaceholderElement = withHOC(
                     return;
                 }
 
-                // ⑤ 직접 용량 검사 (5MB 이하만 통과)
+                // ⑤ 직접 용량 검사 (4MB 이하만 통과)
                 const isImg = firstFile.type.startsWith("image/");
                 if (isImg && firstFile.size > IMAGE_MAX_SIZE) {
                     alert(
-                        "이미지 용량이 5MB를 초과했습니다.\n5MB 이하의 이미지만 업로드해주세요."
+                        "이미지 용량이 4MB를 초과했습니다.\n4MB 이하의 이미지만 업로드해주세요."
                     );
 
                     // 해당 플레이스홀더 노드를 제거
@@ -119,7 +119,7 @@ export const MediaPlaceholderElement = withHOC(
             onFilesDismissed: () => {
                 // limitFilesConfig 단계(파일 dialog 레벨)에서 걸러질 때 경고
                 alert(
-                    "5MB 이하의 이미지 파일만 업로드할 수 있습니다.\n다시 선택해주세요."
+                    "4MB 이하의 이미지 파일만 업로드할 수 있습니다.\n다시 선택해주세요."
                 );
 
                 // 혹시 남아있는 플레이스홀더 노드를 제거
