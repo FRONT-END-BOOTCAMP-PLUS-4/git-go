@@ -35,7 +35,9 @@ async function fetchAllCommitsFromDefaultBranch({
                 return [];
             }
             const errorData = await res.json();
-            throw new Error(`Failed to fetch commits: ${res.status} - ${errorData.message || "Unknown error"}`);
+            throw new Error(
+                `Failed to fetch commits: ${res.status} - ${errorData.message || "Unknown error"}`
+            );
         }
 
         const data = await res.json();
@@ -116,11 +118,16 @@ async function fetchAllCommitsFromAllBranches({
     defaultBranch: string;
     maxCommitsPerBranch?: number;
 }): Promise<GithubCommit[]> {
-    const branchesRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches`, { headers });
+    const branchesRes = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/branches`,
+        { headers }
+    );
 
     if (!branchesRes.ok) {
         const errorData = await branchesRes.json();
-        throw new Error(`Failed to fetch branches: ${branchesRes.status} - ${errorData.message || "Unknown error"}`);
+        throw new Error(
+            `Failed to fetch branches: ${branchesRes.status} - ${errorData.message || "Unknown error"}`
+        );
     }
 
     const branches = await branchesRes.json();
@@ -141,14 +148,19 @@ async function fetchAllCommitsFromAllBranches({
 
             if (!commitsRes.ok) {
                 const errorData = await commitsRes.json();
-                throw new Error(`Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`);
+                throw new Error(
+                    `Failed to fetch commits for branch ${branchName}: ${commitsRes.status} - ${errorData.message || "Unknown error"}`
+                );
             }
 
             const commits = await commitsRes.json();
 
             for (const c of commits) {
                 const sha = c.sha;
-                const commit = GithubCommit.fromJson({ ...c, branch: branchName });
+                const commit = GithubCommit.fromJson({
+                    ...c,
+                    branch: branchName,
+                });
 
                 // default 브랜치 커밋은 항상 우선 등록, 아니면 중복 체크 후 등록
                 if (branchName === defaultBranch || !commitMap.has(sha)) {
@@ -157,7 +169,9 @@ async function fetchAllCommitsFromAllBranches({
             }
 
             branchCommitCount += commits.length;
-            hasMore = commits.length === perPage && branchCommitCount < maxCommitsPerBranch;
+            hasMore =
+                commits.length === perPage &&
+                branchCommitCount < maxCommitsPerBranch;
             page++;
         }
     }
@@ -166,7 +180,6 @@ async function fetchAllCommitsFromAllBranches({
         (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
     );
 }
-
 
 export class GbCommitListRepository implements GithubCommitListRepository {
     async fetchCommitList({
@@ -185,7 +198,11 @@ export class GbCommitListRepository implements GithubCommitListRepository {
         page?: number;
         perPage?: number;
         userId?: string;
-    }): Promise<{ commits: GithubCommit[]; hasNextPage: boolean; totalCount: number; }> {
+    }): Promise<{
+        commits: GithubCommit[];
+        hasNextPage: boolean;
+        totalCount: number;
+    }> {
         if (!token) {
             throw new Error("GitHub access token is required.");
         }
@@ -200,11 +217,16 @@ export class GbCommitListRepository implements GithubCommitListRepository {
             // select: { isDefaultOnly: true }, // 필요시 활성화
         });
 
-        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
+        const repoRes = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}`,
+            { headers }
+        );
 
         if (!repoRes.ok) {
             const errorData = await repoRes.json();
-            throw new Error(`Failed to fetch repo info: ${repoRes.status} - ${errorData.message || "Unknown error"}`);
+            throw new Error(
+                `Failed to fetch repo info: ${repoRes.status} - ${errorData.message || "Unknown error"}`
+            );
         }
         const repoInfo = await repoRes.json();
         const defaultBranch = repoInfo.default_branch;

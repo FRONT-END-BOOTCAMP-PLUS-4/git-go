@@ -1,6 +1,8 @@
 "use client";
 
 import { editorPlugins } from "@/app/member/components/CreateMemoir/plate-editor/plugin/editor-plugins";
+import { ImageElement } from "@/app/member/components/CreateMemoir/plate-editor/ui/image-element";
+import { MediaPlaceholderElement } from "@/app/member/components/CreateMemoir/plate-editor/ui/media-placeholder-element";
 import { withProps } from "@udecode/cn";
 import { AnyPluginConfig, Value } from "@udecode/plate";
 import {
@@ -23,6 +25,7 @@ import { HighlightPlugin } from "@udecode/plate-highlight/react";
 import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
 import { ColumnItemPlugin, ColumnPlugin } from "@udecode/plate-layout/react";
 import { LinkPlugin } from "@udecode/plate-link/react";
+import { ImagePlugin, PlaceholderPlugin } from "@udecode/plate-media/react";
 import { SlashInputPlugin } from "@udecode/plate-slash-command/react";
 import { SuggestionPlugin } from "@udecode/plate-suggestion/react";
 import {
@@ -94,6 +97,9 @@ export const viewComponents = {
     [HEADING_KEYS.h6]: withProps(HeadingElement, { variant: "h6" }),
 
     [HorizontalRulePlugin.key]: HrElement,
+
+    [ImagePlugin.key]: ImageElement,
+    [PlaceholderPlugin.key]: MediaPlaceholderElement,
 
     [LinkPlugin.key]: LinkElement,
 

@@ -6,7 +6,7 @@ export class FetchTopActiveReposUsecase {
     constructor(
         private readonly repoRepo: RepoRepository,
         private readonly statsRepo: StatsRepository
-    ) { }
+    ) {}
 
     async execute(userId: string): Promise<ResponseTopActiveReposDto[]> {
         const repos = await this.repoRepo.findByUserId(userId);
@@ -15,8 +15,12 @@ export class FetchTopActiveReposUsecase {
             repos
                 .filter((repo) => repo.name !== null)
                 .map(async (repo) => {
-                    const nameWithOwner = await this.statsRepo.resolveNameWithOwner(repo.name as string);
-                    const { totalCommits } = await this.statsRepo.fetchStats(nameWithOwner);
+                    const nameWithOwner =
+                        await this.statsRepo.resolveNameWithOwner(
+                            repo.name as string
+                        );
+                    const { totalCommits } =
+                        await this.statsRepo.fetchStats(nameWithOwner);
                     return {
                         nameWithOwner,
                         totalCommits,
@@ -27,6 +31,12 @@ export class FetchTopActiveReposUsecase {
         return results
             .sort((a, b) => b.totalCommits - a.totalCommits)
             .slice(0, 3)
-            .map((r) => new ResponseTopActiveReposDto(r.nameWithOwner, r.totalCommits));
+            .map(
+                (r) =>
+                    new ResponseTopActiveReposDto(
+                        r.nameWithOwner,
+                        r.totalCommits
+                    )
+            );
     }
 }

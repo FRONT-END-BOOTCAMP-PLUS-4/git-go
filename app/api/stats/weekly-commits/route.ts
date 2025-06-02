@@ -9,10 +9,15 @@ export async function GET(req: NextRequest) {
     const repo = req.nextUrl.searchParams.get("repo");
 
     if (!token?.accessToken || !repo) {
-        return NextResponse.json({ message: "Unauthorized or invalid" }, { status: 401 });
+        return NextResponse.json(
+            { message: "Unauthorized or invalid" },
+            { status: 401 }
+        );
     }
 
-    const usecase = new FetchWeeklyCommitsUsecase(new GbStatsRepository(token.accessToken));
+    const usecase = new FetchWeeklyCommitsUsecase(
+        new GbStatsRepository(token.accessToken)
+    );
     const result = await usecase.execute(new FetchWeeklyCommitsDto(repo));
 
     return NextResponse.json(result);

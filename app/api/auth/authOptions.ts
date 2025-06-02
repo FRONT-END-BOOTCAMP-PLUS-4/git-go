@@ -8,7 +8,7 @@ export const authOptions: AuthOptions = {
             clientSecret: process.env.GITHUB_CLIENT_SECRET!,
             authorization: {
                 params: {
-                    scope: "read:user repo read:org",
+                    scope: "read:user read:repo read:org",
                 },
             },
         }),
@@ -18,16 +18,26 @@ export const authOptions: AuthOptions = {
             if (account && profile) {
                 token.accessToken = account.access_token;
 
-                const githubProfile = profile as { login: string; avatar_url: string };
+                const githubProfile = profile as {
+                    login: string;
+                    avatar_url: string;
+                };
                 const githubId = account.providerAccountId;
                 const username = githubProfile.login;
                 const profileUrl = githubProfile.avatar_url;
 
-                const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/join`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ githubId, username, profileUrl }),
-                });
+                const res = await fetch(
+                    `${process.env.NEXTAUTH_URL}/api/auth/join`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            githubId,
+                            username,
+                            profileUrl,
+                        }),
+                    }
+                );
 
                 const user = await res.json();
                 token.id = user.id;

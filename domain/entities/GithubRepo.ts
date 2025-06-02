@@ -10,5 +10,5 @@ export class GithubRepo {
         public readonly stargazerCount: number,
         public readonly languageName?: string,
         public readonly languageColor?: string
-    ) { }
+    ) {}
 }

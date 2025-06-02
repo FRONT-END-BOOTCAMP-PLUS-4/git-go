@@ -1,3 +1,3 @@
 export class FetchWeeklyCommitsDto {
-  constructor(public repo: string) { }
+    constructor(public repo: string) {}
 }
