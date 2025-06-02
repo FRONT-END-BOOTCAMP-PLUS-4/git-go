@@ -152,7 +152,6 @@ export function useS3Upload({
             setIsUploading(false);
             setProgress(0);
             setUploadingFile(null);
-            setIsError(false);
         }
     }
 
