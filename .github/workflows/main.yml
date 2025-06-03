@@ -29,5 +29,5 @@
 			runs-on: [self-hosted, git-go]
 
 			steps:
-			  - name: Deploy Next.js Project
-				run: echo "Deploy Next.js Project"	
+			  - name: Deploy Next.js Project				
+				run: /home/gitgo/www/git-go/git-go-update.sh
