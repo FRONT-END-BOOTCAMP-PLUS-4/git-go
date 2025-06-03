@@ -152,6 +152,9 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             <input
                                                 type="checkbox"
                                                 checked={selected.has(repo.id)}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
                                                 onChange={() =>
                                                     toggleRepo(repo.id)
                                                 }
