@@ -210,7 +210,7 @@ export default function CommitPage() {
                             <>{commitList}</>
                         ) : null
                     ) : (
-                        <EmptyResult message="선택한 저장소에 표시할 커밋이 없습니다." />
+                        <EmptyResult message="연동된 저장소가 없거나 저장소에 표시할 커밋이 없습니다." />
                     )}
                 </ul>
 
