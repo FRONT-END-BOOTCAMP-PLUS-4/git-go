@@ -5,6 +5,10 @@ export interface RepoRepository {
         userId: string;
         repos: { name: string }[];
     }): Promise<void>;
+    saveRepos(data: {
+        userId: string;
+        repos: { name: string }[];
+    }): Promise<void>;
     findByUserId(userId: string): Promise<Repo[]>;
     deleteByNames(userId: string, names: string[]): Promise<void>;
     hasMemoirs(userId: string, repoName: string): Promise<boolean>;

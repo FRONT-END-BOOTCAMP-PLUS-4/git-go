@@ -87,6 +87,11 @@ export default function CreateEditorForm({
         setTags(tags.filter((t) => t !== tag));
     };
 
+    const handleTest = () => {
+        console.log("handleTest 동작");
+        console.log("content: ", content);
+    };
+
     // 회고록 저장
     const handleSave = async () => {
         // 이미 로딩 중이거나 필수 데이터가 없으면 함수 실행 중지

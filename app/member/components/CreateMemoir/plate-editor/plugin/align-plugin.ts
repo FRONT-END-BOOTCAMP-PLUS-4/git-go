@@ -2,7 +2,6 @@
 
 import { AlignPlugin } from "@udecode/plate-alignment/react";
 import { HEADING_LEVELS } from "@udecode/plate-heading";
-import { ImagePlugin } from "@udecode/plate-media/react";
 import { ParagraphPlugin } from "@udecode/plate/react";
 
 export const alignPlugin = AlignPlugin.extend({
@@ -11,7 +10,7 @@ export const alignPlugin = AlignPlugin.extend({
             ParagraphPlugin.key,
             ...HEADING_LEVELS,
             // MediaEmbedPlugin.key,
-            ImagePlugin.key,
+            // ImagePlugin.key,
         ],
     },
 });
