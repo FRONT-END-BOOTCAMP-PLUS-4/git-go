@@ -179,7 +179,7 @@ export default function MemoirPage() {
                             <MemoirCard key={memoir.id} memoir={memoir} />
                         ))
                     ) : (
-                        <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
+                        <EmptyResult message="연동된 저장소가 없거나 저장소에 회고록이 없습니다." />
                     )}
                 </ul>
                 {!loading && memoirs && memoirs.length > 0 && (

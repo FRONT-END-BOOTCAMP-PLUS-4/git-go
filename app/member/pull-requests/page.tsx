@@ -180,7 +180,7 @@ export default function PullRequestPage() {
                     ) : prList.length > 0 ? (
                         <>{prCardList}</>
                     ) : (
-                        <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
+                        <EmptyResult message="연동된 저장소가 없거나 저장소에 표시할 Pull Request 가 없습니다." />
                     )}
                 </ul>
 
