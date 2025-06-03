@@ -2,6 +2,7 @@
 
 import Pagination from "@/app/components/Pagination";
 import EmptyResult from "@/app/member/components/EmptyResult";
+import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 import PrCard from "@/app/member/pull-requests/components/PrCard";
 import PrCardSkeleton from "@/app/member/pull-requests/components/PrCardSkeleton";
 import { useRepoStore } from "@/store/useRepoStore";
@@ -27,6 +28,8 @@ export default function PullRequestPage() {
     }).format(now);
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [open, setOpen] = useState(false);
+    const checkedOnceRef = useRef(false);
     const [prList, setPrList] = useState<PrCardProps[]>([]);
     const [totalCount, setTotalCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -117,6 +120,26 @@ export default function PullRequestPage() {
         setCurrentPage(newPage);
     };
 
+    useEffect(() => {
+        if (checkedOnceRef.current) return;
+
+        const fetchUserRepos = async () => {
+            try {
+                const res = await fetch("/api/repos/user");
+                const repos = await res.json();
+                if (Array.isArray(repos) && repos.length === 0) {
+                    setOpen(true);
+                    setIsLoading(false);
+                }
+            } catch (err) {
+                console.error("유저 저장소 확인 실패", err);
+                setIsLoading(false);
+            }
+        };
+
+        fetchUserRepos();
+    }, []);
+
     const prCardList = prList.map((pr) => (
         <PrCard
             title={pr.title}
@@ -130,41 +153,46 @@ export default function PullRequestPage() {
     ));
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
-            <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                <div className="flex items-center gap-x-3">
-                    <h2 className="font-bold">Pull Requests</h2>
-                    {totalCount > 0 && (
-                        <span className="text-text-secondary2 text-sm">
-                            {isLoading
-                                ? "불러오는 중..."
-                                : `전체 ${totalCount}개`}
-                        </span>
+        <>
+            <RepoSelectModal open={open} onClose={() => setOpen(false)} />
+            <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
+                <section className="border-border-primary1 flex items-center justify-between border-b p-4">
+                    <div className="flex items-center gap-x-3">
+                        <h2 className="font-bold">Pull Requests</h2>
+                        {totalCount > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                {isLoading
+                                    ? "불러오는 중..."
+                                    : `전체 ${totalCount}개`}
+                            </span>
+                        )}
+                    </div>
+                    <p className="text-text-secondary2 text-sm">
+                        {formattedDate}
+                    </p>
+                </section>
+
+                <ul>
+                    {isLoading ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <PrCardSkeleton key={i} />
+                        ))
+                    ) : prList.length > 0 ? (
+                        <>{prCardList}</>
+                    ) : (
+                        <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
                     )}
-                </div>
-                <p className="text-text-secondary2 text-sm">{formattedDate}</p>
-            </section>
+                </ul>
 
-            <ul>
-                {isLoading ? (
-                    Array.from({ length: 5 }).map((_, i) => (
-                        <PrCardSkeleton key={i} />
-                    ))
-                ) : prList.length > 0 ? (
-                    <>{prCardList}</>
-                ) : (
-                    <EmptyResult message="선택한 저장소에 표시할 Pull Request 가 없습니다." />
+                {!isLoading && prList.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        perPage={perPage}
+                        setCurrentPage={handlePageChange}
+                    />
                 )}
-            </ul>
-
-            {!isLoading && prList.length > 0 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalCount={totalCount}
-                    perPage={perPage}
-                    setCurrentPage={handlePageChange}
-                />
-            )}
-        </div>
+            </div>
+        </>
     );
 }
