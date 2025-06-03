@@ -1,5 +1,6 @@
 "use client";
 
+import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
@@ -12,12 +13,11 @@ import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 export default function CommitMemoir() {
-    const router = useRouter();
     const { sha }: { sha: string } = useParams();
     const repo = useRepoStore((s) => s.selectedRepo);
     const { data: session, status: sessionStatus } = useSession();
@@ -111,19 +111,7 @@ export default function CommitMemoir() {
     }
 
     if (!commitData) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
-                <p className="mb-4 text-gray-600">
-                    커밋 데이터를 불러올 수 없습니다.
-                </p>
-                <button
-                    onClick={() => router.push("/member/commits")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    이전 화면으로 돌아가기
-                </button>
-            </div>
-        );
+        return <Error errorMessage="커밋 데이터를 불러올 수 없습니다." />;
     }
 
     return (
