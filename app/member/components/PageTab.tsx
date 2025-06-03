@@ -40,14 +40,14 @@ export default function PageTap({ status }: Props) {
             >
                 <GitCommitHorizontal
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "commits"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit ${
                         status === "commits"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -64,14 +64,14 @@ export default function PageTap({ status }: Props) {
             >
                 <GitBranch
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit ${
                         status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -88,14 +88,14 @@ export default function PageTap({ status }: Props) {
             >
                 <BookText
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "memoirs"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit ${
                         status === "memoirs"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -112,14 +112,14 @@ export default function PageTap({ status }: Props) {
             >
                 <ChartBar
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "stats"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit ${
                         status === "stats"
                             ? "text-primary7"
                             : "text-text-secondary2"
