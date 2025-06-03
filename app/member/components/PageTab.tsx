@@ -31,7 +31,7 @@ export default function PageTap({ status }: Props) {
     };
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 mb-6 flex min-w-fit cursor-pointer gap-x-1 rounded-md border p-1">
+        <div className="border-border-primary1 bg-bg-member1 mb-2 flex max-w-fit min-w-fit cursor-pointer gap-x-1 rounded-md border p-1 md:mb-6">
             <div
                 className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "commits" ? "bg-primary1" : ""
