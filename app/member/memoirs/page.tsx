@@ -13,11 +13,11 @@ import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 export default function MemoirPage() {
     const now = new Date();
     const { selectedRepo } = useRepoStore();
+    const [loading, setLoading] = useState(true);
     const [memoirs, setMemoirs] = useState<MemoirListDto[] | null>(null);
     const [open, setOpen] = useState(false);
     const checkedOnceRef = useRef(false);
 
-    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const perPage = 10;
@@ -170,12 +170,12 @@ export default function MemoirPage() {
                 </section>
 
                 <ul>
-                    {loading ? (
+                    {loading || memoirs === null ? (
                         Array.from({ length: 5 }).map((_, i) => (
                             <MemoirSkeleton key={i} />
                         ))
-                    ) : memoirs && memoirs.length !== 0 ? (
-                        memoirs.map((memoir) => (
+                    ) : memoirs?.length !== 0 ? (
+                        memoirs?.map((memoir) => (
                             <MemoirCard key={memoir.id} memoir={memoir} />
                         ))
                     ) : (
