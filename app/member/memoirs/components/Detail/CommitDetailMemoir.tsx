@@ -20,13 +20,14 @@ import DetailMemoirLayout from "./DetailMemoirLayout";
 export default function CommitDetailMemoir() {
     const router = useRouter();
     const { id }: { id: string } = useParams();
+    const { data: session, status: sessionStatus } = useSession();
+
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     const [commitData, setCommitData] = useState<CommitType>();
     const repo = useRepoStore((s) => s.selectedRepo);
-    const { data: session } = useSession();
 
     const parseId = Number(id);
 
@@ -37,26 +38,28 @@ export default function CommitDetailMemoir() {
     const [sha, setSha] = useState("");
     const [summary, setSummary] = useState<string>("");
 
+    // 로딩/에러 상태
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState<string | null>(null);
-    // 회고록 값 불러오기기
+
+    // 회고록 값 불러오는 함수
     const load = async () => {
         setIsLoading(true);
         setLoadError(null);
 
         try {
+            // 회고록 데이터 fetch
             const res = await fetch(`/api/memoirs/${id}`);
             if (res.status === 404) {
-                // 없는 id면 별도 메시지 띄우거나, 목록으로 리다이렉트
                 setLoadError("존재하지 않는 회고록입니다.");
                 setIsLoading(false);
                 return;
             }
             if (!res.ok) {
-                // 400, 500 등 기타 에러
-                const json = await res.json();
+                const json = await res.json().catch(() => null);
                 setLoadError(
-                    json.message || "회고록을 불러오던 중 오류가 발생했습니다."
+                    (json && json.message) ||
+                        "회고록을 불러오던 중 오류가 발생했습니다."
                 );
                 setIsLoading(false);
                 return;
@@ -64,6 +67,20 @@ export default function CommitDetailMemoir() {
 
             // 정상적으로 데이터를 받아왔다면
             const data = (await res.json()) as GetMemoirResponseDto;
+            // 작성자(userId)와 세션의 user.id 비교
+            if (sessionStatus === "authenticated") {
+                const sessionUserId = session?.user.id;
+                if (!sessionUserId || sessionUserId !== data.userId) {
+                    setLoadError("잘못된 접근입니다.");
+                    setIsLoading(false);
+                    return;
+                }
+            } else {
+                setIsLoading(true);
+                return;
+            }
+
+            // 소유자 확인이 끝났으면 나머지 상태 세팅
             setTitle(data.title);
             setTags(data.tags ?? []);
             setContent(data.content as Value);
@@ -77,12 +94,13 @@ export default function CommitDetailMemoir() {
         }
     };
 
-    // 마운트 및 id 변경 시
+    // 마운트 및 id 변경 시 load 호출
     useEffect(() => {
         load();
-    }, [id]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, session, sessionStatus]);
 
-    // 커밋 상세 내역 호출 함수
+    // 커밋 상세(detail) 가져오는 함수
     const fetchCommitDetail = async (
         nameWithOwner: string | undefined,
         sha: string,
@@ -124,24 +142,32 @@ export default function CommitDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
+    // 변경된 파일 리스트 계산
     const files = useMemo(() => {
         if (!commitData) return [];
         return commitData.changeDetail.map((change) => change.filename);
     }, [commitData]);
 
+    // 세션이 인증되지 않았을 때
+    if (sessionStatus === "loading") {
+        // 세션이 로딩 중이면 잠시 기다리기
+        return <Loading />;
+    }
+
+    // 데이터 로딩 중
     if (isLoading) {
         return <Loading />;
     }
 
-    // 에러가 있을 때
+    // loadError가 있을 때 (404, 작성자 불일치, 네트워크 오류 등)
     if (loadError) {
         return (
             <div className="p-8 text-center">
                 <p className="mb-4 text-red-600">{loadError}</p>
-                {/* 예: 목록으로 돌아가기 버튼 */}
+                {/* 회고 목록 페이지로 돌아가기 */}
                 <button
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:cursor-pointer hover:bg-gray-300"
                     onClick={() => router.push("/member/memoirs")}
+                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
                 >
                     목록으로 돌아가기
                 </button>
@@ -149,7 +175,7 @@ export default function CommitDetailMemoir() {
         );
     }
 
-    // 3) commitData가 아직 없으면 (네트워크 지연 등) Loading
+    // commitData가 아직 없으면(커밋 상세 불러오는 중이라면) 로딩
     if (!commitData) {
         return <Loading />;
     }
