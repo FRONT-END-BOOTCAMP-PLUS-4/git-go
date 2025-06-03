@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
@@ -17,12 +17,12 @@ import Select from "@/app/member/components/Select";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
 
+import Error from "@/app/components/Error";
 import NotFound from "@/app/not-found";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 
 export default function PullRequestMemoir() {
-    const router = useRouter();
     const { pr_no }: { pr_no: string } = useParams();
     const { data: session, status: sessionStatus } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
@@ -214,19 +214,7 @@ export default function PullRequestMemoir() {
 
     // 커밋 데이터가 아직 없으면(정상 로직에서는 loadError나 isLoading에서 처리되므로 잘 안 오지만...)
     if (!commitData) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
-                <p className="mb-4 text-gray-600">
-                    커밋 데이터를 불러올 수 없습니다.
-                </p>
-                <button
-                    onClick={() => router.push("/member/pull-requests")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    이전 화면으로 돌아가기
-                </button>
-            </div>
-        );
+        return <Error errorMessage="커밋 데이터를 불러올 수 없습니다." />;
     }
 
     return (
