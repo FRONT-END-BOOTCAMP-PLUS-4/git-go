@@ -7,20 +7,20 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, git-go-server]
     steps:
       - name: Build Next.js Project
         run: echo "Build Next.js Project"
 
   test:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, git-go-server]
     needs: build
     steps:
       - name: Test Next.js Project
         run: echo "Test Next.js Project"
 
   deploy:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, git-go-server]
     needs: test
     steps:
       - name: Deploy Next.js Project
