@@ -24,43 +24,44 @@ import { PullRequestType } from "@/types/github/PullRequestType";
 export default function PullRequestMemoir() {
     const router = useRouter();
     const { pr_no }: { pr_no: string } = useParams();
-    const { data: session } = useSession();
+    const { data: session, status: sessionStatus } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
     const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
-    //  로딩/에러 상태 선언
+    // 로딩/에러 상태 선언
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState<string | null>(null);
 
-    //  PR 커밋 목록, 선택된 SHA, 커밋 상세, 파일 리스트
+    // PR 커밋 목록, 선택된 SHA, 커밋 상세, 파일 리스트
     const [prData, setPrData] = useState<PullRequestType[]>([]);
     const [selectedSha, setSelectedSha] = useState<string>("");
     const [commitData, setCommitData] = useState<CommitType | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-    //  AI 요약 모달 상태
+    // AI 요약 모달 상태
     const [showModal, setShowModal] = useState(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    //  마운트 시 AI 요약 스토어 초기화
+    // 마운트 시 AI 요약 스토어 초기화
     useEffect(() => {
         clearSummarized();
         setSummary("");
         setRetryCount(2);
     }, [clearSummarized, setSummary, setRetryCount]);
 
-    //  PR 커밋 목록(fetchPrCommits)
-    //     - 잘못된 pr_no가 들어오면 loadError 세팅
-    //     - 빈 배열이 오면 “PR 번호가 존재하지 않음”
-    //     - 정상 목록일 때 첫 SHA 선택
-
+    // PR 커밋 목록(fetchPrCommits)
     useEffect(() => {
+        // 1) 반드시 session이 "authenticated" 상태여야만 로직을 시작
+        if (sessionStatus !== "authenticated") {
+            return; // 아직 인증 정보가 준비되지 않았거나, 로그아웃 상태.
+        }
+
         const fetchPrCommits = async () => {
             setIsLoading(true);
             setLoadError(null);
 
-            // 필수 값이 없으면 바로 빠져나가기
+            // 2) repo나 session.accessToken, pr_no가 없으면 잘못된 경로로 간주
             if (!repo?.nameWithOwner || !session?.accessToken || !pr_no) {
                 setLoadError("잘못된 경로입니다.");
                 setIsLoading(false);
@@ -122,16 +123,16 @@ export default function PullRequestMemoir() {
 
         fetchPrCommits();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [repo?.nameWithOwner, session?.accessToken, pr_no]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, pr_no]);
 
-    //  selectedSha가 바뀔 때마다 커밋 상세(fetchDetail)
-    //     - 잘못된 SHA면 404 → loadError
-    //     - 기타 API 에러도 loadError
-    //     - 정상 응답 시 commitData 세팅 후 isLoading=false
-
+    // selectedSha가 바뀔 때마다 커밋 상세(fetchDetail)
     useEffect(() => {
+        // 역시 session이 인증되지 않은 상태라면 아직 로직을 실행하지 않음
+        if (sessionStatus !== "authenticated") {
+            return;
+        }
+
         const fetchDetail = async () => {
-            // 필수 값 준비 안 되었으면 아무 처리 없이 리턴
             if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha) {
                 return;
             }
@@ -166,7 +167,7 @@ export default function PullRequestMemoir() {
 
                 const data = (await res.json()) as CommitType;
                 setCommitData(data);
-                setSelectedFile(null); // 파일 선택 초기화
+                setSelectedFile(null);
                 setIsLoading(false);
             } catch (err) {
                 console.error("Commit detail fetch error:", err);
@@ -178,14 +179,14 @@ export default function PullRequestMemoir() {
         };
 
         fetchDetail();
-    }, [repo?.nameWithOwner, session?.accessToken, selectedSha]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, selectedSha]);
 
-    // selectedSha가 바뀔 때 스크롤 최상단으로 ← 선택된 커밋이 바뀌면 스크롤 초기화만
+    // selectedSha가 바뀔 때 스크롤 최상단으로 이동
     useEffect(() => {
         containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }, [selectedSha]);
 
-    // PR 드롭다운 옵션과 파일 목록 계산
+    // PR 드롭다운 옵션 생성
     const prOptions = useMemo(
         () =>
             prData.map((pr) => ({
@@ -195,19 +196,23 @@ export default function PullRequestMemoir() {
         [prData]
     );
 
+    // 변경된 파일 리스트 계산
     const files = useMemo(() => {
         if (!commitData) return [];
         return commitData.changeDetail.map((change) => change.filename);
     }, [commitData]);
 
+    // 로딩 중이라면 Loading 컴포넌트
     if (isLoading) {
         return <Loading />;
     }
 
+    // 로드 에러가 발생하면 NotFound 컴포넌트 한 번만 렌더
     if (loadError) {
         return <NotFound />;
     }
 
+    // 커밋 데이터가 아직 없으면(정상 로직에서는 loadError나 isLoading에서 처리되므로 잘 안 오지만...)
     if (!commitData) {
         return (
             <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
