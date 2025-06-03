@@ -8,11 +8,15 @@ import { useRepoStore } from "@/store/useRepoStore";
 import { useEffect, useRef, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
 import MemoirSkeleton from "./components/MemoirSkeleton";
+import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 
 export default function MemoirPage() {
     const now = new Date();
     const { selectedRepo } = useRepoStore();
     const [memoirs, setMemoirs] = useState<MemoirListDto[] | null>(null);
+    const [open, setOpen] = useState(false);
+    const checkedOnceRef = useRef(false);
+
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
@@ -44,6 +48,25 @@ export default function MemoirPage() {
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedRepo, timePeriod, filterType, tags, searchKeyword]);
+
+    useEffect(() => {
+        if (checkedOnceRef.current) return;
+
+        const fetchUserRepos = async () => {
+            try {
+                const res = await fetch("/api/repos/user");
+                const repos = await res.json();
+                if (Array.isArray(repos) && repos.length === 0) {
+                    setOpen(true);
+                    setLoading(false);
+                }
+            } catch (err) {
+                console.error("유저 저장소 확인 실패", err);
+                setLoading(false);
+            }
+        };
+        fetchUserRepos();
+    }, []);
 
     useEffect(() => {
         if (!selectedRepo) return;
@@ -129,40 +152,45 @@ export default function MemoirPage() {
     ]);
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
-            <section className="border-border-primary1 flex items-center justify-between border-b p-4">
-                <div className="flex items-center gap-x-3">
-                    <h2 className="font-bold">내 회고록</h2>
-                    {(totalCount ?? 0) > 0 && (
-                        <span className="text-text-secondary2 text-sm">
-                            전체 {totalCount}개
-                        </span>
-                    )}
-                </div>
-                <p className="text-text-secondary2 text-sm">{formattedDate}</p>
-            </section>
+        <>
+            <RepoSelectModal open={open} onClose={() => setOpen(false)} />
+            <div className="border-border-primary1 bg-bg-member1 rounded-md border-1">
+                <section className="border-border-primary1 flex items-center justify-between border-b p-4">
+                    <div className="flex items-center gap-x-3">
+                        <h2 className="font-bold">내 회고록</h2>
+                        {(totalCount ?? 0) > 0 && (
+                            <span className="text-text-secondary2 text-sm">
+                                전체 {totalCount}개
+                            </span>
+                        )}
+                    </div>
+                    <p className="text-text-secondary2 text-sm">
+                        {formattedDate}
+                    </p>
+                </section>
 
-            <ul>
-                {loading || memoirs === null ? (
-                    Array.from({ length: 5 }).map((_, i) => (
-                        <MemoirSkeleton key={i} />
-                    ))
-                ) : memoirs.length === 0 ? (
-                    <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
-                ) : (
-                    memoirs.map((memoir) => (
-                        <MemoirCard key={memoir.id} memoir={memoir} />
-                    ))
+                <ul>
+                    {loading ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <MemoirSkeleton key={i} />
+                        ))
+                    ) : memoirs && memoirs.length !== 0 ? (
+                        memoirs.map((memoir) => (
+                            <MemoirCard key={memoir.id} memoir={memoir} />
+                        ))
+                    ) : (
+                        <EmptyResult message="선택한 저장소에 회고록이 없습니다." />
+                    )}
+                </ul>
+                {!loading && memoirs && memoirs.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalCount={totalCount}
+                        perPage={perPage}
+                        setCurrentPage={handlePageChange}
+                    />
                 )}
-            </ul>
-            {!loading && memoirs && memoirs.length > 0 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalCount={totalCount}
-                    perPage={perPage}
-                    setCurrentPage={handlePageChange}
-                />
-            )}
-        </div>
+            </div>
+        </>
     );
 }
