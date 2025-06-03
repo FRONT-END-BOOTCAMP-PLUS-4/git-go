@@ -139,10 +139,11 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 {loading ? (
                     <RepoSkeleton />
                 ) : (
-                    <ul className="border-border-primary1 max-h-[350px] divide-y overflow-y-auto rounded-md border">
+                    <ul className="border-border-primary1 max-h-[350px] cursor-pointer divide-y overflow-y-auto rounded-md border">
                         {repos.map((repo) => (
                             <li
                                 key={repo.id}
+                                onClick={() => toggleRepo(repo.id)}
                                 className="border-b-border-primary1 flex items-start justify-between p-4 last:border-b-0"
                             >
                                 <div className="flex w-full flex-col gap-1">
