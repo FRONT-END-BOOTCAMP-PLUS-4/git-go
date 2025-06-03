@@ -11,7 +11,7 @@ export const alignPlugin = AlignPlugin.extend({
             ParagraphPlugin.key,
             ...HEADING_LEVELS,
             // MediaEmbedPlugin.key,
-            ImagePlugin.key,
+            // ImagePlugin.key,
         ],
     },
 });
