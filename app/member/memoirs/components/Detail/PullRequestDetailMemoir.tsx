@@ -7,20 +7,20 @@ import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm"
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
+import NotFound from "@/app/not-found";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function PullRequestDetailMemoir() {
-    const router = useRouter();
     const { id }: { id: string } = useParams();
     const parseId = Number(id);
 
@@ -247,17 +247,7 @@ export default function PullRequestDetailMemoir() {
 
     // loadError가 있을 때 에러 화면
     if (loadError) {
-        return (
-            <div className="p-8 text-center">
-                <p className="mb-4 text-red-600">{loadError}</p>
-                <button
-                    onClick={() => router.push("/member/memoirs")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    목록으로 돌아가기
-                </button>
-            </div>
-        );
+        return <NotFound />;
     }
 
     // commitData가 아직 없으면 로딩

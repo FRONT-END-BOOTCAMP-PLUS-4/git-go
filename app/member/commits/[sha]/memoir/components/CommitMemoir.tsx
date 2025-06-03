@@ -7,6 +7,7 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
 import Loading from "@/app/member/components/Loading";
+import NotFound from "@/app/not-found";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
 import { CommitType } from "@/types/github/CommitType";
@@ -105,17 +106,7 @@ export default function CommitMemoir() {
 
     // 에러가 있을 때
     if (loadError) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
-                <p className="mb-4 text-red-600">{loadError}</p>
-                <button
-                    onClick={() => router.push("/member/commits")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    이전 화면으로 돌아가기
-                </button>
-            </div>
-        );
+        return <NotFound />;
     }
 
     // commitData가 비어 있으면(의도치 않게 넘어온 경우)
