@@ -2,8 +2,12 @@
 
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { MEMBER_URL } from "@/constants/url";
-import { Archive, BookText } from "lucide-react";
-import Image from "next/image";
+import {
+    Archive,
+    BookText,
+    GitBranch,
+    GitCommitHorizontal,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -55,6 +59,14 @@ function getFirstMeaningfulText(content: any): string {
     }
 
     return "";
+}
+
+function getIconByType(type: string) {
+    if (type === "commit") {
+        return <GitCommitHorizontal size={18} />;
+    } else {
+        return <GitBranch size={18} />;
+    }
 }
 
 export default function MemoirCard({ memoir }: Props) {
@@ -113,8 +125,9 @@ export default function MemoirCard({ memoir }: Props) {
                                 width={14}
                                 height={12}
                             /> */}
-                            <Archive size={18} />
-                            <p>{memoir.repoName}</p>
+                            {getIconByType(memoir.type)}
+                            {/* <p>{memoir.repoName}</p> */}
+                            <p>{memoir.sourceTitle}</p>
                         </div>
                     </div>
                 </div>

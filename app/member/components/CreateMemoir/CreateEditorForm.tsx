@@ -2,8 +2,9 @@
 
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSourceTitleStore } from "@/store/useSourceTitleStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
@@ -35,6 +36,7 @@ export default function CreateEditorForm({
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
     const summary = useSummaryStore((s) => s.aiSummary);
+    const sourceTitle = useSourceTitleStore((s) => s.sourceTitle);
     const [isComposing, setIsComposing] = useState(false);
 
     const buildPayload = () => ({
@@ -46,6 +48,7 @@ export default function CreateEditorForm({
         userId: session!.user.id,
         typeId,
         repoId: repo!.dbId,
+        sourceTitle,
     });
 
     // 에디터가 바뀔 때마다 호출할 onChange 핸들러

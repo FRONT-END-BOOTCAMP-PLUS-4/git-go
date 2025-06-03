@@ -2,7 +2,7 @@
 
 import Button from "@/app/components/Button";
 import { GithubRepoDto } from "@/application/usecase/github/dto/GithubRepoDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import AlertDialog from "./AlertDialog";
@@ -127,14 +127,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
             <div className="bg-bg-primary2 w-full max-w-2xl rounded-xl p-6 shadow-lg">
                 <div className="mb-1 flex items-center justify-between">
                     <h2 className="text-xl font-bold">연동할 저장소 선택</h2>
-                    <button onClick={onClose}>
-                        {/* <Image
-                            src="/x-gray.svg"
-                            alt="닫기"
-                            width={16}
-                            height={16}
-                            className="opacity-60 transition hover:opacity-100"
-                        /> */}
+                    <button onClick={onClose} className="cursor-pointer">
                         <X className="opacity-60 hover:opacity-100" />
                     </button>
                 </div>
@@ -146,10 +139,11 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                 {loading ? (
                     <RepoSkeleton />
                 ) : (
-                    <ul className="border-border-primary1 max-h-[350px] divide-y overflow-y-auto rounded-md border">
+                    <ul className="border-border-primary1 max-h-[350px] cursor-pointer divide-y overflow-y-auto rounded-md border">
                         {repos.map((repo) => (
                             <li
                                 key={repo.id}
+                                onClick={() => toggleRepo(repo.id)}
                                 className="border-b-border-primary1 flex items-start justify-between p-4 last:border-b-0"
                             >
                                 <div className="flex w-full flex-col gap-1">
@@ -158,6 +152,9 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             <input
                                                 type="checkbox"
                                                 checked={selected.has(repo.id)}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
                                                 onChange={() =>
                                                     toggleRepo(repo.id)
                                                 }
@@ -165,8 +162,16 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             />
                                             <div className="text-text-primary1 flex items-center gap-2 truncate text-sm font-semibold">
                                                 {repo.nameWithOwner}
-                                                <span className="flex items-center gap-1 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-semibold text-yellow-500">
-                                                    ⭐ {repo.stargazerCount}
+                                                <span
+                                                    className={`rounded-md px-2 py-0.5 text-xs font-semibold ${
+                                                        repo.isPrivate
+                                                            ? "bg-[#FFEBEE] text-[#B71C1C]"
+                                                            : "bg-[#E3F2FD] text-[#1565C0]"
+                                                    }`}
+                                                >
+                                                    {repo.isPrivate
+                                                        ? "Private"
+                                                        : "Public"}
                                                 </span>
                                             </div>
                                         </div>
@@ -188,6 +193,9 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             }}
                                         />
                                         {repo.languageName || "언어 미상"}
+                                        <span className="flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold text-yellow-500">
+                                            ⭐ {repo.stargazerCount}
+                                        </span>
                                     </p>
                                 </div>
                             </li>

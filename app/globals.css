@@ -43,8 +43,8 @@
     /* 태그 배경 컬러*/
     --background-tag-1: #f5f5f5;
 
-    --skeletion-bg-1: #f3f4f6;
-    --skeletion-bg-2: #e5e7eb;
+    --skeleton-bg-1: #f3f4f6;
+    --skeleton-bg-2: #e5e7eb;
 
     --background-header-1: #fff;
 
@@ -176,8 +176,8 @@
     /* 태그 배경 컬러*/
     --background-tag-1: #3d3f45;
 
-    --skeletion-bg-1: #4b4d55;
-    --skeletion-bg-2: #3d3f45;
+    --skeleton-bg-1: #4b4d55;
+    --skeleton-bg-2: #3d3f45;
 
     /* gradient color*/
     --background-gradient-1: #1e2633;
@@ -273,8 +273,8 @@
     /* 태그 배경 컬러*/
     --color-bg-tag1: var(--background-tag-1);
 
-    --color-bg-skeleton1: var(--skeletion-bg-1);
-    --color-bg-skeleton2: var(--skeletion-bg-2);
+    --color-bg-skeleton1: var(--skeleton-bg-1);
+    --color-bg-skeleton2: var(--skeleton-bg-2);
 
     --color-bg-header1: var(--background-header-1);
 

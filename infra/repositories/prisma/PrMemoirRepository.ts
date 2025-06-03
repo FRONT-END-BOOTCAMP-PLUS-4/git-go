@@ -178,6 +178,7 @@ export class PrMemoirRepository implements MemoirRepository {
         typeId: number;
         aiSum?: string;
         tags?: string[];
+        sourceTitle?: string;
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
             const {
@@ -188,6 +189,7 @@ export class PrMemoirRepository implements MemoirRepository {
                 repoId,
                 typeId,
                 aiSum,
+                sourceTitle,
                 tags,
             } = data;
             // 1) Memoir 레코드 생성
@@ -200,6 +202,7 @@ export class PrMemoirRepository implements MemoirRepository {
                     repoId,
                     typeId,
                     aiSum,
+                    sourceTitle,
                 },
             });
 
@@ -265,7 +268,7 @@ export class PrMemoirRepository implements MemoirRepository {
         });
 
         if (!memoir) {
-            throw new Error(`Memoir with id ${id} not found.`);
+            throw new Error(`회고록 ID ${id}을(를) 찾을 수 없습니다.`);
         }
 
         const result = {

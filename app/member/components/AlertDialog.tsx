@@ -21,7 +21,7 @@ export default function AlertDialog({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70">
             <div className="bg-bg-primary2 relative w-full max-w-md rounded-xl p-6 shadow-xl">
                 {imageSrc && (
                     <div className="absolute top-4 right-4">

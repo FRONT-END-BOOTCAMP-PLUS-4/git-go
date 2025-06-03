@@ -22,7 +22,7 @@ export class SaveReposUsecase {
 
         const protectedRepos: string[] = [];
         for (const repoName of toDelete) {
-            const hasMemoirs = await this.repoRepo.hasMemoirs(repoName);
+            const hasMemoirs = await this.repoRepo.hasMemoirs(userId, repoName);
             if (hasMemoirs) protectedRepos.push(repoName);
         }
         if (!dto.force && protectedRepos.length > 0) {

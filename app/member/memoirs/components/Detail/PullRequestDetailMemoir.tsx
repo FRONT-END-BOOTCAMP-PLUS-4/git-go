@@ -7,8 +7,9 @@ import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm"
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
 import Select from "@/app/member/components/Select";
+import NotFound from "@/app/not-found";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
@@ -20,17 +21,19 @@ import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function PullRequestDetailMemoir() {
-    const [selectedSha, setSelectedSha] = useState<string>("");
-
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
-
     const { id }: { id: string } = useParams();
-
-    const [isEditing, setIsEditing] = useState(false);
-    const [showModal, setShowModal] = useState(false);
     const parseId = Number(id);
 
-    // 부모에서만 관리하는 초기값들
+    const { data: session, status: sessionStatus } = useSession();
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState<string | null>(null);
+
+    const [selectedSha, setSelectedSha] = useState<string>("");
+    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
@@ -38,18 +41,76 @@ export default function PullRequestDetailMemoir() {
     const [summary, setSummary] = useState<string>("");
 
     const [prData, setPrData] = useState<PullRequestType[]>([]);
-
     const [commitData, setCommitData] = useState<CommitType | null>(null);
 
     const repo = useRepoStore((s) => s.selectedRepo);
-    const { data: session } = useSession();
-
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    // 1) PR 커밋 목록 fetch
+    // 회고록 데이터(fetch) + 작성자(userId) 검사
+    const load = async () => {
+        setIsLoading(true);
+        setLoadError(null);
+
+        try {
+            const res = await fetch(`/api/memoirs/${id}`);
+            if (res.status === 404) {
+                setLoadError("존재하지 않는 회고록입니다.");
+                setIsLoading(false);
+                return;
+            }
+            if (!res.ok) {
+                const json = await res.json().catch(() => null);
+                setLoadError(
+                    (json && json.message) ||
+                        "회고록을 불러오던 중 오류가 발생했습니다."
+                );
+                setIsLoading(false);
+                return;
+            }
+
+            const data = (await res.json()) as GetMemoirResponseDto;
+            if (sessionStatus === "authenticated") {
+                const sessionUserId = session?.user.id;
+                if (!sessionUserId || sessionUserId !== data.userId) {
+                    setLoadError("잘못된 접근입니다.");
+                    setIsLoading(false);
+                    return;
+                }
+            } else {
+                // 세션이 아직 준비되지 않았다면 대기
+                setIsLoading(true);
+                return;
+            }
+
+            setTitle(data.title);
+            setTags(data.tags ?? []);
+            setContent(data.content as Value);
+            setPrNo(data.source);
+            setSummary(data.aiSum ?? "");
+            setIsLoading(false);
+        } catch (err) {
+            console.error(err);
+            setLoadError("네트워크 오류가 발생했습니다.");
+            setIsLoading(false);
+        }
+    };
+
+    // 마운트 및 id, 세션 상태 변경 시 load 호출
     useEffect(() => {
+        if (sessionStatus !== "authenticated") return;
+        load();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, sessionStatus]);
+
+    // PR 커밋 목록(fetch)
+    useEffect(() => {
+        // 세션이 인증되지 않은 경우 대기
+        if (sessionStatus !== "authenticated") return;
+        if (!repo?.nameWithOwner || !session?.accessToken || !prNo) return;
+
         const fetchPrCommits = async () => {
-            if (!repo?.nameWithOwner || !session?.accessToken || !prNo) return;
+            setIsLoading(true);
+            setLoadError(null);
 
             try {
                 const res = await fetch("/api/github/pull-requests/commits", {
@@ -62,34 +123,58 @@ export default function PullRequestDetailMemoir() {
                         prNumber: Number(prNo),
                     }),
                 });
-                if (!res.ok) throw new Error("PR commits fetch failed");
+                if (res.status === 404) {
+                    setLoadError("해당 PR 번호를 찾을 수 없습니다.");
+                    setIsLoading(false);
+                    return;
+                }
+                if (!res.ok) {
+                    const json = await res.json().catch(() => null);
+                    setLoadError(
+                        (json && json.message) ||
+                            "PR 커밋 목록을 불러오는 중 오류가 발생했습니다."
+                    );
+                    setIsLoading(false);
+                    return;
+                }
 
-                // **여기가 핵심**: API가 { commitList: [...] } 를 반환하니까 꺼내주세요.
                 const json = (await res.json()) as {
                     commitList: PullRequestType[];
                 };
                 const list = Array.isArray(json.commitList)
                     ? json.commitList
                     : [];
-                setPrData(list);
-
-                // 첫 번째 SHA 기본 선택
-                if (list.length > 0) {
-                    setSelectedSha(list[0].sha);
+                if (list.length === 0) {
+                    setLoadError(
+                        "해당 PR 커밋 목록이 비어 있거나 존재하지 않습니다."
+                    );
+                    setIsLoading(false);
+                    return;
                 }
+
+                setPrData(list);
+                setSelectedSha(list[0].sha);
+                setIsLoading(false);
             } catch (err) {
                 console.error(err);
+                setLoadError("네트워크 오류가 발생했습니다.");
+                setIsLoading(false);
             }
         };
 
         fetchPrCommits();
-    }, [repo?.nameWithOwner, session?.accessToken, prNo]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, prNo]);
 
-    // 2) selectedSha 가 바뀔 때마다 커밋 상세 fetch
+    // 선택된 SHA가 바뀔 때 커밋 상세(fetch)
     useEffect(() => {
+        // 세션이 인증되지 않은 경우 대기
+        if (sessionStatus !== "authenticated") return;
+        if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
+            return;
+
         const fetchDetail = async () => {
-            if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
-                return;
+            setIsLoading(true);
+            setLoadError(null);
 
             try {
                 const res = await fetch("/api/github/commits/detail", {
@@ -101,45 +186,45 @@ export default function PullRequestDetailMemoir() {
                         accessToken: session.accessToken,
                     }),
                 });
-                if (!res.ok) throw new Error("Commit detail fetch failed");
+                if (res.status === 404) {
+                    setLoadError("유효하지 않은 커밋 SHA입니다.");
+                    setIsLoading(false);
+                    return;
+                }
+                if (!res.ok) {
+                    const json = await res.json().catch(() => null);
+                    setLoadError(
+                        (json && json.message) ||
+                            "커밋 상세를 불러오는 중 오류가 발생했습니다."
+                    );
+                    setIsLoading(false);
+                    return;
+                }
 
                 const data = (await res.json()) as CommitType;
                 setCommitData(data);
-                setSelectedFile(null); // 파일 선택 초기화
+                setSelectedFile(null);
+                setIsLoading(false);
             } catch (err) {
                 console.error(err);
+                setLoadError("네트워크 오류가 발생했습니다.");
+                setIsLoading(false);
             }
         };
 
         fetchDetail();
-    }, [repo?.nameWithOwner, session?.accessToken, selectedSha]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, selectedSha]);
 
-    // 마운트 및 id 변경 시
+    // 선택된 SHA가 바뀔 때 스크롤 최상단으로
     useEffect(() => {
-        load();
-    }, [id]);
-
-    useEffect(() => {
-        setSelectedFile(null);
+        containerRef.current?.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+        });
     }, [selectedSha]);
 
-    // selectedSha가 바뀔 때마다 스크롤을 최상단으로 이동
-    useEffect(() => {
-        containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    }, [selectedSha]);
-
-    // 회고록 값 불러오기기
-    const load = async () => {
-        const res = await fetch(`/api/memoirs/${id}`);
-        const data = (await res.json()) as GetMemoirResponseDto;
-        setTitle(data.title);
-        setTags(data.tags ?? []);
-        setContent(data.content as Value);
-        setPrNo(data.source);
-        setSummary(data.aiSum ?? "");
-    };
-
-    // 수정 모드 토글 핸들러
+    // 수정 모드 토글
     const handleToggleEdit = async () => {
         if (isEditing) {
             await load();
@@ -147,6 +232,7 @@ export default function PullRequestDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
+    // PR 드롭다운 옵션 계산
     const prOptions = useMemo(
         () =>
             prData.map((pr) => ({
@@ -156,12 +242,31 @@ export default function PullRequestDetailMemoir() {
         [prData]
     );
 
+    // 변경된 파일 리스트 계산
     const files = useMemo(() => {
         if (!commitData) return [];
         return commitData.changeDetail.map((change) => change.filename);
     }, [commitData]);
 
-    if (!commitData) return <Loading />;
+    // 세션이 로딩 중일 때 로딩 컴포넌트
+    if (sessionStatus === "loading") {
+        return <Loading />;
+    }
+
+    // 세션 인증 후에도 로딩 중일 때
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    // loadError가 있을 때 에러 화면
+    if (loadError) {
+        return <NotFound />;
+    }
+
+    // commitData가 아직 없으면 로딩
+    if (!commitData) {
+        return <Loading />;
+    }
 
     return (
         <DetailMemoirLayout>
@@ -185,6 +290,7 @@ export default function PullRequestDetailMemoir() {
                     selectedFile={selectedFile}
                     onSelect={setSelectedFile}
                 />
+
                 <Panel defaultSize={40} minSize={20}>
                     <ChangeListLayout>
                         <Select
@@ -201,7 +307,10 @@ export default function PullRequestDetailMemoir() {
                 </Panel>
                 <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
                 <Panel defaultSize={40} minSize={20}>
-                    <div className="col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                    <div
+                        ref={containerRef}
+                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                    >
                         {isEditing ? (
                             <EditEditorForm
                                 title={title}
