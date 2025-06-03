@@ -9,7 +9,7 @@ type ErrorProps = {
 export default function Error({ errorMessage }: ErrorProps) {
     const router = useRouter();
     return (
-        <div className="fixed inset-0 top-[65px] z-10 flex flex-col items-center justify-center gap-3">
+        <div className="bg-bg-primary1 mt-16 flex flex-col items-center justify-center text-center">
             <p className="text-danger1 text-xl">{errorMessage}</p>
 
             <button
