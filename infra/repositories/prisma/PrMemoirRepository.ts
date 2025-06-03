@@ -268,7 +268,7 @@ export class PrMemoirRepository implements MemoirRepository {
         });
 
         if (!memoir) {
-            throw new Error(`Memoir with id ${id} not found.`);
+            throw new Error(`회고록 ID ${id}을(를) 찾을 수 없습니다.`);
         }
 
         const result = {

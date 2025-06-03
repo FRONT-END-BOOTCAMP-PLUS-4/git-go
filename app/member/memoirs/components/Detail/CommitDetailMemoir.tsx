@@ -6,19 +6,19 @@ import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLay
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
+import NotFound from "@/app/not-found";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
-    const router = useRouter();
     const { id }: { id: string } = useParams();
     const { data: session, status: sessionStatus } = useSession();
 
@@ -161,18 +161,7 @@ export default function CommitDetailMemoir() {
 
     // loadError가 있을 때 (404, 작성자 불일치, 네트워크 오류 등)
     if (loadError) {
-        return (
-            <div className="p-8 text-center">
-                <p className="mb-4 text-red-600">{loadError}</p>
-                {/* 회고 목록 페이지로 돌아가기 */}
-                <button
-                    onClick={() => router.push("/member/memoirs")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    목록으로 돌아가기
-                </button>
-            </div>
-        );
+        return <NotFound />;
     }
 
     // commitData가 아직 없으면(커밋 상세 불러오는 중이라면) 로딩

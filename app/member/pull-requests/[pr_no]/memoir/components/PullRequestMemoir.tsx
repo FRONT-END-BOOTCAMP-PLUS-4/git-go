@@ -17,6 +17,7 @@ import Select from "@/app/member/components/Select";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
 
+import NotFound from "@/app/not-found";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 
@@ -204,17 +205,7 @@ export default function PullRequestMemoir() {
     }
 
     if (loadError) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
-                <p className="mb-4 text-red-600">{loadError}</p>
-                <button
-                    onClick={() => router.push("/member/pull-requests")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    이전 화면으로 돌아가기
-                </button>
-            </div>
-        );
+        return <NotFound />;
     }
 
     if (!commitData) {
