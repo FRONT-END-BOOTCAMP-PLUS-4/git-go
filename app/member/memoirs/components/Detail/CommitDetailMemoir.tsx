@@ -12,40 +12,43 @@ import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
-    const router = useRouter();
     const { id }: { id: string } = useParams();
-    const parseId = Number(id);
-
     const { data: session, status: sessionStatus } = useSession();
+
+    // 사용자가 선택한 파일명을 기억
+    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    // 수정 모드 토글
+    const [isEditing, setIsEditing] = useState(false);
+    // 요약 모달 토글
+    const [showModal, setShowModal] = useState(false);
+
+    // 최종적으로 렌더할 커밋 상세 정보
+    const [commitData, setCommitData] = useState<CommitType>();
+    // 전역 스토어에서 선택된 Repo (owner/repo)
     const repo = useRepoStore((s) => s.selectedRepo);
 
-    // 로딩/에러 상태
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadError, setLoadError] = useState<string | null>(null);
+    // URL params → 문자열로 들어온 id를 숫자로 변환
+    const parseId = Number(id);
 
-    // 회고 세부 정보
+    // “회고 데이터” (제목, 태그, 내용, sha, AI 요약) 상태
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [content, setContent] = useState<Value>([]);
     const [sha, setSha] = useState("");
     const [summary, setSummary] = useState<string>("");
 
-    // GitHub 커밋 상세
-    const [commitData, setCommitData] = useState<CommitType | null>(null);
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    // 로딩/에러 상태
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState<string | null>(null);
 
-    // 편집 모드, 요약 모달 상태
-    const [isEditing, setIsEditing] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-
-    // 회고록 데이터(fetch) + 작성자(userId) 검사
+    // 서버에서 “회고 데이터”를 가져오는 함수
     const load = async () => {
         setIsLoading(true);
         setLoadError(null);
@@ -53,6 +56,7 @@ export default function CommitDetailMemoir() {
         try {
             const res = await fetch(`/api/memoirs/${id}`);
             if (res.status === 404) {
+                // 존재하지 않는 회고 ID
                 setLoadError("존재하지 않는 회고록입니다.");
                 setIsLoading(false);
                 return;
@@ -68,7 +72,7 @@ export default function CommitDetailMemoir() {
             }
 
             const data = (await res.json()) as GetMemoirResponseDto;
-            // 작성자(userId)와 세션의 user.id 비교
+            // 작성자 검사: 세션 정보의 user.id와 응답의 data.userId 비교
             if (sessionStatus === "authenticated") {
                 const sessionUserId = session?.user.id;
                 if (!sessionUserId || sessionUserId !== data.userId) {
@@ -77,16 +81,16 @@ export default function CommitDetailMemoir() {
                     return;
                 }
             } else {
-                // 세션이 아직 준비되지 않았다면 대기
+                // 아직 세션이 준비되지 않았다면 로딩 유지
                 setIsLoading(true);
                 return;
             }
 
-            // 소유자 확인이 끝났으면 나머지 상태 세팅
+            // 정상이면 상태 세팅
             setTitle(data.title);
             setTags(data.tags ?? []);
             setContent(data.content as Value);
-            setSha(data.source);
+            setSha(data.source); // “source” 필드에 커밋 SHA를 저장했다고 가정
             setSummary(data.aiSum ?? "");
             setIsLoading(false);
         } catch (err) {
@@ -96,22 +100,20 @@ export default function CommitDetailMemoir() {
         }
     };
 
-    // 마운트 및 id, 세션 상태 변경 시 load 호출
+    // 마운트 또는 id, 세션 상태가 바뀔 때 load() 호출
     useEffect(() => {
+        // 반드시 먼저 세션이 “authenticated” 상태가 되어야 회고를 가져감
         if (sessionStatus !== "authenticated") return;
         load();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, sessionStatus]);
+    }, [id, sessionStatus, session]);
 
-    // GitHub 커밋 상세를 가져오는 함수
+    // 커밋 상세를 가져오는 함수
     const fetchCommitDetail = async (
-        nameWithOwner: string,
+        nameWithOwner: string | undefined,
         sha: string,
-        accessToken: string
+        accessToken: string | undefined
     ) => {
-        setIsLoading(true);
-        setLoadError(null);
-
         try {
             const res = await fetch("/api/github/commits/detail", {
                 method: "POST",
@@ -119,63 +121,26 @@ export default function CommitDetailMemoir() {
                 body: JSON.stringify({ nameWithOwner, sha, accessToken }),
             });
 
-            if (res.status === 404) {
-                // GitHub API에서 SHA가 유효하지 않을 때
-                setLoadError(
-                    "유효하지 않은 커밋 SHA입니다. 커밋을 찾을 수 없습니다."
-                );
-                setIsLoading(false);
-                return;
+            if (res.ok) {
+                const result = (await res.json()) as CommitType;
+                setCommitData(result);
+            } else {
+                // 여기서도 404나 기타 오류가 발생하면 그냥 콘솔에만 찍어두고
+                // commitData는 undefined로 남겨서 아래 로딩 처리를 유도할 수 있음
+                console.error("커밋 상세를 불러오는 중 오류:", res.status);
             }
-            if (!res.ok) {
-                const json = await res.json().catch(() => null);
-                const msg =
-                    (json && json.message) ||
-                    "커밋 상세 정보를 불러오는 중 오류가 발생했습니다.";
-                setLoadError(msg);
-                setIsLoading(false);
-                return;
-            }
-
-            // 정상 응답
-            const result = (await res.json()) as CommitType;
-            setCommitData(result);
-            setIsLoading(false);
-        } catch (err) {
-            console.error("Failed to fetch commit detail", err);
-            setLoadError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
-            setIsLoading(false);
+        } catch (error) {
+            console.error("Failed to fetch commit detail", error);
         }
     };
 
-    // GitHub 커밋 상세 fetch useEffect
+    // repo.nameWithOwner, sha, session.accessToken이 준비되면 커밋 상세 fetch
     useEffect(() => {
-        // 세션이 인증된 상태여야만 로직 시작
-        if (sessionStatus !== "authenticated") {
-            return;
-        }
-        // repo가 아직 준비되지 않았으면 대기
-        if (!repo?.nameWithOwner) {
-            return;
-        }
-        // sha 값이 없으면 잘못된 경로
-        if (!sha) {
-            setLoadError("잘못된 경로입니다.");
-            setIsLoading(false);
-            return;
-        }
+        if (!repo?.nameWithOwner || !session?.accessToken || !sha) return;
+        fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
+    }, [repo?.nameWithOwner, sha, session?.accessToken]);
 
-        // 모든 준비가 될 때 fetch 호출
-        fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken!);
-    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, sha]);
-
-    // 변경된 파일 리스트 계산
-    const files = useMemo(() => {
-        if (!commitData) return [];
-        return commitData.changeDetail.map((change) => change.filename);
-    }, [commitData]);
-
-    // 에디트 토글 핸들러
+    // 수정 모드 토글. 취소할 때는 화면 초기화용 load() 재호출
     const handleToggleEdit = async () => {
         if (isEditing) {
             await load();
@@ -183,39 +148,32 @@ export default function CommitDetailMemoir() {
         setIsEditing((prev) => !prev);
     };
 
-    // 세션이 로딩 중일 때 로딩 컴포넌트
+    // commitData가 내려줄 파일 목록 계산 (파일명 배열만 추출)
+    const files = useMemo(() => {
+        if (!commitData) return [];
+        return commitData.changeDetail.map((change) => change.filename);
+    }, [commitData]);
+
+    // 세션 로딩 중 → <Loading/>
     if (sessionStatus === "loading") {
         return <Loading />;
     }
 
-    // 로딩 중
+    // 아직 회고 데이터 로딩 중 → <Loading/>
     if (isLoading) {
         return <Loading />;
     }
 
-    // loadError가 있을 때 에러 화면
+    // loadError가 있으면(404 / 작성자 불일치 / 네트워크 오류 등) → <NotFound/>
     if (loadError) {
         return <NotFound />;
     }
 
-    // commitData가 비어 있으면(의도치 않게 넘어온 경우)
+    // 커밋 상세(commitData)가 아직 없으면 → <Loading/>
     if (!commitData) {
-        return (
-            <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
-                <p className="mb-4 text-gray-600">
-                    커밋 데이터를 불러올 수 없습니다.
-                </p>
-                <button
-                    onClick={() => router.push("/member/memoirs")}
-                    className="rounded-md bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                    이전 화면으로 돌아가기
-                </button>
-            </div>
-        );
+        return <Loading />;
     }
 
-    // 모든 준비가 완료되었을 때 UI 렌더링
     return (
         <DetailMemoirLayout>
             <button
@@ -224,6 +182,7 @@ export default function CommitDetailMemoir() {
             >
                 ✨ 생성된 요약 보기
             </button>
+
             {showModal && (
                 <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
                     <ViewSummary
@@ -232,15 +191,14 @@ export default function CommitDetailMemoir() {
                     />
                 </div>
             )}
+
             <PanelGroup direction="horizontal" className="h-full w-full">
-                {/* 왼쪽: 파일 리스트 (AccordionSidebar) */}
                 <AccordionSidebar
                     files={files}
                     selectedFile={selectedFile}
                     onSelect={setSelectedFile}
                 />
 
-                {/* 가운데: 변경 목록 (ChangeList) */}
                 <Panel defaultSize={40} minSize={20}>
                     <ChangeListLayout>
                         <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
@@ -253,7 +211,7 @@ export default function CommitDetailMemoir() {
                     </ChangeListLayout>
                 </Panel>
                 <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-                {/* 오른쪽: 에디터 (EditEditorForm / EditorFormReadOnly) */}
+
                 <Panel defaultSize={40} minSize={20}>
                     <div className="bg-bg-member1 relative col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                         {isEditing ? (
