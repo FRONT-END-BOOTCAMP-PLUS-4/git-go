@@ -31,9 +31,9 @@ export default function PageTap({ status }: Props) {
     };
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 mb-6 flex cursor-pointer rounded-md border p-1">
+        <div className="border-border-primary1 bg-bg-member1 mb-6 flex cursor-pointer gap-x-1 rounded-md border p-1">
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "commits" ? "bg-primary1" : ""
                 }`}
                 onClick={commitClickHandler}
@@ -57,7 +57,7 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "pull-requests" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "pull-requests" ? "bg-primary1" : ""
                 }`}
                 onClick={pullRequestClickHandler}
@@ -81,7 +81,7 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "memoirs" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "memoirs" ? "bg-primary1" : ""
                 }`}
                 onClick={memoirClickHandler}
@@ -105,7 +105,7 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "stats" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "stats" ? "bg-primary1" : ""
                 }`}
                 onClick={statClickHandler}
