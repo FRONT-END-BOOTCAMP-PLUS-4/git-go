@@ -11,13 +11,14 @@ import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
+    const router = useRouter();
     const { id }: { id: string } = useParams();
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -36,15 +37,44 @@ export default function CommitDetailMemoir() {
     const [sha, setSha] = useState("");
     const [summary, setSummary] = useState<string>("");
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState<string | null>(null);
     // 회고록 값 불러오기기
     const load = async () => {
-        const res = await fetch(`/api/memoirs/${id}`);
-        const data = (await res.json()) as GetMemoirResponseDto;
-        setTitle(data.title);
-        setTags(data.tags ?? []);
-        setContent(data.content as Value);
-        setSha(data.source);
-        setSummary(data.aiSum ?? "");
+        setIsLoading(true);
+        setLoadError(null);
+
+        try {
+            const res = await fetch(`/api/memoirs/${id}`);
+            if (res.status === 404) {
+                // 없는 id면 별도 메시지 띄우거나, 목록으로 리다이렉트
+                setLoadError("존재하지 않는 회고록입니다.");
+                setIsLoading(false);
+                return;
+            }
+            if (!res.ok) {
+                // 400, 500 등 기타 에러
+                const json = await res.json();
+                setLoadError(
+                    json.message || "회고록을 불러오던 중 오류가 발생했습니다."
+                );
+                setIsLoading(false);
+                return;
+            }
+
+            // 정상적으로 데이터를 받아왔다면
+            const data = (await res.json()) as GetMemoirResponseDto;
+            setTitle(data.title);
+            setTags(data.tags ?? []);
+            setContent(data.content as Value);
+            setSha(data.source);
+            setSummary(data.aiSum ?? "");
+            setIsLoading(false);
+        } catch (err) {
+            console.error(err);
+            setLoadError("네트워크 오류가 발생했습니다.");
+            setIsLoading(false);
+        }
     };
 
     // 마운트 및 id 변경 시
@@ -99,7 +129,30 @@ export default function CommitDetailMemoir() {
         return commitData.changeDetail.map((change) => change.filename);
     }, [commitData]);
 
-    if (!commitData) return <Loading />;
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    // 에러가 있을 때
+    if (loadError) {
+        return (
+            <div className="p-8 text-center">
+                <p className="mb-4 text-red-600">{loadError}</p>
+                {/* 예: 목록으로 돌아가기 버튼 */}
+                <button
+                    className="rounded-md bg-gray-200 px-4 py-2 hover:cursor-pointer hover:bg-gray-300"
+                    onClick={() => router.push("/member/memoirs")}
+                >
+                    목록으로 돌아가기
+                </button>
+            </div>
+        );
+    }
+
+    // 3) commitData가 아직 없으면 (네트워크 지연 등) Loading
+    if (!commitData) {
+        return <Loading />;
+    }
 
     return (
         <DetailMemoirLayout>
