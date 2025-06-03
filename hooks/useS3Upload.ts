@@ -1,3 +1,4 @@
+import { IMAGE_MAX_SIZE } from "@/constants/imageSize";
 import { useState } from "react";
 
 /**
@@ -6,6 +7,7 @@ import { useState } from "react";
  * - 업로드 진행률 추적
  * - 서버에서 반환한 S3 URL 파싱
  * - 업로드 상태와 결과 반환
+ * - 이미지 파일 용량 4MB 이하만 허용 (초과 시 alert 후 업로드 중단)
  */
 export function useS3Upload({
     onUploadComplete,
@@ -39,6 +41,9 @@ export function useS3Upload({
     } | null>(null);
     // 현재 업로드 중인 File 객체
     const [uploadingFile, setUploadingFile] = useState<File | null>(null);
+
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     /**
      * 실제 XHR 요청으로 `/api/upload`에 FormData 전송
@@ -109,13 +114,26 @@ export function useS3Upload({
 
     /**
      * 외부에서 호출하는 업로드 함수
+     * - 이미지 4MB 이하만 업로드 허용 (초과 시 alert 후 중단)
      * - 상태 업데이트(isUploading, uploadingFile)
      * - putWithProgressToApi 호출
      * - 성공 시 onUploadComplete, 실패 시 onUploadError
      */
     async function uploadFile(file: File) {
+        // 이미지 파일인지 확인 (필요 시)
+        const isImage = file.type.startsWith("image/");
+
+        // 이미지이고 크기가 4MB 초과하면 경고 후 중단
+        if (isImage && file.size > IMAGE_MAX_SIZE) {
+            setErrorMessage("이미지는 4MB 이하만 업로드할 수 있습니다.");
+            setIsError(true);
+            // alert("이미지는 4MB 이하만 업로드할 수 있습니다.");
+            return;
+        }
+
         setIsUploading(true);
         setUploadingFile(file);
+
         try {
             // XHR로 파일 전송 → 결과 객체 반환
             const result = await putWithProgressToApi(file);
@@ -126,6 +144,7 @@ export function useS3Upload({
             return result;
         } catch (error) {
             onUploadError?.(error);
+            setIsError(true);
             throw error;
         } finally {
             // 항상 상태 초기화
@@ -142,5 +161,8 @@ export function useS3Upload({
         uploadingFile,
         uploadedFile,
         uploadFile,
+        errorMessage,
+        isError,
+        setIsError,
     };
 }

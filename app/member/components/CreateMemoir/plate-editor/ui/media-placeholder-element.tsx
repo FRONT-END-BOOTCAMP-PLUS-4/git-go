@@ -6,9 +6,11 @@ import type { TPlaceholderElement } from "@udecode/plate-media";
 import type { PlateElementProps } from "@udecode/plate/react";
 
 import { PlateElement, useEditorPlugin, withHOC } from "@udecode/plate/react";
-import { ImageIcon, Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { useFilePicker } from "use-file-picker";
 
+import AlertDialog from "@/app/member/components/AlertDialog";
+import { IMAGE_MAX_SIZE } from "@/constants/imageSize";
 import { useS3Upload } from "@/hooks/useS3Upload";
 import { cn } from "@/lib/utils";
 import {
@@ -31,7 +33,7 @@ const CONTENT: Record<
     [ImagePlugin.key]: {
         accept: ["image/*"],
         content: "Add an image",
-        icon: <ImageIcon />,
+        icon: <></>, // 아이콘 자체도 출력하지 않습니다.
     },
 };
 
@@ -43,13 +45,16 @@ export const MediaPlaceholderElement = withHOC(
         const { editor, element } = props;
         const { api } = useEditorPlugin(PlaceholderPlugin);
 
-        // useS3Upload 훅 사용
+        // ① useS3Upload 훅 (업로드 진행률, 완료 콜백 등)
         const {
             isUploading,
             progress,
             uploadedFile,
             uploadFile,
             uploadingFile,
+            errorMessage,
+            isError,
+            setIsError,
         } = useS3Upload({
             onUploadError: (err) => {
                 console.error("업로드 중 에러 발생:", err);
@@ -61,39 +66,82 @@ export const MediaPlaceholderElement = withHOC(
         const isImage = element.mediaType === ImagePlugin.key;
         const imageRef = React.useRef<HTMLImageElement>(null);
 
-        const { openFilePicker } = useFilePicker({
-            accept: currentContent.accept,
-            multiple: true,
-            onFilesSelected: ({ plainFiles: updatedFiles }) => {
-                const firstFile = updatedFiles[0];
-                const restFiles = updatedFiles.slice(1);
-
-                replaceCurrentPlaceholder(firstFile);
-                if (restFiles.length > 0) {
-                    editor
-                        .getTransforms(PlaceholderPlugin)
-                        .insert.media(restFiles);
-                }
-            },
-        });
-
-        // 플레이스홀더 자리에 파일을 업로드하고, 편집기 플레이스홀더 API에도 등록
+        /**
+         * ③ replaceCurrentPlaceholder
+         *    “용량 검사 → 플레이스홀더 추가 → uploadFile 호출” 순으로 실행
+         */
         const replaceCurrentPlaceholder = React.useCallback(
             (file: File) => {
-                void uploadFile(file);
                 api.placeholder.addUploadingFile(element.id as string, file);
+                void uploadFile(file);
             },
             [api.placeholder, element.id, uploadFile]
         );
 
-        // 업로드가 완료되면, placeholder 노드를 실제 이미지/미디어 노드로 교체
+        /**
+         * ④ useFilePicker 설정
+         *    - onFilesSelected 내부에서 용량 검사 후, 통과하면 replaceCurrentPlaceholder 호출
+         *    - 용량 검사 실패 시 해당 플레이스홀더 노드를 제거
+         */
+        const { clear } = useFilePicker({
+            accept: currentContent.accept,
+            multiple: false,
+            limitFilesConfig: {
+                maxSize: IMAGE_MAX_SIZE,
+                maxNumberOfFiles: 1,
+            },
+
+            onFilesSelected: ({ plainFiles: updatedFiles }) => {
+                const firstFile = updatedFiles[0];
+                if (!firstFile) {
+                    return;
+                }
+
+                // ⑤ 직접 용량 검사 (4MB 이하만 통과)
+                const isImg = firstFile.type.startsWith("image/");
+                if (isImg && firstFile.size > IMAGE_MAX_SIZE) {
+                    alert(
+                        "이미지 용량이 4MB를 초과했습니다.\n4MB 이하의 이미지만 업로드해주세요."
+                    );
+
+                    // 해당 플레이스홀더 노드를 제거
+                    const path = editor.api.findPath(element);
+                    editor.tf.removeNodes({ at: path });
+
+                    clear(); // useFilePicker 내부 상태 초기화
+                    return;
+                }
+
+                // 정상 용량인 경우 플레이스홀더 삽입
+                replaceCurrentPlaceholder(firstFile);
+            },
+
+            onFilesDismissed: () => {
+                // limitFilesConfig 단계(파일 dialog 레벨)에서 걸러질 때 경고
+                alert(
+                    "4MB 이하의 이미지 파일만 업로드할 수 있습니다.\n다시 선택해주세요."
+                );
+
+                // 혹시 남아있는 플레이스홀더 노드를 제거
+                const path = editor.api.findPath(element);
+                editor.tf.removeNodes({ at: path });
+
+                clear();
+            },
+        });
+
+        /**
+         * ⑥ 업로드 완료 시, 플레이스홀더를 실제 이미지 노드로 교체
+         */
         React.useEffect(() => {
             if (!uploadedFile) return;
             const path = editor.api.findPath(element);
 
             editor.tf.withoutSaving(() => {
+                // 1) 플레이스홀더 노드 제거
                 editor.tf.removeNodes({ at: path });
 
+                // 2) 실제 이미지 노드 삽입
                 const node = {
                     children: [{ text: "" }],
                     initialHeight: imageRef.current?.height,
@@ -116,7 +164,9 @@ export const MediaPlaceholderElement = withHOC(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [uploadedFile, element.id]);
 
-        // React Strict Mode에서 effect가 두 번 실행되는 것을 방지
+        /**
+         * ⑦ React Strict Mode에서 effect가 두 번 실행되는 것을 방지
+         */
         const isReplaced = React.useRef(false);
         React.useEffect(() => {
             if (isReplaced.current) return;
@@ -126,54 +176,46 @@ export const MediaPlaceholderElement = withHOC(
                 element.id as string
             );
             if (!currentFiles) return;
-            replaceCurrentPlaceholder(currentFiles);
+            replaceCurrentPlaceholder(currentFiles as File);
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isReplaced]);
 
         return (
             <PlateElement className="my-1" {...props}>
-                {/* “파일 선택” UI */}
-                {(!loading || !isImage) && (
-                    <div
-                        className={cn(
-                            "bg-muted hover:bg-primary/10 flex cursor-pointer items-center rounded-sm p-3 pr-9 select-none"
-                        )}
-                        onClick={() => !loading && openFilePicker()}
-                        contentEditable={false}
-                    >
-                        <div className="text-muted-foreground/80 relative mr-3 flex [&_svg]:size-6">
-                            {currentContent.icon}
-                        </div>
-                        <div className="text-muted-foreground text-sm whitespace-nowrap">
-                            <div>
-                                {loading
-                                    ? uploadingFile?.name
-                                    : currentContent.content}
-                            </div>
-                            {/* 이미지가 아닌 파일(MediaPlugin.key != ImagePlugin.key)인 경우, 진행률을 표시 */}
-                            {loading && !isImage && (
-                                <div className="mt-1 flex items-center gap-1.5">
-                                    <div>
-                                        {formatBytes(uploadingFile?.size ?? 0)}
-                                    </div>
-                                    <div>–</div>
-                                    <div className="flex items-center">
-                                        <Loader2Icon className="text-muted-foreground mr-1 size-3.5 animate-spin" />
-                                        {progress ?? 0}%
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                {/*
+          (4) errorMessage가 있을 때, 최상단에 <Alert>를 렌더합니다.
+          onClose 핸들러에서는 예시로 페이지를 리로드했지만,
+          실제로는 훅에 ‘errorMessage 초기화 함수(clearError 등)’를 만들어
+          호출하는 것이 더 깔끔합니다.
+        */}
+                {isError && errorMessage && (
+                    <AlertDialog
+                        open={!!errorMessage}
+                        title="업로드 실패"
+                        description={errorMessage}
+                        onClose={() => setIsError(false)}
+                    />
                 )}
 
-                {/* 이미지 업로드 중에 미리보기 + 진행률 표시 */}
+                {/* 이미지 업로드 중 미리보기 + 진행률 */}
                 {isImage && loading && (
-                    <ImageProgress
-                        file={uploadingFile!}
-                        imageRef={imageRef}
-                        progress={progress}
-                    />
+                    <div className={cn("relative")} contentEditable={false}>
+                        <Image
+                            ref={imageRef}
+                            className="h-auto w-full rounded-sm object-cover"
+                            alt={uploadingFile?.name ?? ""}
+                            src={URL.createObjectURL(uploadingFile!)}
+                            fill
+                        />
+                        {progress < 100 && (
+                            <div className="absolute right-1 bottom-1 flex items-center space-x-2 rounded-full bg-black/50 px-1 py-0.5">
+                                <Loader2Icon className="text-muted-foreground size-3.5 animate-spin" />
+                                <span className="text-xs font-medium text-white">
+                                    {Math.round(progress)}%
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 )}
 
                 {/* 실제 placeholder / 미디어 노드를 렌더링 */}
@@ -182,49 +224,6 @@ export const MediaPlaceholderElement = withHOC(
         );
     }
 );
-
-export function ImageProgress({
-    className,
-    file,
-    imageRef,
-    progress = 0,
-}: {
-    file: File;
-    className?: string;
-    imageRef?: React.RefObject<HTMLImageElement | null>;
-    progress?: number;
-}) {
-    const [objectUrl, setObjectUrl] = React.useState<string | null>(null);
-
-    React.useEffect(() => {
-        const url = URL.createObjectURL(file);
-        setObjectUrl(url);
-        return () => {
-            URL.revokeObjectURL(url);
-        };
-    }, [file]);
-
-    if (!objectUrl) return null;
-    return (
-        <div className={cn("relative", className)} contentEditable={false}>
-            <Image
-                ref={imageRef}
-                className="h-auto w-full rounded-sm object-cover"
-                alt={file.name}
-                src={objectUrl}
-                fill
-            />
-            {progress < 100 && (
-                <div className="absolute right-1 bottom-1 flex items-center space-x-2 rounded-full bg-black/50 px-1 py-0.5">
-                    <Loader2Icon className="text-muted-foreground size-3.5 animate-spin" />
-                    <span className="text-xs font-medium text-white">
-                        {Math.round(progress)}%
-                    </span>
-                </div>
-            )}
-        </div>
-    );
-}
 
 export function formatBytes(
     bytes: number,

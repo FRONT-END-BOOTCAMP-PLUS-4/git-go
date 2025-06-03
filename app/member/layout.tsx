@@ -36,7 +36,7 @@ export default function MemberLayout({
                 </div>
 
                 <div className="w-full">
-                    <div className="flex justify-between">
+                    <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
                         <PageTap status={status} />
                         {pathname.includes("memoirs") && <SearchFilter />}
                     </div>
