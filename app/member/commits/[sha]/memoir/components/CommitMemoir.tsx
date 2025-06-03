@@ -20,7 +20,7 @@ export default function CommitMemoir() {
     const router = useRouter();
     const { sha }: { sha: string } = useParams();
     const repo = useRepoStore((s) => s.selectedRepo);
-    const { data: session } = useSession();
+    const { data: session, status: sessionStatus } = useSession();
     const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
     // 로딩/에러 상태
@@ -58,7 +58,6 @@ export default function CommitMemoir() {
             });
 
             if (res.status === 404) {
-                // GitHub API에서 404를 내려주는 경우(sha가 아예 없는 경우)
                 setLoadError(
                     "유효하지 않은 커밋 SHA입니다. 커밋을 찾을 수 없습니다."
                 );
@@ -66,7 +65,6 @@ export default function CommitMemoir() {
                 return;
             }
             if (!res.ok) {
-                // 400, 500 등의 기타 에러
                 const json = await res.json().catch(() => null);
                 const msg =
                     (json && json.message) ||
@@ -76,7 +74,6 @@ export default function CommitMemoir() {
                 return;
             }
 
-            // 정상 응답
             const result = (await res.json()) as CommitType;
             setCommitData(result);
             setIsLoading(false);
@@ -87,29 +84,32 @@ export default function CommitMemoir() {
         }
     };
 
+    // 커밋 상세 fetch useEffect
     useEffect(() => {
+        if (sessionStatus !== "authenticated") {
+            return;
+        }
         if (!repo?.nameWithOwner || !session?.accessToken || !sha) {
+            setLoadError("잘못된 경로입니다.");
+            setIsLoading(false);
             return;
         }
         fetchCommitDetail(repo.nameWithOwner, sha, session.accessToken);
-    }, [repo?.nameWithOwner, session?.accessToken, sha]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, sha]);
 
     const files = useMemo(() => {
         if (!commitData) return [];
         return commitData.changeDetail.map((change) => change.filename);
     }, [commitData]);
 
-    // 로딩 중
     if (isLoading) {
         return <Loading />;
     }
 
-    // 에러가 있을 때
     if (loadError) {
         return <NotFound />;
     }
 
-    // commitData가 비어 있으면(의도치 않게 넘어온 경우)
     if (!commitData) {
         return (
             <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center">
@@ -126,10 +126,8 @@ export default function CommitMemoir() {
         );
     }
 
-    // 모든 준비가 완료되었을 때 UI 렌더링
     return (
         <CreateMemoirLayout>
-            {/* AI 요약 시작 모달 버튼 */}
             <button
                 onClick={() => setShowModal(true)}
                 className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
@@ -145,16 +143,13 @@ export default function CommitMemoir() {
                 </div>
             )}
 
-            {/* Resizable Panel 레이아웃 */}
             <PanelGroup direction="horizontal" className="h-full w-full">
-                {/* 왼쪽: 파일 리스트 (AccordionSidebar) */}
                 <AccordionSidebar
                     files={files}
                     selectedFile={selectedFile}
                     onSelect={setSelectedFile}
                 />
 
-                {/* 가운데: 변경 목록 (ChangeList) */}
                 <Panel defaultSize={40} minSize={20}>
                     <ChangeListLayout>
                         <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
@@ -167,11 +162,8 @@ export default function CommitMemoir() {
                     </ChangeListLayout>
                 </Panel>
                 <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-
-                {/* 오른쪽: 에디터 폼 (CreateEditorForm) */}
                 <Panel defaultSize={40} minSize={20}>
                     <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
-                        {/* source에 sha를 넘겨주고, typeId=1은 commit임을 표시 */}
                         <CreateEditorForm source={sha} typeId={1} />
                     </div>
                 </Panel>

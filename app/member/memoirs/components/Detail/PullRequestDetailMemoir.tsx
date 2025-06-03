@@ -77,6 +77,7 @@ export default function PullRequestDetailMemoir() {
                     return;
                 }
             } else {
+                // 세션이 아직 준비되지 않았다면 대기
                 setIsLoading(true);
                 return;
             }
@@ -96,14 +97,20 @@ export default function PullRequestDetailMemoir() {
 
     // 마운트 및 id, 세션 상태 변경 시 load 호출
     useEffect(() => {
+        if (sessionStatus !== "authenticated") return;
         load();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, session, sessionStatus]);
+    }, [id, sessionStatus]);
 
     // PR 커밋 목록(fetch)
     useEffect(() => {
+        // 세션이 인증되지 않은 경우 대기
+        if (sessionStatus !== "authenticated") return;
+        if (!repo?.nameWithOwner || !session?.accessToken || !prNo) return;
+
         const fetchPrCommits = async () => {
-            if (!repo?.nameWithOwner || !session?.accessToken || !prNo) return;
+            setIsLoading(true);
+            setLoadError(null);
 
             try {
                 const res = await fetch("/api/github/pull-requests/commits", {
@@ -147,6 +154,7 @@ export default function PullRequestDetailMemoir() {
 
                 setPrData(list);
                 setSelectedSha(list[0].sha);
+                setIsLoading(false);
             } catch (err) {
                 console.error(err);
                 setLoadError("네트워크 오류가 발생했습니다.");
@@ -155,13 +163,18 @@ export default function PullRequestDetailMemoir() {
         };
 
         fetchPrCommits();
-    }, [repo?.nameWithOwner, session?.accessToken, prNo]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, prNo]);
 
     // 선택된 SHA가 바뀔 때 커밋 상세(fetch)
     useEffect(() => {
+        // 세션이 인증되지 않은 경우 대기
+        if (sessionStatus !== "authenticated") return;
+        if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
+            return;
+
         const fetchDetail = async () => {
-            if (!repo?.nameWithOwner || !session?.accessToken || !selectedSha)
-                return;
+            setIsLoading(true);
+            setLoadError(null);
 
             try {
                 const res = await fetch("/api/github/commits/detail", {
@@ -200,9 +213,9 @@ export default function PullRequestDetailMemoir() {
         };
 
         fetchDetail();
-    }, [repo?.nameWithOwner, session?.accessToken, selectedSha]);
+    }, [repo?.nameWithOwner, sessionStatus, session?.accessToken, selectedSha]);
 
-    // 선택된 SHA가 바뀔 때 스크롤을 최상단으로
+    // 선택된 SHA가 바뀔 때 스크롤 최상단으로
     useEffect(() => {
         containerRef.current?.scrollTo({
             top: 0,
