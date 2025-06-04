@@ -26,6 +26,17 @@ export default function RepoSelectModal({ open, onClose }: Props) {
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
+        if (open) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [open]);
+
+    useEffect(() => {
         if (!open) return;
 
         const fetchRepos = async () => {
@@ -176,8 +187,12 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             </div>
                                         </div>
                                         <div className="text-text-primary1 text-xs whitespace-nowrap">
-                                            Last updated:{" "}
-                                            {repo.updatedAt.slice(0, 10)}
+                                            최근 수정일:{" "}
+                                            {new Intl.DateTimeFormat("ko-KR", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            }).format(new Date(repo.updatedAt))}
                                         </div>
                                     </div>
                                     <p className="text-text-primary1 ml-6 truncate text-sm">
