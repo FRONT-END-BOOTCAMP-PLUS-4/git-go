@@ -20,6 +20,7 @@ export default function MemoirPage() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
+    const [noRepo, setNoRepo] = useState(false);
     const perPage = 10;
     const handlePageChange = (newPage: number) => {
         window.scrollTo({
@@ -58,6 +59,7 @@ export default function MemoirPage() {
                 const repos = await res.json();
                 if (Array.isArray(repos) && repos.length === 0) {
                     setOpen(true);
+                    setNoRepo(true);
                     setLoading(false);
                 }
             } catch (err) {
@@ -170,14 +172,16 @@ export default function MemoirPage() {
                 </section>
 
                 <ul>
-                    {loading ? (
+                    {noRepo ? (
+                        <EmptyResult message="연동된 저장소가 없습니다." />
+                    ) : loading || memoirs === null ? (
                         Array.from({ length: 5 }).map((_, i) => (
                             <MemoirSkeleton key={i} />
                         ))
-                    ) : memoirs?.length === 0 || memoirs === null ? (
-                        <EmptyResult message="연동된 저장소가 없거나 저장소에 회고록이 없습니다." />
+                    ) : memoirs.length === 0 ? (
+                        <EmptyResult message="저장소에 회고록이 없습니다." />
                     ) : (
-                        memoirs?.map((memoir) => (
+                        memoirs.map((memoir) => (
                             <MemoirCard key={memoir.id} memoir={memoir} />
                         ))
                     )}
