@@ -179,7 +179,7 @@ export default function MemoirPage() {
                             <MemoirSkeleton key={i} />
                         ))
                     ) : memoirs.length === 0 ? (
-                        <EmptyResult message="저장소에 회고록이 없습니다." />
+                        <EmptyResult message="연동된 저장소가 없거나 저장소에 회고록이 없습니다." />
                     ) : (
                         memoirs.map((memoir) => (
                             <MemoirCard key={memoir.id} memoir={memoir} />
