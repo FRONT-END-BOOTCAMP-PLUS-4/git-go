@@ -138,15 +138,18 @@ export default function PullRequestMemoir() {
             }
 
             try {
-                const res = await fetch("/api/github/commits/detail", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nameWithOwner: repo.nameWithOwner,
-                        sha: selectedSha,
-                        accessToken: session.accessToken,
-                    }),
-                });
+                const res = await fetch(
+                    "/api/github/pull-requests/commits/detail",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            nameWithOwner: repo.nameWithOwner,
+                            sha: selectedSha,
+                            accessToken: session.accessToken,
+                        }),
+                    }
+                );
 
                 if (res.status === 404) {
                     setLoadError(

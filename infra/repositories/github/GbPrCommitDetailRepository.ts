@@ -1,20 +1,16 @@
-import { GithubCommitDetailRepository } from "@/domain/repositories/GithubCommitDetailRepository";
+import { GithubPrCommitDetailRepository } from "@/domain/repositories/GithubPrCommitDetailRepository";
 import {
     GithubCommitDetail,
     FileTreeNode,
     ChangedFile,
 } from "@/domain/entities/GithubCommitDetail";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/authOptions";
 
-export class GbCommitDetailRepository implements GithubCommitDetailRepository {
+export class GbPrCommitDetailRepository implements GithubPrCommitDetailRepository {
     async getCommitDetail(
         nameWithOwner: string,
         sha: string,
         accessToken: string // ✅ accessToken 인자로 받음
     ): Promise<GithubCommitDetail> {
-        const session = await getServerSession(authOptions);
-
         if (!accessToken) throw new Error("No access token provided");
 
         const res = await fetch(
@@ -30,13 +26,6 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         if (!res.ok) throw new Error("GitHub API 호출 실패");
 
         const data = await res.json();
-
-        console.log(session?.user.githubId, data.author?.login);
-
-        if (session?.user.githubId !== data.author?.login) {
-            throw new Error("로그인된 사용자의 커밋이 아닙니다.");
-            // console.log("로그인된 사용자의 커밋이 아닙니다.");
-        }
 
         const filePaths: string[] = data.files.map(
             (file: any) => file.filename
