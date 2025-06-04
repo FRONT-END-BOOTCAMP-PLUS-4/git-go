@@ -170,16 +170,16 @@ export default function MemoirPage() {
                 </section>
 
                 <ul>
-                    {loading || memoirs === null ? (
+                    {loading ? (
                         Array.from({ length: 5 }).map((_, i) => (
                             <MemoirSkeleton key={i} />
                         ))
-                    ) : memoirs?.length !== 0 ? (
+                    ) : memoirs?.length === 0 || memoirs === null ? (
+                        <EmptyResult message="연동된 저장소가 없거나 저장소에 회고록이 없습니다." />
+                    ) : (
                         memoirs?.map((memoir) => (
                             <MemoirCard key={memoir.id} memoir={memoir} />
                         ))
-                    ) : (
-                        <EmptyResult message="연동된 저장소가 없거나 저장소에 회고록이 없습니다." />
                     )}
                 </ul>
                 {!loading && memoirs && memoirs.length > 0 && (
