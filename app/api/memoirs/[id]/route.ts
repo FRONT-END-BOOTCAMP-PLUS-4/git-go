@@ -6,7 +6,7 @@ import { PrMemoirRepository } from "@/infra/repositories/prisma/PrMemoirReposito
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, context: any) {
-    const { id } = context.params;
+    const { id } = await context.params;
     const memoirId = Number(id);
 
     try {
