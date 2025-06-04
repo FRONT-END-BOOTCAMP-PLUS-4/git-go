@@ -374,8 +374,8 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async delete(id: number): Promise<null> {
-        return prisma.$transaction(async (tx) => {
+    async delete(id: number): Promise<void> {
+        await prisma.$transaction(async (tx) => {
             // 1) 중간 테이블(memoirTag)의 연결 관계 먼저 삭제
             await tx.memoirTag.deleteMany({
                 where: { memoirId: id },
@@ -385,8 +385,6 @@ export class PrMemoirRepository implements MemoirRepository {
             await tx.memoir.delete({
                 where: { id },
             });
-
-            return null;
         });
     }
 }
