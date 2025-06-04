@@ -2,8 +2,9 @@
 
 import * as React from "react";
 
-import type { WithRequiredKey } from "@udecode/plate";
+import type { TElement, WithRequiredKey } from "@udecode/plate";
 
+import { urlToS3Key } from "@/lib/plate-utils";
 import {
     FloatingMedia as FloatingMediaPrimitive,
     FloatingMediaStore,
@@ -52,11 +53,44 @@ export function MediaPopover({ children, plugin }: MediaPopoverProps) {
         if (!isOpen && isEditing) {
             FloatingMediaStore.set("isEditing", false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen]);
+    }, [isOpen, isEditing]);
 
-    const element = useElement();
+    const element = useElement<TElement & { url: string; key?: string }>();
+
     const { props: buttonProps } = useRemoveNodeButton({ element });
+    const { onClick: removeOnClick, onMouseDown: defaultOnMouseDown } =
+        buttonProps;
+
+    const handleDeleteImage = React.useCallback(
+        async (e: React.MouseEvent<HTMLButtonElement>) => {
+            defaultOnMouseDown?.(e);
+
+            const fullUrl = element.url as string;
+            const s3Key = element.key
+                ? (element.key as string)
+                : urlToS3Key(fullUrl);
+
+            if (!s3Key) {
+                return;
+            }
+
+            try {
+                const res = await fetch(
+                    `/api/upload?key=${encodeURIComponent(s3Key)}`,
+                    {
+                        method: "DELETE",
+                    }
+                );
+                if (!res.ok) {
+                    return;
+                }
+                removeOnClick?.();
+            } catch {
+                // 실패 시 조용히 무시하거나, 필요시 에러 처리
+            }
+        },
+        [element, removeOnClick, defaultOnMouseDown]
+    );
 
     if (readOnly) return <>{children}</>;
 
@@ -100,7 +134,14 @@ export function MediaPopover({ children, plugin }: MediaPopoverProps) {
                             className="mx-1 h-6"
                         />
 
-                        <Button size="icon" variant="ghost" {...buttonProps}>
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            onMouseDown={(e) => {
+                                defaultOnMouseDown?.(e);
+                            }}
+                            onClick={handleDeleteImage}
+                        >
                             <Trash2Icon />
                         </Button>
                     </div>
