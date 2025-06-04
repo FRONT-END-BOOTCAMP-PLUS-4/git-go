@@ -1,16 +1,31 @@
+import { authOptions } from "@/app/api/auth/authOptions";
 import { GithubPrCommitList } from "@/domain/entities/GithubPrCommitList";
 import { GithubPrCommitListRepository } from "@/domain/repositories/GithubPrCommitListRepository";
+import { getServerSession } from "next-auth";
 
 export class GbPrCommitListRepository implements GithubPrCommitListRepository {
     private GITHUB_API_BASE = "https://api.github.com";
 
-    constructor(private token: string) {}
+    constructor(private token: string) { }
 
     async fetchByPullRequestNumber(
         repoFullName: string,
         prNumber: number
     ): Promise<GithubPrCommitList[]> {
         const [owner, repo] = repoFullName.split("/");
+        const session = await getServerSession(authOptions);
+
+        const prRes = await fetch(
+            `${this.GITHUB_API_BASE}/repos/${owner}/${repo}/pulls/${prNumber}`,
+            { headers: this.headers() }
+        );
+
+        const prData = await prRes.json();
+
+        if (session?.user.githubId !== prData.user.login) {
+            // console.log(session?.user.githubId === prData.user.login);
+            throw new Error("로그인된 사용자의 Pull Request 가 아닙니다.");
+        }
 
         const commitRes = await fetch(
             `${this.GITHUB_API_BASE}/repos/${owner}/${repo}/pulls/${prNumber}/commits`,
