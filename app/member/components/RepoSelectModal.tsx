@@ -176,8 +176,12 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                                             </div>
                                         </div>
                                         <div className="text-text-primary1 text-xs whitespace-nowrap">
-                                            Last updated:{" "}
-                                            {repo.updatedAt.slice(0, 10)}
+                                            최근 수정일:{" "}
+                                            {new Intl.DateTimeFormat("ko-KR", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            }).format(new Date(repo.updatedAt))}
                                         </div>
                                     </div>
                                     <p className="text-text-primary1 ml-6 truncate text-sm">
