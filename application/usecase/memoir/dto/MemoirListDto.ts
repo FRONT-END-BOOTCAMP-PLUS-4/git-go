@@ -9,6 +9,7 @@ export class MemoirListDto {
     title: string;
     content: Prisma.JsonValue;
     source: string;
+    sourceTitle: string;
     aiSum: string | null;
     type: string;
     tags: string[];
@@ -22,6 +23,7 @@ export class MemoirListDto {
         this.title = memoir.title;
         this.content = memoir.content;
         this.source = memoir.source;
+        this.sourceTitle = memoir.sourceTitle;
         this.aiSum = memoir.aiSum;
         this.type = memoir.type.type;
         this.tags = memoir.tags.map((t) => t.tag.name);

@@ -1,5 +1,9 @@
-import { GithubCommitDetail } from '../entities/GithubCommitDetail';
+import { GithubCommitDetail } from "../entities/GithubCommitDetail";
 
 export interface GithubCommitDetailRepository {
-    getCommitDetail(nameWithOwner: string, sha: string, accessToken: string): Promise<GithubCommitDetail>;
+    getCommitDetail(
+        nameWithOwner: string,
+        sha: string,
+        accessToken: string
+    ): Promise<GithubCommitDetail>;
 }

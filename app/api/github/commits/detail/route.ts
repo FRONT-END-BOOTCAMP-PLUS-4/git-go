@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { FetchCommitDetailUsecase } from '@/application/usecase/github/FetchCommitDetailUsecase';
-import { GbCommitDetailRepository } from '@/infra/repositories/github/GbCommitDetailRepository';
+import { NextRequest, NextResponse } from "next/server";
+import { FetchCommitDetailUsecase } from "@/application/usecase/github/FetchCommitDetailUsecase";
+import { GbCommitDetailRepository } from "@/infra/repositories/github/GbCommitDetailRepository";
 
 export async function POST(req: NextRequest) {
     try {
@@ -10,19 +10,23 @@ export async function POST(req: NextRequest) {
             !nameWithOwner ||
             !sha ||
             !accessToken || // ✅ accessToken 유효성 체크
-            typeof nameWithOwner !== 'string' ||
-            typeof sha !== 'string' ||
-            typeof accessToken !== 'string'
+            typeof nameWithOwner !== "string" ||
+            typeof sha !== "string" ||
+            typeof accessToken !== "string"
         ) {
             return NextResponse.json(
-                { message: 'Invalid parameters' },
+                { message: "Invalid parameters" },
                 { status: 400 }
             );
         }
 
         const repository = new GbCommitDetailRepository();
         const usecase = new FetchCommitDetailUsecase(repository);
-        const result = await usecase.execute({ nameWithOwner, sha, accessToken });
+        const result = await usecase.execute({
+            nameWithOwner,
+            sha,
+            accessToken,
+        });
 
         return NextResponse.json(result);
     } catch (error) {
@@ -35,14 +39,14 @@ export async function POST(req: NextRequest) {
 
 export function GET() {
     return NextResponse.json(
-        { message: 'Method GET Not Allowed' },
+        { message: "Method GET Not Allowed" },
         { status: 405 }
     );
 }
 
 export function PUT() {
     return NextResponse.json(
-        { message: 'Method PUT Not Allowed' },
+        { message: "Method PUT Not Allowed" },
         { status: 405 }
     );
 }

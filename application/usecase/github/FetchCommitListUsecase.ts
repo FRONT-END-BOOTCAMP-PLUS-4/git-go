@@ -33,7 +33,7 @@ import { GithubCommitListDto } from "@/application/usecase/github/dto/GithubComm
 import { GithubCommitListRepository } from "@/domain/repositories/GithubCommitListRepository";
 
 export class FetchCommitList {
-    constructor(private readonly repository: GithubCommitListRepository) { }
+    constructor(private readonly repository: GithubCommitListRepository) {}
 
     async execute(params: {
         owner: string;
@@ -45,7 +45,8 @@ export class FetchCommitList {
         totalCount?: number;
         userId?: string;
     }): Promise<GithubCommitListDto> {
-        const { commits, hasNextPage, totalCount } = await this.repository.fetchCommitList(params);
+        const { commits, hasNextPage, totalCount } =
+            await this.repository.fetchCommitList(params);
 
         return {
             commits: commits.map((c) => ({

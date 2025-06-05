@@ -1,6 +1,6 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 import prettierConfig from "./prettier.config.cjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -11,6 +11,15 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+    {
+        ignores: [
+            "node_modules/**",
+            ".next/**",
+            "dist/**",
+            "public/static/**",
+            "**/*.min.js",
+        ],
+    },
     ...compat.extends("next/core-web-vitals", "next/typescript"),
 
     {
@@ -34,7 +43,7 @@ const eslintConfig = [
             // 중괄호 생략 금지
             curly: ["error", "all"],
 
-            // 탭 간격 2칸
+            // 탭 간격 4칸
             indent: ["error", 4, { SwitchCase: 1 }],
 
             // Prettier와 연동

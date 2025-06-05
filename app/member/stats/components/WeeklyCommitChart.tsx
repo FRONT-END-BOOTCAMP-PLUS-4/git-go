@@ -1,17 +1,17 @@
-import { Line } from "react-chartjs-2";
 import {
+    CategoryScale,
     Chart as ChartJS,
+    Filler,
+    Legend,
+    LinearScale,
     LineElement,
     PointElement,
-    LinearScale,
     TimeScale,
     Title,
     Tooltip,
-    Legend,
-    Filler,
-    CategoryScale,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Line } from "react-chartjs-2";
 
 ChartJS.register(
     LineElement,
@@ -83,13 +83,13 @@ export default function WeeklyCommitChart({ data }: Props) {
                     stepSize: 1,
                     callback: function (
                         this: any,
-                        tickValue: number | string,
+                        tickValue: number | string
                     ): string | number | null {
                         const maxValue = Math.max(...data.map((d) => d.count));
                         return tickValue === maxValue ? tickValue : "";
                     },
                 },
-                suggestedMax: Math.max(...data.map(d => d.count)) + 1.5,
+                suggestedMax: Math.max(...data.map((d) => d.count)) + 1.5,
                 grid: {
                     display: false,
                 },
@@ -102,5 +102,7 @@ export default function WeeklyCommitChart({ data }: Props) {
         },
     };
 
-    return <Line data={chartData} options={options} plugins={[ChartDataLabels]} />;
+    return (
+        <Line data={chartData} options={options} plugins={[ChartDataLabels]} />
+    );
 }

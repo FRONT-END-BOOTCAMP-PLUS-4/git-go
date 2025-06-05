@@ -7,20 +7,23 @@ export class FetchReposUsecase {
     async execute(token: string): Promise<GithubRepoDto[]> {
         const repos = await this.repo.fetchAll(token);
 
-        return repos.map(repo => new GithubRepoDto(
-            repo.id,
-            repo.name,
-            repo.nameWithOwner,
-            repo.url,
-            repo.isPrivate,
-            repo.description,
-            repo.updatedAt instanceof Date
-                ? repo.updatedAt.toISOString()
-                : String(repo.updatedAt),
-            repo.stargazerCount,
-            repo.languageName,
-            repo.languageColor
-        ));
+        return repos.map(
+            (repo) =>
+                new GithubRepoDto(
+                    repo.id,
+                    repo.name,
+                    repo.nameWithOwner,
+                    repo.url,
+                    repo.isPrivate,
+                    repo.description,
+                    repo.updatedAt instanceof Date
+                        ? repo.updatedAt.toISOString()
+                        : String(repo.updatedAt),
+                    repo.stargazerCount,
+                    repo.languageName,
+                    repo.languageColor
+                )
+        );
     }
 }
 

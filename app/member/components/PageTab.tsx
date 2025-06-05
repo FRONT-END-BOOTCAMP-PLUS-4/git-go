@@ -31,23 +31,23 @@ export default function PageTap({ status }: Props) {
     };
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 mb-6 flex cursor-pointer rounded-md border p-1">
+        <div className="border-border-primary1 bg-bg-member1 mb-2 flex max-w-fit min-w-fit cursor-pointer gap-x-1 rounded-md border p-1 md:mb-6">
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "commits" ? "bg-primary1" : ""
                 }`}
                 onClick={commitClickHandler}
             >
                 <GitCommitHorizontal
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "commits"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit whitespace-nowrap ${
                         status === "commits"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -57,21 +57,21 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "pull-requests" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "pull-requests" ? "bg-primary1" : ""
                 }`}
                 onClick={pullRequestClickHandler}
             >
                 <GitBranch
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit whitespace-nowrap ${
                         status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -81,21 +81,21 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "memoirs" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "memoirs" ? "bg-primary1" : ""
                 }`}
                 onClick={memoirClickHandler}
             >
                 <BookText
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "memoirs"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit whitespace-nowrap ${
                         status === "memoirs"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -105,21 +105,21 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`flex flex-row items-center rounded-md px-3 py-1 ${
+                className={`hover:${status === "stats" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
                     status === "stats" ? "bg-primary1" : ""
                 }`}
                 onClick={statClickHandler}
             >
                 <ChartBar
                     size={20}
-                    className={`${
+                    className={`shrink-0 ${
                         status === "stats"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 />
                 <div
-                    className={`ml-2 ${
+                    className={`ml-2 min-w-fit whitespace-nowrap ${
                         status === "stats"
                             ? "text-primary7"
                             : "text-text-secondary2"

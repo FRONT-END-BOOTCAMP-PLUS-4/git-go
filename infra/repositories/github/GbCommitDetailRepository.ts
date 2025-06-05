@@ -1,5 +1,11 @@
-import { GithubCommitDetailRepository } from '@/domain/repositories/GithubCommitDetailRepository';
-import { GithubCommitDetail, FileTreeNode, ChangedFile } from '@/domain/entities/GithubCommitDetail';
+import { GithubCommitDetailRepository } from "@/domain/repositories/GithubCommitDetailRepository";
+import {
+    GithubCommitDetail,
+    FileTreeNode,
+    ChangedFile,
+} from "@/domain/entities/GithubCommitDetail";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/authOptions";
 
 export class GbCommitDetailRepository implements GithubCommitDetailRepository {
     async getCommitDetail(
@@ -7,20 +13,34 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         sha: string,
         accessToken: string // ✅ accessToken 인자로 받음
     ): Promise<GithubCommitDetail> {
-        if (!accessToken) throw new Error('No access token provided');
+        const session = await getServerSession(authOptions);
 
-        const res = await fetch(`https://api.github.com/repos/${nameWithOwner}/commits/${sha}`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                Accept: 'application/vnd.github+json',
-            },
-        });
+        if (!accessToken) throw new Error("No access token provided");
 
-        if (!res.ok) throw new Error('GitHub API 호출 실패');
+        const res = await fetch(
+            `https://api.github.com/repos/${nameWithOwner}/commits/${sha}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/vnd.github+json",
+                },
+            }
+        );
+
+        if (!res.ok) throw new Error("GitHub API 호출 실패");
 
         const data = await res.json();
 
-        const filePaths: string[] = data.files.map((file: any) => file.filename);
+        console.log(session?.user.githubId, data.author?.login);
+
+        if (session?.user.githubId !== data.author?.login) {
+            throw new Error("로그인된 사용자의 커밋이 아닙니다.");
+            // console.log("로그인된 사용자의 커밋이 아닙니다.");
+        }
+
+        const filePaths: string[] = data.files.map(
+            (file: any) => file.filename
+        );
         const tree = this.buildFileTree(filePaths);
 
         const changeDetail: ChangedFile[] = data.files.map((file: any) => ({
@@ -47,7 +67,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
         const root: Record<string, any> = {};
 
         for (const path of paths) {
-            const parts = path.split('/');
+            const parts = path.split("/");
             let current = root;
 
             for (let i = 0; i < parts.length; i++) {
@@ -56,7 +76,7 @@ export class GbCommitDetailRepository implements GithubCommitDetailRepository {
                 if (!current[part]) {
                     current[part] = {
                         name: part,
-                        type: i === parts.length - 1 ? 'file' : 'directory',
+                        type: i === parts.length - 1 ? "file" : "directory",
                         children: i === parts.length - 1 ? undefined : {},
                     };
                 }

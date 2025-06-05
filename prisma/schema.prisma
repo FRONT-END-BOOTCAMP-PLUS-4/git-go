@@ -23,6 +23,7 @@ model Memoir {
   id        Int         @id @default(autoincrement())
   title     String
   source    String
+  sourceTitle String    @default("Commit 또는 PR 임시제목") @map("source_title")
   aiSum     String?     @map("ai_sum")
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime?   @map("updated_at")

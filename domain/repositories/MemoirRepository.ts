@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Memoir } from "@/prisma/generated/prisma";
 
 export interface MemoirRepository {
@@ -27,6 +28,7 @@ export interface MemoirRepository {
         typeId: number;
         aiSum?: string;
         tags?: string[];
+        sourceTitle?: string;
     }): Promise<Memoir>;
 
     findByMemoirId(id: number): Promise<Memoir>;
@@ -39,5 +41,5 @@ export interface MemoirRepository {
         aiSum?: string;
     }): Promise<Memoir>;
 
-    delete(id: number): Promise<null>;
+    delete(id: number): Promise<void>;
 }

@@ -178,6 +178,7 @@ export class PrMemoirRepository implements MemoirRepository {
         typeId: number;
         aiSum?: string;
         tags?: string[];
+        sourceTitle?: string;
     }): Promise<Memoir> {
         return prisma.$transaction(async (tx) => {
             const {
@@ -188,6 +189,7 @@ export class PrMemoirRepository implements MemoirRepository {
                 repoId,
                 typeId,
                 aiSum,
+                sourceTitle,
                 tags,
             } = data;
             // 1) Memoir 레코드 생성
@@ -200,6 +202,7 @@ export class PrMemoirRepository implements MemoirRepository {
                     repoId,
                     typeId,
                     aiSum,
+                    sourceTitle,
                 },
             });
 
@@ -265,7 +268,7 @@ export class PrMemoirRepository implements MemoirRepository {
         });
 
         if (!memoir) {
-            throw new Error(`Memoir with id ${id} not found.`);
+            throw new Error(`회고록 ID ${id}을(를) 찾을 수 없습니다.`);
         }
 
         const result = {
@@ -371,8 +374,8 @@ export class PrMemoirRepository implements MemoirRepository {
         });
     }
 
-    async delete(id: number): Promise<null> {
-        return prisma.$transaction(async (tx) => {
+    async delete(id: number): Promise<void> {
+        await prisma.$transaction(async (tx) => {
             // 1) 중간 테이블(memoirTag)의 연결 관계 먼저 삭제
             await tx.memoirTag.deleteMany({
                 where: { memoirId: id },
@@ -382,8 +385,6 @@ export class PrMemoirRepository implements MemoirRepository {
             await tx.memoir.delete({
                 where: { id },
             });
-
-            return null;
         });
     }
 }

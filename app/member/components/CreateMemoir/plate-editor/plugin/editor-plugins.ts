@@ -27,6 +27,7 @@ import { TrailingBlockPlugin } from "@udecode/plate-trailing-block";
 import { all, createLowlight } from "lowlight";
 
 import { NodeIdPlugin } from "@udecode/plate-node-id";
+import { BlockSelectionPlugin } from "@udecode/plate-selection/react";
 import {
     alignPlugin,
     autoformatPlugin,
@@ -44,6 +45,7 @@ import {
     tablePlugin,
     tocPlugin,
 } from "./index";
+import { mediaPlugins } from "./media-plugins";
 
 const lowlight = createLowlight(all);
 
@@ -75,10 +77,13 @@ export const viewPlugins = [
     tablePlugin,
     tocPlugin,
 
+    // 이미지
+    ...mediaPlugins,
+
     // 토글
     TogglePlugin,
 
-    // BlockSelectionPlugin,
+    BlockSelectionPlugin,
     NodeIdPlugin,
 
     suggestionPlugin,
@@ -93,6 +98,7 @@ export const editorPlugins = [
 
     ...dndPlugins,
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     EmojiPlugin.configure({ options: { data: emojiMartData as any } }),
     exitBreakPlugin,
 

@@ -3,5 +3,5 @@ export class JoinUserDto {
         public githubId: string,
         public username: string,
         public profileUrl?: string
-    ) { }
+    ) {}
 }

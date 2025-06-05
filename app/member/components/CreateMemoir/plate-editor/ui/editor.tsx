@@ -60,7 +60,13 @@ const editorVariants = cva(
         "group/editor",
         "relative w-full cursor-text overflow-x-hidden break-words whitespace-pre-wrap select-text",
         "rounded-md ring-offset-background focus-visible:outline-none",
-        "placeholder:text-muted-foreground/80 **:data-slate-placeholder:top-[auto_!important] **:data-slate-placeholder:text-muted-foreground/80 **:data-slate-placeholder:opacity-100!",
+        // ① 기존 플레이스홀더 기본 색상
+        "placeholder:text-muted-foreground/80",
+        // ② 포커스 시 플레이스홀더를 완전히 숨김(opacity-0)
+        "focus:**:data-slate-placeholder:opacity-0!",
+        // ③ 플레이스홀더 위치 및 기본 텍스트 색상, 기본 opacity
+        "**:data-slate-placeholder:top-[auto_!important] **:data-slate-placeholder:text-muted-foreground/80 **:data-slate-placeholder:opacity-100!",
+        // ④ strong 태그 내부 글자 굵게
         "[&_strong]:font-bold"
     ),
     {
@@ -107,6 +113,7 @@ export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
                 )}
                 disabled={disabled}
                 disableDefaultStyles
+                placeholder="내용을 입력하세요"
                 {...props}
             />
         );

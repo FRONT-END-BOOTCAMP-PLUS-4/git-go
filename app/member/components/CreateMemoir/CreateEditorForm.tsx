@@ -2,8 +2,9 @@
 
 import Button from "@/app/components/Button";
 import { MEMBER_URL } from "@/constants/url";
-import { useSummaryStore } from "@/store/AiSummaryStore";
-import { useRepoStore } from "@/store/repoStore";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSourceTitleStore } from "@/store/useSourceTitleStore";
+import { useSummaryStore } from "@/store/useSummaryStore";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
@@ -22,6 +23,7 @@ export default function CreateEditorForm({
     typeId,
 }: CreateEditorFormProps) {
     const [title, setTitle] = useState<string>("");
+
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState<string>("");
     const [content, setContent] = useState<Value>([]);
@@ -34,6 +36,7 @@ export default function CreateEditorForm({
     const { data: session } = useSession();
     const repo = useRepoStore((s) => s.selectedRepo);
     const summary = useSummaryStore((s) => s.aiSummary);
+    const sourceTitle = useSourceTitleStore((s) => s.sourceTitle);
     const [isComposing, setIsComposing] = useState(false);
 
     const buildPayload = () => ({
@@ -45,6 +48,7 @@ export default function CreateEditorForm({
         userId: session!.user.id,
         typeId,
         repoId: repo!.dbId,
+        sourceTitle,
     });
 
     // 에디터가 바뀔 때마다 호출할 onChange 핸들러
@@ -81,6 +85,11 @@ export default function CreateEditorForm({
     // tag 삭제
     const removeTag = (tag: string) => {
         setTags(tags.filter((t) => t !== tag));
+    };
+
+    const handleTest = () => {
+        console.log("handleTest 동작");
+        console.log("content: ", content);
     };
 
     // 회고록 저장
@@ -146,7 +155,7 @@ export default function CreateEditorForm({
                             {tag}
                             <X
                                 onClick={() => removeTag(tag)}
-                                className="ml-1 cursor-pointer"
+                                className="ml-1 shrink-0 cursor-pointer"
                                 size={14}
                             />
                         </span>

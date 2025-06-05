@@ -3,7 +3,7 @@ import { GithubPullRequestList } from "@/domain/entities/GithubPullRequestList";
 export class GithubPullRequestListDto {
     prNumber: number;
     title: string;
-    state: 'open' | 'closed';
+    state: "open" | "closed";
     repositoryName: string;
     branchName: string;
     createdAt: string;
