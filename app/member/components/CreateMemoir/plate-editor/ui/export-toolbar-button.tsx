@@ -119,7 +119,7 @@ export function ExportToolbarButton(
     // 마운트 후에 한 번만 읽어서 상태에 저장
     useEffect(() => {
         const saved = localStorage.getItem("theme");
-        setBgColor(saved === "light" ? "#fff" : "#000");
+        setBgColor(saved === "dark" ? "#000" : "#fff");
     }, []);
 
     const getCanvas = async () => {
