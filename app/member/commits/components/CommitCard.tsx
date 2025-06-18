@@ -107,57 +107,57 @@ export default function CommitCard({
     }).format(newCreatedAt);
 
     return (
-        <li className="border-border-primary1 border-b p-4">
-            <article className="flex items-start gap-x-4">
-                <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                    {/* <Image
+        // <li className="border-border-primary1 border-b p-4">
+        <article className="flex items-start gap-x-4">
+            <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
+                {/* <Image
                         src="/commit-blue.svg"
                         width={20}
                         height={16}
                         alt="커밋 아이콘"
                     /> */}
-                    <GitCommitHorizontal className="text-primary7" />
-                </div>
-                <div className="flex flex-1 flex-col gap-y-1">
-                    <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">
-                        <p>{shortSha}</p>
-                        <div
-                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
-                        >
-                            {label}
-                        </div>
-                        <p className="ml-auto">{formattedDate}</p>
-                    </div>
-                    <h3
-                        className={`line-clamp-${isVisible ? 0 : 1} mr-30 font-semibold`}
-                        onClick={() => {
-                            setIsVisible(!isVisible);
-                        }}
+                <GitCommitHorizontal className="text-primary7" />
+            </div>
+            <div className="flex flex-1 flex-col gap-y-1">
+                <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">
+                    <p>{shortSha}</p>
+                    <div
+                        className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${bg} ${text} shadow-sm`}
                     >
-                        {message}
-                    </h3>
-                    <div className="flex items-center gap-x-3">
-                        <div className="text-text-secondary2 flex items-center gap-1">
-                            <Archive size={18} />
-                            <p>{repo}</p>
-                        </div>
-                        <div className="text-text-secondary2 flex items-center-safe gap-x-1">
-                            <GitBranch size={18} />
-                            {branch}
-                        </div>
-                        <div className="ml-auto">
-                            <Button
-                                type="lined"
-                                htmlType="button"
-                                onClick={moveToCommitMemoir}
-                            >
-                                <Pencil size={18} />
-                                회고록 작성
-                            </Button>
-                        </div>
+                        {label}
+                    </div>
+                    <p className="ml-auto">{formattedDate}</p>
+                </div>
+                <h3
+                    className={`line-clamp-${isVisible ? 0 : 1} mr-30 font-semibold`}
+                    onClick={() => {
+                        setIsVisible(!isVisible);
+                    }}
+                >
+                    {message}
+                </h3>
+                <div className="flex items-center gap-x-3">
+                    <div className="text-text-secondary2 flex items-center gap-1">
+                        <Archive size={18} />
+                        <p>{repo}</p>
+                    </div>
+                    <div className="text-text-secondary2 flex items-center-safe gap-x-1">
+                        <GitBranch size={18} />
+                        {branch}
+                    </div>
+                    <div className="ml-auto">
+                        <Button
+                            type="lined"
+                            htmlType="button"
+                            onClick={moveToCommitMemoir}
+                        >
+                            <Pencil size={18} />
+                            회고록 작성
+                        </Button>
                     </div>
                 </div>
-            </article>
-        </li>
+            </div>
+        </article>
+        // </li>
     );
 }
