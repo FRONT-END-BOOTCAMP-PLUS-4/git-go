@@ -24,6 +24,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
         repoIds: string[];
     } | null>(null);
     const [showAlert, setShowAlert] = useState(false);
+    const [displayRepos, setDisplayRepos] = useState<GithubRepoDto[]>([]);
 
     useEffect(() => {
         if (open) {
@@ -52,13 +53,19 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                     await userRes.json();
                 const userRepoIds = new Set(userRepos.map((r) => r.name));
 
-                setRepos(
-                    githubRepos.sort(
-                        (a, b) =>
+                setRepos(githubRepos);
+                const sorted = [...githubRepos].sort((a, b) => {
+                    const aChecked = userRepoIds.has(a.id);
+                    const bChecked = userRepoIds.has(b.id);
+                    if (aChecked === bChecked) {
+                        return (
                             new Date(b.updatedAt).getTime() -
                             new Date(a.updatedAt).getTime()
-                    )
-                );
+                        );
+                    }
+                    return aChecked ? -1 : 1;
+                });
+                setDisplayRepos(sorted);
                 setSelected(userRepoIds);
             } catch {
                 alert("레포지토리를 불러오는 데 실패했습니다.");
@@ -151,7 +158,7 @@ export default function RepoSelectModal({ open, onClose }: Props) {
                     <RepoSkeleton />
                 ) : (
                     <ul className="border-border-primary1 max-h-[350px] cursor-pointer divide-y overflow-y-auto rounded-md border">
-                        {repos.map((repo) => (
+                        {displayRepos.map((repo) => (
                             <li
                                 key={repo.id}
                                 onClick={() => toggleRepo(repo.id)}
