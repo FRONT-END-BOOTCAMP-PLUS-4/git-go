@@ -178,7 +178,7 @@ export default function PrCard({
                             {typeClassMap[state].label}
                         </div>
                         <p className="text-text-secondary2 ml-auto shrink-0 text-xs">
-                            {formattedDate}
+                            {formattedDate || "날짜를 불러올 수 없습니다."}
                         </p>
                     </div>
                     <a
