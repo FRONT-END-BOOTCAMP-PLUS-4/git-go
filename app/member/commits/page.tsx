@@ -168,16 +168,28 @@ export default function CommitPage() {
         setCurrentPage(newPage);
     };
 
+    // const commitList = commits?.map((commit) => (
+    //     <CommitCard
+    //         key={commit.sha}
+    //         sha={commit.sha}
+    //         commitType={commit.type}
+    //         message={commit.message}
+    //         repo={commit.repo}
+    //         branch={commit.branch}
+    //         createdAt={commit.createdAt}
+    //     />
+    // ));
     const commitList = commits?.map((commit) => (
-        <CommitCard
-            key={commit.sha}
-            sha={commit.sha}
-            commitType={commit.type}
-            message={commit.message}
-            repo={commit.repo}
-            branch={commit.branch}
-            createdAt={commit.createdAt}
-        />
+        <li key={commit.sha} className="border-border-primary1 border-b p-4">
+            <CommitCard
+                sha={commit.sha}
+                commitType={commit.type}
+                message={commit.message}
+                repo={commit.repo}
+                branch={commit.branch}
+                createdAt={commit.createdAt}
+            />
+        </li>
     ));
 
     return (
