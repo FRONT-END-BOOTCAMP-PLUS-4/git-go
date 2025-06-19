@@ -76,7 +76,9 @@ export default async function HomePage() {
                     <LoginWithGitHubButton />
                 )} */}
                 <Button>
-                    <Link href={"/demo"}>Start with a demo</Link>
+                    <Link target="_blank" href={"/demo"}>
+                        Start with a demo
+                    </Link>
                 </Button>
 
                 <div className="mt-10 flex flex-wrap justify-center gap-10 leading-10">
