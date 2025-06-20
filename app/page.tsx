@@ -93,8 +93,8 @@ export default async function HomePage() {
                 </div>
 
                 {/* 🔸 모바일 전용 ScrollDown 버튼 (다음 섹션으로 넘어가기) */}
-                <div className="mt-[14vh] flex justify-center md:hidden">
-                    <ScrollDownButton id="feature-sync" />
+                <div className="flex justify-center md:hidden">
+                    <ScrollDownButton id="feature-mobile" />
                 </div>
 
                 {/* 🔸 데스크탑 하단 중앙 ScrollDown */}
