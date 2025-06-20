@@ -39,7 +39,7 @@ export default async function HomePage() {
     return (
         <main className="bg-bg-primary1 text-text-primary1 h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll text-center">
             {/* 🔹 Start Demo + Features (데스크탑 전용) / ScrollDown (모바일 전용) */}
-            <section className="relative flex min-h-[80vh] snap-start flex-col items-center px-4 py-[25vh] md:min-h-screen md:pt-[10vh]">
+            <section className="relative flex min-h-[80vh] snap-start flex-col items-center space-y-6 px-4 py-[25vh] md:min-h-screen md:pt-[10vh]">
                 {/* 🔸 헤더 & 문구 */}
                 <div className="mb-4 flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
@@ -61,7 +61,21 @@ export default async function HomePage() {
                     <br className="hidden md:block" />
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
-
+                {/* {isLoggedIn ? (
+                    <div className="flex justify-center">
+                        <form action={MEMBER_URL.commits}>
+                            <Button
+                                type="default"
+                                size="regular"
+                                label="대시보드"
+                                htmlType="submit"
+                                icon={<LayoutDashboard size={16} />}
+                            />
+                        </form>
+                    </div>
+                ) : (
+                    <LoginWithGitHubButton />
+                )} */}
                 {/* 🔸 Start Demo 버튼 */}
                 <div className="mt-6">
                     <Button>
