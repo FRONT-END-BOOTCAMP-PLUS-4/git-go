@@ -9,13 +9,15 @@ type RepoStore = {
         nameWithOwner: string;
     } | null;
     setSelectedRepo: (
-        repo: { dbId: number; id: string; nameWithOwner: string } | null
+        repo: { dbId: number; id: string; nameWithOwner: string; } | null
     ) => void;
-    // selectedRepo: string | null;
-    // setSelectedRepo: (nameWithOwner: string | null) => void;
     reloadRepoList: boolean;
     triggerReload: () => void;
     resetReload: () => void;
+
+    // 👇 hydration 확인용 플래그 추가
+    hasHydrated: boolean;
+    setHasHydrated: (value: boolean) => void;
 };
 
 // 2. Zustand 스토어 생성
@@ -27,7 +29,19 @@ export const useRepoStore = create<RepoStore>()(
             reloadRepoList: false,
             triggerReload: () => set({ reloadRepoList: true }),
             resetReload: () => set({ reloadRepoList: false }),
+
+            // 초기값
+            hasHydrated: false,
+            setHasHydrated: (value: boolean) => set({ hasHydrated: value }),
         }),
-        { name: "repo-store", storage: createJSONStorage(() => sessionStorage) }
+        {
+            name: "repo-store",
+            storage: createJSONStorage(() => sessionStorage),
+
+            // 👇 hydration 완료 시 호출됨
+            onRehydrateStorage: () => (state) => {
+                state?.setHasHydrated(true);
+            },
+        }
     )
 );
