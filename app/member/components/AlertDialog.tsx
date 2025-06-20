@@ -2,6 +2,7 @@
 
 import Button from "@/app/components/Button";
 import Image from "next/image";
+import { useEffect } from "react";
 
 interface AlertDialogProps {
     open: boolean;
@@ -18,6 +19,22 @@ export default function AlertDialog({
     onClose,
     imageSrc,
 }: AlertDialogProps) {
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                onClose();
+            }
+        };
+
+        if (open) {
+            document.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [open, onClose]);
+
     if (!open) return null;
 
     return (
