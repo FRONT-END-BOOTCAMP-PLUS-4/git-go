@@ -88,6 +88,22 @@ export default function RepoSelectModal({ open, onClose }: Props) {
         fetchRepos();
     }, [open]);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+
+        if (open) {
+            document.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [open, onClose]);
+
     const toggleRepo = (id: string) => {
         setSelected((prev) => {
             const copy = new Set(prev);
