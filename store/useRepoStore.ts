@@ -9,7 +9,7 @@ type RepoStore = {
         nameWithOwner: string;
     } | null;
     setSelectedRepo: (
-        repo: { dbId: number; id: string; nameWithOwner: string; } | null
+        repo: { dbId: number; id: string; nameWithOwner: string } | null
     ) => void;
     reloadRepoList: boolean;
     triggerReload: () => void;
