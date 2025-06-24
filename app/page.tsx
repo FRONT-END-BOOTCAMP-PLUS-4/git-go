@@ -39,7 +39,7 @@ export default async function HomePage() {
     return (
         <main className="bg-bg-primary1 text-text-primary1 h-[calc(100vh-65px)] snap-y snap-mandatory overflow-y-scroll text-center">
             {/* 🔹 Start Demo + Features (데스크탑 전용) / ScrollDown (모바일 전용) */}
-            <section className="relative flex min-h-[80vh] snap-start flex-col items-center space-y-6 px-4 py-[25vh] md:min-h-screen md:pt-[10vh]">
+            <section className="relative flex h-[calc(100vh-65px)] snap-start flex-col items-center space-y-6 px-4 py-[25vh] md:pt-[10vh]">
                 {/* 🔸 헤더 & 문구 */}
                 <div className="mb-4 flex justify-center">
                     <div className="flex items-center justify-center rounded-full bg-indigo-100 p-6">
@@ -98,7 +98,7 @@ export default async function HomePage() {
                 </div>
 
                 {/* 🔸 데스크탑 하단 중앙 ScrollDown */}
-                <div className="absolute right-0 bottom-10 left-0 hidden justify-center md:flex">
+                <div className="absolute right-0 bottom-[150px] left-0 hidden justify-center md:flex">
                     <ScrollDownButton id="sync" />
                 </div>
             </section>
@@ -106,7 +106,7 @@ export default async function HomePage() {
             {/* 🔹 Mobile 전용: 3개의 FeatureBox를 하나의 섹션에 모아서 세로 정렬 */}
             <section
                 id="feature-mobile"
-                className="flex min-h-screen snap-start flex-col items-center justify-center gap-10 px-6 md:hidden"
+                className="flex h-[calc(100vh-65px)] snap-start flex-col items-center justify-center gap-10 px-6 md:hidden"
             >
                 {features.map((feature) => (
                     <FeatureBox key={feature.id} feature={feature} />
