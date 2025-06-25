@@ -8,3 +8,5 @@ export type Tags = {
 export type EditorFormHandle = {
     getContent: () => Value;
 };
+
+export type MemoirTab = "file" | "codeChange" | "memoir";
