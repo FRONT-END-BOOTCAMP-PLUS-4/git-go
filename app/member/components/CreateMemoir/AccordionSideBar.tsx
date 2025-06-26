@@ -1,7 +1,8 @@
-import useBuildFileTree from "@/hooks/useBuildFileTree";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+
 import FileNodeComponent from "./FileNodeComponent";
+import useBuildFileTree from "@/hooks/useBuildFileTree";
+import { useState } from "react";
 
 type AccordionSidebarProps = {
     files: string[];
@@ -17,26 +18,26 @@ export default function AccordionSidebar({
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const tree = useBuildFileTree(files.map((file) => ({ filename: file })));
 
-    const prevWidthRef = useRef<number>(
-        typeof window !== "undefined" ? window.innerWidth : 0
-    );
+    // const prevWidthRef = useRef<number>(
+    //     typeof window !== "undefined" ? window.innerWidth : 0
+    // );
 
-    useEffect(() => {
-        const handleResize = () => {
-            const currentWidth = window.innerWidth;
-            const prevWidth = prevWidthRef.current;
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         const currentWidth = window.innerWidth;
+    //         const prevWidth = prevWidthRef.current;
 
-            // 작아질 때만 자동 닫기
-            if (currentWidth < 880 && currentWidth < prevWidth) {
-                setSidebarOpen(false);
-            }
+    //         작아질 때만 자동 닫기
+    //         if (currentWidth < 880 && currentWidth < prevWidth) {
+    //             setSidebarOpen(false);
+    //         }
 
-            prevWidthRef.current = currentWidth; // 현재 값을 저장
-        };
+    //         prevWidthRef.current = currentWidth; // 현재 값을 저장
+    //     };
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    //     window.addEventListener("resize", handleResize);
+    //     return () => window.removeEventListener("resize", handleResize);
+    // }, []);
 
     if (!sidebarOpen) {
         return (
@@ -50,12 +51,12 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 top-[65px] left-0 z-40 flex h-full max-w-[100px] min-w-fit flex-col truncate overflow-x-auto p-4 shadow-md">
+        <div className="bg-bg-primary1 top-[65px] left-0 z-40 flex h-full w-full min-w-fit flex-col truncate overflow-x-auto p-4 shadow-md lg:max-w-[100px]">
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
                     onClick={() => setSidebarOpen(false)}
-                    className="text-text-primary1 cursor-pointer"
+                    className="text-text-primary1 hidden cursor-pointer lg:block"
                 >
                     <ChevronsLeft />
                 </button>

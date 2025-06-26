@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import { ChangeDetail } from "@/types/github/CommitType";
 import clsx from "clsx";
-import { useEffect, useRef } from "react";
 
 const statusClassMap: Record<string, string> = {
     added: "bg-[var(--color-code-status-add-bg)] text-[var(--color-code-status-add-text)]",
