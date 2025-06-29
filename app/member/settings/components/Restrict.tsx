@@ -10,7 +10,7 @@ export default function Restrict() {
 
     return (
         <div className="border-border-primary1 space-y-2 rounded border p-4">
-            <p className="mb-3 flex justify-between text-[16px] font-normal">
+            <div className="mb-3 flex justify-between text-[16px] font-normal">
                 <div className="text-text-gray2 flex items-center gap-2 text-sm">
                     <span>👑</span>
                     <span>오늘 남은 AI 요청</span>
@@ -18,7 +18,7 @@ export default function Restrict() {
                 <span className="rounded border px-2 py-0.5 text-xs text-gray-600">
                     Free Plan
                 </span>
-            </p>
+            </div>
 
             <div className="relative h-2 w-full rounded bg-gray-200">
                 <div
