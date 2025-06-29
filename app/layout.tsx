@@ -1,7 +1,8 @@
-import localFont from "next/font/local";
+import "./globals.css";
+
 import Header from "./components/Header";
 import { Providers } from "./components/Providers";
-import "./globals.css";
+import localFont from "next/font/local";
 
 const pretendard = localFont({
     src: "../static/fonts/PretendardVariable.woff2",
