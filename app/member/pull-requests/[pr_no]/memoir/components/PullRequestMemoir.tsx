@@ -15,6 +15,7 @@ import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import NotFound from "@/app/not-found";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
 import { useParams } from "next/navigation";
 import { useRepoStore } from "@/store/useRepoStore";
@@ -208,19 +209,119 @@ export default function PullRequestMemoir() {
     }, [commitData]);
 
     // 로딩 중이라면 Loading 컴포넌트
-    if (isLoading) {
-        return <Loading />;
-    }
+    if (isLoading) return <Loading />;
 
     // 로드 에러가 발생하면 NotFound 컴포넌트 한 번만 렌더
-    if (loadError) {
-        return <NotFound />;
-    }
+    if (loadError) return <NotFound />;
 
     // 커밋 데이터가 아직 없으면(정상 로직에서는 loadError나 isLoading에서 처리되므로 잘 안 오지만...)
-    if (!commitData) {
+    if (!commitData)
         return <Error errorMessage="커밋 데이터를 불러올 수 없습니다." />;
-    }
+
+    // 모바일 레이아웃
+    const mobileUI = (
+        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
+            {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
+            <div className="w-full flex-1">
+                {activeIndex === 0 && (
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                )}
+
+                {activeIndex === 1 && (
+                    <ChangeListLayout>
+                        <Select
+                            options={prOptions}
+                            value={selectedSha}
+                            onChange={setSelectedSha}
+                        />
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                            selectedCommitId={selectedSha}
+                        />
+                    </ChangeListLayout>
+                )}
+
+                {activeIndex === 2 && (
+                    <div
+                        ref={containerRef}
+                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                    >
+                        <CreateEditorForm source={pr_no} typeId={2} />
+                    </div>
+                )}
+            </div>
+
+            {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
+            <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+                <ul className="flex h-full w-full justify-around">
+                    {NAVIGATION_ITEMS.map((item, index) => (
+                        <li
+                            key={index}
+                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
+                        >
+                            <button
+                                onClick={() => setActiveIndex(index)}
+                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
+                                aria-label={item.text}
+                            >
+                                <span className="block text-center text-2xl">
+                                    {item.icon}
+                                </span>
+                                <span className="text-sm font-normal tracking-wider">
+                                    {item.text}
+                                </span>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+
+    const desktopUI = (
+        <div className="hidden lg:block lg:w-full">
+            <PanelGroup direction="horizontal" className="h-full w-full">
+                {/* 사이드바: 변경된 파일 목록 */}
+                <AccordionSidebar
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />
+
+                <Panel defaultSize={40} minSize={20}>
+                    {/* 변경 목록 + 커밋 선택 드롭다운 */}
+                    <ChangeListLayout>
+                        <Select
+                            options={prOptions}
+                            value={selectedSha}
+                            onChange={setSelectedSha}
+                        />
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                            selectedCommitId={selectedSha}
+                        />
+                    </ChangeListLayout>
+                </Panel>
+                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+
+                {/* 회고 작성 폼 */}
+                <Panel defaultSize={40} minSize={20}>
+                    <div
+                        ref={containerRef}
+                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                    >
+                        <CreateEditorForm source={pr_no} typeId={2} />
+                    </div>
+                </Panel>
+            </PanelGroup>
+        </div>
+    );
 
     return (
         <CreateMemoirLayout>
@@ -240,107 +341,7 @@ export default function PullRequestMemoir() {
                 </div>
             )}
 
-            {/* 모바일 버전 */}
-            <div className="flex h-[calc(100vh-65px)] w-full flex-col lg:hidden">
-                {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-                <div className="w-full flex-1 overflow-auto p-4 lg:p-0">
-                    {activeIndex === 0 && (
-                        <AccordionSidebar
-                            files={files}
-                            selectedFile={selectedFile}
-                            onSelect={setSelectedFile}
-                        />
-                    )}
-
-                    {activeIndex === 1 && (
-                        <ChangeListLayout>
-                            <Select
-                                options={prOptions}
-                                value={selectedSha}
-                                onChange={setSelectedSha}
-                            />
-                            <ChangeList
-                                changes={commitData.changeDetail}
-                                selectedFile={selectedFile}
-                                selectedCommitId={selectedSha}
-                            />
-                        </ChangeListLayout>
-                    )}
-
-                    {activeIndex === 2 && (
-                        <div
-                            ref={containerRef}
-                            className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                        >
-                            <CreateEditorForm source={pr_no} typeId={2} />
-                        </div>
-                    )}
-                </div>
-
-                {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-                <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
-                    <ul className="flex h-full w-full justify-around">
-                        {NAVIGATION_ITEMS.map((item, index) => (
-                            <li
-                                key={index}
-                                className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                            >
-                                <button
-                                    onClick={() => setActiveIndex(index)}
-                                    className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
-                                    aria-label={item.text}
-                                >
-                                    <span className="block text-center text-2xl">
-                                        {item.icon}
-                                    </span>
-                                    <span className="text-sm font-normal tracking-wider">
-                                        {item.text}
-                                    </span>
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            {/* PC버전 */}
-            <div className="hidden lg:block lg:w-full">
-                <PanelGroup direction="horizontal" className="h-full w-full">
-                    {/* 사이드바: 변경된 파일 목록 */}
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
-                    />
-
-                    <Panel defaultSize={40} minSize={20}>
-                        {/* 변경 목록 + 커밋 선택 드롭다운 */}
-                        <ChangeListLayout>
-                            <Select
-                                options={prOptions}
-                                value={selectedSha}
-                                onChange={setSelectedSha}
-                            />
-                            <ChangeList
-                                changes={commitData.changeDetail}
-                                selectedFile={selectedFile}
-                                selectedCommitId={selectedSha}
-                            />
-                        </ChangeListLayout>
-                    </Panel>
-                    <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-
-                    {/* 회고 작성 폼 */}
-                    <Panel defaultSize={40} minSize={20}>
-                        <div
-                            ref={containerRef}
-                            className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                        >
-                            <CreateEditorForm source={pr_no} typeId={2} />
-                        </div>
-                    </Panel>
-                </PanelGroup>
-            </div>
+            <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </CreateMemoirLayout>
     );
 }

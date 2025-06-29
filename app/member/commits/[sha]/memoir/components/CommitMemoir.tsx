@@ -1,3 +1,4 @@
+// app/member/commits/[sha]/CommitMemoir.tsx
 "use client";
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -14,6 +15,7 @@ import Error from "@/app/components/Error";
 import Loading from "@/app/member/components/Loading";
 import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import NotFound from "@/app/not-found";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import { useParams } from "next/navigation";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSession } from "next-auth/react";
@@ -25,28 +27,19 @@ export default function CommitMemoir() {
     const { data: session, status: sessionStatus } = useSession();
     const { clearSummarized, setSummary, setRetryCount } = useSummaryStore();
 
-    // 로딩/에러 상태
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState<string | null>(null);
-
-    // 커밋 상세 정보
     const [commitData, setCommitData] = useState<CommitType | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-
-    // AI 요약 모달 상태
     const [showModal, setShowModal] = useState(false);
-
-    // 모바일 버전의 탭
     const [activeIndex, setActiveIndex] = useState(2);
 
-    // 마운트 시 AI 요약 스토어 초기화
     useEffect(() => {
         clearSummarized();
         setSummary("");
         setRetryCount(2);
     }, [clearSummarized, setSummary, setRetryCount]);
 
-    // 커밋 상세를 가져오는 함수
     const fetchCommitDetail = async (
         nameWithOwner: string,
         sha: string,
@@ -54,14 +47,12 @@ export default function CommitMemoir() {
     ) => {
         setIsLoading(true);
         setLoadError(null);
-
         try {
             const res = await fetch("/api/github/commits/detail", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nameWithOwner, sha, accessToken }),
             });
-
             if (res.status === 404) {
                 setLoadError(
                     "유효하지 않은 커밋 SHA입니다. 커밋을 찾을 수 없습니다."
@@ -71,30 +62,26 @@ export default function CommitMemoir() {
             }
             if (!res.ok) {
                 const json = await res.json().catch(() => null);
-                const msg =
+                setLoadError(
                     (json && json.message) ||
-                    "커밋 상세 정보를 불러오는 중 오류가 발생했습니다.";
-                setLoadError(msg);
+                        "커밋 상세 정보를 불러오는 중 오류가 발생했습니다."
+                );
                 setIsLoading(false);
                 return;
             }
-
             const result = (await res.json()) as CommitType;
             setCommitData(result);
             setIsLoading(false);
         } catch (err) {
-            console.error("Failed to fetch commit detail", err);
+            console.error(err);
             setLoadError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
             setIsLoading(false);
         }
     };
 
-    // 커밋 상세 fetch useEffect
     useEffect(() => {
-        if (sessionStatus !== "authenticated") {
-            return;
-        }
-        if (!repo?.nameWithOwner || !session?.accessToken || !sha) {
+        if (sessionStatus !== "authenticated") return;
+        if (!repo?.nameWithOwner || !session.accessToken || !sha) {
             setLoadError("잘못된 경로입니다.");
             setIsLoading(false);
             return;
@@ -104,26 +91,103 @@ export default function CommitMemoir() {
 
     const files = useMemo(() => {
         if (!commitData) return [];
-        return commitData.changeDetail.map((change) => change.filename);
+        return commitData.changeDetail.map((c) => c.filename);
     }, [commitData]);
 
-    if (isLoading) {
-        return <Loading />;
-    }
-
-    if (loadError) {
-        return <NotFound />;
-    }
-
-    if (!commitData) {
+    if (isLoading) return <Loading />;
+    if (loadError) return <NotFound />;
+    if (!commitData)
         return <Error errorMessage="커밋 데이터를 불러올 수 없습니다." />;
-    }
+
+    // 모바일 레이아웃
+    const mobileUI = (
+        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
+            <div className="w-full flex-1">
+                {activeIndex === 0 && (
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                )}
+                {activeIndex === 1 && (
+                    <ChangeListLayout>
+                        <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                            {commitData.message}
+                        </div>
+                        <ChangeList
+                            changes={commitData.changeDetail}
+                            selectedFile={selectedFile}
+                        />
+                    </ChangeListLayout>
+                )}
+                {activeIndex === 2 && (
+                    <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
+                        <CreateEditorForm source={sha} typeId={1} />
+                    </div>
+                )}
+            </div>
+            <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+                <ul className="flex h-full w-full justify-around">
+                    {NAVIGATION_ITEMS.map((item, i) => (
+                        <li
+                            key={i}
+                            className="flex h-full flex-1 cursor-pointer items-center justify-center"
+                        >
+                            <button
+                                onClick={() => setActiveIndex(i)}
+                                className={`relative flex h-full w-full flex-col items-center justify-center gap-2 font-medium transition-colors duration-300 ${
+                                    activeIndex === i
+                                        ? "text-primary7 bg-primary1"
+                                        : "text-[#222327]"
+                                }`}
+                                aria-label={item.text}
+                            >
+                                <span className="text-2xl">{item.icon}</span>
+                                <span className="text-sm font-normal tracking-wider">
+                                    {item.text}
+                                </span>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+
+    // 데스크톱 레이아웃
+    const desktopUI = (
+        <PanelGroup direction="horizontal" className="h-full w-full">
+            <AccordionSidebar
+                files={files}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
+            <Panel defaultSize={40} minSize={20}>
+                <ChangeListLayout>
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                        {commitData.message}
+                    </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>
+            </Panel>
+            <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+            <Panel defaultSize={40} minSize={20}>
+                <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
+                    <CreateEditorForm source={sha} typeId={1} />
+                </div>
+            </Panel>
+        </PanelGroup>
+    );
 
     return (
         <CreateMemoirLayout>
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] rounded-full p-3 text-white shadow-lg"
             >
                 ✨ AI 요약 시작하기
             </button>
@@ -136,90 +200,7 @@ export default function CommitMemoir() {
                 </div>
             )}
 
-            <div className="flex h-[calc(100vh-65px)] w-full flex-col lg:hidden">
-                {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-                <div className="w-full flex-1 overflow-auto p-4 lg:p-0">
-                    {activeIndex === 0 && (
-                        <AccordionSidebar
-                            files={files}
-                            selectedFile={selectedFile}
-                            onSelect={setSelectedFile}
-                        />
-                    )}
-
-                    {activeIndex === 1 && (
-                        <ChangeListLayout>
-                            <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
-                                {commitData.message}
-                            </div>
-                            <ChangeList
-                                changes={commitData.changeDetail}
-                                selectedFile={selectedFile}
-                            />
-                        </ChangeListLayout>
-                    )}
-
-                    {activeIndex === 2 && (
-                        <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
-                            <CreateEditorForm source={sha} typeId={1} />
-                        </div>
-                    )}
-                </div>
-
-                {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-                <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
-                    <ul className="flex h-full w-full justify-around">
-                        {NAVIGATION_ITEMS.map((item, index) => (
-                            <li
-                                key={index}
-                                className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                            >
-                                <button
-                                    onClick={() => setActiveIndex(index)}
-                                    className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
-                                    aria-label={item.text}
-                                >
-                                    <span className="block text-center text-2xl">
-                                        {item.icon}
-                                    </span>
-                                    <span className="text-sm font-normal tracking-wider">
-                                        {item.text}
-                                    </span>
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            {/* PC 버전 */}
-            <div className="hidden lg:block lg:w-full">
-                <PanelGroup direction="horizontal" className="h-full w-full">
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
-                    />
-
-                    <Panel defaultSize={40} minSize={20}>
-                        <ChangeListLayout>
-                            <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
-                                {commitData.message}
-                            </div>
-                            <ChangeList
-                                changes={commitData.changeDetail}
-                                selectedFile={selectedFile}
-                            />
-                        </ChangeListLayout>
-                    </Panel>
-                    <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-                    <Panel defaultSize={40} minSize={20}>
-                        <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
-                            <CreateEditorForm source={sha} typeId={1} />
-                        </div>
-                    </Panel>
-                </PanelGroup>
-            </div>
+            <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </CreateMemoirLayout>
     );
 }
