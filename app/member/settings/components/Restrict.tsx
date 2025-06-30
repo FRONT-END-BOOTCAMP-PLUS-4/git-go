@@ -11,11 +11,11 @@ export default function Restrict() {
     return (
         <div className="border-border-primary1 space-y-2 rounded border p-4">
             <div className="mb-3 flex justify-between text-[16px] font-normal">
-                <div className="text-text-gray2 flex items-center gap-2 text-sm">
-                    <span>👑</span>
+                <div className="text-text-primary1 flex items-center gap-2 text-sm">
+                    <Crown color="#FFDC00" />
                     <span>오늘 남은 AI 요청</span>
                 </div>
-                <span className="rounded border px-2 py-0.5 text-xs text-gray-600">
+                <span className="text-text-primary1 rounded border px-2 py-0.5 text-xs">
                     Free Plan
                 </span>
             </div>
