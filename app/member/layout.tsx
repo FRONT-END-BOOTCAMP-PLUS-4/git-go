@@ -5,6 +5,7 @@ import SideBar from "@/app/member/components/SideBar";
 import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import SearchFilter from "./memoirs/components/Filter/SearchFilter";
+import MobilePageTab from "@/app/member/components/MobilePageTab";
 
 export default function MemberLayout({
     children,
@@ -42,6 +43,7 @@ export default function MemberLayout({
                     </div>
                     {children}
                 </div>
+                <MobilePageTab status={status} />
             </div>
         );
     }
