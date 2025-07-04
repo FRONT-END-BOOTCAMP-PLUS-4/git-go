@@ -1,25 +1,25 @@
 // app/member/commits/[sha]/CommitMemoir.tsx
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
+import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Error from "@/app/components/Error";
 import Loading from "@/app/member/components/Loading";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
-import { useParams } from "next/navigation";
+import NotFound from "@/app/not-found";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
-import { useSession } from "next-auth/react";
 import { useSummaryStore } from "@/store/useSummaryStore";
+import { CommitType } from "@/types/github/CommitType";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 export default function CommitMemoir() {
     const { sha }: { sha: string } = useParams();
@@ -102,7 +102,7 @@ export default function CommitMemoir() {
     // 모바일 레이아웃
     const mobileUI = (
         <div className="flex h-[calc(100vh-65px)] w-full flex-col">
-            <div className="w-full flex-1">
+            <div className="h-full max-h-[calc(100vh-135px)] w-full">
                 {activeIndex === 0 && (
                     <AccordionSidebar
                         files={files}

@@ -1,26 +1,26 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
+import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Error from "@/app/components/Error";
-import Loading from "@/app/member/components/Loading";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
 import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
-import { PullRequestType } from "@/types/github/PullRequestType";
+import Loading from "@/app/member/components/Loading";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
-import { useParams } from "next/navigation";
+import NotFound from "@/app/not-found";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
-import { useSession } from "next-auth/react";
 import { useSummaryStore } from "@/store/useSummaryStore";
+import { CommitType } from "@/types/github/CommitType";
+import { PullRequestType } from "@/types/github/PullRequestType";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -222,7 +222,7 @@ export default function PullRequestMemoir() {
     const mobileUI = (
         <div className="flex h-[calc(100vh-65px)] w-full flex-col">
             {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-            <div className="w-full flex-1">
+            <div className="h-full max-h-[calc(100vh-135px)] w-full">
                 {activeIndex === 0 && (
                     <AccordionSidebar
                         files={files}
@@ -247,10 +247,7 @@ export default function PullRequestMemoir() {
                 )}
 
                 {activeIndex === 2 && (
-                    <div
-                        ref={containerRef}
-                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                    >
+                    <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
                         <CreateEditorForm source={pr_no} typeId={2} />
                     </div>
                 )}
@@ -259,19 +256,21 @@ export default function PullRequestMemoir() {
             {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
             <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
                 <ul className="flex h-full w-full justify-around">
-                    {NAVIGATION_ITEMS.map((item, index) => (
+                    {NAVIGATION_ITEMS.map((item, i) => (
                         <li
-                            key={index}
+                            key={i}
                             className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
                         >
                             <button
-                                onClick={() => setActiveIndex(index)}
-                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
+                                onClick={() => setActiveIndex(i)}
+                                className={`relative flex h-full w-full flex-col items-center justify-center gap-2 font-medium transition-colors duration-300 ${
+                                    activeIndex === i
+                                        ? "text-primary7 bg-primary1"
+                                        : "text-[#222327]"
+                                }`}
                                 aria-label={item.text}
                             >
-                                <span className="block text-center text-2xl">
-                                    {item.icon}
-                                </span>
+                                <span className="text-2xl">{item.icon}</span>
                                 <span className="text-sm font-normal tracking-wider">
                                     {item.text}
                                 </span>
@@ -284,43 +283,41 @@ export default function PullRequestMemoir() {
     );
 
     const desktopUI = (
-        <div className="hidden lg:block lg:w-full">
-            <PanelGroup direction="horizontal" className="h-full w-full">
-                {/* 사이드바: 변경된 파일 목록 */}
-                <AccordionSidebar
-                    files={files}
-                    selectedFile={selectedFile}
-                    onSelect={setSelectedFile}
-                />
+        <PanelGroup direction="horizontal" className="h-full w-full">
+            {/* 사이드바: 변경된 파일 목록 */}
+            <AccordionSidebar
+                files={files}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
 
-                <Panel defaultSize={40} minSize={20}>
-                    {/* 변경 목록 + 커밋 선택 드롭다운 */}
-                    <ChangeListLayout>
-                        <Select
-                            options={prOptions}
-                            value={selectedSha}
-                            onChange={setSelectedSha}
-                        />
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                            selectedCommitId={selectedSha}
-                        />
-                    </ChangeListLayout>
-                </Panel>
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+            <Panel defaultSize={40} minSize={20}>
+                {/* 변경 목록 + 커밋 선택 드롭다운 */}
+                <ChangeListLayout>
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
+                    />
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>
+            </Panel>
+            <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
 
-                {/* 회고 작성 폼 */}
-                <Panel defaultSize={40} minSize={20}>
-                    <div
-                        ref={containerRef}
-                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                    >
-                        <CreateEditorForm source={pr_no} typeId={2} />
-                    </div>
-                </Panel>
-            </PanelGroup>
-        </div>
+            {/* 회고 작성 폼 */}
+            <Panel defaultSize={40} minSize={20}>
+                <div
+                    ref={containerRef}
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    <CreateEditorForm source={pr_no} typeId={2} />
+                </div>
+            </Panel>
+        </PanelGroup>
     );
 
     return (
