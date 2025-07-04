@@ -65,4 +65,31 @@ export class PrUserRepository implements UserRepository {
             data: { isDefaultOnly },
         });
     }
+    async getTokenUsage({ userId }: { userId: string }) {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                daily_ai_use_count: true,
+                daily_ai_restrict_count: true,
+            },
+        });
+
+        if (!user) throw new Error("User not found");
+
+        return {
+            daily_ai_use_count: user.daily_ai_use_count,
+            daily_ai_restrict_count: user.daily_ai_restrict_count,
+        };
+    }
+
+    async updateTokenUsage(userId: string, tokenUsage: number): Promise<void> {
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                daily_ai_use_count: {
+                    increment: tokenUsage,
+                },
+            },
+        });
+    }
 }
