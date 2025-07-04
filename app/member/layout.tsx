@@ -30,21 +30,26 @@ export default function MemberLayout({
         return <>{children}</>;
     } else {
         return (
-            <div className="layout-padding flex gap-x-6 py-6">
-                <RepoSelectModal open={open} onClose={() => setOpen(false)} />
-                <div className="sticky top-[89px] h-[calc(100vh-113px)] min-w-fit overflow-x-hidden overflow-y-auto">
-                    <SideBar setOpen={setOpen} />
-                </div>
-
-                <div className="w-full">
-                    <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
-                        <PageTap status={status} />
-                        {pathname.includes("memoirs") && <SearchFilter />}
+            <>
+                <div className="layout-padding mb-14 gap-x-6 py-6 md:mb-0 md:flex">
+                    <RepoSelectModal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                    />
+                    <div className="sticky top-[81px] h-[calc(100vh-113px)] min-w-fit overflow-x-hidden overflow-y-auto">
+                        <SideBar setOpen={setOpen} />
                     </div>
-                    {children}
+
+                    <div className="w-full">
+                        <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
+                            <PageTap status={status} />
+                            {pathname.includes("memoirs") && <SearchFilter />}
+                        </div>
+                        {children}
+                    </div>
                 </div>
                 <MobilePageTab status={status} />
-            </div>
+            </>
         );
     }
 }

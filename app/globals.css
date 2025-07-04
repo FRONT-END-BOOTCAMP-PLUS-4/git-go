@@ -5,7 +5,7 @@
     .layout-padding {
         @apply mx-auto;
         @apply max-w-[1280px];
-        @apply px-4;
+        @apply p-4;
         @apply w-full;
     }
 }
