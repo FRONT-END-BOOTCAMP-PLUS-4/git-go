@@ -1,22 +1,25 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
 import NotFound from "@/app/not-found";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -45,6 +48,9 @@ export default function PullRequestDetailMemoir() {
 
     const repo = useRepoStore((s) => s.selectedRepo);
     const containerRef = useRef<HTMLDivElement | null>(null);
+
+    // 모바일 버전의 탭
+    const [activeIndex, setActiveIndex] = useState(2);
 
     // 회고록 데이터(fetch) + 작성자(userId) 검사
     const load = async () => {
@@ -249,49 +255,30 @@ export default function PullRequestDetailMemoir() {
     }, [commitData]);
 
     // 세션이 로딩 중일 때 로딩 컴포넌트
-    if (sessionStatus === "loading") {
-        return <Loading />;
-    }
+    if (sessionStatus === "loading") return <Loading />;
 
     // 세션 인증 후에도 로딩 중일 때
-    if (isLoading) {
-        return <Loading />;
-    }
+    if (isLoading) return <Loading />;
 
     // loadError가 있을 때 에러 화면
-    if (loadError) {
-        return <NotFound />;
-    }
+    if (loadError) return <NotFound />;
 
     // commitData가 아직 없으면 로딩
-    if (!commitData) {
-        return <Loading />;
-    }
+    if (!commitData) return <Loading />;
 
-    return (
-        <DetailMemoirLayout>
-            <button
-                onClick={() => setShowModal(true)}
-                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
-            >
-                ✨ 생성된 요약 보기
-            </button>
-            {showModal && (
-                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
-                    <ViewSummary
-                        setShowModal={setShowModal}
-                        summary={summary}
+    const mobileUI = (
+        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
+            {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
+            <div className="h-full max-h-[calc(100vh-135px)] w-full">
+                {activeIndex === 0 && (
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
                     />
-                </div>
-            )}
-            <PanelGroup direction="horizontal" className="h-full w-full">
-                <AccordionSidebar
-                    files={files}
-                    selectedFile={selectedFile}
-                    onSelect={setSelectedFile}
-                />
+                )}
 
-                <Panel defaultSize={40} minSize={20}>
+                {activeIndex === 1 && (
                     <ChangeListLayout>
                         <Select
                             options={prOptions}
@@ -304,13 +291,10 @@ export default function PullRequestDetailMemoir() {
                             selectedCommitId={selectedSha}
                         />
                     </ChangeListLayout>
-                </Panel>
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-                <Panel defaultSize={40} minSize={20}>
-                    <div
-                        ref={containerRef}
-                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                    >
+                )}
+
+                {activeIndex === 2 && (
+                    <>
                         {isEditing ? (
                             <EditEditorForm
                                 title={title}
@@ -334,9 +318,112 @@ export default function PullRequestDetailMemoir() {
                                 memoirId={parseId}
                             />
                         )}
-                    </div>
-                </Panel>
-            </PanelGroup>
+                    </>
+                )}
+            </div>
+
+            {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
+            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+                <ul className="flex h-full w-full justify-around">
+                    {NAVIGATION_ITEMS.map((item, index) => (
+                        <li
+                            key={index}
+                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
+                        >
+                            <button
+                                onClick={() => setActiveIndex(index)}
+                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
+                                aria-label={item.text}
+                            >
+                                <span className="block text-center text-2xl">
+                                    {item.icon}
+                                </span>
+                                <span className="text-sm font-normal tracking-wider">
+                                    {item.text}
+                                </span>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+
+    const desktopUI = (
+        <PanelGroup direction="horizontal" className="h-full w-full">
+            <AccordionSidebar
+                files={files}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
+
+            <Panel defaultSize={40} minSize={20}>
+                <ChangeListLayout>
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
+                    />
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>
+            </Panel>
+            <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+            <Panel defaultSize={40} minSize={20}>
+                <div
+                    ref={containerRef}
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    {isEditing ? (
+                        <EditEditorForm
+                            title={title}
+                            setTitle={setTitle}
+                            tags={tags}
+                            setTags={setTags}
+                            content={content}
+                            setContent={setContent}
+                            memoirId={parseId}
+                            session={session}
+                            repo={repo}
+                            setIsEditing={setIsEditing}
+                            onCancel={handleToggleEdit}
+                        />
+                    ) : (
+                        <EditorFormReadOnly
+                            title={title}
+                            tags={tags}
+                            content={content}
+                            handleStatusChange={handleToggleEdit}
+                            memoirId={parseId}
+                        />
+                    )}
+                </div>
+            </Panel>
+        </PanelGroup>
+    );
+
+    return (
+        <DetailMemoirLayout>
+            <button
+                onClick={() => setShowModal(true)}
+                className="bg-primary7 fixed bottom-30 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both] lg:bottom-14"
+            >
+                ✨ 생성된 요약 보기
+            </button>
+
+            {showModal && (
+                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
+                    <ViewSummary
+                        setShowModal={setShowModal}
+                        summary={summary}
+                    />
+                </div>
+            )}
+
+            <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </DetailMemoirLayout>
     );
 }

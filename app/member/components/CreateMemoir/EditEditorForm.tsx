@@ -1,11 +1,12 @@
 "use client";
 
+import { useCallback, useMemo, useRef, useState } from "react";
+
 import Button from "@/app/components/Button";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { Value } from "@udecode/plate";
 import { X } from "lucide-react";
 import { Session } from "next-auth";
-import { useCallback, useMemo, useRef, useState } from "react";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
 
 type EditEditorFormProps = {
@@ -126,7 +127,7 @@ export default function EditEditorForm({
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden">
+        <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden p-4 lg:p-0">
             {/* 제목 */}
             <div>
                 <input

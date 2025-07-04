@@ -52,7 +52,7 @@ export default function ChangeList({
 
     return (
         <div
-            className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain pr-2"
+            className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain lg:pr-2"
             ref={containerRef}
         >
             {changes.map((change) => (

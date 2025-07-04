@@ -1,25 +1,25 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
-import DetailMemoirLayout from "./DetailMemoirLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
-import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import Loading from "@/app/member/components/Loading";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
-import { Value } from "@udecode/plate";
-import ViewSummary from "../ViewSummary";
-import { useParams } from "next/navigation";
+import NotFound from "@/app/not-found";
+import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
+import { CommitType } from "@/types/github/CommitType";
+import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import ViewSummary from "../ViewSummary";
+import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
     const { id }: { id: string } = useParams();
@@ -112,7 +112,7 @@ export default function CommitDetailMemoir() {
         if (sessionStatus !== "authenticated") return;
         load();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, sessionStatus, session]);
+    }, [id, sessionStatus]);
 
     // 커밋 상세를 가져오는 함수
     const fetchCommitDetail = async (
@@ -175,7 +175,7 @@ export default function CommitDetailMemoir() {
     const mobileUI = (
         <div className="flex h-[calc(100vh-65px)] w-full flex-col">
             {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-            <div className="w-full flex-1">
+            <div className="h-full max-h-[calc(100vh-135px)] w-full">
                 {activeIndex === 0 && (
                     <AccordionSidebar
                         files={files}
@@ -226,7 +226,7 @@ export default function CommitDetailMemoir() {
             </div>
 
             {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-            <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
                 <ul className="flex h-full w-full justify-around">
                     {NAVIGATION_ITEMS.map((item, index) => (
                         <li

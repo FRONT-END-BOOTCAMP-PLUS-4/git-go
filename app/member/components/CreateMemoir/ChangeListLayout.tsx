@@ -6,7 +6,7 @@ export default function ChangeListLayout({
     children: ReactNode;
 }) {
     return (
-        <div className="border-x-border-primary1 bg-bg-member1 col-span-1 h-full overflow-y-auto overscroll-contain border-x p-3">
+        <div className="border-x-border-primary1 bg-bg-member1 col-span-1 h-full overflow-y-auto overscroll-contain border-x p-4 lg:p-3">
             {children}
         </div>
     );
