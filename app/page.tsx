@@ -1,16 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import Button from "./components/Button";
 import {
     FeatureBox,
     ScrollDownButton,
     ScrollTopButton,
 } from "./components/ScrollControls";
+
+import Button from "./components/Button";
+import Image from "next/image";
+import { LayoutDashboard } from "lucide-react";
+import Link from "next/link";
+import { MEMBER_URL } from "@/constants/url";
 import VideoSection from "./components/VideoSection";
+import { authOptions } from "./api/auth/authOptions";
+import { getServerSession } from "next-auth";
 
 export default async function HomePage() {
-    // const session = await getServerSession(authOptions);
-    // const isLoggedIn = !!session;
+    const session = await getServerSession(authOptions);
+    const isLoggedIn = !!session;
 
     const features = [
         {
@@ -60,7 +65,7 @@ export default async function HomePage() {
                     의미 있는 작업 문서를 만들어보세요.
                 </p>
 
-                {/* {isLoggedIn ? (
+                {isLoggedIn ? (
                     <div className="flex justify-center">
                         <form action={MEMBER_URL.commits}>
                             <Button
@@ -73,13 +78,12 @@ export default async function HomePage() {
                         </form>
                     </div>
                 ) : (
-                    <LoginWithGitHubButton />
-                )} */}
-                <Button>
-                    <Link target="_blank" href={"/demo"}>
-                        Start with a demo
-                    </Link>
-                </Button>
+                    <Button>
+                        <Link target="_blank" href={"/demo"}>
+                            Start with a demo
+                        </Link>
+                    </Button>
+                )}
 
                 <div className="mt-10 flex flex-wrap justify-center gap-10 leading-10">
                     {features.map((feature) => (
