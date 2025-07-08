@@ -2,7 +2,7 @@
 
 const tabs = [
     { key: "settings", label: "설정" },
-    { key: "myPage", label: "뱃지" },
+    { key: "badges", label: "뱃지" },
 ];
 
 export default function SettingsTabs({

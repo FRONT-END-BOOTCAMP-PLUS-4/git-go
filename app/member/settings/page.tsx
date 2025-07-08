@@ -3,7 +3,7 @@
 import { useState } from "react";
 import SettingsTabs from "./components/SettingsTabs";
 import Settings from "./components/Settings";
-// import MyPage from "./components/MyPage"; // 추후 확장
+// import Badges from "./components/Badges"; // 추후 확장
 
 export default function SettingsPage() {
     const [selectedTab, setSelectedTab] = useState("settings");
@@ -19,7 +19,7 @@ export default function SettingsPage() {
                 />
 
                 {selectedTab === "settings" && <Settings />}
-                {/* {selectedTab === "myPage" && <MyPage />} */}
+                {/* {selectedTab === "badges" && <Badges />} */}
             </div>
         </div>
     );
