@@ -129,7 +129,7 @@ export default function Header() {
                                         className="mr-auto ml-2 shrink-0"
                                     />
                                     <span className="flex-1 text-center whitespace-nowrap">
-                                        설정
+                                        마이페이지
                                     </span>
                                 </button>
                                 <button
