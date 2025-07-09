@@ -1,4 +1,4 @@
-import { CodeXml, File, PenTool } from "lucide-react";
+import { CodeXml, File, Pencil } from "lucide-react";
 
 export const NAVIGATION_ITEMS = [
     {
@@ -13,7 +13,7 @@ export const NAVIGATION_ITEMS = [
         text: "코드 변경 내역",
     },
     {
-        icon: <PenTool />,
+        icon: <Pencil />,
         tabName: "memoir",
         text: "회고",
     },
