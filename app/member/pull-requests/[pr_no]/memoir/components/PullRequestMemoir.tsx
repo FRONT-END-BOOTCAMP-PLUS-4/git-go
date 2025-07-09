@@ -254,23 +254,21 @@ export default function PullRequestMemoir() {
             </div>
 
             {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-            <div className="flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
                 <ul className="flex h-full w-full justify-around">
-                    {NAVIGATION_ITEMS.map((item, i) => (
+                    {NAVIGATION_ITEMS.map((item, index) => (
                         <li
-                            key={i}
+                            key={index}
                             className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
                         >
                             <button
-                                onClick={() => setActiveIndex(i)}
-                                className={`relative flex h-full w-full flex-col items-center justify-center gap-2 font-medium transition-colors duration-300 ${
-                                    activeIndex === i
-                                        ? "text-primary7 bg-primary1"
-                                        : "text-[#222327]"
-                                }`}
+                                onClick={() => setActiveIndex(index)}
+                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
                                 aria-label={item.text}
                             >
-                                <span className="text-2xl">{item.icon}</span>
+                                <span className="block text-center text-2xl">
+                                    {item.icon}
+                                </span>
                                 <span className="text-sm font-normal tracking-wider">
                                     {item.text}
                                 </span>
