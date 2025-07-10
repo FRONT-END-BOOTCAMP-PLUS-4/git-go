@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import SettingsSkeleton from "../../stats/components/SettingsSkeleton";
+// import SettingsSkeleton from "../../stats/components/SettingsSkeleton";
 
 export default function Badges() {
     const [memoirCount, setMemoirCount] = useState<number | null>(null);
@@ -16,9 +16,9 @@ export default function Badges() {
         fetchMemoirCount();
     }, []);
 
-    if (memoirCount === null) {
-        return <SettingsSkeleton />;
-    }
+    // if (memoirCount === null) {
+    //     return <SettingsSkeleton />;
+    // }
 
     const badgeList = [
         {
@@ -48,26 +48,43 @@ export default function Badges() {
     ];
 
     return (
-        <div className="flex flex-col items-center gap-6 p-6">
-            <p className="self-start text-[16px] font-normal">획득한 뱃지</p>
-            <div className="grid grid-cols-4 gap-6">
-                {badgeList.map((badge) => {
-                    const isEarned = memoirCount >= badge.count;
-                    return (
-                        <div
-                            key={badge.count}
-                            className="flex flex-col items-center gap-2"
-                        >
-                            <Image
-                                src={isEarned ? badge.image : badge.gray}
-                                alt={`${badge.label} 뱃지`}
-                                width={80}
-                                height={80}
-                            />
-                            <span className="text-sm">{badge.label}</span>
+        <div className="flex justify-center">
+            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] rounded-md border">
+                <div className="border-border-primary1 border-b p-4 text-xl font-semibold">
+                    획득한 뱃지
+                </div>
+                <div className="p-6">
+                    <div className="border-border-primary1 border-b pb-4">
+                        <p className="mb-3 text-[16px] font-normal">
+                            회고록 작성
+                        </p>
+                        <div className="grid grid-cols-4 gap-6">
+                            {badgeList.map((badge) => {
+                                const isEarned = memoirCount >= badge.count;
+                                return (
+                                    <div
+                                        key={badge.count}
+                                        className="flex flex-col items-center gap-2"
+                                    >
+                                        <Image
+                                            src={
+                                                isEarned
+                                                    ? badge.image
+                                                    : badge.gray
+                                            }
+                                            alt={`${badge.label} 뱃지`}
+                                            width={80}
+                                            height={80}
+                                        />
+                                        <span className="text-sm">
+                                            {badge.label}
+                                        </span>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    );
-                })}
+                    </div>
+                </div>
             </div>
         </div>
     );
