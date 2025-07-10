@@ -47,13 +47,24 @@ model User {
   deletedAt          DateTime? @map("deleted_at")
   githubId           String
   isDefaultOnly      Boolean   @default(true)
-  daily_ai_use_count Int       @default(0)
-  daily_ai_restrict_count Int  @default(200000)
   memoirs            Memoir[]
   repos              Repo[]
+  usages             AiUsage[]
 
   @@map("user")
 }
+model AiUsage {
+  userId     String
+  date       DateTime   @default(now())
+  usage   Int        @default(0)
+  restrictUsage Int     @default(200000)
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@map("usage")
+}
+
 
 
 model MemoirType {
