@@ -48,7 +48,7 @@ model User {
   githubId           String
   isDefaultOnly      Boolean   @default(true)
   daily_ai_use_count Int       @default(0)
-  daily_ai_restrict_count Int  @default(20000)
+  daily_ai_restrict_count Int  @default(200000)
   memoirs            Memoir[]
   repos              Repo[]
 
