@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
+import { useSession } from "next-auth/react";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -31,6 +32,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const alreadySummarized = isSummarized(commit.sha);
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+    const { data: session, status: sessionStatus } = useSession();
 
     const handleCopy = async () => {
         try {
@@ -60,15 +62,33 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                 model: "gemini-2.5-flash-preview-05-20",
                 contents: prompt,
             });
-
+            console.log("모델 아웃풋 확인: ", response);
             let fullText = "";
+            let tokenUsage: number = 0;
 
             for await (const chunk of response) {
                 if (!chunk || !chunk.text) continue;
+                console.log(chunk);
                 fullText += chunk.text;
+                tokenUsage = chunk.usageMetadata?.totalTokenCount;
                 flushSync(() => {
                     setSummary(fullText);
                 });
+            }
+            console.log("토큰 총량: ", tokenUsage);
+
+            if (tokenUsage && sessionStatus === "authenticated") {
+                const res = await fetch("/api/settings/tokenUsage", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userId: session.user.id,
+                        tokenUsage,
+                    }),
+                });
+                console.log(res);
             }
 
             setSummary(fullText);
