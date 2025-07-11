@@ -1,8 +1,8 @@
 "use client";
 
 const tabs = [
-    { key: "settings", label: "설정" },
     { key: "badges", label: "뱃지" },
+    { key: "settings", label: "설정" },
 ];
 
 export default function SettingsTabs({
