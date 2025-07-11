@@ -6,6 +6,9 @@ import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import SearchFilter from "./memoirs/components/Filter/SearchFilter";
 import MobilePageTab from "@/app/member/components/MobilePageTab";
+import TimeFilter from "@/app/member/components/TimeFilter";
+import CommitPrFilter from "@/app/member/memoirs/components/Filter/CommitPrFilter";
+// import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
 
 export default function MemberLayout({
     children,
@@ -36,14 +39,26 @@ export default function MemberLayout({
                         open={open}
                         onClose={() => setOpen(false)}
                     />
-                    <div className="sticky top-[81px] h-[calc(100vh-113px)] min-w-fit overflow-x-hidden overflow-y-auto">
+                    <div className="sticky top-[81px] hidden min-w-fit overflow-x-hidden overflow-y-auto md:block md:h-[calc(100vh-113px)]">
                         <SideBar setOpen={setOpen} />
                     </div>
 
                     <div className="w-full">
                         <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
                             <PageTap status={status} />
-                            {pathname.includes("memoirs") && <SearchFilter />}
+                            {pathname.includes("memoirs") && (
+                                <div>
+                                    <section className="flex gap-x-2">
+                                        <div className="md:hidden">
+                                            저장소 선택
+                                        </div>
+                                        <SearchFilter />
+                                    </section>
+                                    <div className="md:hidden">
+                                        회고 검색 필터
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         {children}
                     </div>
