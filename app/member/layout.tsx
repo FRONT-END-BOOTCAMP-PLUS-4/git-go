@@ -8,7 +8,7 @@ import SearchFilter from "./memoirs/components/Filter/SearchFilter";
 import MobilePageTab from "@/app/member/components/MobilePageTab";
 import TimeFilter from "@/app/member/components/TimeFilter";
 import CommitPrFilter from "@/app/member/memoirs/components/Filter/CommitPrFilter";
-// import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
+import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
 
 export default function MemberLayout({
     children,
@@ -16,6 +16,7 @@ export default function MemberLayout({
     children: React.ReactNode;
 }) {
     const [open, setOpen] = useState(false);
+    const [repoTags, setRepoTags] = useState<string[]>([]);
 
     const pathname = usePathname();
     const status = pathname.split("/").pop() || "commits";
@@ -46,16 +47,37 @@ export default function MemberLayout({
                     <div className="w-full">
                         <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
                             <PageTap status={status} />
+                            <section className="flex items-center gap-x-2">
+                                <div className="border-border-primary1 bg-bg-member1 mb-2 rounded-md border px-3 py-2.5 text-sm md:mb-6 md:hidden">
+                                    저장소 선택
+                                </div>
+                                {pathname.includes("memoirs") && (
+                                    <SearchFilter />
+                                )}
+                            </section>
                             {pathname.includes("memoirs") && (
                                 <div>
-                                    <section className="flex gap-x-2">
-                                        <div className="md:hidden">
-                                            저장소 선택
-                                        </div>
-                                        <SearchFilter />
-                                    </section>
                                     <div className="md:hidden">
-                                        회고 검색 필터
+                                        <TimeFilter
+                                            options={[
+                                                {
+                                                    value: "all",
+                                                    label: "전체 기간",
+                                                },
+                                                {
+                                                    value: "7days",
+                                                    label: "지난 7일",
+                                                },
+                                                {
+                                                    value: "30days",
+                                                    label: "지난 30일",
+                                                },
+                                            ]}
+                                        />
+                                        <div className="border-border-primary1 bg-bg-member1 my-2 rounded-md border p-4">
+                                            <CommitPrFilter />
+                                            <TagFilter tags={repoTags} />
+                                        </div>
                                     </div>
                                 </div>
                             )}
