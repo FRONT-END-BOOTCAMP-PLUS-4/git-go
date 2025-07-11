@@ -9,7 +9,7 @@ export default function CommitPrFilter() {
     return (
         <div>
             <div className="mb-2 text-base font-normal">필터</div>
-            <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-x-2 text-sm md:block md:space-y-2">
                 {["all", "commits", "pullRequests"].map((type) => {
                     const id = `filter-${type}`;
                     return (
