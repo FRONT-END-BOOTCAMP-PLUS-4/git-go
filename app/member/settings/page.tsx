@@ -6,7 +6,7 @@ import Settings from "./components/Settings";
 import Badges from "./components/Badges";
 
 export default function SettingsPage() {
-    const [selectedTab, setSelectedTab] = useState("settings");
+    const [selectedTab, setSelectedTab] = useState("badges");
 
     return (
         <div className="flex justify-center">
