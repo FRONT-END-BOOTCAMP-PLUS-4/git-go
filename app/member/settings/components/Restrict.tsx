@@ -1,12 +1,59 @@
-// components/QuotaBar.tsx
 "use client";
 
+import { useEffect, useState } from "react";
 import { Crown } from "lucide-react";
 
-export default function Restrict() {
-    const usedRequests = 32;
-    const totalRequests = 50;
-    const percentageUsed = (usedRequests / totalRequests) * 100;
+export default function QuotaBar() {
+    const [usageInfo, setUsageInfo] = useState<{
+        usage: number;
+        restrict: number;
+    } | null>(null);
+
+    useEffect(() => {
+        const fetchUsage = async () => {
+            try {
+                const res = await fetch("/api/settings/tokenUsages");
+                const data = await res.json();
+                setUsageInfo({
+                    usage: data.daily_ai_use_count,
+                    restrict: data.daily_ai_restrict_count,
+                });
+            } catch (error) {
+                console.error("사용량 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchUsage();
+    }, []);
+
+    if (!usageInfo) {
+        return (
+            <div className="border-border-primary1 space-y-2 rounded border p-4 text-sm text-gray-500">
+                로딩 중...
+            </div>
+        );
+    }
+
+    const { usage, restrict } = usageInfo;
+    const percentageUsed = Math.min((usage / restrict) * 100, 100);
+
+    // ✅ 오늘 기준으로 내일 00:00 계산
+    const now = new Date();
+    const resetDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1, // 내일
+        0,
+        0,
+        0
+    );
+    const resetDateString = resetDate.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
 
     return (
         <div className="border-border-primary1 space-y-2 rounded border p-4">
@@ -29,19 +76,15 @@ export default function Restrict() {
 
             <div className="text-text-gray1 flex justify-between text-xs">
                 <span>
-                    {usedRequests}/{totalRequests} requests
+                    {usage.toLocaleString()} / {restrict.toLocaleString()}{" "}
+                    tokens
                 </span>
                 <span>{percentageUsed.toFixed(0)}% used</span>
             </div>
 
             <div className="text-text-gray1 text-xs">
-                다음 리셋: 2025년 6월 28일 00:00
+                다음 리셋: {resetDateString}
             </div>
-
-            {/* <button className="mt-2 flex w-full cursor-pointer items-center justify-center gap-1 rounded border border-yellow-400 py-1.5 text-sm font-medium text-yellow-600 hover:bg-yellow-50">
-                <Crown size={16} className="text-yellow-500" />
-                Pro 플랜으로 업그레이드
-            </button> */}
         </div>
     );
 }
