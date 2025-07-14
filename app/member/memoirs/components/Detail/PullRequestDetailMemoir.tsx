@@ -1,27 +1,28 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
+import { CommitType } from "@/types/github/CommitType";
+import DetailMemoirLayout from "./DetailMemoirLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
+import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import Loading from "@/app/member/components/Loading";
+import MobileTabLayout from "@/app/member/components/MobileTabLayout";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
+import NotFound from "@/app/not-found";
+import { PullRequestType } from "@/types/github/PullRequestType";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
-import NotFound from "@/app/not-found";
-import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import { useRepoStore } from "@/store/useRepoStore";
-import { CommitType } from "@/types/github/CommitType";
-import { PullRequestType } from "@/types/github/PullRequestType";
 import { Value } from "@udecode/plate";
-import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
 import ViewSummary from "../ViewSummary";
-import DetailMemoirLayout from "./DetailMemoirLayout";
+import { useParams } from "next/navigation";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSession } from "next-auth/react";
 
 export default function PullRequestDetailMemoir() {
     const { id }: { id: string } = useParams();
@@ -266,87 +267,62 @@ export default function PullRequestDetailMemoir() {
     // commitData가 아직 없으면 로딩
     if (!commitData) return <Loading />;
 
+    const editPanel = isEditing ? (
+        <EditEditorForm
+            title={title}
+            setTitle={setTitle}
+            tags={tags}
+            setTags={setTags}
+            content={content}
+            setContent={setContent}
+            memoirId={parseId}
+            session={session}
+            repo={repo}
+            setIsEditing={setIsEditing}
+            onCancel={handleToggleEdit}
+        />
+    ) : (
+        <EditorFormReadOnly
+            title={title}
+            tags={tags}
+            content={content}
+            handleStatusChange={handleToggleEdit}
+            memoirId={parseId}
+        />
+    );
+
     const mobileUI = (
-        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
-            {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-            <div className="h-full max-h-[calc(100vh-135px)] w-full">
-                {activeIndex === 0 && (
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
+        <MobileTabLayout
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            navItems={NAVIGATION_ITEMS}
+            panels={[
+                <AccordionSidebar
+                    key="sidebar"
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />,
+                <ChangeListLayout key="changelist-layout">
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
                     />
-                )}
-
-                {activeIndex === 1 && (
-                    <ChangeListLayout>
-                        <Select
-                            options={prOptions}
-                            value={selectedSha}
-                            onChange={setSelectedSha}
-                        />
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                            selectedCommitId={selectedSha}
-                        />
-                    </ChangeListLayout>
-                )}
-
-                {activeIndex === 2 && (
-                    <>
-                        {isEditing ? (
-                            <EditEditorForm
-                                title={title}
-                                setTitle={setTitle}
-                                tags={tags}
-                                setTags={setTags}
-                                content={content}
-                                setContent={setContent}
-                                memoirId={parseId}
-                                session={session}
-                                repo={repo}
-                                setIsEditing={setIsEditing}
-                                onCancel={handleToggleEdit}
-                            />
-                        ) : (
-                            <EditorFormReadOnly
-                                title={title}
-                                tags={tags}
-                                content={content}
-                                handleStatusChange={handleToggleEdit}
-                                memoirId={parseId}
-                            />
-                        )}
-                    </>
-                )}
-            </div>
-
-            {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
-                <ul className="flex h-full w-full justify-around">
-                    {NAVIGATION_ITEMS.map((item, index) => (
-                        <li
-                            key={index}
-                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                        >
-                            <button
-                                onClick={() => setActiveIndex(index)}
-                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
-                                aria-label={item.text}
-                            >
-                                <span className="block text-center text-2xl">
-                                    {item.icon}
-                                </span>
-                                <span className="text-sm font-normal tracking-wider">
-                                    {item.text}
-                                </span>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>,
+                <div
+                    key="editor"
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    {editPanel}
+                </div>,
+            ]}
+        />
     );
 
     const desktopUI = (

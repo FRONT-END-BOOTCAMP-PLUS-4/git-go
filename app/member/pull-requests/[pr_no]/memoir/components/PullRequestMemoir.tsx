@@ -1,26 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
+import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
+import Error from "@/app/components/Error";
 import Loading from "@/app/member/components/Loading";
+import MobileTabLayout from "@/app/member/components/MobileTabLayout";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
+import NotFound from "@/app/not-found";
+import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
+import { PullRequestType } from "@/types/github/PullRequestType";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
-import NotFound from "@/app/not-found";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import { useRepoStore } from "@/store/useRepoStore";
-import { useSummaryStore } from "@/store/useSummaryStore";
-import { CommitType } from "@/types/github/CommitType";
-import { PullRequestType } from "@/types/github/PullRequestType";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSession } from "next-auth/react";
+import { useSummaryStore } from "@/store/useSummaryStore";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -220,64 +221,37 @@ export default function PullRequestMemoir() {
 
     // 모바일 레이아웃
     const mobileUI = (
-        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
-            {/* 컨텐츠 영역: 선택된 탭에 따라 다른 내용 표시 */}
-            <div className="h-full max-h-[calc(100vh-135px)] w-full">
-                {activeIndex === 0 && (
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
+        <MobileTabLayout
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            navItems={NAVIGATION_ITEMS}
+            panels={[
+                <AccordionSidebar
+                    key="sidebar"
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />,
+                <ChangeListLayout key="changelist-layout">
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
                     />
-                )}
-
-                {activeIndex === 1 && (
-                    <ChangeListLayout>
-                        <Select
-                            options={prOptions}
-                            value={selectedSha}
-                            onChange={setSelectedSha}
-                        />
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                            selectedCommitId={selectedSha}
-                        />
-                    </ChangeListLayout>
-                )}
-
-                {activeIndex === 2 && (
-                    <div className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
-                        <CreateEditorForm source={pr_no} typeId={2} />
-                    </div>
-                )}
-            </div>
-
-            {/* 모바일 탭 영역: 인디케이터 없이 깔끔하게 */}
-            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
-                <ul className="flex h-full w-full justify-around">
-                    {NAVIGATION_ITEMS.map((item, index) => (
-                        <li
-                            key={index}
-                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                        >
-                            <button
-                                onClick={() => setActiveIndex(index)}
-                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
-                                aria-label={item.text}
-                            >
-                                <span className="block text-center text-2xl">
-                                    {item.icon}
-                                </span>
-                                <span className="text-sm font-normal tracking-wider">
-                                    {item.text}
-                                </span>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>,
+                <div
+                    key="editor"
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    <CreateEditorForm source={pr_no} typeId={2} />
+                </div>,
+            ]}
+        />
     );
 
     const desktopUI = (

@@ -1,25 +1,26 @@
 // app/member/commits/[sha]/CommitMemoir.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useEffect, useMemo, useState } from "react";
 
-import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
+import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
+import Error from "@/app/components/Error";
 import Loading from "@/app/member/components/Loading";
-import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
-import NotFound from "@/app/not-found";
+import MobileTabLayout from "@/app/member/components/MobileTabLayout";
 import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import { useRepoStore } from "@/store/useRepoStore";
-import { useSummaryStore } from "@/store/useSummaryStore";
-import { CommitType } from "@/types/github/CommitType";
-import { useSession } from "next-auth/react";
+import NotFound from "@/app/not-found";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import { useParams } from "next/navigation";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSession } from "next-auth/react";
+import { useSummaryStore } from "@/store/useSummaryStore";
 
 export default function CommitMemoir() {
     const { sha }: { sha: string } = useParams();
@@ -101,56 +102,34 @@ export default function CommitMemoir() {
 
     // 모바일 레이아웃
     const mobileUI = (
-        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
-            <div className="h-full max-h-[calc(100vh-135px)] w-full">
-                {activeIndex === 0 && (
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
-                    />
-                )}
-                {activeIndex === 1 && (
-                    <ChangeListLayout>
-                        <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
-                            {commitData.message}
-                        </div>
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                        />
-                    </ChangeListLayout>
-                )}
-                {activeIndex === 2 && (
-                    <div className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4">
-                        <CreateEditorForm source={sha} typeId={1} />
+        <MobileTabLayout
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            navItems={NAVIGATION_ITEMS}
+            panels={[
+                <AccordionSidebar
+                    key="sidebar"
+                    files={files}
+                    selectedFile={selectedFile}
+                    onSelect={setSelectedFile}
+                />,
+                <ChangeListLayout key="changelist-layout">
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                        {commitData.message}
                     </div>
-                )}
-            </div>
-            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
-                <ul className="flex h-full w-full justify-around">
-                    {NAVIGATION_ITEMS.map((item, index) => (
-                        <li
-                            key={index}
-                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                        >
-                            <button
-                                onClick={() => setActiveIndex(index)}
-                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${activeIndex === index ? "text-primary7 bg-primary1" : "text-[#222327]"}`}
-                                aria-label={item.text}
-                            >
-                                <span className="block text-center text-2xl">
-                                    {item.icon}
-                                </span>
-                                <span className="text-sm font-normal tracking-wider">
-                                    {item.text}
-                                </span>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>,
+                <div
+                    key="editor"
+                    className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4"
+                >
+                    <CreateEditorForm source={sha} typeId={1} />
+                </div>,
+            ]}
+        />
     );
 
     // 데스크톱 레이아웃
