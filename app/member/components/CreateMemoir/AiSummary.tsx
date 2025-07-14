@@ -78,7 +78,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             console.log("토큰 총량: ", tokenUsage);
 
             if (tokenUsage && sessionStatus === "authenticated") {
-                const res = await fetch("/api/settings/tokenUsage", {
+                const res = await fetch("/api/settings/tokenUsages", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
