@@ -96,7 +96,10 @@ export class PrUserRepository implements UserRepository {
         };
     }
 
-    async updateTokenUsage(userId: string, tokenUsage: number): Promise<void> {
+    async updateTokenUsage(
+        userId: string,
+        tokenUsage: number
+    ): Promise<{ usage: number; restrictUsage: number }> {
         const today = new Date();
         const date = new Date(
             today.getFullYear(),
@@ -120,8 +123,24 @@ export class PrUserRepository implements UserRepository {
                 userId,
                 date,
                 usage: tokenUsage,
-                restrictUsage: 200000, // 기본 제한치
+                restrictUsage: 200000,
             },
         });
+
+        // ✅ 업데이트된 결과 다시 불러오기
+        const updated = await prisma.aiUsage.findUniqueOrThrow({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+            select: {
+                usage: true,
+                restrictUsage: true,
+            },
+        });
+
+        return updated;
     }
 }
