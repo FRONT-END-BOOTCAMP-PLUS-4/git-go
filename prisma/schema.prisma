@@ -54,12 +54,12 @@ model User {
   @@map("user")
 }
 model AiUsage {
-  userId     String
-  date       DateTime   @default(now())
-  usage   Int        @default(0)
-  restrictUsage Int     @default(200000)
+  userId        String
+  date          DateTime   @default(now())
+  usage         Int        @default(0)
+  restrictUsage Int        @default(200000)
 
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, date])
   @@map("usage")

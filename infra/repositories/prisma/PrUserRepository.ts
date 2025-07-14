@@ -66,29 +66,61 @@ export class PrUserRepository implements UserRepository {
         });
     }
     async getTokenUsage({ userId }: { userId: string }) {
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: {
-                daily_ai_use_count: true,
-                daily_ai_restrict_count: true,
+        const today = new Date();
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        ); // 자정 기준
+
+        const usage = await prisma.aiUsage.findUnique({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
             },
         });
 
-        if (!user) throw new Error("User not found");
+        if (!usage) {
+            // 오늘 기록이 없으면 새로 생성
+            return {
+                daily_ai_use_count: 0,
+                daily_ai_restrict_count: 200000,
+            };
+        }
 
         return {
-            daily_ai_use_count: user.daily_ai_use_count,
-            daily_ai_restrict_count: user.daily_ai_restrict_count,
+            daily_ai_use_count: usage.usage,
+            daily_ai_restrict_count: usage.restrictUsage,
         };
     }
 
     async updateTokenUsage(userId: string, tokenUsage: number): Promise<void> {
-        await prisma.user.update({
-            where: { id: userId },
-            data: {
-                daily_ai_use_count: {
+        const today = new Date();
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        );
+
+        await prisma.aiUsage.upsert({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+            update: {
+                usage: {
                     increment: tokenUsage,
                 },
+            },
+            create: {
+                userId,
+                date,
+                usage: tokenUsage,
+                restrictUsage: 200000, // 기본 제한치
             },
         });
     }
