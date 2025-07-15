@@ -9,6 +9,7 @@ import MobilePageTab from "@/app/member/components/MobilePageTab";
 import TimeFilter from "@/app/member/components/TimeFilter";
 import CommitPrFilter from "@/app/member/memoirs/components/Filter/CommitPrFilter";
 import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
+import MobileRepoSelect from "@/app/member/components/MobileRepoSelect";
 
 export default function MemberLayout({
     children,
@@ -17,6 +18,7 @@ export default function MemberLayout({
 }) {
     const [open, setOpen] = useState(false);
     const [repoTags, setRepoTags] = useState<string[]>([]);
+    const [repoSelectOpen, setRepoSelectOpen] = useState(false);
 
     const pathname = usePathname();
     const status = pathname.split("/").pop() || "commits";
@@ -48,9 +50,10 @@ export default function MemberLayout({
                         <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
                             <PageTap status={status} />
                             <section className="flex items-center gap-x-2">
-                                <div className="border-border-primary1 bg-bg-member1 mb-2 rounded-md border px-3 py-2.5 text-sm md:mb-6 md:hidden">
-                                    저장소 선택
-                                </div>
+                                <MobileRepoSelect
+                                    repoSelectOpen={repoSelectOpen}
+                                    setRepoSelectOpen={setRepoSelectOpen}
+                                />
                                 {pathname.includes("memoirs") && (
                                     <SearchFilter />
                                 )}
