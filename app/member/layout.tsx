@@ -53,6 +53,7 @@ export default function MemberLayout({
                                 <MobileRepoSelect
                                     repoSelectOpen={repoSelectOpen}
                                     setRepoSelectOpen={setRepoSelectOpen}
+                                    setOpen={setOpen}
                                 />
                                 {pathname.includes("memoirs") && (
                                     <SearchFilter />
