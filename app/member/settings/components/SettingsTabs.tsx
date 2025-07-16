@@ -17,7 +17,7 @@ export default function SettingsTabs({
             {tabs.map((tab) => (
                 <button
                     key={tab.key}
-                    className={`mr-4 pb-2 text-sm font-medium ${
+                    className={`mr-4 pb-2 text-sm font-medium hover:cursor-pointer ${
                         selectedTab === tab.key
                             ? "border-text-primary1 text-text-primary1 border-b-2"
                             : "text-text-secondary2"
