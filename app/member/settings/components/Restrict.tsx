@@ -67,10 +67,10 @@ export default function Restrict() {
                 </span>
             </div>
 
-            <div className="relative h-2 w-full rounded bg-gray-200">
+            <div className="relative h-2 w-full overflow-hidden rounded bg-gray-200">
                 <div
                     className="absolute top-0 left-0 h-2 rounded bg-blue-500"
-                    style={{ width: `${percentageUsed}%` }}
+                    style={{ width: `${percentageUsed}%`, maxWidth: "100%" }}
                 />
             </div>
 
