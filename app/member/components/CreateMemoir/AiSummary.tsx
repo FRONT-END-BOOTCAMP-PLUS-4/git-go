@@ -182,7 +182,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                             </button>
                         </div>
                     ) : (
-                        <div>
+                        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
                             <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
                                 AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
                                 <br />
