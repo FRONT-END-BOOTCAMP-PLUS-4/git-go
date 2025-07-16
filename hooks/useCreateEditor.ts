@@ -65,6 +65,7 @@ import { TableElement } from "../app/member/components/CreateMemoir/plate-editor
 import { TableRowElement } from "../app/member/components/CreateMemoir/plate-editor/ui/table-row-element";
 import { TocElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toc-element";
 import { ToggleElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toggle-element";
+import { useMemoirStore } from "@/store/useMemoirStore";
 
 export const viewComponents = {
     // 글씨
@@ -136,9 +137,10 @@ export const useCreateEditor = (
     } & Omit<CreatePlateEditorOptions, "plugins"> = {},
     deps: unknown[] = []
 ) => {
+    const content = useMemoirStore((s) => s.content);
     return usePlateEditor(
         {
-            value: value ?? [],
+            value: value ?? content ?? [],
             override: {
                 components: {
                     ...(readOnly
