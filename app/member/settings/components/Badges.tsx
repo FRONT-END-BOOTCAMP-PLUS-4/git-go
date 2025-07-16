@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-// import SettingsSkeleton from "../../stats/components/SettingsSkeleton";
+import BadgesSkeleton from "./BadgesSkeleton";
 
 export default function Badges() {
     const [memoirCount, setMemoirCount] = useState<number | null>(null);
@@ -26,9 +26,15 @@ export default function Badges() {
         fetchStreak();
     }, []);
 
-    // if (memoirCount === null) {
-    //     return <SettingsSkeleton />;
-    // }
+    if (memoirCount === null || streak === null) {
+        return (
+            <div className="flex justify-center">
+                <div className="m-4 w-full max-w-[880px]">
+                    <BadgesSkeleton />
+                </div>
+            </div>
+        );
+    }
 
     const badgeList = [
         {
