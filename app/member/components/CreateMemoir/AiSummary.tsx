@@ -121,7 +121,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     usage: data.usage,
                     restrict: data.restrictUsage,
                 });
-                if (data.usage >= data.restrictUsage) {
+                if (data.usage >= 10) {
                     setLimitExceeded(true);
                 }
             }
@@ -167,23 +167,34 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
                     style={{ maxHeight: "100%" }}
                 >
-                    <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
-                        AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
-                        <br />
-                        아래 버튼을 클릭하여 AI 요약을 시작해보세요.
-                    </p>
                     {limitExceeded === true ? (
-                        <p className="text-sm text-red-500">
-                            오늘의 AI 사용량을 초과하여 요약 기능을 사용할 수
-                            없습니다.
-                        </p>
+                        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
+                            <p className="mb-2 text-sm text-red-500">
+                                오늘의 AI 사용량을 초과하여 요약 기능을 사용할
+                                수 없습니다.
+                            </p>
+                            <button
+                                className="bg-primary7 hover:bg-primary6 cursor-not-allowed rounded-md px-4 py-2 text-sm font-semibold text-white opacity-50 transition"
+                                onClick={handleSummarize}
+                                disabled
+                            >
+                                AI 요약
+                            </button>
+                        </div>
                     ) : (
-                        <button
-                            className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
-                            onClick={handleSummarize}
-                        >
-                            AI 요약
-                        </button>
+                        <div>
+                            <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
+                                AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
+                                <br />
+                                아래 버튼을 클릭하여 AI 요약을 시작해보세요.
+                            </p>
+                            <button
+                                className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
+                                onClick={handleSummarize}
+                            >
+                                AI 요약
+                            </button>
+                        </div>
                     )}
                 </div>
             ) : loading && aiSummary === "" ? (
