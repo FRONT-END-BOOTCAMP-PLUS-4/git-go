@@ -21,7 +21,25 @@ export class PrUserRepository implements UserRepository {
             },
         });
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         if (existing) {
+            // 이미 존재하는 유저 로그인 기록 추가
+            await prisma.loginRecord.upsert({
+                where: {
+                    userId_date: {
+                        userId: existing.id,
+                        date: today,
+                    },
+                },
+                update: {},
+                create: {
+                    userId: existing.id,
+                    date: today,
+                },
+            });
+
             if (profileUrl && existing.profileUrl !== profileUrl) {
                 return prisma.user.update({
                     where: { id: existing.id },
@@ -31,9 +49,19 @@ export class PrUserRepository implements UserRepository {
             return existing;
         }
 
-        return prisma.user.create({
+        const user = await prisma.user.create({
             data: { githubId, username, profileUrl },
         });
+
+        // 새로운 유저 로그인 기록 추가
+        await prisma.loginRecord.create({
+            data: {
+                userId: user.id,
+                date: today,
+            },
+        });
+
+        return user;
     }
 
     // 회원탈퇴
