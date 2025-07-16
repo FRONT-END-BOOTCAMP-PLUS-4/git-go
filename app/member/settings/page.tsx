@@ -17,7 +17,6 @@ export default function SettingsPage() {
                     selectedTab={selectedTab}
                     onSelect={setSelectedTab}
                 />
-
                 {selectedTab === "settings" && <Settings />}
                 {selectedTab === "badges" && <Badges />}
             </div>

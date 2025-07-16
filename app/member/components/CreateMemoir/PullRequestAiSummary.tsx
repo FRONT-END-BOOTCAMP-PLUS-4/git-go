@@ -5,11 +5,13 @@ import { useSimplifyPullRequestData } from "@/hooks/useSimplifyPullRequestData";
 import { useSummaryStore } from "@/store/useSummaryStore";
 import { PullRequestType } from "@/types/github/PullRequestType";
 import { GoogleGenAI } from "@google/genai";
+
 import { Copy, RotateCcw, X } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
+import { useSession } from "next-auth/react";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -35,6 +37,28 @@ export default function PullRequestAiSummary({
     const alreadySummarized = isSummarized(prNo || "");
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+    const { data: session, status: sessionStatus } = useSession();
+    const [usageInfo, setUsageInfo] = useState<{
+        usage: number;
+        restrict: number;
+    } | null>(null);
+    const [limitExceeded, setLimitExceeded] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        const fetchUsage = async () => {
+            const res = await fetch("/api/settings/tokenUsages");
+            const data = await res.json();
+            const usage = data.daily_ai_use_count;
+            const restrict = data.daily_ai_restrict_count;
+            // console.log("사용량: ", usage, "/", restrict);
+
+            setUsageInfo({ usage, restrict });
+            const exceeded = usage >= restrict;
+            setLimitExceeded(exceeded);
+            // console.log("limitExceeded 상태: ", exceeded);
+        };
+        fetchUsage();
+    }, []);
 
     const handleCopy = async () => {
         try {
@@ -47,6 +71,13 @@ export default function PullRequestAiSummary({
     };
 
     const handleSummarize = async () => {
+        if (limitExceeded) {
+            setSummary(
+                "❌ 오늘의 사용량이 초과되어 AI 요약을 사용할 수 없습니다."
+            );
+            return;
+        }
+
         setSummary("");
         setLoading(true);
         setSummarized(prNo || "", true);
@@ -65,15 +96,38 @@ export default function PullRequestAiSummary({
             });
 
             let fullText = "";
+            let tokenUsage: number = 0;
 
             for await (const chunk of response) {
                 fullText += chunk.text;
+                tokenUsage = chunk.usageMetadata?.totalTokenCount;
                 flushSync(() => {
                     setSummary(fullText);
                 });
             }
             setSummary(fullText);
             setSummarized(prNo || "", true);
+
+            if (tokenUsage && sessionStatus === "authenticated") {
+                const res = await fetch("/api/settings/tokenUsages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        userId: session.user.id,
+                        tokenUsage,
+                    }),
+                });
+                const data = await res.json();
+                setUsageInfo({
+                    usage: data.usage,
+                    restrict: data.restrictUsage,
+                });
+                if (data.usage >= data.restrictUsage) {
+                    setLimitExceeded(true);
+                }
+            }
         } catch (error: any) {
             console.error("AI 요약 실패:", error);
             setSummary(
@@ -109,22 +163,43 @@ export default function PullRequestAiSummary({
             >
                 <X size={24} />
             </button>
-            {!alreadySummarized ? (
+
+            {limitExceeded === null ? (
+                <div></div>
+            ) : !alreadySummarized ? (
                 <div
                     className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
                     style={{ maxHeight: "100%" }}
                 >
-                    <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
-                        AI가 PR 내용을 보고 개발 흐름을 요약해드립니다.
-                        <br />
-                        아래 버튼을 클릭하여 AI 요약을 시작해보세요.
-                    </p>
-                    <button
-                        className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
-                        onClick={handleSummarize}
-                    >
-                        AI 요약
-                    </button>
+                    {limitExceeded === true ? (
+                        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
+                            <p className="mb-2 text-sm text-red-500">
+                                오늘의 AI 사용량을 초과하여 요약 기능을 사용할
+                                수 없습니다.
+                            </p>
+                            <button
+                                className="bg-primary7 hover:bg-primary6 cursor-not-allowed rounded-md px-4 py-2 text-sm font-semibold text-white opacity-50 transition"
+                                onClick={handleSummarize}
+                                disabled
+                            >
+                                AI 요약
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
+                            <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
+                                AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
+                                <br />
+                                아래 버튼을 클릭하여 AI 요약을 시작해보세요.
+                            </p>
+                            <button
+                                className="bg-primary7 hover:bg-primary6 cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white transition"
+                                onClick={handleSummarize}
+                            >
+                                AI 요약
+                            </button>
+                        </div>
+                    )}
                 </div>
             ) : loading && aiSummary === "" ? (
                 <div className="flex flex-col items-center justify-center">
@@ -144,23 +219,44 @@ export default function PullRequestAiSummary({
                     <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
                         <ReactMarkdown>{aiSummary}</ReactMarkdown>
 
-                        <div className="mt-4 flex justify-end gap-2">
-                            <button
-                                onClick={handleCopy}
-                                disabled={!aiSummary}
-                                className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
-                            >
-                                <Copy width={14} height={14} />
-                                <span>{copied ? "복사됨!" : "복사"}</span>
-                            </button>
-                            <button
-                                onClick={handleRetry}
-                                disabled={retryCount === 0 || loading}
-                                className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${retryCount === 0 || loading ? "cursor-not-allowed opacity-50" : ""} `}
-                            >
-                                <RotateCcw width={14} height={14} />
-                                <span>재시도 ({retryCount}회 남음)</span>
-                            </button>
+                        <div className="mt-4 flex flex-col items-end gap-2 pb-4">
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={handleCopy}
+                                    disabled={!aiSummary}
+                                    className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
+                                >
+                                    <Copy width={14} height={14} />
+                                    <span>{copied ? "복사됨!" : "복사"}</span>
+                                </button>
+
+                                <button
+                                    onClick={handleRetry}
+                                    disabled={
+                                        retryCount === 0 ||
+                                        loading ||
+                                        limitExceeded
+                                    }
+                                    className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${
+                                        retryCount === 0 ||
+                                        loading ||
+                                        limitExceeded
+                                            ? "opacity-50"
+                                            : ""
+                                    }`}
+                                >
+                                    <RotateCcw width={14} height={14} />
+                                    <span>재시도 ({retryCount}회 남음)</span>
+                                </button>
+                            </div>
+
+                            {/* ❗️제한 초과 안내문구 */}
+                            {limitExceeded && (
+                                <p className="mt-1 mb-2 text-sm text-red-500">
+                                    오늘의 AI 사용량을 초과하여 더 이상 요약을
+                                    재시도할 수 없습니다.
+                                </p>
+                            )}
                         </div>
                     </div>
                 </>
