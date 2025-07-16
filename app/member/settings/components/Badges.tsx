@@ -21,7 +21,6 @@ export default function Badges() {
         const fetchStreak = async () => {
             const res = await fetch("/api/login-record/streak");
             const data = await res.json();
-            console.log("Streak data:", data);
             setStreak(data.streak);
         };
         fetchStreak();
