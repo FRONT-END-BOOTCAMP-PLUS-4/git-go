@@ -40,6 +40,7 @@ model Memoir {
 }
 
 model User {
+
   id            String    @id @default(uuid())
   username      String
   profileUrl    String?   @map("profile_url")
@@ -49,11 +50,24 @@ model User {
   isDefaultOnly Boolean   @default(true)
   memoirs       Memoir[]
   repos         Repo[]
-  usage         usage[]
+  usage         AiUsage[]
   loginRecords LoginRecord[]
 
   @@map("user")
 }
+model AiUsage {
+  userId        String
+  date          DateTime   @default(now())
+  usage         Int        @default(0)
+  restrictUsage Int        @default(200000)
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@map("usage")
+}
+
+
 
 model MemoirType {
   id      Int      @id @default(autoincrement())
@@ -79,16 +93,6 @@ model MemoirTag {
 
   @@id([memoirId, tagId])
   @@map("memoir_tag")
-}
-
-model usage {
-  userId        String
-  date          DateTime @default(now())
-  usage         Int      @default(0)
-  restrictUsage Int      @default(200000)
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, date])
 }
 
 model LoginRecord {

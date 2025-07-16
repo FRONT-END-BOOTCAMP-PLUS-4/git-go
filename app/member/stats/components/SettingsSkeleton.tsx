@@ -1,3 +1,6 @@
+// components/SettingsSkeleton.tsx
+"use client";
+
 export default function SettingsSkeleton() {
     return (
         <div className="flex justify-center">
@@ -7,7 +10,25 @@ export default function SettingsSkeleton() {
                     <div className="h-6 w-12 rounded bg-gray-300"></div>
                 </div>
 
-                <div className="p-6">
+                <div className="space-y-6 p-6">
+                    {/* AI 하루 할당량 스켈레톤 */}
+                    <div className="border-border-primary1 space-y-3 border-b pb-4">
+                        <div className="h-5 w-32 rounded bg-gray-300"></div>{" "}
+                        {/* 제목 */}
+                        <div className="relative h-2 w-full rounded bg-gray-200">
+                            <div
+                                className="absolute top-0 left-0 h-2 rounded bg-gray-400"
+                                style={{ width: "60%" }}
+                            />
+                        </div>
+                        <div className="flex justify-between text-xs text-gray-400">
+                            <div className="h-4 w-28 rounded bg-gray-300"></div>
+                            <div className="h-4 w-12 rounded bg-gray-300"></div>
+                        </div>
+                        <div className="h-4 w-48 rounded bg-gray-300"></div>{" "}
+                        {/* 리셋 날짜 */}
+                    </div>
+
                     {/* 테마 설정 */}
                     <div className="border-border-primary1 mb-3 space-y-3 border-b pb-4">
                         <div className="h-4 w-32 rounded bg-gray-300"></div>

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import SettingsSkeleton from "../../stats/components/SettingsSkeleton";
 import AlertDialog from "../../components/AlertDialog";
+import Restrict from "./Restrict";
 
 export default function Settings() {
     const { setTheme } = useTheme();
@@ -100,6 +101,9 @@ export default function Settings() {
                 </div>
 
                 <div className="p-6">
+                    <div className="border-border-primary1 border-b pb-4">
+                        <Restrict />
+                    </div>
                     {/* 테마 설정 */}
                     <div className="border-border-primary1 border-b pb-4">
                         <p className="mb-3 text-[16px] font-normal">
