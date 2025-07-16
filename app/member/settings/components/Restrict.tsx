@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Crown } from "lucide-react";
 
-export default function QuotaBar() {
+export default function Restrict() {
     const [usageInfo, setUsageInfo] = useState<{
         usage: number;
         restrict: number;
@@ -37,7 +37,6 @@ export default function QuotaBar() {
     const { usage, restrict } = usageInfo;
     const percentageUsed = Math.min((usage / restrict) * 100, 100);
 
-    // ✅ 오늘 기준으로 내일 00:00 계산
     const now = new Date();
     const resetDate = new Date(
         now.getFullYear(),
@@ -53,6 +52,7 @@ export default function QuotaBar() {
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false,
     });
 
     return (

@@ -20,36 +20,38 @@ model Repo {
 }
 
 model Memoir {
-  id        Int         @id @default(autoincrement())
-  title     String
-  source    String
-  sourceTitle String    @default("Commit 또는 PR 임시제목") @map("source_title")
-  aiSum     String?     @map("ai_sum")
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime?   @map("updated_at")
-  userId    String
-  typeId    Int
-  repoId    Int
-  content   Json
-  repo      Repo        @relation(fields: [repoId], references: [id], onDelete: Cascade)
-  type      MemoirType  @relation(fields: [typeId], references: [id])
-  user      User        @relation(fields: [userId], references: [id])
-  tags      MemoirTag[]
+  id          Int         @id @default(autoincrement())
+  title       String
+  source      String
+  aiSum       String?     @map("ai_sum")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime?   @map("updated_at")
+  userId      String
+  typeId      Int
+  repoId      Int
+  content     Json
+  sourceTitle String      @default("Commit 또는 PR 임시제목") @map("source_title")
+  repo        Repo        @relation(fields: [repoId], references: [id], onDelete: Cascade)
+  type        MemoirType  @relation(fields: [typeId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  tags        MemoirTag[]
 
   @@map("memoir")
 }
 
 model User {
-  id                 String    @id @default(uuid())
-  username           String
-  profileUrl         String?   @map("profile_url")
-  createdAt          DateTime  @default(now()) @map("created_at")
-  deletedAt          DateTime? @map("deleted_at")
-  githubId           String
-  isDefaultOnly      Boolean   @default(true)
-  memoirs            Memoir[]
-  repos              Repo[]
-  usages             AiUsage[]
+
+  id            String    @id @default(uuid())
+  username      String
+  profileUrl    String?   @map("profile_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+  githubId      String
+  isDefaultOnly Boolean   @default(true)
+  memoirs       Memoir[]
+  repos         Repo[]
+  usage         AiUsage[]
+  loginRecords LoginRecord[]
 
   @@map("user")
 }
@@ -91,4 +93,14 @@ model MemoirTag {
 
   @@id([memoirId, tagId])
   @@map("memoir_tag")
+}
+
+model LoginRecord {
+  id     Int      @id @default(autoincrement())
+  userId String
+  date   DateTime @map("login_date")
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@map("login_record")
 }
