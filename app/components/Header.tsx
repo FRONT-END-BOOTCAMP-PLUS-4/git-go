@@ -1,7 +1,7 @@
 "use client";
 
 import { MEMBER_URL } from "@/constants/url";
-import { LayoutDashboard, Settings } from "lucide-react";
+import { LayoutDashboard, User } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -123,7 +123,7 @@ export default function Header() {
                                     onClick={moveToSettingsPage}
                                     className="text-text-primary1 hover:bg-hover-primary1 flex w-full cursor-pointer items-center justify-center gap-2 px-2 py-3 text-sm"
                                 >
-                                    <Settings
+                                    <User
                                         width={16}
                                         height={16}
                                         className="mr-auto ml-2 shrink-0"
