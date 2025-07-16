@@ -37,7 +37,7 @@ export default function MemberLayout({
     } else {
         return (
             <>
-                <div className="layout-padding mb-14 gap-x-6 py-6 md:mb-0 md:flex">
+                <div className="layout-padding mb-14 gap-x-6 md:mb-0 md:flex">
                     <RepoSelectModal
                         open={open}
                         onClose={() => setOpen(false)}

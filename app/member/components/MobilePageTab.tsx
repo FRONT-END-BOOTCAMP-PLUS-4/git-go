@@ -34,7 +34,9 @@ export default function MobilePageTab({ status }: Props) {
         <div className="bg-bg-member1 fixed bottom-0 flex min-w-full cursor-pointer justify-evenly text-xs shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:hidden">
             <div
                 className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
-                    status === "commits" ? "bg-primary1" : ""
+                    status === "commits"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={commitClickHandler}
             >
@@ -58,7 +60,9 @@ export default function MobilePageTab({ status }: Props) {
             </div>
             <div
                 className={`hover:${status === "pull-requests" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
-                    status === "pull-requests" ? "bg-primary1" : ""
+                    status === "pull-requests"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={pullRequestClickHandler}
             >
@@ -82,7 +86,9 @@ export default function MobilePageTab({ status }: Props) {
             </div>
             <div
                 className={`hover:${status === "memoirs" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
-                    status === "memoirs" ? "bg-primary1" : ""
+                    status === "memoirs"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={memoirClickHandler}
             >
