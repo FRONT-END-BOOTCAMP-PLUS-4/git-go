@@ -3,13 +3,19 @@
 import Button from "@/app/components/Button";
 import { useRepoStore } from "@/store/useRepoStore";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MobileRepoSelectProps {
     repoSelectOpen: boolean;
     setRepoSelectOpen: (repoSelectOpen: boolean) => void;
     setOpen: (open: boolean) => void;
 }
+
+type RepoItem = {
+    dbId: number;
+    id: string;
+    nameWithOwner: string;
+};
 
 export default function MobileRepoSelect({
     repoSelectOpen,
@@ -19,10 +25,46 @@ export default function MobileRepoSelect({
     const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
         useRepoStore();
 
-    const [userRepos, setUserRepos] = useState<
-        { dbId: number; id: string; nameWithOwner: string }[]
-    >([]);
+    const [userRepos, setUserRepos] = useState<RepoItem[]>([]);
     const [loadingRepos, setLoadingRepos] = useState(true);
+
+    const repoSelectRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                repoSelectOpen &&
+                repoSelectRef.current &&
+                !repoSelectRef.current.contains(event.target as Node)
+            ) {
+                setRepoSelectOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [repoSelectOpen, setRepoSelectOpen]);
+
+    // 텍스트가 넘치는 항목 추적용
+    const textRefs = useRef<Record<string, HTMLSpanElement | null>>({});
+    const containerRefs = useRef<Record<string, HTMLDivElement | null>>({});
+    const [shouldSlide, setShouldSlide] = useState<Record<string, boolean>>({});
+
+    const checkOverflow = () => {
+        const newShouldSlide: Record<string, boolean> = {};
+        userRepos.forEach((repo) => {
+            const textEl = textRefs.current[repo.id];
+            const containerEl = containerRefs.current[repo.id];
+            if (textEl && containerEl) {
+                const isOverflowing =
+                    textEl.scrollWidth > containerEl.offsetWidth;
+                newShouldSlide[repo.id] = isOverflowing;
+            }
+        });
+        setShouldSlide(newShouldSlide);
+    };
 
     const fetchRepos = async () => {
         setLoadingRepos(true);
@@ -46,15 +88,7 @@ export default function MobileRepoSelect({
                         nameWithOwner: repo.nameWithOwner,
                     };
                 })
-                .filter(
-                    (
-                        r
-                    ): r is {
-                        dbId: number;
-                        id: string;
-                        nameWithOwner: string;
-                    } => r !== null
-                )
+                .filter((r): r is RepoItem => r !== null)
                 .sort((a, b) => a.dbId - b.dbId);
 
             setUserRepos(matched);
@@ -84,8 +118,18 @@ export default function MobileRepoSelect({
         }
     }, [reloadRepoList]);
 
+    useEffect(() => {
+        // 렌더링 이후에 overflow 여부 체크
+        setTimeout(() => {
+            checkOverflow();
+        }, 0);
+    }, [userRepos]);
+
     return (
-        <div className="relative w-full max-w-50 min-w-25 md:hidden">
+        <div
+            className="relative w-full max-w-50 min-w-25 md:hidden"
+            ref={repoSelectRef}
+        >
             <button
                 className="border-border-primary1 bg-bg-member1 mb-2 flex w-full cursor-pointer items-center gap-x-6 rounded-md border px-3 py-2.5 text-sm md:mb-6"
                 onClick={() => setRepoSelectOpen(!repoSelectOpen)}
@@ -116,21 +160,41 @@ export default function MobileRepoSelect({
                                 const isSelected =
                                     selectedRepo?.nameWithOwner ===
                                     repo.nameWithOwner;
+                                const slideClass = shouldSlide[repo.id]
+                                    ? "animate-[slide_10s_linear_infinite]"
+                                    : "";
+
                                 return (
                                     <li
                                         key={repo.id}
-                                        className={`hover:${isSelected ? "" : "bg-bg-primary1"} cursor-pointer truncate p-3 text-sm ${
-                                            selectedRepo?.nameWithOwner ===
-                                            repo.nameWithOwner
+                                        className={`group cursor-pointer truncate p-3 text-sm ${
+                                            isSelected
                                                 ? "bg-primary2 text-primary7 font-semibold"
-                                                : ""
+                                                : "hover:bg-bg-primary1"
                                         }`}
                                         onClick={() => {
                                             setSelectedRepo(repo);
                                             setRepoSelectOpen(false);
                                         }}
                                     >
-                                        {repo.nameWithOwner}
+                                        <div
+                                            className="overflow-x-auto whitespace-nowrap"
+                                            ref={(el) =>
+                                                (containerRefs.current[
+                                                    repo.id
+                                                ] = el)
+                                            }
+                                        >
+                                            <span
+                                                ref={(el) =>
+                                                    (textRefs.current[repo.id] =
+                                                        el)
+                                                }
+                                                className={`inline-block min-w-full ${slideClass}`}
+                                            >
+                                                {repo.nameWithOwner}
+                                            </span>
+                                        </div>
                                     </li>
                                 );
                             })

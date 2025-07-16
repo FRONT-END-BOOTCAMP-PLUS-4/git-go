@@ -384,3 +384,13 @@
 .color-scale-4 {
     fill: #196127;
 }
+
+@keyframes slide {
+    0%,
+    100% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(-50%);
+    }
+}
