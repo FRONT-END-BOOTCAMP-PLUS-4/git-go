@@ -121,7 +121,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     usage: data.usage,
                     restrict: data.restrictUsage,
                 });
-                if (data.usage >= 10) {
+                if (data.usage >= data.restrictUsage) {
                     setLimitExceeded(true);
                 }
             }
