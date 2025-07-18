@@ -50,7 +50,7 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full max-w-[20vw] flex-col truncate overflow-x-auto pt-4 pl-4 shadow-md">
+        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full w-[20vw] flex-col truncate overflow-x-auto pt-4 pl-4 shadow-md">
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
