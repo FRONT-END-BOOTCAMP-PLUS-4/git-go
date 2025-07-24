@@ -16,8 +16,8 @@ export default function TagFilter({ tags }: TagFilterProps) {
     };
 
     return (
-        <div className="mt-4">
-            <h2 className="text-text-primary1 mb-2 text-base font-normal">
+        <div className="mt-2 flex gap-x-2 md:mt-4 md:block">
+            <h2 className="shrink-0 text-sm font-normal sm:text-base md:mb-2">
                 태그
             </h2>
             <div className="flex flex-wrap gap-2">

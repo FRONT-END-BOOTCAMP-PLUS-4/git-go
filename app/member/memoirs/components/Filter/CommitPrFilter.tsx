@@ -7,9 +7,11 @@ export default function CommitPrFilter() {
     const { filterType, setFilterType } = useFilterStore();
 
     return (
-        <div>
-            <div className="mb-2 text-base font-normal">필터</div>
-            <div className="flex items-center gap-x-2 text-sm md:block md:space-y-2">
+        <div className="flex gap-x-2 md:block">
+            <div className="shrink-0 text-sm font-normal sm:text-base md:mb-2">
+                필터
+            </div>
+            <div className="flex items-center gap-x-2 text-xs sm:text-sm md:block md:space-y-2">
                 {["all", "commits", "pullRequests"].map((type) => {
                     const id = `filter-${type}`;
                     return (
