@@ -3,13 +3,14 @@ import PageTap from "@/app/member/components/PageTab";
 import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 import SideBar from "@/app/member/components/SideBar";
 import { useParams, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchFilter from "./memoirs/components/Filter/SearchFilter";
 import MobilePageTab from "@/app/member/components/MobilePageTab";
 import TimeFilter from "@/app/member/components/TimeFilter";
 import CommitPrFilter from "@/app/member/memoirs/components/Filter/CommitPrFilter";
 import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
 import MobileRepoSelect from "@/app/member/components/MobileRepoSelect";
+import { useRepoStore } from "@/store/useRepoStore";
 
 export default function MemberLayout({
     children,
@@ -24,6 +25,27 @@ export default function MemberLayout({
     const status = pathname.split("/").pop() || "commits";
 
     const { id, memoirId } = useParams();
+
+    const { selectedRepo, setSelectedRepo, reloadRepoList, resetReload } =
+        useRepoStore();
+    useEffect(() => {
+        if (!selectedRepo) return;
+
+        const fetchTags = async () => {
+            try {
+                const res = await fetch(
+                    `/api/memoirs/tags?repo=${selectedRepo.dbId}`
+                );
+                const tags: string[] = await res.json();
+                setRepoTags(tags);
+            } catch (err) {
+                console.error("태그 로딩 실패", err);
+                setRepoTags([]);
+            }
+        };
+
+        fetchTags();
+    }, [selectedRepo]);
 
     // memoir 페이지(작성)가 아닐 때만 사이드바와 탭을 보여줌
     if (
@@ -78,7 +100,7 @@ export default function MemberLayout({
                                                 },
                                             ]}
                                         />
-                                        <div className="border-border-primary1 bg-bg-member1 my-2 rounded-md border p-4">
+                                        <div className="border-border-primary1 bg-bg-member1 my-2 rounded-md border p-3 md:p-4">
                                             <CommitPrFilter />
                                             <TagFilter tags={repoTags} />
                                         </div>

@@ -22,8 +22,8 @@ export default function TimeFilter({ options }: TimeFilterProps) {
     };
 
     return (
-        <div className="bg-bg-member1 border-border-primary1 flex items-center gap-x-2 rounded-md border p-2 md:block md:p-4">
-            <label className="text-text-primary1 shrink-0 text-xs font-normal sm:text-sm">
+        <div className="bg-bg-member1 border-border-primary1 flex items-center gap-x-2 rounded-md border p-3 md:block md:p-4">
+            <label className="text-text-primary1 shrink-0 text-sm font-normal sm:text-base">
                 작성 기간
             </label>
             <div className="relative inline-block w-full">
