@@ -1,5 +1,3 @@
-// components/ResponsiveLayout.tsx
-
 import { ReactNode } from "react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 

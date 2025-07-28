@@ -178,6 +178,7 @@ export default function CommitMemoir() {
             )}
 
             <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
+            {/* {mobileUI} */}
         </CreateMemoirLayout>
     );
 }

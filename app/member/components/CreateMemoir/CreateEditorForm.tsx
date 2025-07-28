@@ -1,20 +1,27 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
-import { Value } from "@udecode/plate";
-import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import Button from "@/app/components/Button";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { MEMBER_URL } from "@/constants/url";
 import { PlateEditor } from "./plate-editor/ui/plate-editor";
-
+import { Value } from "@udecode/plate";
+import { X } from "lucide-react";
+import debounce from "lodash.debounce";
+import { useMemoirStore } from "@/store/useMemoirStore";
 import { useRepoStore } from "@/store/useRepoStore";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useSourceTitleStore } from "@/store/useSourceTitleStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
-import { useMemoirStore } from "@/store/useMemoirStore";
+
+// // PlateEditor를 CSR-only로 dynamic import
+// const PlateEditor = dynamic(
+//     () =>
+//         import("./plate-editor/ui/plate-editor").then((mod) => mod.PlateEditor),
+//     { ssr: false }
+// );
 
 type CreateEditorFormProps = {
     source: string;
@@ -34,34 +41,52 @@ export default function CreateEditorForm({
     const title = useMemoirStore((s) => s.title);
     const tags = useMemoirStore((s) => s.tags);
     const tagInput = useMemoirStore((s) => s.tagInput);
-    const content = useMemoirStore((s) => s.content);
+    // const content = useMemoirStore((s) => s.content);
 
     const setTitle = useMemoirStore((s) => s.setTitle);
     const setTagInput = useMemoirStore((s) => s.setTagInput);
     const addTag = useMemoirStore((s) => s.addTag);
     const removeTag = useMemoirStore((s) => s.removeTag);
     const setContent = useMemoirStore((s) => s.setContent);
-    const resetStore = useMemoirStore((s) => s.reset); // ← reset 액션 불러오기
+    const resetStore = useMemoirStore((s) => s.reset);
 
     const editorRef = useRef<EditorFormHandle>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isComposing, setIsComposing] = useState(false);
 
-    const handleEditorChange = useCallback(() => {
-        const newContent = editorRef.current?.getContent() ?? [];
-        setContent(newContent as Value);
-    }, [setContent]);
+    const [localContent, setLocalContent] = useState<Value>([]);
 
-    const hasText = content.some((node) =>
-        node.children.some((ch: any) => ch.text?.trim() !== "")
+    const handleEditorChange = useMemo(
+        () =>
+            debounce(() => {
+                const newContent = editorRef.current?.getContent() ?? [];
+                setLocalContent(newContent as Value);
+            }, 200),
+        []
+    );
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setContent(localContent);
+        }, 500);
+        return () => clearTimeout(timeout);
+    }, [localContent, setContent]);
+
+    const hasText = useMemo(
+        () =>
+            localContent.some((node) =>
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                node.children.some((ch: any) => ch.text?.trim() !== "")
+            ),
+        [localContent]
     );
     const formDisabled = !title.trim() || !hasText;
 
     const buildPayload = () => ({
         title,
         tags,
-        content,
+        content: localContent,
         source,
         aiSum: summary,
         userId: session!.user.id,
@@ -76,6 +101,7 @@ export default function CreateEditorForm({
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
             addTag(tagInput.trim().toLowerCase());
+            setTagInput("");
         }
     };
 
@@ -97,9 +123,9 @@ export default function CreateEditorForm({
                 const body = await res.json().catch(() => null);
                 throw new Error(body?.message || `저장 실패: ${res.status}`);
             }
-            // 저장 성공 후 리셋
             resetStore();
             router.push(MEMBER_URL.memoirs);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -108,8 +134,8 @@ export default function CreateEditorForm({
     };
 
     const handleCancel = () => {
-        resetStore(); // 스토어 초기화
-        router.back(); // 뒤로가기
+        resetStore();
+        router.back();
     };
 
     return (
@@ -156,7 +182,6 @@ export default function CreateEditorForm({
                 <PlateEditor
                     ref={editorRef}
                     handleEditorChange={handleEditorChange}
-                    //   initialValue={content}      {/* content 초기값 주입 */}
                 />
             </div>
 
