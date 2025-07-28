@@ -387,4 +387,10 @@ export class PrMemoirRepository implements MemoirRepository {
             });
         });
     }
+
+    async totalCountMemoirsByUser(userId: string): Promise<number> {
+        return prisma.memoir.count({
+            where: { userId },
+        });
+    }
 }

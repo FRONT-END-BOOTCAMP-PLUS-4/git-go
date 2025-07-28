@@ -9,4 +9,8 @@ export interface UserRepository {
     withdrawUser(userId: string): Promise<void>;
     getCommitSetting(userId: string): Promise<boolean>;
     updateCommitSetting(userId: string, isDefaultOnly: boolean): Promise<void>;
+    updateTokenUsage(
+        userId: string,
+        tokenUsage: number
+    ): Promise<{ usage: number; restrictUsage: number }>;
 }

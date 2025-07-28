@@ -40,20 +40,34 @@ model Memoir {
 }
 
 model User {
-  id            String         @id @default(uuid())
+
+  id            String    @id @default(uuid())
   username      String
-  profileUrl    String?        @map("profile_url")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  deletedAt     DateTime?      @map("deleted_at")
+  profileUrl    String?   @map("profile_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
   githubId      String
-  isDefaultOnly Boolean        @default(true)
-  login_record  login_record[]
+  isDefaultOnly Boolean   @default(true)
   memoirs       Memoir[]
   repos         Repo[]
-  usage         usage[]
+  usage         AiUsage[]
+  loginRecords LoginRecord[]
 
   @@map("user")
 }
+model AiUsage {
+  userId        String
+  date          DateTime   @default(now())
+  usage         Int        @default(0)
+  restrictUsage Int        @default(200000)
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@map("usage")
+}
+
+
 
 model MemoirType {
   id      Int      @id @default(autoincrement())
@@ -81,21 +95,12 @@ model MemoirTag {
   @@map("memoir_tag")
 }
 
-model login_record {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  login_date DateTime
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model LoginRecord {
+  id     Int      @id @default(autoincrement())
+  userId String
+  date   DateTime @map("login_date")
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, login_date])
-}
-
-model usage {
-  userId        String
-  date          DateTime @default(now())
-  usage         Int      @default(0)
-  restrictUsage Int      @default(200000)
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, date])
+  @@unique([userId, date])
+  @@map("login_record")
 }

@@ -21,7 +21,25 @@ export class PrUserRepository implements UserRepository {
             },
         });
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         if (existing) {
+            // 이미 존재하는 유저 로그인 기록 추가
+            await prisma.loginRecord.upsert({
+                where: {
+                    userId_date: {
+                        userId: existing.id,
+                        date: today,
+                    },
+                },
+                update: {},
+                create: {
+                    userId: existing.id,
+                    date: today,
+                },
+            });
+
             if (profileUrl && existing.profileUrl !== profileUrl) {
                 return prisma.user.update({
                     where: { id: existing.id },
@@ -31,9 +49,19 @@ export class PrUserRepository implements UserRepository {
             return existing;
         }
 
-        return prisma.user.create({
+        const user = await prisma.user.create({
             data: { githubId, username, profileUrl },
         });
+
+        // 새로운 유저 로그인 기록 추가
+        await prisma.loginRecord.create({
+            data: {
+                userId: user.id,
+                date: today,
+            },
+        });
+
+        return user;
     }
 
     // 회원탈퇴
@@ -64,5 +92,83 @@ export class PrUserRepository implements UserRepository {
             where: { id: userId },
             data: { isDefaultOnly },
         });
+    }
+    async getTokenUsage({ userId }: { userId: string }) {
+        const today = new Date();
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        ); // 자정 기준
+
+        const usage = await prisma.aiUsage.findUnique({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+        });
+
+        if (!usage) {
+            // 오늘 기록이 없으면 새로 생성
+            return {
+                daily_ai_use_count: 0,
+                daily_ai_restrict_count: 200000,
+            };
+        }
+
+        return {
+            daily_ai_use_count: usage.usage,
+            daily_ai_restrict_count: usage.restrictUsage,
+        };
+    }
+
+    async updateTokenUsage(
+        userId: string,
+        tokenUsage: number
+    ): Promise<{ usage: number; restrictUsage: number }> {
+        const today = new Date();
+        const date = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+        );
+
+        await prisma.aiUsage.upsert({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+            update: {
+                usage: {
+                    increment: tokenUsage,
+                },
+            },
+            create: {
+                userId,
+                date,
+                usage: tokenUsage,
+                restrictUsage: 200000,
+            },
+        });
+
+        // ✅ 업데이트된 결과 다시 불러오기
+        const updated = await prisma.aiUsage.findUniqueOrThrow({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+            select: {
+                usage: true,
+                restrictUsage: true,
+            },
+        });
+
+        return updated;
     }
 }
