@@ -2,6 +2,7 @@ import useBuildFileTree from "@/hooks/useBuildFileTree";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import FileNodeComponent from "./FileNodeComponent";
+import { Panel } from "react-resizable-panels";
 
 type AccordionSidebarProps = {
     files: string[];
@@ -50,27 +51,29 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 top-[65px] left-0 z-40 flex h-full max-w-[100px] min-w-fit flex-col truncate overflow-x-auto p-4 shadow-md">
-            <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-sm font-bold">Changed Files</h2>
-                <button
-                    onClick={() => setSidebarOpen(false)}
-                    className="text-text-primary1 cursor-pointer"
-                >
-                    <ChevronsLeft />
-                </button>
-            </div>
+        <Panel className="flex h-full w-full">
+            <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full w-[20vw] flex-col truncate pt-4 pl-4 shadow-md">
+                <div className="mb-4 flex items-center justify-between">
+                    <h2 className="text-sm font-bold">Changed Files</h2>
+                    <button
+                        onClick={() => setSidebarOpen(false)}
+                        className="text-text-primary1 mr-4 cursor-pointer"
+                    >
+                        <ChevronsLeft />
+                    </button>
+                </div>
 
-            <div className="overflow-y-auto">
-                {tree.map((node) => (
-                    <FileNodeComponent
-                        key={node.path}
-                        node={node}
-                        onSelect={onSelect}
-                        selectedFile={selectedFile}
-                    />
-                ))}
+                <div className="overflow-x-auto overflow-y-auto">
+                    {tree.map((node) => (
+                        <FileNodeComponent
+                            key={node.path}
+                            node={node}
+                            onSelect={onSelect}
+                            selectedFile={selectedFile}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
+        </Panel>
     );
 }
