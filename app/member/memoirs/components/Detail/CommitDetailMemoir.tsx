@@ -1,26 +1,26 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
-import DetailMemoirLayout from "./DetailMemoirLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
-import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
 import Loading from "@/app/member/components/Loading";
 import MobileTabLayout from "@/app/member/components/MobileTabLayout";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
-import { Value } from "@udecode/plate";
-import ViewSummary from "../ViewSummary";
-import { useParams } from "next/navigation";
+import NotFound from "@/app/not-found";
+import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
+import { CommitType } from "@/types/github/CommitType";
+import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import ViewSummary from "../ViewSummary";
+import DetailMemoirLayout from "./DetailMemoirLayout";
 
 export default function CommitDetailMemoir() {
     const { id }: { id: string } = useParams();
@@ -248,6 +248,7 @@ export default function CommitDetailMemoir() {
                     />
                 </ChangeListLayout>
             </Panel>
+
             <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
 
             <Panel defaultSize={40} minSize={20}>
