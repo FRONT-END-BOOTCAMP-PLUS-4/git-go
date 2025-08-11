@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import Button from "@/app/components/Button";
 import { EditorFormHandle } from "@/types/memoir/Memoir";
 import { MEMBER_URL } from "@/constants/url";
@@ -15,13 +15,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSourceTitleStore } from "@/store/useSourceTitleStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
-
-// // PlateEditor를 CSR-only로 dynamic import
-// const PlateEditor = dynamic(
-//     () =>
-//         import("./plate-editor/ui/plate-editor").then((mod) => mod.PlateEditor),
-//     { ssr: false }
-// );
 
 type CreateEditorFormProps = {
     source: string;
@@ -41,7 +34,7 @@ export default function CreateEditorForm({
     const title = useMemoirStore((s) => s.title);
     const tags = useMemoirStore((s) => s.tags);
     const tagInput = useMemoirStore((s) => s.tagInput);
-    // const content = useMemoirStore((s) => s.content);
+    const content = useMemoirStore((s) => s.content);
 
     const setTitle = useMemoirStore((s) => s.setTitle);
     const setTagInput = useMemoirStore((s) => s.setTagInput);
@@ -55,38 +48,38 @@ export default function CreateEditorForm({
     const [error, setError] = useState<string | null>(null);
     const [isComposing, setIsComposing] = useState(false);
 
-    const [localContent, setLocalContent] = useState<Value>([]);
-
-    const handleEditorChange = useMemo(
+    const debouncedPersist = useMemo(
         () =>
-            debounce(() => {
-                const newContent = editorRef.current?.getContent() ?? [];
-                setLocalContent(newContent as Value);
-            }, 200),
-        []
+            debounce((val: Value) => {
+                setContent(val);
+            }, 1000),
+        [setContent]
     );
+
+    const handleEditorChange = useCallback(() => {
+        const newContent = (editorRef.current?.getContent() ?? []) as Value;
+        debouncedPersist(newContent);
+    }, [debouncedPersist]);
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setContent(localContent);
-        }, 500);
-        return () => clearTimeout(timeout);
-    }, [localContent, setContent]);
+        return () => debouncedPersist.cancel();
+    }, [debouncedPersist]);
 
-    const hasText = useMemo(
-        () =>
-            localContent.some((node) =>
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                node.children.some((ch: any) => ch.text?.trim() !== "")
-            ),
-        [localContent]
-    );
+    const hasText =
+        Array.isArray(content) &&
+        content.some(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (node: any) =>
+                Array.isArray(node.children) &&
+                node.children.some((ch: any) => (ch.text ?? "").trim() !== "")
+        );
+
     const formDisabled = !title.trim() || !hasText;
 
     const buildPayload = () => ({
         title,
         tags,
-        content: localContent,
+        content,
         source,
         aiSum: summary,
         userId: session!.user.id,
@@ -110,6 +103,8 @@ export default function CreateEditorForm({
             setError("로그인이 필요하거나 저장 중입니다.");
             return;
         }
+        debouncedPersist.flush();
+
         setLoading(true);
         setError(null);
 
@@ -125,7 +120,6 @@ export default function CreateEditorForm({
             }
             resetStore();
             router.push(MEMBER_URL.memoirs);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -134,6 +128,7 @@ export default function CreateEditorForm({
     };
 
     const handleCancel = () => {
+        debouncedPersist.cancel();
         resetStore();
         router.back();
     };

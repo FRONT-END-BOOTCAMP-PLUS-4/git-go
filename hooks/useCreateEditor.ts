@@ -139,6 +139,7 @@ export const useCreateEditor = (
     deps: unknown[] = []
 ) => {
     const content = useMemoirStore((s) => s.content);
+
     return usePlateEditor(
         {
             value: value ?? content ?? [],
