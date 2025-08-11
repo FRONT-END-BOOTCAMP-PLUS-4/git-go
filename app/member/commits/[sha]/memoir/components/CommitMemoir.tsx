@@ -107,12 +107,17 @@ export default function CommitMemoir() {
             setActiveIndex={setActiveIndex}
             navItems={NAVIGATION_ITEMS}
             panels={[
-                <AccordionSidebar
+                <PanelGroup
                     key="sidebar"
-                    files={files}
-                    selectedFile={selectedFile}
-                    onSelect={setSelectedFile}
-                />,
+                    direction="horizontal"
+                    className="h-full w-full"
+                >
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
                     <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
                         {commitData.message}
