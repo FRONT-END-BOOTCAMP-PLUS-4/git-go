@@ -226,12 +226,17 @@ export default function PullRequestMemoir() {
             setActiveIndex={setActiveIndex}
             navItems={NAVIGATION_ITEMS}
             panels={[
-                <AccordionSidebar
+                <PanelGroup
                     key="sidebar"
-                    files={files}
-                    selectedFile={selectedFile}
-                    onSelect={setSelectedFile}
-                />,
+                    direction="horizontal"
+                    className="h-full w-full"
+                >
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
                     <Select
                         options={prOptions}
