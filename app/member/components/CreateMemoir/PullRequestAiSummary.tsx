@@ -38,11 +38,8 @@ export default function PullRequestAiSummary({
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
     const { data: session, status: sessionStatus } = useSession();
-    const [usageInfo, setUsageInfo] = useState<{
-        usage: number;
-        restrict: number;
-    } | null>(null);
     const [limitExceeded, setLimitExceeded] = useState<boolean | null>(null);
+    const simplified = useSimplifyPullRequestData(pullRequest);
 
     useEffect(() => {
         const fetchUsage = async () => {
@@ -51,8 +48,6 @@ export default function PullRequestAiSummary({
             const usage = data.daily_ai_use_count;
             const restrict = data.daily_ai_restrict_count;
             // console.log("사용량: ", usage, "/", restrict);
-
-            setUsageInfo({ usage, restrict });
             const exceeded = usage >= restrict;
             setLimitExceeded(exceeded);
             // console.log("limitExceeded 상태: ", exceeded);
@@ -82,7 +77,6 @@ export default function PullRequestAiSummary({
         setLoading(true);
         setSummarized(prNo || "", true);
         try {
-            const simplified = useSimplifyPullRequestData(pullRequest);
             const prompt = `
                             ${PROMPT}
                             \`\`\`json
@@ -100,7 +94,7 @@ export default function PullRequestAiSummary({
 
             for await (const chunk of response) {
                 fullText += chunk.text;
-                tokenUsage = chunk.usageMetadata?.totalTokenCount;
+                tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
                     setSummary(fullText);
                 });
@@ -120,16 +114,16 @@ export default function PullRequestAiSummary({
                     }),
                 });
                 const data = await res.json();
-                setUsageInfo({
-                    usage: data.usage,
-                    restrict: data.restrictUsage,
-                });
                 if (data.usage >= data.restrictUsage) {
                     setLimitExceeded(true);
                 }
             }
-        } catch (error: any) {
-            console.error("AI 요약 실패:", error);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error("AI 요약 실패:", error.message);
+            } else {
+                console.error("AI 요약 실패: 알 수 없는 오류", error);
+            }
             setSummary(
                 "❌ 요약을 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
             );
