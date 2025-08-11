@@ -193,17 +193,13 @@ export default function CommitDetailMemoir() {
             )}
 
             <PanelGroup direction="horizontal" className="h-full w-full">
-                <Panel defaultSize={20} minSize={10}>
-                    <div className="flex">
-                        <AccordionSidebar
-                            files={files}
-                            selectedFile={selectedFile}
-                            onSelect={setSelectedFile}
-                        />
-                    </div>
-                </Panel>
-
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 min-h-[100vh] min-w-2 cursor-col-resize" />
+                <div className="flex">
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </div>
 
                 <Panel defaultSize={40} minSize={20}>
                     <ChangeListLayout>
