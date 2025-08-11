@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import { Providers } from "./components/Providers";
 import localFont from "next/font/local";
+import AutoLoginRecord from "./components/AutoLoginRecord";
 
 const pretendard = localFont({
     src: "../static/fonts/PretendardVariable.woff2",
@@ -57,6 +58,7 @@ export default function RootLayout({
             <body className={`bg-bg-primary1 ${pretendard.className}`}>
                 <Providers>
                     <Header />
+                    <AutoLoginRecord />
                     {children}
                 </Providers>
             </body>
