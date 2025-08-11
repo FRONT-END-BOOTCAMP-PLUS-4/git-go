@@ -303,7 +303,6 @@ export default function CommitDetailMemoir() {
                     />
                 </div>
             )}
-
             <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </DetailMemoirLayout>
     );
