@@ -58,7 +58,7 @@ export default function EditorFormReadOnly({
                 onConfirm={handleConfirm}
                 imageSrc={"/trash.png"} // 필요하면 아이콘 경로 넣으세요
             />
-            <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden">
+            <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden p-4 lg:p-0">
                 {/* 제목 */}
                 <div>
                     <div className="flex items-center justify-between">

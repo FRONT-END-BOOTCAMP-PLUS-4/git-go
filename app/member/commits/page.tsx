@@ -35,7 +35,7 @@ export default function CommitPage() {
         day: "numeric",
     }).format(now);
 
-    const { selectedRepo } = useRepoStore();
+    const { selectedRepo, hasHydrated } = useRepoStore();
     const ownerName = selectedRepo?.nameWithOwner.split("/")[0];
     const repoName = selectedRepo?.nameWithOwner.split("/")[1];
 
@@ -148,11 +148,11 @@ export default function CommitPage() {
 
     // 저장소 변경 시 페이지 1부터 fetch
     useEffect(() => {
-        if (selectedRepo) {
-            setCurrentPage(1);
-            fetchCommitsByRepo(ownerName, repoName, 1);
-        }
-    }, [selectedRepo]);
+        if (!hasHydrated || !selectedRepo || !session) return;
+
+        setCurrentPage(1);
+        fetchCommitsByRepo(ownerName, repoName, 1);
+    }, [selectedRepo, hasHydrated, session]);
 
     // 페이지 변경 시 fetch
     useEffect(() => {

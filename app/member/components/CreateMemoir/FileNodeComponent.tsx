@@ -38,7 +38,7 @@ export default function FileNodeComponent({
     }
 
     return (
-        <div>
+        <div className="min-w-max">
             <button
                 className="hover:bg-hover-gray1 flex w-full cursor-pointer items-center rounded py-1 text-left text-sm"
                 onClick={() => setOpen(!open)}

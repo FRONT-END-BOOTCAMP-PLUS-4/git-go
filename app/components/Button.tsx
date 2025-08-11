@@ -49,7 +49,7 @@ export default function Button({
             type={htmlType}
             onClick={onClick}
             disabled={isDisabled}
-            className={`shadow-border-primary1 flex items-center gap-x-2 rounded-md px-3 py-2.5 text-xs font-semibold shadow-xs transition-colors ${styleClass} ${sizeClass}`}
+            className={`shadow-border-primary1 flex items-center gap-x-2 rounded-md px-3 py-2.5 text-xs font-semibold shadow-xs transition-colors active:scale-[0.97] ${styleClass} ${sizeClass}`}
         >
             {icon && <span className="flex-shrink-0">{icon}</span>}
             {children ?? label}

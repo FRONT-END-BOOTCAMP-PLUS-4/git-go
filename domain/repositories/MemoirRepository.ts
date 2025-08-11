@@ -42,4 +42,6 @@ export interface MemoirRepository {
     }): Promise<Memoir>;
 
     delete(id: number): Promise<void>;
+
+    totalCountMemoirsByUser(userId: string): Promise<number>;
 }

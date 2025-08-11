@@ -35,7 +35,7 @@ export default function PullRequestPage() {
     const [isLoading, setIsLoading] = useState(true);
     const perPage = 10;
 
-    const { selectedRepo } = useRepoStore();
+    const { selectedRepo, hasHydrated } = useRepoStore();
     const { data: session } = useSession();
 
     const cacheRef = useRef<
@@ -101,11 +101,11 @@ export default function PullRequestPage() {
     };
 
     useEffect(() => {
-        if (selectedRepo) {
-            setCurrentPage(1);
-            fetchPrList(selectedRepo.nameWithOwner, 1);
-        }
-    }, [selectedRepo]);
+        if (!hasHydrated || !selectedRepo || !session) return;
+
+        setCurrentPage(1);
+        fetchPrList(selectedRepo.nameWithOwner, 1);
+    }, [selectedRepo, session, hasHydrated]);
 
     useEffect(() => {
         if (selectedRepo) {
