@@ -33,7 +33,7 @@ export default function MobileTabLayout({
                                 onClick={() => setActiveIndex(index)}
                                 className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${
                                     activeIndex === index
-                                        ? "text-primary7 bg-primary1 border-primary8 border-t-2"
+                                        ? "text-primary7 bg-primary1 border-primary8"
                                         : "text-[#222327]"
                                 }`}
                                 aria-label={item.text}
