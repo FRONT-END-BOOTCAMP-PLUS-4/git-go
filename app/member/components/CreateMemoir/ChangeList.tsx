@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import { ChangeDetail } from "@/types/github/CommitType";
 import clsx from "clsx";
-import { useEffect, useRef } from "react";
 
 const statusClassMap: Record<string, string> = {
     added: "bg-[var(--color-code-status-add-bg)] text-[var(--color-code-status-add-text)]",
@@ -51,7 +52,7 @@ export default function ChangeList({
 
     return (
         <div
-            className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain pr-2"
+            className="h-[calc(100%-48px)] overflow-y-auto overscroll-contain lg:pr-2"
             ref={containerRef}
         >
             {changes.map((change) => (

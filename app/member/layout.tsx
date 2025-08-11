@@ -1,10 +1,12 @@
 "use client";
+
+import { useParams, usePathname } from "next/navigation";
+
 import PageTap from "@/app/member/components/PageTab";
 import RepoSelectModal from "@/app/member/components/RepoSelectModal";
-import SideBar from "@/app/member/components/SideBar";
-import { useParams, usePathname } from "next/navigation";
-import { useState } from "react";
 import SearchFilter from "./memoirs/components/Filter/SearchFilter";
+import SideBar from "@/app/member/components/SideBar";
+import { useState } from "react";
 
 export default function MemberLayout({
     children,
