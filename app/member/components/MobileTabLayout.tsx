@@ -22,7 +22,7 @@ export default function MobileTabLayout({
                 {panels[activeIndex]}
             </div>
 
-            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center rounded-[10px] bg-white shadow-lg">
+            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center bg-white shadow-lg">
                 <ul className="flex h-full w-full justify-around">
                     {navItems.map((item, index) => (
                         <li
