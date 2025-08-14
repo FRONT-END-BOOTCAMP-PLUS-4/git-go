@@ -12,4 +12,20 @@ export class PrLoginRecordRepository implements LoginRecordRepository {
         });
         return records.map((r) => r.date);
     }
+
+    async upsertLoginRecord(userId: string, date: Date): Promise<void> {
+        await prisma.loginRecord.upsert({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+            update: {},
+            create: {
+                userId,
+                date,
+            },
+        });
+    }
 }

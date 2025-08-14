@@ -7,13 +7,15 @@ import Image from "next/image";
 export function FeatureBox({ feature }: { feature: any }) {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
-        const container = document.querySelector("main");
+        const container = document.querySelector("main"); // ← snap이 걸린 컨테이너
 
         if (element && container) {
-            container.scrollTo({
-                top: element.offsetTop + 165,
-                behavior: "smooth",
-            });
+            const y =
+                element.getBoundingClientRect().top -
+                container.getBoundingClientRect().top +
+                container.scrollTop;
+
+            container.scrollTo({ top: y, behavior: "smooth" });
         }
     };
 
@@ -42,7 +44,7 @@ export function FeatureBox({ feature }: { feature: any }) {
 export function ScrollDownButton({ id }: { id: string }) {
     return (
         <button
-            className="absolute cursor-pointer rounded-full p-3"
+            className="absolute bottom-[85px] cursor-pointer rounded-full p-3"
             onClick={() => {
                 const element = document.getElementById(id);
                 const container = document.querySelector("main"); // ← snap이 걸린 컨테이너

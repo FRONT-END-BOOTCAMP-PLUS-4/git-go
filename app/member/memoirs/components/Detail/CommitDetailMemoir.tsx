@@ -1,20 +1,24 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
 import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
 import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
 import Loading from "@/app/member/components/Loading";
+import MobileTabLayout from "@/app/member/components/MobileTabLayout";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import NotFound from "@/app/not-found";
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 
@@ -47,6 +51,9 @@ export default function CommitDetailMemoir() {
     // 로딩/에러 상태
     const [isLoading, setIsLoading] = useState(true);
     const [loadError, setLoadError] = useState<string | null>(null);
+
+    // 모바일 버전의 탭
+    const [activeIndex, setActiveIndex] = useState(2);
 
     // 서버에서 “회고 데이터”를 가져오는 함수
     const load = async () => {
@@ -106,7 +113,7 @@ export default function CommitDetailMemoir() {
         if (sessionStatus !== "authenticated") return;
         load();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, sessionStatus, session]);
+    }, [id, sessionStatus]);
 
     // 커밋 상세를 가져오는 함수
     const fetchCommitDetail = async (
@@ -155,30 +162,135 @@ export default function CommitDetailMemoir() {
     }, [commitData]);
 
     // 세션 로딩 중 → <Loading/>
-    if (sessionStatus === "loading") {
-        return <Loading />;
-    }
+    if (sessionStatus === "loading") return <Loading />;
 
     // 아직 회고 데이터 로딩 중 → <Loading/>
-    if (isLoading) {
-        return <Loading />;
-    }
+    if (isLoading) return <Loading />;
 
     // loadError가 있으면(404 / 작성자 불일치 / 네트워크 오류 등) → <NotFound/>
-    if (loadError) {
-        return <NotFound />;
-    }
+    if (loadError) return <NotFound />;
 
     // 커밋 상세(commitData)가 아직 없으면 → <Loading/>
-    if (!commitData) {
-        return <Loading />;
-    }
+    if (!commitData) return <Loading />;
+
+    const editPanel = isEditing ? (
+        <EditEditorForm
+            title={title}
+            setTitle={setTitle}
+            tags={tags}
+            setTags={setTags}
+            content={content}
+            setContent={setContent}
+            memoirId={parseId}
+            session={session}
+            repo={repo}
+            setIsEditing={setIsEditing}
+            onCancel={handleToggleEdit}
+        />
+    ) : (
+        <EditorFormReadOnly
+            title={title}
+            tags={tags}
+            content={content}
+            handleStatusChange={handleToggleEdit}
+            memoirId={parseId}
+        />
+    );
+
+    const mobileUI = (
+        <MobileTabLayout
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            navItems={NAVIGATION_ITEMS}
+            panels={[
+                <PanelGroup
+                    key="sidebar"
+                    direction="horizontal"
+                    className="h-full w-full"
+                >
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </PanelGroup>,
+                <ChangeListLayout key="changelist-layout">
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                        {commitData.message}
+                    </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>,
+                <div
+                    key="editor"
+                    className="bg-bg-member1 flex h-full flex-col justify-between gap-4 p-4"
+                >
+                    {editPanel}
+                </div>,
+                ,
+            ]}
+        />
+    );
+
+    const desktopUI = (
+        <PanelGroup direction="horizontal" className="h-full w-full">
+            <AccordionSidebar
+                files={files}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
+
+            <Panel defaultSize={40} minSize={20}>
+                <ChangeListLayout>
+                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                        {commitData.message}
+                    </div>
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                    />
+                </ChangeListLayout>
+            </Panel>
+
+            <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+
+            <Panel defaultSize={40} minSize={20}>
+                <div className="bg-bg-member1 relative col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
+                    {isEditing ? (
+                        <EditEditorForm
+                            title={title}
+                            setTitle={setTitle}
+                            tags={tags}
+                            setTags={setTags}
+                            content={content}
+                            setContent={setContent}
+                            memoirId={parseId}
+                            session={session}
+                            repo={repo}
+                            setIsEditing={setIsEditing}
+                            onCancel={handleToggleEdit}
+                        />
+                    ) : (
+                        <EditorFormReadOnly
+                            title={title}
+                            tags={tags}
+                            content={content}
+                            handleStatusChange={handleToggleEdit}
+                            memoirId={parseId}
+                        />
+                    )}
+                </div>
+            </Panel>
+        </PanelGroup>
+    );
 
     return (
         <DetailMemoirLayout>
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both]"
+                className="bg-primary7 fixed bottom-30 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both] lg:bottom-14"
             >
                 ✨ 생성된 요약 보기
             </button>
@@ -191,62 +303,7 @@ export default function CommitDetailMemoir() {
                     />
                 </div>
             )}
-
-            <PanelGroup direction="horizontal" className="h-full w-full">
-                <Panel defaultSize={20} minSize={10}>
-                    <div className="flex">
-                        <AccordionSidebar
-                            files={files}
-                            selectedFile={selectedFile}
-                            onSelect={setSelectedFile}
-                        />
-                    </div>
-                </Panel>
-
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 min-h-[100vh] min-w-2 cursor-col-resize" />
-
-                <Panel defaultSize={40} minSize={20}>
-                    <ChangeListLayout>
-                        <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
-                            {commitData.message}
-                        </div>
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                        />
-                    </ChangeListLayout>
-                </Panel>
-
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-
-                <Panel defaultSize={40} minSize={20}>
-                    <div className="bg-bg-member1 relative col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4">
-                        {isEditing ? (
-                            <EditEditorForm
-                                title={title}
-                                setTitle={setTitle}
-                                tags={tags}
-                                setTags={setTags}
-                                content={content}
-                                setContent={setContent}
-                                memoirId={parseId}
-                                session={session}
-                                repo={repo}
-                                setIsEditing={setIsEditing}
-                                onCancel={handleToggleEdit}
-                            />
-                        ) : (
-                            <EditorFormReadOnly
-                                title={title}
-                                tags={tags}
-                                content={content}
-                                handleStatusChange={handleToggleEdit}
-                                memoirId={parseId}
-                            />
-                        )}
-                    </div>
-                </Panel>
-            </PanelGroup>
+            <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </DetailMemoirLayout>
     );
 }

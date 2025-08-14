@@ -1,26 +1,27 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
+import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
-import Loading from "@/app/member/components/Loading";
-import Select from "@/app/member/components/Select";
-
-import { useRepoStore } from "@/store/useRepoStore";
-import { useSummaryStore } from "@/store/useSummaryStore";
-
 import Error from "@/app/components/Error";
+import Loading from "@/app/member/components/Loading";
+import MobileTabLayout from "@/app/member/components/MobileTabLayout";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import NotFound from "@/app/not-found";
-import { CommitType } from "@/types/github/CommitType";
+import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 import { PullRequestType } from "@/types/github/PullRequestType";
+import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
+import Select from "@/app/member/components/Select";
+import { useParams } from "next/navigation";
+import { useRepoStore } from "@/store/useRepoStore";
+import { useSession } from "next-auth/react";
+import { useSummaryStore } from "@/store/useSummaryStore";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();
@@ -42,6 +43,9 @@ export default function PullRequestMemoir() {
     const [showModal, setShowModal] = useState(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
+
+    // 모바일 버전의 탭
+    const [activeIndex, setActiveIndex] = useState(2);
 
     // 마운트 시 AI 요약 스토어 초기화
     useEffect(() => {
@@ -206,19 +210,92 @@ export default function PullRequestMemoir() {
     }, [commitData]);
 
     // 로딩 중이라면 Loading 컴포넌트
-    if (isLoading) {
-        return <Loading />;
-    }
+    if (isLoading) return <Loading />;
 
     // 로드 에러가 발생하면 NotFound 컴포넌트 한 번만 렌더
-    if (loadError) {
-        return <NotFound />;
-    }
+    if (loadError) return <NotFound />;
 
     // 커밋 데이터가 아직 없으면(정상 로직에서는 loadError나 isLoading에서 처리되므로 잘 안 오지만...)
-    if (!commitData) {
+    if (!commitData)
         return <Error errorMessage="커밋 데이터를 불러올 수 없습니다." />;
-    }
+
+    // 모바일 레이아웃
+    const mobileUI = (
+        <MobileTabLayout
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            navItems={NAVIGATION_ITEMS}
+            panels={[
+                <PanelGroup
+                    key="sidebar"
+                    direction="horizontal"
+                    className="h-full w-full"
+                >
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </PanelGroup>,
+                <ChangeListLayout key="changelist-layout">
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
+                    />
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>,
+                <div
+                    key="editor"
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    <CreateEditorForm source={pr_no} typeId={2} />
+                </div>,
+            ]}
+        />
+    );
+
+    const desktopUI = (
+        <PanelGroup direction="horizontal" className="h-full w-full">
+            {/* 사이드바: 변경된 파일 목록 */}
+            <AccordionSidebar
+                files={files}
+                selectedFile={selectedFile}
+                onSelect={setSelectedFile}
+            />
+
+            <Panel defaultSize={40} minSize={20}>
+                {/* 변경 목록 + 커밋 선택 드롭다운 */}
+                <ChangeListLayout>
+                    <Select
+                        options={prOptions}
+                        value={selectedSha}
+                        onChange={setSelectedSha}
+                    />
+                    <ChangeList
+                        changes={commitData.changeDetail}
+                        selectedFile={selectedFile}
+                        selectedCommitId={selectedSha}
+                    />
+                </ChangeListLayout>
+            </Panel>
+            <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
+
+            {/* 회고 작성 폼 */}
+            <Panel defaultSize={40} minSize={20}>
+                <div
+                    ref={containerRef}
+                    className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
+                >
+                    <CreateEditorForm source={pr_no} typeId={2} />
+                </div>
+            </Panel>
+        </PanelGroup>
+    );
 
     return (
         <CreateMemoirLayout>
@@ -238,41 +315,7 @@ export default function PullRequestMemoir() {
                 </div>
             )}
 
-            <PanelGroup direction="horizontal" className="h-full w-full">
-                {/* 사이드바: 변경된 파일 목록 */}
-                <AccordionSidebar
-                    files={files}
-                    selectedFile={selectedFile}
-                    onSelect={setSelectedFile}
-                />
-
-                <Panel defaultSize={40} minSize={20}>
-                    {/* 변경 목록 + 커밋 선택 드롭다운 */}
-                    <ChangeListLayout>
-                        <Select
-                            options={prOptions}
-                            value={selectedSha}
-                            onChange={setSelectedSha}
-                        />
-                        <ChangeList
-                            changes={commitData.changeDetail}
-                            selectedFile={selectedFile}
-                            selectedCommitId={selectedSha}
-                        />
-                    </ChangeListLayout>
-                </Panel>
-                <PanelResizeHandle className="bg-bg-primary2 hover:bg-text-gray1 w-1 cursor-col-resize" />
-
-                {/* 회고 작성 폼 */}
-                <Panel defaultSize={40} minSize={20}>
-                    <div
-                        ref={containerRef}
-                        className="bg-bg-member1 col-span-1 flex h-full min-h-0 flex-col justify-between gap-4 p-4"
-                    >
-                        <CreateEditorForm source={pr_no} typeId={2} />
-                    </div>
-                </Panel>
-            </PanelGroup>
+            <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
         </CreateMemoirLayout>
     );
 }

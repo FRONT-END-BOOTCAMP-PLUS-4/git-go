@@ -33,11 +33,8 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
     const { data: session, status: sessionStatus } = useSession();
-    const [usageInfo, setUsageInfo] = useState<{
-        usage: number;
-        restrict: number;
-    } | null>(null);
     const [limitExceeded, setLimitExceeded] = useState<boolean | null>(null);
+    const simplified = useSimplifyCommitData(commit);
 
     useEffect(() => {
         const fetchUsage = async () => {
@@ -46,8 +43,6 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             const usage = data.daily_ai_use_count;
             const restrict = data.daily_ai_restrict_count;
             // console.log("사용량: ", usage, "/", restrict);
-
-            setUsageInfo({ usage, restrict });
             const exceeded = usage >= restrict;
             setLimitExceeded(exceeded);
             // console.log("limitExceeded 상태: ", exceeded);
@@ -78,7 +73,6 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
         setSummarized(commit.sha, true);
 
         try {
-            const simplified = useSimplifyCommitData(commit);
             const prompt = `
                 ${PROMPT}
                 \`\`\`json
@@ -97,7 +91,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             for await (const chunk of response) {
                 if (!chunk || !chunk.text) continue;
                 fullText += chunk.text;
-                tokenUsage = chunk.usageMetadata?.totalTokenCount;
+                tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
                     setSummary(fullText);
                 });
@@ -117,16 +111,16 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
                     }),
                 });
                 const data = await res.json();
-                setUsageInfo({
-                    usage: data.usage,
-                    restrict: data.restrictUsage,
-                });
                 if (data.usage >= data.restrictUsage) {
                     setLimitExceeded(true);
                 }
             }
-        } catch (error: any) {
-            console.error("AI 요약 실패:", error);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error("AI 요약 실패:", error.message);
+            } else {
+                console.error("AI 요약 실패:", error);
+            }
             setSummary("❌ 요약을 생성하는 중 오류가 발생했습니다.");
             setSummarized(commit.sha, false);
         } finally {
