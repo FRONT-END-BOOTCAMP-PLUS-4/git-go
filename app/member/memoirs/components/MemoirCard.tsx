@@ -92,7 +92,7 @@ export default function MemoirCard({ memoir }: Props) {
                     <div className="flex min-w-0 flex-col md:flex-row md:items-center md:gap-x-3">
                         {/* 타이틀 + 라벨 */}
                         <div className="flex min-w-0 items-center gap-x-3">
-                            <h3 className="max-w-[140px] truncate font-semibold md:max-w-none">
+                            <h3 className="max-w-[60%] truncate font-semibold md:max-w-none">
                                 {memoir.title}
                             </h3>
                             <div
