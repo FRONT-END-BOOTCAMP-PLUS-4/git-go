@@ -162,7 +162,7 @@ export default function MemberLayout({
                             </h2>
                             <button
                                 onClick={() => setFilterOpen(false)}
-                                className="ml-auto rounded-md p-2 hover:bg-black/10"
+                                className="ml-auto cursor-pointer rounded-md p-2 hover:bg-black/10"
                                 aria-label="필터 닫기"
                             >
                                 <X size={18} />
