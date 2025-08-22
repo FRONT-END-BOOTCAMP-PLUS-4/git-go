@@ -96,7 +96,7 @@ export default function MemoirCard({ memoir }: Props) {
                                 {memoir.title}
                             </h3>
                             <div
-                                className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} max-w-[120px] truncate text-xs shadow-sm md:max-w-[160px]`}
+                                className={`shadow-border-primary1 ml-auto rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} max-w-[120px] truncate text-xs shadow-sm md:max-w-[160px]`}
                             >
                                 {typeInfo.label}
                             </div>
