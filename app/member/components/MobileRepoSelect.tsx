@@ -127,7 +127,7 @@ export default function MobileRepoSelect({
 
     return (
         <div
-            className="relative w-full max-w-50 min-w-25 md:hidden"
+            className="relative w-full max-w-100 min-w-25 md:hidden"
             ref={repoSelectRef}
         >
             <button
