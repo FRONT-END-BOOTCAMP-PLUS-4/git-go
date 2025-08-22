@@ -133,7 +133,7 @@ export default function MemoirCard({ memoir }: Props) {
 
                     <div className="text-text-secondary2 flex min-w-0 items-center gap-x-1">
                         {getIconByType(memoir.type)}
-                        <p className="max-w-[150px] truncate md:max-w-none">
+                        <p className="max-w-full truncate md:max-w-none">
                             {memoir.sourceTitle}
                         </p>
                     </div>
