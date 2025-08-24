@@ -117,7 +117,7 @@ export default function MemberLayout({
                                     <Filter size={16} />
                                     <span>필터</span>
                                 </button> */}
-                                <div className="ml-auto">
+                                <div className="ml-auto md:hidden">
                                     <Button
                                         type="lined"
                                         htmlType="button"
