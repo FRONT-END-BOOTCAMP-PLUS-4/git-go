@@ -96,14 +96,14 @@ export default function MemoirCard({ memoir }: Props) {
                                 {memoir.title}
                             </h3>
                             <div
-                                className={`shadow-border-primary1 ml-auto rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} max-w-[120px] truncate text-xs shadow-sm md:max-w-[160px]`}
+                                className={`shadow-border-primary1 ml-auto rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} max-w-[120px] text-xs shadow-sm md:max-w-[160px]`}
                             >
                                 {typeInfo.label}
                             </div>
                         </div>
 
                         {/* 날짜 */}
-                        <p className="text-text-secondary2 mt-1 text-xs md:mt-0 md:ml-auto md:text-right">
+                        <p className="text-text-secondary2 mt-1 text-xs md:mt-0 md:ml-auto md:text-right md:whitespace-nowrap">
                             {new Intl.DateTimeFormat("ko-KR", {
                                 year: "numeric",
                                 month: "long",
