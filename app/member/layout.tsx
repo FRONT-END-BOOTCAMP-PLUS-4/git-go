@@ -88,7 +88,7 @@ export default function MemberLayout({
                     <SideBar setOpen={setOpen} />
                 </div>
 
-                <div className="w-full">
+                <div className="w-full md:min-w-0">
                     {/* 상단 탭 + (모바일) 오른쪽 유틸 영역 */}
                     <div className="flex flex-col justify-between md:flex-row md:gap-x-2">
                         <PageTap status={status} />
