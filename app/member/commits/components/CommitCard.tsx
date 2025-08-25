@@ -108,7 +108,7 @@ export default function CommitCard({
 
     return (
         // <li className="border-border-primary1 border-b p-4">
-        <article className="flex items-start gap-x-4">
+        <article className="my-1 flex items-start gap-x-4">
             <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
                 {/* <Image
                         src="/commit-blue.svg"
@@ -118,7 +118,7 @@ export default function CommitCard({
                     /> */}
                 <GitCommitHorizontal className="text-primary7" />
             </div>
-            <div className="flex flex-1 flex-col gap-y-1">
+            <div className="flex min-w-0 flex-1 flex-col gap-y-2 md:gap-y-1">
                 <div className="text-text-secondary2 mb-3 flex items-center gap-x-3 text-xs">
                     <p>{shortSha}</p>
                     <div
@@ -129,7 +129,7 @@ export default function CommitCard({
                     <p className="ml-auto">{formattedDate}</p>
                 </div>
                 <h3
-                    className={`line-clamp-${isVisible ? 0 : 1} mr-30 font-semibold`}
+                    className="truncate font-semibold md:max-w-none"
                     onClick={() => {
                         setIsVisible(!isVisible);
                     }}

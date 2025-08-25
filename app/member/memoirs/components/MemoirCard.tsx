@@ -82,19 +82,28 @@ export default function MemoirCard({ memoir }: Props) {
             className="border-border-primary1 cursor-pointer border-b p-4"
             onClick={() => moveToMemoir(memoir.type, memoir.id)}
         >
-            <article className="flex items-start gap-x-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3E8FF]">
+            <article className="flex min-w-0 items-start gap-x-4 overflow-hidden">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F3E8FF]">
                     <BookText size={18} className="text-[#9333EA]" />
                 </div>
-                <div className="flex flex-1 flex-col gap-y-2">
-                    <div className="flex items-center gap-x-3">
-                        <h3 className="font-semibold">{memoir.title}</h3>
-                        <div
-                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} text-xs shadow-sm`}
-                        >
-                            {typeInfo.label}
+
+                {/* 본문 */}
+                <div className="flex min-w-0 flex-1 flex-col gap-y-2">
+                    <div className="flex min-w-0 flex-col md:flex-row md:items-center md:gap-x-3">
+                        {/* 타이틀 + 라벨 */}
+                        <div className="flex min-w-0 items-center gap-x-3">
+                            <h3 className="max-w-[60%] truncate font-semibold md:max-w-none">
+                                {memoir.title}
+                            </h3>
+                            <div
+                                className={`shadow-border-primary1 ml-auto rounded-md px-3 py-1 font-semibold ${typeInfo.bg} ${typeInfo.text} max-w-[120px] text-xs shadow-sm md:max-w-[160px]`}
+                            >
+                                {typeInfo.label}
+                            </div>
                         </div>
-                        <p className="text-text-secondary2 ml-auto text-xs">
+
+                        {/* 날짜 */}
+                        <p className="text-text-secondary2 mt-1 text-xs md:mt-0 md:ml-auto md:text-right md:whitespace-nowrap">
                             {new Intl.DateTimeFormat("ko-KR", {
                                 year: "numeric",
                                 month: "long",
@@ -104,31 +113,29 @@ export default function MemoirCard({ memoir }: Props) {
                             )}
                         </p>
                     </div>
-                    <ul className="flex flex-wrap gap-x-2">
-                        {memoir.tags.map((tag, index) => (
-                            <li
-                                key={index}
-                                className="border-border-primary1 bg-bg-tag1 w-fit rounded-md border px-2.5 py-1 text-xs font-semibold"
-                            >
-                                {tag}
-                            </li>
-                        ))}
-                    </ul>
+
+                    <div className="w-full overflow-hidden">
+                        <ul className="flex max-w-[100%] gap-x-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] md:max-w-none [&::-webkit-scrollbar]:hidden">
+                            {memoir.tags.map((tag, i) => (
+                                <li
+                                    key={i}
+                                    className="border-border-primary1 bg-bg-tag1 w-fit shrink-0 rounded-md border px-2.5 py-1 text-xs font-semibold"
+                                >
+                                    {tag}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     <p className="text-text-secondary2 line-clamp-1 text-sm">
                         {getFirstMeaningfulText(memoir.content)}
                     </p>
-                    <div className="flex items-center gap-x-3">
-                        <div className="text-text-secondary2 flex items-center gap-x-1">
-                            {/* <Image
-                                src="/box-archive-solid.svg"
-                                alt="저장소 아이콘"
-                                width={14}
-                                height={12}
-                            /> */}
-                            {getIconByType(memoir.type)}
-                            {/* <p>{memoir.repoName}</p> */}
-                            <p>{memoir.sourceTitle}</p>
-                        </div>
+
+                    <div className="text-text-secondary2 flex min-w-0 items-center gap-x-1">
+                        {getIconByType(memoir.type)}
+                        <p className="max-w-full truncate md:max-w-none">
+                            {memoir.sourceTitle}
+                        </p>
                     </div>
                 </div>
             </article>
