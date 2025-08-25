@@ -104,19 +104,11 @@ export default function MemberLayout({
                             {/* ✅ 모바일 전용: 검색, 필터 버튼 → 모달 */}
                         </section>
                         {pathname.includes("memoirs") && (
-                            <div className="mb-2 flex w-[100%] items-center gap-2 md:mb-0">
-                                <div className="fle w-full max-w-100 min-w-25 md:ml-0 md:w-[100%]">
+                            <div className="mb-2 flex items-center gap-2 md:mb-0">
+                                <div className="flex w-full min-w-0 md:ml-0">
                                     <SearchFilter />
                                 </div>
 
-                                {/* <button
-                                    type="button"
-                                    onClick={() => setFilterOpen(true)}
-                                    className="bg-bg-primary2 ml-auto flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold md:hidden"
-                                >
-                                    <Filter size={16} />
-                                    <span>필터</span>
-                                </button> */}
                                 <div className="ml-auto md:hidden">
                                     <Button
                                         type="lined"
