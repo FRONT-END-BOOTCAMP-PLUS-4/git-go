@@ -31,7 +31,7 @@ export default function SearchFilter() {
     };
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 flex h-9 w-full max-w-75 items-center justify-center rounded-md border px-3 py-5 md:mb-6">
+        <div className="border-border-primary1 bg-bg-member1 flex h-9 w-full max-w-100 items-center justify-center rounded-md border px-3 py-5 md:mb-6">
             <Search className="text-text-secondary2 shrink-0" />
             <input
                 className="placeholder-text-secondary2 ml-2 w-full text-sm outline-none"

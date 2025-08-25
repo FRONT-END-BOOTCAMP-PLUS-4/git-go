@@ -105,7 +105,7 @@ export default function MemberLayout({
                         </section>
                         {pathname.includes("memoirs") && (
                             <div className="mb-2 flex w-[100%] items-center gap-2 md:mb-0">
-                                <div className="flex w-[75%] md:ml-0 md:w-[100%]">
+                                <div className="fle w-full max-w-100 min-w-25 md:ml-0 md:w-[100%]">
                                     <SearchFilter />
                                 </div>
 
@@ -121,6 +121,7 @@ export default function MemberLayout({
                                     <Button
                                         type="lined"
                                         htmlType="button"
+                                        size="full"
                                         onClick={setFilterOpen}
                                     >
                                         <Filter size={16} />
