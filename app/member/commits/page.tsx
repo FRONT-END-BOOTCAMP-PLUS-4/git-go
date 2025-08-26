@@ -54,7 +54,7 @@ export default function CommitPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const queryClient = useQueryClient();
     const PER_PAGE = 10;
-    const STALE_10M = 1000 * 60 * 10;
+    const STALE_10M = 1000 * 60 * 5;
     const { data: session } = useSession();
     const { data: userReposData, isLoading: loadingRepos } = useQuery({
         queryKey: ["userRepos"],
