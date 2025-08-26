@@ -16,14 +16,14 @@ export default function TagFilter({ tags }: TagFilterProps) {
     };
 
     return (
-        <div className="mt-4">
-            <h2 className="text-text-primary1 mb-2 text-base font-normal">
+        <div className="mt-2 flex items-center gap-x-2 md:mt-4 md:block">
+            <h2 className="shrink-0 text-sm font-normal sm:text-base md:mb-2">
                 태그
             </h2>
             <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <div
-                        className={`border-border-primary1 bg-bg-tag1 cursor-pointer rounded-md border px-3 py-1 text-xs font-semibold ${
+                        className={`border-border-primary1 bg-bg-tag1 cursor-pointer rounded-md border px-2 py-1 text-xs font-semibold sm:px-3 sm:py-1 ${
                             selectedTags.includes(tag)
                                 ? "bg-primary2 text-primary7"
                                 : "bg-bg-member1"

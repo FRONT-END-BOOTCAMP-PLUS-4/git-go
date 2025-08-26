@@ -7,15 +7,15 @@ import {
     GitBranch,
     GitCommitHorizontal,
 } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+
 type Status = "commits" | "pull-requests" | "memoirs" | "stats" | string;
 
 interface Props {
     status: Status;
 }
 
-export default function PageTap({ status }: Props) {
+export default function MobilePageTab({ status }: Props) {
     const router = useRouter();
     const commitClickHandler = () => {
         router.push(MEMBER_URL.commits);
@@ -31,10 +31,12 @@ export default function PageTap({ status }: Props) {
     };
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 mb-2 hidden max-w-fit min-w-fit cursor-pointer gap-x-1 rounded-md border p-1 md:mb-6 md:flex">
+        <div className="bg-bg-member1 fixed bottom-0 flex min-w-full cursor-pointer justify-evenly text-xs shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:hidden">
             <div
-                className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
-                    status === "commits" ? "bg-primary1" : ""
+                className={`hover:${status === "commits" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
+                    status === "commits"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={commitClickHandler}
             >
@@ -47,7 +49,7 @@ export default function PageTap({ status }: Props) {
                     }`}
                 />
                 <div
-                    className={`ml-2 min-w-fit whitespace-nowrap ${
+                    className={`min-w-fit whitespace-nowrap ${
                         status === "commits"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -57,8 +59,10 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`hover:${status === "pull-requests" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
-                    status === "pull-requests" ? "bg-primary1" : ""
+                className={`hover:${status === "pull-requests" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
+                    status === "pull-requests"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={pullRequestClickHandler}
             >
@@ -71,18 +75,20 @@ export default function PageTap({ status }: Props) {
                     }`}
                 />
                 <div
-                    className={`ml-2 min-w-fit whitespace-nowrap ${
+                    className={`min-w-fit whitespace-nowrap ${
                         status === "pull-requests"
                             ? "text-primary7"
                             : "text-text-secondary2"
                     }`}
                 >
-                    Pull Requests
+                    PR
                 </div>
             </div>
             <div
-                className={`hover:${status === "memoirs" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
-                    status === "memoirs" ? "bg-primary1" : ""
+                className={`hover:${status === "memoirs" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
+                    status === "memoirs"
+                        ? "bg-primary1 border-primary8 border-t-2"
+                        : ""
                 }`}
                 onClick={memoirClickHandler}
             >
@@ -95,7 +101,7 @@ export default function PageTap({ status }: Props) {
                     }`}
                 />
                 <div
-                    className={`ml-2 min-w-fit whitespace-nowrap ${
+                    className={`min-w-fit whitespace-nowrap ${
                         status === "memoirs"
                             ? "text-primary7"
                             : "text-text-secondary2"
@@ -105,7 +111,7 @@ export default function PageTap({ status }: Props) {
                 </div>
             </div>
             <div
-                className={`hover:${status === "stats" ? "" : "bg-bg-primary2"} flex flex-row items-center rounded-md px-2 py-1 ${
+                className={`hover:${status === "stats" ? "" : "bg-bg-primary2"} flex w-full flex-col items-center gap-y-1 p-2 ${
                     status === "stats" ? "bg-primary1" : ""
                 }`}
                 onClick={statClickHandler}
@@ -119,7 +125,7 @@ export default function PageTap({ status }: Props) {
                     }`}
                 />
                 <div
-                    className={`ml-2 min-w-fit whitespace-nowrap ${
+                    className={`min-w-fit whitespace-nowrap ${
                         status === "stats"
                             ? "text-primary7"
                             : "text-text-secondary2"
