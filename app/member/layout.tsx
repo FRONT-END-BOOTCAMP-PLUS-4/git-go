@@ -176,25 +176,6 @@ export default function MemberLayout({
                                 <TagFilter tags={repoTags} />
                             </div>
                         </div>
-
-                        <div className="mt-4 flex gap-2">
-                            {/* <button
-                                onClick={() => setFilterOpen(false)}
-                                className="bg-bg-primary2 flex-1 rounded-md px-3 py-2 font-semibold"
-                            >
-                                확인
-                            </button> */}
-                            <div className="w-full">
-                                <Button
-                                    type="lined"
-                                    htmlType="button"
-                                    onClick={() => setFilterOpen(false)}
-                                    size="full"
-                                >
-                                    확인
-                                </Button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             )}
