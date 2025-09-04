@@ -23,7 +23,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
     };
     return (
         <div
-            className="flex h-full w-fit max-w-fit justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
+            className="relative flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
             style={{
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
