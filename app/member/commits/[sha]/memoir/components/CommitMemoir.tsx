@@ -178,7 +178,7 @@ export default function CommitMemoir() {
         <CreateMemoirLayout>
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] rounded-full p-3 text-white shadow-lg"
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg"
             >
                 ✨ AI 요약 시작하기
             </button>
