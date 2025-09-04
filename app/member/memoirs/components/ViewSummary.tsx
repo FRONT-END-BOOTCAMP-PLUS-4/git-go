@@ -23,7 +23,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
     };
     return (
         <div
-            className="flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
+            className="flex h-full w-fit max-w-fit justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
             style={{
                 background:
                     "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
@@ -42,8 +42,11 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
                     생성된 요약이 없습니다
                 </div>
             ) : (
-                <div className="flex flex-col gap-1 p-4 pt-8 leading-10 text-black">
-                    <ReactMarkdown>{summary}</ReactMarkdown>
+                <div className="flex flex-col gap-1 overflow-x-hidden p-4 pt-8 leading-10 text-black">
+                    <div className="max-w-full break-words whitespace-pre-wrap">
+                        <ReactMarkdown>{summary}</ReactMarkdown>
+                    </div>
+
                     <div className="mt-4 flex justify-end gap-2">
                         <button
                             onClick={handleCopy}

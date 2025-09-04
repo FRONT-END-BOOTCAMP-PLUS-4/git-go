@@ -290,17 +290,36 @@ export default function CommitDetailMemoir() {
         <DetailMemoirLayout>
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-primary7 fixed bottom-30 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both] lg:bottom-14"
+                className="bg-primary7 fixed bottom-14 left-4 z-50 animate-[bounce_1s_infinite] cursor-pointer rounded-full p-3 text-white shadow-lg [animation-fill-mode:both] lg:bottom-14"
             >
                 ✨ 생성된 요약 보기
             </button>
-
+            {/* 모바일 바텀시트 + 데스크탑 패널 */}
             {showModal && (
-                <div className="fixed bottom-10 left-4 z-51 flex h-[60vh] w-[60vw] max-w-[770px]">
-                    <ViewSummary
-                        setShowModal={setShowModal}
-                        summary={summary}
+                <div className="fixed inset-0 z-[9999]">
+                    <div
+                        className="absolute inset-0 bg-black/50"
+                        onClick={() => setShowModal(false)}
                     />
+
+                    {/* 📱 모바일: 바텀시트 */}
+                    <div className="absolute inset-x-0 bottom-0 mx-auto w-full md:hidden">
+                        <div className="h-[65vh] rounded-t-2xl bg-white p-0 shadow-xl">
+                            <div className="h-full max-h-[80vh] overflow-y-auto rounded-t-2xl">
+                                <ViewSummary
+                                    setShowModal={setShowModal}
+                                    summary={summary}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="fixed bottom-10 left-4 hidden h-[60vh] w-[60vw] max-w-[770px] md:flex">
+                        <ViewSummary
+                            setShowModal={setShowModal}
+                            summary={summary}
+                        />
+                    </div>
                 </div>
             )}
             <ResponsiveLayout mobile={mobileUI} desktop={desktopUI} />
