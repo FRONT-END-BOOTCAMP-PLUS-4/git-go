@@ -304,7 +304,7 @@ export default function CommitDetailMemoir() {
 
                     {/* 📱 모바일: 바텀시트 */}
                     <div className="absolute inset-x-0 bottom-0 mx-auto w-full md:hidden">
-                        <div className="h-[65vh] rounded-t-2xl bg-white p-0 shadow-xl">
+                        <div className="bg-bg-member1 h-[65vh] rounded-t-2xl p-0 shadow-xl">
                             <div className="h-full max-h-[80vh] overflow-y-auto rounded-t-2xl">
                                 <ViewSummary
                                     setShowModal={setShowModal}
