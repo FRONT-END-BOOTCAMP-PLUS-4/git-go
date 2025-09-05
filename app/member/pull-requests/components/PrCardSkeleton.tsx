@@ -14,14 +14,14 @@ export default function PrCardSkeleton() {
                     <div className="bg-bg-skeleton1 h-4 w-[80%] rounded md:w-[70%]" />
 
                     <div className="mt-2 flex items-center gap-x-3">
-                        <div className="text-text-secondary2 flex items-center gap-x-1">
+                        <div className="text-text-secondary2 hidden items-center gap-x-1 md:flex">
                             <div className="bg-bg-skeleton1 h-3 w-2 rounded" />
                             <div className="bg-bg-skeleton1 h-4 w-15 rounded" />
                         </div>
 
                         <div className="text-text-secondary2 flex items-center gap-x-1">
-                            <div className="bg-bg-skeleton1 h-3 w-3 rounded" />
-                            <div className="bg-bg-skeleton1 h-4 w-18 rounded" />
+                            <div className="bg-bg-skeleton1 h-3 w-4 rounded" />
+                            <div className="bg-bg-skeleton1 h-4 w-24 rounded" />
                         </div>
 
                         <div className="bg-bg-skeleton1 ml-auto h-8 w-24 rounded" />
