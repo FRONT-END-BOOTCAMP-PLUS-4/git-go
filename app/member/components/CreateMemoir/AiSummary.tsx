@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
 import { useSession } from "next-auth/react";
+import { useMarkdownFolderCompressor } from "@/hooks/useMarkdownFolderCompressor";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -19,21 +20,6 @@ type AiSummaryProps = {
     setShowModal: (value: boolean) => void;
     commit: CommitType;
 };
-
-// 뒤에서 depth개만 남기고 앞은 …/ 로 축약
-function shortenPath(path: string, depth = 2) {
-    const parts = path.split("/").filter(Boolean);
-    if (parts.length <= depth) return path;
-    return "…/" + parts.slice(-depth).join("/");
-}
-
-// 마크다운 본문에서 `📁 <경로>` 패턴을 찾아 축약
-function compressFolderInMarkdown(md: string, depth = 2) {
-    return md.replace(/📁\s*([^\n*<]+)/g, (_m, p1) => {
-        const trimmed = String(p1).trim();
-        return "📁 " + shortenPath(trimmed, depth);
-    });
-}
 
 export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const {
@@ -50,6 +36,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const { data: session, status: sessionStatus } = useSession();
     const [limitExceeded, setLimitExceeded] = useState<boolean | null>(null);
     const simplified = useSimplifyCommitData(commit);
+    const compressFolders = useMarkdownFolderCompressor(2);
 
     useEffect(() => {
         const fetchUsage = async () => {
@@ -107,7 +94,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             for await (const chunk of response) {
                 if (!chunk || !chunk.text) continue;
                 fullText += chunk.text;
-                revisedText = compressFolderInMarkdown(fullText, 2);
+                revisedText = compressFolders(fullText);
                 tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
                     setSummary(revisedText);
