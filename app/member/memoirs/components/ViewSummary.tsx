@@ -43,8 +43,19 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
                 </div>
             ) : (
                 <div className="flex flex-col gap-1 overflow-x-hidden p-4 pt-8 leading-10 text-black">
-                    <div className="max-w-full">
-                        <ReactMarkdown>{summary}</ReactMarkdown>
+                    <div className="max-w-full px-3">
+                        <ReactMarkdown
+                            components={{
+                                strong: ({ ...props }) => (
+                                    <strong
+                                        {...props}
+                                        className="mt-4 block max-w-full align-middle"
+                                    />
+                                ),
+                            }}
+                        >
+                            {summary}
+                        </ReactMarkdown>
                     </div>
 
                     <div className="mt-4 flex justify-end gap-2">
