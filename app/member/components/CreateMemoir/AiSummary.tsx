@@ -20,6 +20,21 @@ type AiSummaryProps = {
     commit: CommitType;
 };
 
+// 뒤에서 depth개만 남기고 앞은 …/ 로 축약
+function shortenPath(path: string, depth = 2) {
+    const parts = path.split("/").filter(Boolean);
+    if (parts.length <= depth) return path;
+    return "…/" + parts.slice(-depth).join("/");
+}
+
+// 마크다운 본문에서 `📁 <경로>` 패턴을 찾아 축약
+function compressFolderInMarkdown(md: string, depth = 2) {
+    return md.replace(/📁\s*([^\n*<]+)/g, (_m, p1) => {
+        const trimmed = String(p1).trim();
+        return "📁 " + shortenPath(trimmed, depth);
+    });
+}
+
 export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const {
         aiSummary,
@@ -87,17 +102,19 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
 
             let fullText = "";
             let tokenUsage: number = 0;
+            let revisedText = "";
 
             for await (const chunk of response) {
                 if (!chunk || !chunk.text) continue;
                 fullText += chunk.text;
+                revisedText = compressFolderInMarkdown(fullText, 2);
                 tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
-                    setSummary(fullText);
+                    setSummary(revisedText);
                 });
             }
 
-            setSummary(fullText);
+            setSummary(revisedText);
 
             if (tokenUsage && sessionStatus === "authenticated") {
                 const res = await fetch("/api/settings/tokenUsages", {
@@ -207,7 +224,20 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             ) : (
                 <>
                     <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
-                        <ReactMarkdown>{aiSummary}</ReactMarkdown>
+                        <div className="max-w-full px-3">
+                            <ReactMarkdown
+                                components={{
+                                    strong: ({ ...props }) => (
+                                        <strong
+                                            {...props}
+                                            className="mt-4 block max-w-full align-middle"
+                                        />
+                                    ),
+                                }}
+                            >
+                                {aiSummary}
+                            </ReactMarkdown>
+                        </div>
 
                         <div className="mt-4 flex flex-col items-end gap-2 pb-4">
                             <div className="flex gap-2">
