@@ -211,7 +211,20 @@ export default function PullRequestAiSummary({
             ) : (
                 <>
                     <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
-                        <ReactMarkdown>{aiSummary}</ReactMarkdown>
+                        <div className="max-w-full px-3">
+                            <ReactMarkdown
+                                components={{
+                                    strong: ({ ...props }) => (
+                                        <strong
+                                            {...props}
+                                            className="mt-4 block max-w-full align-middle"
+                                        />
+                                    ),
+                                }}
+                            >
+                                {aiSummary}
+                            </ReactMarkdown>
+                        </div>
 
                         <div className="mt-4 flex flex-col items-end gap-2 pb-4">
                             <div className="flex gap-2">
