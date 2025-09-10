@@ -43,7 +43,7 @@ export default function AccordionSidebar({
         return (
             <button
                 onClick={() => setSidebarOpen(true)}
-                className="bg-bg-primary1 text-text-primary1 top-[65px] left-0 flex min-w-14 cursor-pointer p-4 lg:shadow-md"
+                className="bg-bg-primary1 text-text-primary1 top-[65px] left-0 flex min-w-14 cursor-pointer p-4 md:shadow-md"
             >
                 <ChevronsRight />
             </button>
@@ -51,12 +51,12 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full w-full flex-col truncate pt-4 pl-4 shadow-md lg:w-[20vw]">
+        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full min-w-fit flex-col truncate pt-4 pl-4 shadow-md md:w-[20vw]">
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
                     onClick={() => setSidebarOpen(false)}
-                    className="text-text-primary1 mr-4 hidden cursor-pointer lg:block"
+                    className="text-text-primary1 mr-4 hidden cursor-pointer md:block"
                 >
                     <ChevronsLeft />
                 </button>
