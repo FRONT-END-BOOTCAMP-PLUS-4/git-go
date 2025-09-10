@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { flushSync } from "react-dom";
 import ReactMarkdown from "react-markdown";
 import { useSession } from "next-auth/react";
+import { useMarkdownFolderCompressor } from "@/hooks/useMarkdownFolderCompressor";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
@@ -35,6 +36,7 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
     const { data: session, status: sessionStatus } = useSession();
     const [limitExceeded, setLimitExceeded] = useState<boolean | null>(null);
     const simplified = useSimplifyCommitData(commit);
+    const compressFolders = useMarkdownFolderCompressor(2);
 
     useEffect(() => {
         const fetchUsage = async () => {
@@ -87,17 +89,19 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
 
             let fullText = "";
             let tokenUsage: number = 0;
+            let revisedText = "";
 
             for await (const chunk of response) {
                 if (!chunk || !chunk.text) continue;
                 fullText += chunk.text;
+                revisedText = compressFolders(fullText);
                 tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
-                    setSummary(fullText);
+                    setSummary(revisedText);
                 });
             }
 
-            setSummary(fullText);
+            setSummary(revisedText);
 
             if (tokenUsage && sessionStatus === "authenticated") {
                 const res = await fetch("/api/settings/tokenUsages", {
@@ -207,7 +211,20 @@ export default function AiSummary({ setShowModal, commit }: AiSummaryProps) {
             ) : (
                 <>
                     <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
-                        <ReactMarkdown>{aiSummary}</ReactMarkdown>
+                        <div className="max-w-full px-3">
+                            <ReactMarkdown
+                                components={{
+                                    strong: ({ ...props }) => (
+                                        <strong
+                                            {...props}
+                                            className="mt-4 block max-w-full align-middle"
+                                        />
+                                    ),
+                                }}
+                            >
+                                {aiSummary}
+                            </ReactMarkdown>
+                        </div>
 
                         <div className="mt-4 flex flex-col items-end gap-2 pb-4">
                             <div className="flex gap-2">
