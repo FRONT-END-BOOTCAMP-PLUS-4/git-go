@@ -215,7 +215,7 @@ export default function CommitDetailMemoir() {
                     />
                 </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
-                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                    <div className="border-border-primary1 mb-2 truncate border-b-1 px-3 py-2 font-semibold">
                         {commitData.message}
                     </div>
                     <ChangeList
@@ -244,7 +244,7 @@ export default function CommitDetailMemoir() {
 
             <Panel defaultSize={40} minSize={20}>
                 <ChangeListLayout>
-                    <div className="shadow-primary mb-2 truncate px-3 py-2 font-semibold">
+                    <div className="border-border-primary1 mb-2 truncate border-b-1 px-3 py-2 font-semibold">
                         {commitData.message}
                     </div>
                     <ChangeList
