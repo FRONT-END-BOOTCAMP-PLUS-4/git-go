@@ -45,7 +45,7 @@ export default function PullRequestMemoir() {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     // 모바일 버전의 탭
-    const [activeIndex, setActiveIndex] = useState(2);
+    const [activeIndex, setActiveIndex] = useState(1);
 
     // 마운트 시 AI 요약 스토어 초기화
     useEffect(() => {
@@ -236,17 +236,6 @@ export default function PullRequestMemoir() {
             setActiveIndex={setActiveIndex}
             navItems={NAVIGATION_ITEMS}
             panels={[
-                <PanelGroup
-                    key="sidebar"
-                    direction="horizontal"
-                    className="h-full w-full"
-                >
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
-                    />
-                </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
                     <Select
                         options={prOptions}

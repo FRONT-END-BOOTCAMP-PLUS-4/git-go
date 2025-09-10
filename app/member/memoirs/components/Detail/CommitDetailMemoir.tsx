@@ -53,7 +53,7 @@ export default function CommitDetailMemoir() {
     const [loadError, setLoadError] = useState<string | null>(null);
 
     // 모바일 버전의 탭
-    const [activeIndex, setActiveIndex] = useState(2);
+    const [activeIndex, setActiveIndex] = useState(1);
 
     // 서버에서 “회고 데이터”를 가져오는 함수
     const load = async () => {
@@ -203,17 +203,6 @@ export default function CommitDetailMemoir() {
             setActiveIndex={setActiveIndex}
             navItems={NAVIGATION_ITEMS}
             panels={[
-                <PanelGroup
-                    key="sidebar"
-                    direction="horizontal"
-                    className="h-full w-full"
-                >
-                    <AccordionSidebar
-                        files={files}
-                        selectedFile={selectedFile}
-                        onSelect={setSelectedFile}
-                    />
-                </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
                     <div className="border-border-primary1 mb-2 truncate border-b-1 px-3 py-2 font-semibold">
                         {commitData.message}
