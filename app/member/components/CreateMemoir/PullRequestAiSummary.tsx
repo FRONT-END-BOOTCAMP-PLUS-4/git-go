@@ -34,6 +34,7 @@ export default function PullRequestAiSummary({
         retryCount,
         setRetryCount,
     } = useSummaryStore();
+
     const alreadySummarized = isSummarized(prNo || "");
     const [loading, setLoading] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -47,10 +48,8 @@ export default function PullRequestAiSummary({
             const data = await res.json();
             const usage = data.daily_ai_use_count;
             const restrict = data.daily_ai_restrict_count;
-            // console.log("사용량: ", usage, "/", restrict);
             const exceeded = usage >= restrict;
             setLimitExceeded(exceeded);
-            // console.log("limitExceeded 상태: ", exceeded);
         };
         fetchUsage();
     }, []);
@@ -76,13 +75,14 @@ export default function PullRequestAiSummary({
         setSummary("");
         setLoading(true);
         setSummarized(prNo || "", true);
+
         try {
             const prompt = `
-                            ${PROMPT}
-                            \`\`\`json
-                            ${JSON.stringify(simplified, null, 2)}
-                            \`\`\`
-                            `;
+        ${PROMPT}
+        \`\`\`json
+        ${JSON.stringify(simplified, null, 2)}
+        \`\`\`
+      `;
 
             const response = await ai.models.generateContentStream({
                 model: "gemini-2.5-flash-preview-05-20",
@@ -93,6 +93,7 @@ export default function PullRequestAiSummary({
             let tokenUsage: number = 0;
 
             for await (const chunk of response) {
+                if (!chunk || !chunk.text) continue;
                 fullText += chunk.text;
                 tokenUsage = chunk.usageMetadata?.totalTokenCount ?? 0;
                 flushSync(() => {
@@ -105,9 +106,7 @@ export default function PullRequestAiSummary({
             if (tokenUsage && sessionStatus === "authenticated") {
                 const res = await fetch("/api/settings/tokenUsages", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         userId: session.user.id,
                         tokenUsage,
@@ -132,6 +131,7 @@ export default function PullRequestAiSummary({
             setLoading(false);
         }
     };
+
     const handleRetry = async () => {
         if (retryCount <= 2) {
             setRetryCount(retryCount - 1);
@@ -141,10 +141,9 @@ export default function PullRequestAiSummary({
 
     return (
         <div
-            className="flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
+            className="text-text-primary1 flex h-full w-full justify-center overflow-x-hidden overflow-y-auto rounded-xl shadow-[0_4px_6px_-1px_var(--shadow-color)]"
             style={{
-                background:
-                    "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
+                background: `linear-gradient(180deg, var(--color-bg-gradient1) 0%, var(--color-bg-gradient2) 50%, var(--color-bg-gradient1) 100%)`,
             }}
         >
             <button
@@ -152,14 +151,14 @@ export default function PullRequestAiSummary({
                     setShowModal(false);
                     e.stopPropagation();
                 }}
-                className="absolute top-2 right-2 z-10 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="text-text-gray2 absolute top-2 right-2 z-10 cursor-pointer rounded-md p-1 text-xl"
                 aria-label="Close"
             >
                 <X size={24} />
             </button>
 
             {limitExceeded === null ? (
-                <div></div>
+                <div />
             ) : !alreadySummarized ? (
                 <div
                     className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words"
@@ -167,12 +166,12 @@ export default function PullRequestAiSummary({
                 >
                     {limitExceeded === true ? (
                         <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
-                            <p className="mb-2 text-sm text-red-500">
+                            <p className="text-danger1 mb-2 text-sm">
                                 오늘의 AI 사용량을 초과하여 요약 기능을 사용할
                                 수 없습니다.
                             </p>
                             <button
-                                className="bg-primary7 hover:bg-primary6 cursor-not-allowed rounded-md px-4 py-2 text-sm font-semibold text-white opacity-50 transition"
+                                className="bg-primary7 text-text-secondary1 cursor-not-allowed rounded-md px-4 py-2 text-sm font-semibold opacity-50 transition"
                                 onClick={handleSummarize}
                                 disabled
                             >
@@ -181,7 +180,7 @@ export default function PullRequestAiSummary({
                         </div>
                     ) : (
                         <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto break-words">
-                            <p className="mb-4 items-center text-center text-sm text-nowrap text-gray-700">
+                            <p className="text-text-gray1 mb-4 items-center text-center text-sm">
                                 AI가 코드를 분석하여 핵심 내용을 요약해드립니다.
                                 <br />
                                 아래 버튼을 클릭하여 AI 요약을 시작해보세요.
@@ -197,7 +196,7 @@ export default function PullRequestAiSummary({
                 </div>
             ) : loading && aiSummary === "" ? (
                 <div className="flex flex-col items-center justify-center">
-                    <div className="mb-6 flex animate-pulse items-center justify-center text-gray-400">
+                    <div className="text-text-gray1 mb-6 flex animate-pulse items-center justify-center">
                         요약 생성 중입니다...
                     </div>
                     <Image
@@ -231,7 +230,7 @@ export default function PullRequestAiSummary({
                                 <button
                                     onClick={handleCopy}
                                     disabled={!aiSummary}
-                                    className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
+                                    className="border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] disabled:opacity-50"
                                 >
                                     <Copy width={14} height={14} />
                                     <span>{copied ? "복사됨!" : "복사"}</span>
@@ -242,24 +241,24 @@ export default function PullRequestAiSummary({
                                     disabled={
                                         retryCount === 0 ||
                                         loading ||
-                                        limitExceeded
+                                        !!limitExceeded
                                     }
-                                    className={`flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100 ${
+                                    className={`border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] ${
                                         retryCount === 0 ||
                                         loading ||
                                         limitExceeded
                                             ? "opacity-50"
                                             : ""
-                                    }`}
+                                    } `}
                                 >
                                     <RotateCcw width={14} height={14} />
                                     <span>재시도 ({retryCount}회 남음)</span>
                                 </button>
                             </div>
 
-                            {/* ❗️제한 초과 안내문구 */}
+                            {/* 제한 초과 안내 */}
                             {limitExceeded && (
-                                <p className="mt-1 mb-2 text-sm text-red-500">
+                                <p className="text-danger1 mt-1 mb-2 text-sm">
                                     오늘의 AI 사용량을 초과하여 더 이상 요약을
                                     재시도할 수 없습니다.
                                 </p>

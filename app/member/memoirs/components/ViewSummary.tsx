@@ -23,22 +23,21 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
     };
     return (
         <div
-            className="relative flex h-full w-full justify-center overflow-y-auto rounded-xl bg-white shadow-xl"
+            className="relative flex h-full w-full justify-center overflow-y-auto rounded-xl shadow-[0_4px_6px_-1px_var(--shadow-color)]"
             style={{
-                background:
-                    "linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 50%, #EFF6FF 100%)",
+                background: `linear-gradient(180deg, var(--color-bg-gradient1) 0%, var(--color-bg-gradient2) 50%, var(--color-bg-gradient1) 100%)`,
             }}
             onClick={(e) => e.stopPropagation()}
         >
             <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-2 right-2 cursor-pointer text-xl text-gray-400 hover:text-gray-600"
+                className="text-text-gray2 absolute top-2 right-2 z-10 cursor-pointer rounded-md p-1 text-xl"
                 aria-label="Close"
             >
                 <X size={24} />
             </button>
             {summary === "" ? (
-                <div className="flex flex-1 items-center justify-center text-gray-400">
+                <div className="text-text-gray2 flex flex-1 items-center justify-center">
                     생성된 요약이 없습니다
                 </div>
             ) : (
@@ -62,7 +61,7 @@ export default function ViewSummary({ setShowModal, summary }: AiSummaryProps) {
                         <button
                             onClick={handleCopy}
                             disabled={!summary}
-                            className="flex cursor-pointer items-center gap-1 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
+                            className="border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] disabled:opacity-50"
                         >
                             <Copy width={14} height={14} />
                             <span>{copied ? "복사됨!" : "복사"}</span>
