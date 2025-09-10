@@ -57,7 +57,7 @@ export default function ChangeList({
         >
             {changes.map((change) => (
                 <div
-                    className="border-border-primary1 mb-5 min-w-[400px] rounded-md border"
+                    className="border-border-primary1 mb-5 min-w-0 rounded-md border"
                     key={change.filename}
                 >
                     <div
