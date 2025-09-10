@@ -1,5 +1,9 @@
+"use client";
+
+import type { ReactNode } from "react";
+
 type NavigationItem = {
-    icon: React.ReactNode;
+    icon: ReactNode;
     text: string;
 };
 
@@ -7,7 +11,7 @@ interface MobileTabLayoutProps {
     activeIndex: number;
     setActiveIndex: (index: number) => void;
     navItems: NavigationItem[];
-    panels: React.ReactNode[];
+    panels: ReactNode[];
 }
 
 export default function MobileTabLayout({
@@ -17,36 +21,41 @@ export default function MobileTabLayout({
     panels,
 }: MobileTabLayoutProps) {
     return (
-        <div className="flex h-[calc(100vh-65px)] w-full flex-col">
-            <div className="h-full max-h-[calc(100vh-135px)] w-full">
+        // 콘텐츠 영역: 하단 탭 높이만큼 여유를 줘서 가리지 않도록 처리
+        <div className="relative flex h-[calc(100vh-60px)] w-full flex-col">
+            <div className="h-full max-h-[100vh] w-full pb-[60px]">
                 {panels[activeIndex]}
             </div>
 
-            <div className="fixed bottom-0 left-0 flex h-[70px] w-full max-w-[1024px] items-center justify-center bg-white shadow-lg">
-                <ul className="flex h-full w-full justify-around">
-                    {navItems.map((item, index) => (
-                        <li
-                            key={index}
-                            className="flex h-full flex-1 cursor-pointer list-none items-center justify-center"
-                        >
-                            <button
-                                onClick={() => setActiveIndex(index)}
-                                className={`hover:text-primary5 active:text-primary8 relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 text-center font-medium transition-colors duration-300 focus:outline-none ${
-                                    activeIndex === index
-                                        ? "text-primary7 bg-primary1 border-primary8"
-                                        : "text-[#222327]"
-                                }`}
-                                aria-label={item.text}
+            <div className="bg-bg-member1 fixed bottom-0 left-0 z-50 flex min-w-full cursor-pointer justify-evenly text-xs shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:hidden">
+                <ul className="flex h-full w-full">
+                    {navItems.map((item, index) => {
+                        const isActive = activeIndex === index;
+                        return (
+                            <li
+                                key={index}
+                                className="flex h-full flex-1 list-none"
                             >
-                                <span className="block text-center text-2xl">
-                                    {item.icon}
-                                </span>
-                                <span className="text-sm font-normal tracking-wider">
-                                    {item.text}
-                                </span>
-                            </button>
-                        </li>
-                    ))}
+                                <button
+                                    onClick={() => setActiveIndex(index)}
+                                    aria-label={item.text}
+                                    className={`relative flex w-full flex-col items-center gap-y-1 p-2 text-center font-medium transition-colors duration-200 focus:outline-none ${isActive ? "bg-primary1 border-primary8 border-t-2" : "hover:bg-bg-primary2"} `}
+                                >
+                                    <span
+                                        className={`shrink-0 [&>svg]:h-5 [&>svg]:w-5 ${isActive ? "text-primary7" : "text-text-secondary2"} `}
+                                    >
+                                        {item.icon}
+                                    </span>
+
+                                    <span
+                                        className={`min-w-fit whitespace-nowrap ${isActive ? "text-primary7" : "text-text-secondary2"} `}
+                                    >
+                                        {item.text}
+                                    </span>
+                                </button>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
         </div>
