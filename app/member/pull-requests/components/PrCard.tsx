@@ -158,13 +158,13 @@ export default function PrCard({
                 fetchPrCommitList(selectedRepo?.nameWithOwner, prNumber)
             }
         >
-            <article className="flex items-start gap-x-4">
+            <article className="flex min-w-0 items-start gap-x-4">
                 <div
                     className={`${typeClassMap[state].bg} flex h-10 w-10 items-center justify-center rounded-full`}
                 >
                     <GitBranch size={18} className={typeClassMap[state].text} />
                 </div>
-                <div className="flex flex-1 flex-col gap-y-1">
+                <div className="flex min-w-0 flex-1 flex-col gap-y-1">
                     <div className="relative mb-1 flex items-center gap-x-3">
                         <h3
                             className="line-clamp-1 max-w-140 font-semibold"
@@ -173,7 +173,7 @@ export default function PrCard({
                             {title}
                         </h3>
                         <div
-                            className={`shadow-border-primary1 rounded-md px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm`}
+                            className={`shadow-border-primary1 hidden rounded-md px-3 py-1 font-semibold ${typeClassMap[state].bg} ${typeClassMap[state].text} text-xs shadow-sm sm:flex`}
                         >
                             {typeClassMap[state].label}
                         </div>
@@ -183,7 +183,7 @@ export default function PrCard({
                     </div>
                     <a
                         href={`https://github.com/${selectedRepo?.nameWithOwner}/pull/${prNumber}`}
-                        className="text-text-secondary2 w-fit text-sm"
+                        className="text-text-secondary2 w-full truncate text-sm"
                         target="_blank"
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -193,19 +193,13 @@ export default function PrCard({
                         </span>
                     </a>
                     <div className="flex items-center gap-x-3">
-                        <div className="text-text-secondary2 flex items-center gap-x-1">
+                        <div className="text-text-secondary2 hidden items-center gap-x-1 md:flex">
                             <Archive size={18} />
                             <p>{repositoryName}</p>
                         </div>
-                        <div className="text-text-secondary2 flex items-center gap-x-1">
-                            {/* <Image
-                                src="/branch.svg"
-                                alt="브랜치 아이콘"
-                                width={14}
-                                height={12}
-                            /> */}
-                            <GitBranch size={18} />
-                            {branchName}
+                        <div className="text-text-secondary2 flex min-w-0 items-center gap-x-1">
+                            <GitBranch size={18} className="shrink-0" />
+                            <span className="truncate">{branchName}</span>
                         </div>
                         <div className="ml-auto">
                             <div onClick={(e) => e.stopPropagation()}>
@@ -214,12 +208,6 @@ export default function PrCard({
                                     htmlType="button"
                                     onClick={moveToPrMemoir}
                                 >
-                                    {/* <Image
-                                        src="/write.svg"
-                                        alt="회고 등록 아이콘"
-                                        width={12}
-                                        height={12}
-                                    /> */}
                                     <Pencil size={18} />
                                     회고록 작성
                                 </Button>
