@@ -15,7 +15,7 @@ export default function AccordionSidebar({
     selectedFile,
     onSelect,
 }: AccordionSidebarProps) {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const tree = useBuildFileTree(files.map((file) => ({ filename: file })));
 
     if (!sidebarOpen) {
