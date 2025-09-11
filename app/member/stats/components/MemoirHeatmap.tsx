@@ -25,7 +25,7 @@ export default function MemoirHeatmap({ data }: { data: HeatmapValue[] }) {
 
     return (
         <div className="border-border-primary1 bg-bg-member1 h-[180px] rounded-xl border pr-2 shadow-sm md:h-[272px]">
-            <h3 className="text-md mt-4 mb-4 ml-4 font-semibold">
+            <h3 className="text-md mt-4 mb-2 ml-4 font-semibold">
                 회고 히트맵
             </h3>
 
