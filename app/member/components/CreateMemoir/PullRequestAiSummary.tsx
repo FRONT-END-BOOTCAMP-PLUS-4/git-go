@@ -209,7 +209,7 @@ export default function PullRequestAiSummary({
                 </div>
             ) : (
                 <>
-                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10 text-black">
+                    <div className="relative flex min-h-[300px] min-w-[70%] flex-col gap-1 p-4 pt-8 leading-10">
                         <div className="max-w-full px-3">
                             <ReactMarkdown
                                 components={{
@@ -230,7 +230,7 @@ export default function PullRequestAiSummary({
                                 <button
                                     onClick={handleCopy}
                                     disabled={!aiSummary}
-                                    className="border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] disabled:opacity-50"
+                                    className="bg-bg-primary1 border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] disabled:opacity-50"
                                 >
                                     <Copy width={14} height={14} />
                                     <span>{copied ? "복사됨!" : "복사"}</span>
@@ -243,7 +243,7 @@ export default function PullRequestAiSummary({
                                         loading ||
                                         !!limitExceeded
                                     }
-                                    className={`border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] ${
+                                    className={`bg-bg-primary1 border-border-primary1 text-text-primary1 flex cursor-pointer items-center gap-1 rounded-md border px-3 py-1 text-sm transition hover:bg-[var(--color-hover-gray1)] ${
                                         retryCount === 0 ||
                                         loading ||
                                         limitExceeded
