@@ -1,19 +1,19 @@
 "use client";
 
-import PageTap from "@/app/member/components/PageTab";
-import RepoSelectModal from "@/app/member/components/RepoSelectModal";
-import SideBar from "@/app/member/components/SideBar";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import SearchFilter from "./memoirs/components/Filter/SearchFilter";
-import MobilePageTab from "@/app/member/components/MobilePageTab";
-import TimeFilter from "@/app/member/components/TimeFilter";
-import CommitPrFilter from "@/app/member/memoirs/components/Filter/CommitPrFilter";
-import TagFilter from "@/app/member/memoirs/components/Filter/TagFilter";
-import MobileRepoSelect from "@/app/member/components/MobileRepoSelect";
+import Button from "@/app/components/Button";
 import { useRepoStore } from "@/store/useRepoStore";
 import { Filter, X } from "lucide-react";
-import Button from "../components/Button";
+import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import MobilePageTab from "./components/MobilePageTab";
+import MobileRepoSelect from "./components/MobileRepoSelect";
+import PageTap from "./components/PageTab";
+import RepoSelectModal from "./components/RepoSelectModal";
+import SideBar from "./components/SideBar";
+import TimeFilter from "./components/TimeFilter";
+import CommitPrFilter from "./memoirs/components/Filter/CommitPrFilter";
+import SearchFilter from "./memoirs/components/Filter/SearchFilter";
+import TagFilter from "./memoirs/components/Filter/TagFilter";
 
 export default function MemberLayout({
     children,
@@ -114,7 +114,7 @@ export default function MemberLayout({
                                         type="lined"
                                         htmlType="button"
                                         size="full"
-                                        onClick={setFilterOpen}
+                                        onClick={() => setFilterOpen(true)}
                                     >
                                         <Filter size={16} />
                                         필터

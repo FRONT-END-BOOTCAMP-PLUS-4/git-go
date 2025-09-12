@@ -1,8 +1,28 @@
 {
-    "landing": {
+    "Landing": {
         "title": "코딩 여정을 기록하세요",
         "subTitle": "GitHub 계정을 연동하여 코드 활동을 자동으로 기록하고, AI 기반 요약과 함께 의미 있는 작업 문서를 만들어보세요.",
         "dashboard": "대시보드",
-        "demo": "데모로 시작하기"
+        "demo": "데모로 시작하기",
+        "features": {
+            "sync": {
+                "title": "활동 동기화",
+                "desc": "커밋, PR 및 코드 변경사항을 자동으로 추적",
+                "bgColor": "bg-green-100",
+                "iconPath": "/sync-activities.svg"
+            },
+            "ai": {
+                "title": "AI 요약",
+                "desc": "코드 변경사항에 대한 지능형 인사이트 제공",
+                "bgColor": "bg-blue-100",
+                "iconPath": "/ai-summaries.svg"
+            },
+            "memoirs": {
+                "title": "회고록 작성",
+                "desc": "풍부한 맥락과 함께 개발 여정을 기록하세요",
+                "bgColor": "bg-purple-100",
+                "iconPath": "/create-memoirs.svg"
+            }
+        }
     }
 }

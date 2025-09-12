@@ -1,27 +1,27 @@
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
+import NotFound from "@/app/[locale]/not-found";
+import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Error from "@/app/components/Error";
+import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
 import Loading from "@/app/member/components/Loading";
 import MobileTabLayout from "@/app/member/components/MobileTabLayout";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
-import PullRequestAiSummary from "@/app/member/components/CreateMemoir/PullRequestAiSummary";
-import { PullRequestType } from "@/types/github/PullRequestType";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import Select from "@/app/member/components/Select";
-import { useParams } from "next/navigation";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
-import { useSession } from "next-auth/react";
 import { useSummaryStore } from "@/store/useSummaryStore";
+import { CommitType } from "@/types/github/CommitType";
+import { PullRequestType } from "@/types/github/PullRequestType";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 export default function PullRequestMemoir() {
     const { pr_no }: { pr_no: string } = useParams();

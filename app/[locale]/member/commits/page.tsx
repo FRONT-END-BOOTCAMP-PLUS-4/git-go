@@ -1,14 +1,15 @@
 "use client";
 
 import Pagination from "@/app/components/Pagination";
-import CommitCard from "@/app/member/commits/components/CommitCard";
-import { CommitCardSkeleton } from "@/app/member/commits/components/CommitCardSkeleton";
-import EmptyResult from "@/app/member/components/EmptyResult";
+
 import { useRepoStore } from "@/store/useRepoStore";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import EmptyResult from "../components/EmptyResult";
 import RepoSelectModal from "../components/RepoSelectModal";
+import CommitCard from "./components/CommitCard";
+import { CommitCardSkeleton } from "./components/CommitCardSkeleton";
 
 interface Commit {
     sha: string;

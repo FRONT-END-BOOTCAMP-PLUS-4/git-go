@@ -1,8 +1,28 @@
 {
-    "landing": {
+    "Landing": {
         "title": "Record your coding journey.",
         "subTitle": "Link your GitHub account to automatically track your coding activity and create meaningful work documents with AI-powered summaries.",
         "dashboard": "dashboard",
-        "demo": "start with a demo"
+        "demo": "start with a demo",
+        "features": {
+            "sync": {
+                "title": "Activity Sync",
+                "desc": "Automatically track commits, PRs, and code changes",
+                "bgColor": "bg-green-100",
+                "iconPath": "/sync-activities.svg"
+            },
+            "ai": {
+                "title": "AI Summaries",
+                "desc": "Get intelligent insights for code changes",
+                "bgColor": "bg-blue-100",
+                "iconPath": "/ai-summaries.svg"
+            },
+            "memoirs": {
+                "title": "Create Memoirs",
+                "desc": "Document your development journey with rich context",
+                "bgColor": "bg-purple-100",
+                "iconPath": "/create-memoirs.svg"
+            }
+        }
     }
 }

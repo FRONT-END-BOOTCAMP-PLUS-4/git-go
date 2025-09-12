@@ -1,15 +1,15 @@
-import "./globals.css";
+import "../globals.css";
 
 import enMessages from "@/messages/en.json";
 import koMessages from "@/messages/ko.json";
 import { NextIntlClientProvider } from "next-intl";
 import localFont from "next/font/local";
-import AutoLoginRecord from "./components/AutoLoginRecord";
-import Header from "./components/Header";
-import { Providers } from "./components/Providers";
+import AutoLoginRecord from "../components/AutoLoginRecord";
+import Header from "../components/Header";
+import { Providers } from "../components/Providers";
 
 const pretendard = localFont({
-    src: "../static/fonts/PretendardVariable.woff2",
+    src: "../../static/fonts/PretendardVariable.woff2",
     display: "swap",
     weight: "100 900",
     variable: "--font-pretendard",
@@ -47,14 +47,14 @@ export const metadata = {
     },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
     params,
 }: Readonly<{
     children: React.ReactNode;
     params: { locale: string };
 }>) {
-    const { locale } = params;
+    const { locale } = await params;
     const messages = locale === "en" ? enMessages : koMessages;
 
     return (

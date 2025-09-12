@@ -1,26 +1,26 @@
 // app/member/commits/[sha]/CommitMemoir.tsx
 "use client";
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect, useMemo, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
+import NotFound from "@/app/[locale]/not-found";
+import Error from "@/app/components/Error";
 import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
 import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
 import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
 import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import { CommitType } from "@/types/github/CommitType";
 import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
 import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Error from "@/app/components/Error";
 import Loading from "@/app/member/components/Loading";
 import MobileTabLayout from "@/app/member/components/MobileTabLayout";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
-import NotFound from "@/app/not-found";
 import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
-import { useParams } from "next/navigation";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
-import { useSession } from "next-auth/react";
 import { useSummaryStore } from "@/store/useSummaryStore";
+import { CommitType } from "@/types/github/CommitType";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 export default function CommitMemoir() {
     const { sha }: { sha: string } = useParams();
