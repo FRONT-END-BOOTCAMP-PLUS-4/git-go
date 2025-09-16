@@ -1,7 +1,7 @@
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 import useBuildFileTree from "@/hooks/useBuildFileTree";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FileNodeComponent from "./FileNodeComponent";
 
 type AccordionSidebarProps = {
@@ -18,6 +18,16 @@ export default function AccordionSidebar({
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const tree = useBuildFileTree(files.map((file) => ({ filename: file })));
 
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            if (window.innerWidth < 768) {
+                setSidebarOpen(true); // md 이하일 때 open
+            } else {
+                setSidebarOpen(false); // md 이상일 때 close
+            }
+        }
+    }, []);
+
     if (!sidebarOpen) {
         return (
             <button
@@ -30,7 +40,7 @@ export default function AccordionSidebar({
     }
 
     return (
-        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full max-w-fit flex-col truncate pt-4 pl-4 shadow-md md:w-[25vw]">
+        <div className="bg-bg-primary1 pm-4 top-[65px] left-0 z-40 flex h-full w-full flex-col truncate pt-4 pl-4 shadow-md md:w-[25vw]">
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-sm font-bold">Changed Files</h2>
                 <button
