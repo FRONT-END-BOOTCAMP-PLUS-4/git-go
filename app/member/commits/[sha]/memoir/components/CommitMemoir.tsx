@@ -33,7 +33,7 @@ export default function CommitMemoir() {
     const [commitData, setCommitData] = useState<CommitType | null>(null);
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [activeIndex, setActiveIndex] = useState(2);
 
     useEffect(() => {
         clearSummarized();
@@ -116,6 +116,17 @@ export default function CommitMemoir() {
             setActiveIndex={setActiveIndex}
             navItems={NAVIGATION_ITEMS}
             panels={[
+                <PanelGroup
+                    key="sidebar"
+                    direction="horizontal"
+                    className="h-full w-full"
+                >
+                    <AccordionSidebar
+                        files={files}
+                        selectedFile={selectedFile}
+                        onSelect={setSelectedFile}
+                    />
+                </PanelGroup>,
                 <ChangeListLayout key="changelist-layout">
                     <div className="border-border-primary1 mb-2 truncate border-b-1 px-3 py-2 font-semibold">
                         {commitData.message}
