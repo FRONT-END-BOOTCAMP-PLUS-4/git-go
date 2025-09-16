@@ -1,4 +1,4 @@
-import CommitDetailMemoir from "@/app/member/memoirs/components/Detail/CommitDetailMemoir";
+import CommitDetailMemoir from "../../components/Detail/CommitDetailMemoir";
 
 export default function CommitMemoirDetail() {
     return <CommitDetailMemoir />;

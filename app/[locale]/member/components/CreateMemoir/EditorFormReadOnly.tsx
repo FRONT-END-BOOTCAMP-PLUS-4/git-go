@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/app/components/Button";
-import { PlateEditor } from "@/app/member/components/CreateMemoir/plate-editor/ui/plate-editor";
 import { MEMBER_URL } from "@/constants/url";
 import { useConfirm } from "@/hooks/useConfirm";
 import { Value } from "@udecode/plate";
@@ -10,6 +9,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDialog from "../ConfirmDialog";
 import { ExportToolbarButton } from "./plate-editor/ui/export-toolbar-button";
 import { FixedToolbar } from "./plate-editor/ui/fixed-toolbar";
+import { PlateEditor } from "./plate-editor/ui/plate-editor";
 import { ToolbarGroup } from "./plate-editor/ui/toolbar";
 
 interface Props {

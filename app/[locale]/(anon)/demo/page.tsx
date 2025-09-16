@@ -1,13 +1,13 @@
 "use client";
 
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
-import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
-import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import DemoEditorForm from "@/app/member/components/CreateMemoir/DemoEditorForm";
 import { DEMO_COMMIT } from "@/constants/demo";
 import { useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import AccordionSidebar from "../../member/components/CreateMemoir/AccordionSideBar";
+import ChangeList from "../../member/components/CreateMemoir/ChangeList";
+import ChangeListLayout from "../../member/components/CreateMemoir/ChangeListLayout";
+import CreateMemoirLayout from "../../member/components/CreateMemoir/CreateMemoirLayout";
+import DemoEditorForm from "../../member/components/CreateMemoir/DemoEditorForm";
 
 export default function Demo() {
     const [selectedFile, setSelectedFile] = useState<string | null>(null);

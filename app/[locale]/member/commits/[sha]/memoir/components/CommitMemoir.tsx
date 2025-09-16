@@ -15,7 +15,7 @@ import MobileTabLayout from "@/app/[locale]/member/components/MobileTabLayout";
 import ResponsiveLayout from "@/app/[locale]/member/components/ResponsiveLayout";
 import NotFound from "@/app/[locale]/not-found";
 import Error from "@/app/components/Error";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavigation";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";
 import { CommitType } from "@/types/github/CommitType";

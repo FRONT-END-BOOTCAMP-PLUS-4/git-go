@@ -4,21 +4,22 @@ import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import NotFound from "@/app/[locale]/not-found";
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
-import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
-import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import EditEditorForm from "@/app/member/components/CreateMemoir/EditEditorForm";
-import EditorFormReadOnly from "@/app/member/components/CreateMemoir/EditorFormReadOnly";
-import Loading from "@/app/member/components/Loading";
-import MobileTabLayout from "@/app/member/components/MobileTabLayout";
-import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
+
 import { GetMemoirResponseDto } from "@/application/usecase/memoir/dto/GetMemoirDto";
-import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
+import { NAVIGATION_ITEMS } from "@/constants/mobileNavigation";
 import { useRepoStore } from "@/store/useRepoStore";
 import { CommitType } from "@/types/github/CommitType";
 import { Value } from "@udecode/plate";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import AccordionSidebar from "../../../components/CreateMemoir/AccordionSideBar";
+import ChangeList from "../../../components/CreateMemoir/ChangeList";
+import ChangeListLayout from "../../../components/CreateMemoir/ChangeListLayout";
+import EditEditorForm from "../../../components/CreateMemoir/EditEditorForm";
+import EditorFormReadOnly from "../../../components/CreateMemoir/EditorFormReadOnly";
+import Loading from "../../../components/Loading";
+import MobileTabLayout from "../../../components/MobileTabLayout";
+import ResponsiveLayout from "../../../components/ResponsiveLayout";
 import ViewSummary from "../ViewSummary";
 import DetailMemoirLayout from "./DetailMemoirLayout";
 

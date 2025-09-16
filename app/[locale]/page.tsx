@@ -78,7 +78,7 @@ export default async function HomePage() {
                 ) : (
                     <Button>
                         <Link target="_blank" href={"/demo"}>
-                            Start with a demo
+                            {t("demo")}
                         </Link>
                     </Button>
                 )}
