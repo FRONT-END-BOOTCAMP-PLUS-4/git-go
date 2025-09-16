@@ -3,15 +3,15 @@
 import {
     Editor,
     EditorContainer,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/editor";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/editor";
 import React, { ReactNode, forwardRef, memo, useImperativeHandle } from "react";
 
-import { DndProvider } from "react-dnd";
-import { EditorFormHandle } from "@/types/memoir/Memoir";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Plate } from "@udecode/plate/react";
-import { Value } from "@udecode/plate";
 import { useCreateEditor } from "@/hooks/useCreateEditor";
+import { EditorFormHandle } from "@/types/memoir/Memoir";
+import { Value } from "@udecode/plate";
+import { Plate } from "@udecode/plate/react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 type PlateEditorProps = {
     readOnly?: boolean;

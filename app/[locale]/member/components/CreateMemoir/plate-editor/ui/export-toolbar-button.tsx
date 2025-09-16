@@ -76,9 +76,9 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
-import { LinkElementStatic } from "@/app/member/components/CreateMemoir/plate-editor/ui/link-element-static";
+import { LinkElementStatic } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/link-element-static";
 
 import { useEffect, useState } from "react";
 import { BlockquoteElementStatic } from "./blockquote-element-static";

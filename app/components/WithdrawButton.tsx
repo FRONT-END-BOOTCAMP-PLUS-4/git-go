@@ -3,8 +3,9 @@
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import AlertDialog from "../member/components/AlertDialog";
-import ConfirmDialog from "../member/components/ConfirmDialog";
+
+import AlertDialog from "../[locale]/member/components/AlertDialog";
+import ConfirmDialog from "../[locale]/member/components/ConfirmDialog";
 import Button from "./Button";
 
 export default function WithdrawButton() {

@@ -26,8 +26,8 @@ import {
 import { cva } from "class-variance-authority";
 import { ExternalLink, Link, Text, Unlink } from "lucide-react";
 
-import { buttonVariants } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
-import { Separator } from "@/app/member/components/CreateMemoir/plate-editor/ui/separator";
+import { buttonVariants } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
+import { Separator } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/separator";
 
 const popoverVariants = cva(
     "z-50 w-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-hidden"

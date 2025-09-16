@@ -1,14 +1,14 @@
 "use client";
 
 import Pagination from "@/app/components/Pagination";
-import MemoirCard from "@/app/member/memoirs/components/MemoirCard";
 import { MemoirListDto } from "@/application/usecase/memoir/dto/MemoirListDto";
 import { useFilterStore } from "@/store/useFilterStore";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useEffect, useRef, useState } from "react";
 import EmptyResult from "../components/EmptyResult";
+import RepoSelectModal from "../components/RepoSelectModal";
+import MemoirCard from "./components/MemoirCard";
 import MemoirSkeleton from "./components/MemoirSkeleton";
-import RepoSelectModal from "@/app/member/components/RepoSelectModal";
 
 export default function MemoirPage() {
     const now = new Date();

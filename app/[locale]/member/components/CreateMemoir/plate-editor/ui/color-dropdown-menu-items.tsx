@@ -4,14 +4,14 @@ import * as React from "react";
 
 import type { DropdownMenuItemProps } from "@radix-ui/react-dropdown-menu";
 
-import { buttonVariants } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
-import { DropdownMenuItem } from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+import { buttonVariants } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
+import { DropdownMenuItem } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/tooltip";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export type TColor = {

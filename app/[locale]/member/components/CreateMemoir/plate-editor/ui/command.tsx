@@ -10,7 +10,7 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dialog";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dialog";
 import { cn } from "@/lib/utils";
 
 function Command({

@@ -4,17 +4,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
+import AccordionSidebar from "@/app/[locale]/member/components/CreateMemoir/AccordionSideBar";
+import AiSummary from "@/app/[locale]/member/components/CreateMemoir/AiSummary";
+import ChangeList from "@/app/[locale]/member/components/CreateMemoir/ChangeList";
+import ChangeListLayout from "@/app/[locale]/member/components/CreateMemoir/ChangeListLayout";
+import CreateEditorForm from "@/app/[locale]/member/components/CreateMemoir/CreateEditorForm";
+import CreateMemoirLayout from "@/app/[locale]/member/components/CreateMemoir/CreateMemoirLayout";
+import Loading from "@/app/[locale]/member/components/Loading";
+import MobileTabLayout from "@/app/[locale]/member/components/MobileTabLayout";
+import ResponsiveLayout from "@/app/[locale]/member/components/ResponsiveLayout";
 import NotFound from "@/app/[locale]/not-found";
 import Error from "@/app/components/Error";
-import AccordionSidebar from "@/app/member/components/CreateMemoir/AccordionSideBar";
-import AiSummary from "@/app/member/components/CreateMemoir/AiSummary";
-import ChangeList from "@/app/member/components/CreateMemoir/ChangeList";
-import ChangeListLayout from "@/app/member/components/CreateMemoir/ChangeListLayout";
-import CreateEditorForm from "@/app/member/components/CreateMemoir/CreateEditorForm";
-import CreateMemoirLayout from "@/app/member/components/CreateMemoir/CreateMemoirLayout";
-import Loading from "@/app/member/components/Loading";
-import MobileTabLayout from "@/app/member/components/MobileTabLayout";
-import ResponsiveLayout from "@/app/member/components/ResponsiveLayout";
 import { NAVIGATION_ITEMS } from "@/constants/mobileNavitagion";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSummaryStore } from "@/store/useSummaryStore";

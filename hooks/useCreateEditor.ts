@@ -1,5 +1,9 @@
 "use client";
 
+import {
+    TableCellElement,
+    TableCellHeaderElement,
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/table-cell-element";
 import { AnyPluginConfig, Value } from "@udecode/plate";
 import {
     BoldPlugin,
@@ -14,59 +18,55 @@ import {
     CodeSyntaxPlugin,
 } from "@udecode/plate-code-block/react";
 import { ColumnItemPlugin, ColumnPlugin } from "@udecode/plate-layout/react";
-import {
-    CreatePlateEditorOptions,
-    ParagraphPlugin,
-    PlateLeaf,
-    usePlateEditor,
-} from "@udecode/plate/react";
 import { ImagePlugin, PlaceholderPlugin } from "@udecode/plate-media/react";
-import {
-    TableCellElement,
-    TableCellHeaderElement,
-} from "../app/member/components/CreateMemoir/plate-editor/ui/table-cell-element";
 import {
     TableCellHeaderPlugin,
     TableCellPlugin,
     TablePlugin,
     TableRowPlugin,
 } from "@udecode/plate-table/react";
+import {
+    CreatePlateEditorOptions,
+    ParagraphPlugin,
+    PlateLeaf,
+    usePlateEditor,
+} from "@udecode/plate/react";
 
-import { BlockquoteElement } from "../app/member/components/CreateMemoir/plate-editor/ui/blockquote-element";
+import { editorPlugins } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/editor-plugins";
+import { BlockquoteElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/blockquote-element";
+import { CalloutElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/callout-element";
+import { CodeBlockElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/code-block-element";
+import { CodeLeaf } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/code-leaf";
+import { CodeLineElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/code-line-element";
+import { CodeSyntaxLeaf } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/code-syntax-leaf";
+import { ColumnElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/column-element";
+import { ColumnGroupElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/column-group-element";
+import { HeadingElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/heading-element";
+import { HighlightLeaf } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/highlight-leaf";
+import { HrElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/hr-element";
+import { ImageElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/image-element";
+import { LinkElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/link-element";
+import { MediaPlaceholderElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/media-placeholder-element";
+import { ParagraphElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/paragraph-element";
+import { withPlaceholders } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/placeholder";
+import { SlashInputElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/slash-input-element";
+import { SuggestionLeaf } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/suggestion-leaf";
+import { TableElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/table-element";
+import { TableRowElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/table-row-element";
+import { TocElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/toc-element";
+import { ToggleElement } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/toggle-element";
+import { useMemoirStore } from "@/store/useMemoirStore";
+import { withProps } from "@udecode/cn";
 import { BlockquotePlugin } from "@udecode/plate-block-quote/react";
-import { CalloutElement } from "../app/member/components/CreateMemoir/plate-editor/ui/callout-element";
 import { CalloutPlugin } from "@udecode/plate-callout/react";
-import { CodeBlockElement } from "../app/member/components/CreateMemoir/plate-editor/ui/code-block-element";
-import { CodeLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/code-leaf";
-import { CodeLineElement } from "../app/member/components/CreateMemoir/plate-editor/ui/code-line-element";
-import { CodeSyntaxLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/code-syntax-leaf";
-import { ColumnElement } from "../app/member/components/CreateMemoir/plate-editor/ui/column-element";
-import { ColumnGroupElement } from "../app/member/components/CreateMemoir/plate-editor/ui/column-group-element";
 import { HEADING_KEYS } from "@udecode/plate-heading";
-import { HeadingElement } from "../app/member/components/CreateMemoir/plate-editor/ui/heading-element";
-import { HighlightLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/highlight-leaf";
+import { TocPlugin } from "@udecode/plate-heading/react";
 import { HighlightPlugin } from "@udecode/plate-highlight/react";
 import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
-import { HrElement } from "../app/member/components/CreateMemoir/plate-editor/ui/hr-element";
-import { ImageElement } from "@/app/member/components/CreateMemoir/plate-editor/ui/image-element";
-import { LinkElement } from "../app/member/components/CreateMemoir/plate-editor/ui/link-element";
 import { LinkPlugin } from "@udecode/plate-link/react";
-import { MediaPlaceholderElement } from "@/app/member/components/CreateMemoir/plate-editor/ui/media-placeholder-element";
-import { ParagraphElement } from "../app/member/components/CreateMemoir/plate-editor/ui/paragraph-element";
-import { SlashInputElement } from "../app/member/components/CreateMemoir/plate-editor/ui/slash-input-element";
 import { SlashInputPlugin } from "@udecode/plate-slash-command/react";
-import { SuggestionLeaf } from "../app/member/components/CreateMemoir/plate-editor/ui/suggestion-leaf";
 import { SuggestionPlugin } from "@udecode/plate-suggestion/react";
-import { TableElement } from "../app/member/components/CreateMemoir/plate-editor/ui/table-element";
-import { TableRowElement } from "../app/member/components/CreateMemoir/plate-editor/ui/table-row-element";
-import { TocElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toc-element";
-import { TocPlugin } from "@udecode/plate-heading/react";
-import { ToggleElement } from "../app/member/components/CreateMemoir/plate-editor/ui/toggle-element";
 import { TogglePlugin } from "@udecode/plate-toggle/react";
-import { editorPlugins } from "@/app/member/components/CreateMemoir/plate-editor/plugin/editor-plugins";
-import { useMemoirStore } from "@/store/useMemoirStore";
-import { withPlaceholders } from "../app/member/components/CreateMemoir/plate-editor/ui/placeholder";
-import { withProps } from "@udecode/cn";
 
 export const viewComponents = {
     // 글씨

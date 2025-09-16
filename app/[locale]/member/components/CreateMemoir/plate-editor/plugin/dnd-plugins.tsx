@@ -4,7 +4,7 @@ import { DndPlugin } from "@udecode/plate-dnd";
 import { PlaceholderPlugin } from "@udecode/plate-media/react";
 import { NodeIdPlugin } from "@udecode/plate-node-id";
 
-import { DraggableAboveNodes } from "@/app/member/components/CreateMemoir/plate-editor/ui/draggable";
+import { DraggableAboveNodes } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/draggable";
 
 export const dndPlugins = [
     NodeIdPlugin,

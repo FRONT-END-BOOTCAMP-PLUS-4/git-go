@@ -11,12 +11,12 @@ import {
     DropdownMenuLabel,
     DropdownMenuRadioGroup,
     DropdownMenuSeparator,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
-import { Separator } from "@/app/member/components/CreateMemoir/plate-editor/ui/separator";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+import { Separator } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/separator";
 import {
     Tooltip,
     TooltipTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/tooltip";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export function Toolbar({

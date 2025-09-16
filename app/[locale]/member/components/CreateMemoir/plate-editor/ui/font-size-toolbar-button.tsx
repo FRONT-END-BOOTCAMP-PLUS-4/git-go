@@ -14,7 +14,7 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/popover";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/popover";
 import { cn } from "@/lib/utils";
 
 import { ToolbarButton } from "./toolbar";

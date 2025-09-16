@@ -17,7 +17,7 @@ import {
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
 import { ToolbarButton } from "./toolbar";
 

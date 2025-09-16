@@ -11,7 +11,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
 import { DEFAULT_COLORS, DEFAULT_CUSTOM_COLORS } from "./color-constants";
 import { ColorPicker } from "./color-picker";

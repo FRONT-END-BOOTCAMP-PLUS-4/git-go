@@ -69,7 +69,7 @@ export default async function HomePage() {
                             <Button
                                 type="default"
                                 size="regular"
-                                label="대시보드"
+                                label={t("dashboard")}
                                 htmlType="submit"
                                 icon={<LayoutDashboard size={16} />}
                             />

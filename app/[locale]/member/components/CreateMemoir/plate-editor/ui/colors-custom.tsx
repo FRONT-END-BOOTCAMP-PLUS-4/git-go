@@ -8,9 +8,9 @@ import {
 } from "@udecode/plate-font/react";
 import { PlusIcon } from "lucide-react";
 
-import { buttonVariants } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { buttonVariants } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 // import { ColorInput } from './color-input';
-import { DropdownMenuItem } from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 import {

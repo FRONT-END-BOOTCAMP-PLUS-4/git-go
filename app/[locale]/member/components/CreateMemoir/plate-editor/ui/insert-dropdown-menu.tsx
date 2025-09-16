@@ -36,13 +36,13 @@ import {
     TableOfContentsIcon,
 } from "lucide-react";
 
-import { insertBlock } from "@/app/member/components/CreateMemoir/plate-editor/plugin/transforms";
+import { insertBlock } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/transforms";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
 import { CalloutPlugin } from "@udecode/plate-callout/react";
 import { ToolbarButton, ToolbarMenuGroup } from "./toolbar";

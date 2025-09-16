@@ -1,13 +1,13 @@
 import type { EmojiCategoryList } from "@udecode/plate-emoji";
 import type { UseEmojiPickerType } from "@udecode/plate-emoji/react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/tooltip";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export type EmojiPickerNavigationProps = {

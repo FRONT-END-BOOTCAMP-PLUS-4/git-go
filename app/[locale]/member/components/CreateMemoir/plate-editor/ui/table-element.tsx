@@ -50,11 +50,11 @@ import {
     DropdownMenuItem,
     DropdownMenuPortal,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 import {
     Popover,
     PopoverContent,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/popover";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/popover";
 import { cn } from "@/lib/utils";
 
 import { DEFAULT_COLORS } from "./color-constants";

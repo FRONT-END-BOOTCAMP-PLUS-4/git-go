@@ -9,7 +9,7 @@ import {
     usePluginOption,
 } from "@udecode/plate/react";
 
-import { suggestionPlugin } from "@/app/member/components/CreateMemoir/plate-editor/plugin/suggestion-plugin";
+import { suggestionPlugin } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/suggestion-plugin";
 import { cn } from "@/lib/utils";
 
 export function SuggestionLeaf(props: PlateLeafProps<TSuggestionText>) {

@@ -18,13 +18,13 @@ import {
 } from "@udecode/plate/react";
 import { GripHorizontal } from "lucide-react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/tooltip";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export const ColumnElement = withHOC(

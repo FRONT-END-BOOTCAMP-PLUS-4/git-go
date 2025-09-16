@@ -19,9 +19,9 @@ import {
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
-import { STRUCTURAL_TYPES } from "@/app/member/components/CreateMemoir/plate-editor/plugin/transforms";
+import { STRUCTURAL_TYPES } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/transforms";
 import { ToolbarButton } from "./toolbar";
 
 const items = [

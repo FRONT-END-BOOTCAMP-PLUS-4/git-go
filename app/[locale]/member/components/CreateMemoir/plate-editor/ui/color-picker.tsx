@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { EraserIcon } from "lucide-react";
 
-import { DropdownMenuItem } from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
-import { ToolbarMenuGroup } from "@/app/member/components/CreateMemoir/plate-editor/ui/toolbar";
+import { DropdownMenuItem } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+import { ToolbarMenuGroup } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/toolbar";
 import { cn } from "@/lib/utils";
 
 import {

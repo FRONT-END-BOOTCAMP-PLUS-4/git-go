@@ -1,4 +1,4 @@
-import AlertDialog from "@/app/member/components/AlertDialog";
+import AlertDialog from "@/app/[locale]/member/components/AlertDialog";
 import { IMAGE_MAX_SIZE } from "@/constants/imageSize";
 import { useS3Upload } from "@/hooks/useS3Upload";
 import { cn } from "@/lib/utils";

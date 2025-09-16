@@ -16,13 +16,13 @@ import {
 } from "@udecode/plate/react";
 import { type LucideProps, Trash2Icon } from "lucide-react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import {
     Popover,
     PopoverAnchor,
     PopoverContent,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/popover";
-import { Separator } from "@/app/member/components/CreateMemoir/plate-editor/ui/separator";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/popover";
+import { Separator } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/separator";
 
 export function ColumnGroupElement(props: PlateElementProps) {
     return (

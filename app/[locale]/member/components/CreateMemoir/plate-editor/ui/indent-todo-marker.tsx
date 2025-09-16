@@ -8,7 +8,7 @@ import {
 } from "@udecode/plate-indent-list/react";
 import { useReadOnly } from "@udecode/plate/react";
 
-import { Checkbox } from "@/app/member/components/CreateMemoir/plate-editor/ui/checkbox";
+import { Checkbox } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 export function TodoMarker(props: Omit<SlateRenderElementProps, "children">) {

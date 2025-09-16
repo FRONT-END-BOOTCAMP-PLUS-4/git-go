@@ -11,11 +11,11 @@ import { ParagraphPlugin } from "@udecode/plate/react";
 import {
     FireLiComponent,
     FireMarker,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/indent-fire-marker";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/indent-fire-marker";
 import {
     TodoLi,
     TodoMarker,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/indent-todo-marker";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/indent-todo-marker";
 
 export const indentListPlugins = [
     IndentPlugin.extend({

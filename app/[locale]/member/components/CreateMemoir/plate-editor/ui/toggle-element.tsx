@@ -9,7 +9,7 @@ import {
 import { PlateElement } from "@udecode/plate/react";
 import { ChevronRight } from "lucide-react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 
 export function ToggleElement(props: PlateElementProps) {
     const element = props.element;

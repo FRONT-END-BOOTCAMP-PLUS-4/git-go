@@ -1,7 +1,5 @@
 "use client";
 import Button from "@/app/components/Button";
-import PrCommitCard from "@/app/member/pull-requests/components/PrCommitCard";
-import PrCommitCardSkeleton from "@/app/member/pull-requests/components/PrCommitCardSkeleton";
 import { MEMBER_URL } from "@/constants/url";
 import { useRepoStore } from "@/store/useRepoStore";
 import { useSourceTitleStore } from "@/store/useSourceTitleStore";
@@ -9,6 +7,8 @@ import { Archive, GitBranch, Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import PrCommitCard from "./PrCommitCard";
+import PrCommitCardSkeleton from "./PrCommitCardSkeleton";
 
 interface PrCardProps {
     title: string;

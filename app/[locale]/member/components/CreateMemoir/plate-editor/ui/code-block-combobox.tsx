@@ -7,7 +7,7 @@ import type { TCodeBlockElement } from "@udecode/plate-code-block";
 import { useEditorRef, useElement, useReadOnly } from "@udecode/plate/react";
 import { Check } from "lucide-react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -15,12 +15,12 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/command";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/command";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/popover";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/popover";
 import { cn } from "@/lib/utils";
 
 const languages: { label: string; value: string }[] = [

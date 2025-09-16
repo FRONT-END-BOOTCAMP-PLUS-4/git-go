@@ -19,7 +19,7 @@ import {
 } from "@udecode/plate/react";
 import { GripVertical } from "lucide-react";
 
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import { cn } from "@/lib/utils";
 
 export function TableRowElement(props: PlateElementProps<TTableRowElement>) {

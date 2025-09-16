@@ -36,13 +36,13 @@ import {
     DropdownMenuContent,
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
 import {
     getBlockType,
     setBlockType,
     STRUCTURAL_TYPES,
-} from "@/app/member/components/CreateMemoir/plate-editor/plugin/transforms";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/transforms";
 import { ToolbarButton, ToolbarMenuGroup } from "./toolbar";
 
 const turnIntoItems = [

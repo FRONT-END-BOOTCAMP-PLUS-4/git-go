@@ -35,7 +35,7 @@ import {
     TableOfContentsIcon,
 } from "lucide-react";
 
-import { insertBlock } from "@/app/member/components/CreateMemoir/plate-editor/plugin/transforms";
+import { insertBlock } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/transforms";
 import { CalloutPlugin } from "@udecode/plate-callout/react";
 import { HorizontalRulePlugin } from "@udecode/plate-horizontal-rule/react";
 import {

@@ -35,13 +35,13 @@ import {
 } from "@udecode/plate/react";
 import { GripVertical } from "lucide-react";
 
-import { STRUCTURAL_TYPES } from "@/app/member/components/CreateMemoir/plate-editor/plugin/transforms";
-import { Button } from "@/app/member/components/CreateMemoir/plate-editor/ui/button";
+import { STRUCTURAL_TYPES } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/plugin/transforms";
+import { Button } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/button";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/tooltip";
+} from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 const UNDRAGGABLE_KEYS = [

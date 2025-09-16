@@ -10,7 +10,7 @@ import { PlateElement, withHOC } from "@udecode/plate/react";
 
 import { cn } from "@/lib/utils";
 
-import { MediaPopover } from "@/app/member/components/CreateMemoir/plate-editor/ui/media-popover";
+import { MediaPopover } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/media-popover";
 import { Caption, CaptionTextarea } from "./caption";
 import {
     mediaResizeHandleVariants,

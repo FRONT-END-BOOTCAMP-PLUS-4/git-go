@@ -25,7 +25,7 @@ import {
     UnderlineIcon,
 } from "lucide-react";
 
-import { MoreDropdownMenu } from "@/app/member/components/CreateMemoir/plate-editor/ui/more-dropdown-menu";
+import { MoreDropdownMenu } from "@/app/[locale]/member/components/CreateMemoir/plate-editor/ui/more-dropdown-menu";
 
 import { ImagePlugin } from "@udecode/plate-media/react";
 import { AlignDropdownMenu } from "./align-dropdown-menu";
