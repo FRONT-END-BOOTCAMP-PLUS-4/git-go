@@ -1,6 +1,11 @@
-import { CodeXml, Pencil } from "lucide-react";
+import { CodeXml, Pencil, File } from "lucide-react";
 
 export const NAVIGATION_ITEMS = [
+    {
+        icon: <File />,
+        tabName: "file",
+        text: "파일 변경 내역",
+    },
     {
         icon: <CodeXml />,
         tabName: "codeChange",
