@@ -62,6 +62,7 @@ export default function Badges() {
             gray: "/badge-memoir-50-gray.png",
         },
     ];
+
     const streakBadgeList = [
         {
             count: 1,
@@ -89,36 +90,40 @@ export default function Badges() {
         },
     ];
 
+    const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+        <p className="mb-3 text-base font-medium sm:text-[16px]">{children}</p>
+    );
+
     return (
         <div className="flex justify-center">
-            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] rounded-md border">
-                <div className="border-border-primary1 border-b p-4 text-xl font-semibold">
+            <div className="border-border-primary1 bg-bg-member1 w-full max-w-[880px] rounded-md border">
+                <div className="border-border-primary1 border-b px-3 py-4 text-lg font-semibold sm:px-4 sm:text-xl">
                     획득한 뱃지
                 </div>
-                <div className="p-6">
-                    <div className="border-border-primary1 border-b pb-4">
-                        <p className="mb-3 text-[16px] font-normal">
-                            회고록 작성
-                        </p>
-                        <div className="grid grid-cols-4 gap-6">
+
+                <div className="px-3 py-6 sm:px-6">
+                    <div className="border-border-primary1 border-b pb-5">
+                        <SectionTitle>회고록 작성</SectionTitle>
+
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 md:grid-cols-4 md:gap-6">
                             {badgeList.map((badge) => {
                                 const isEarned = memoirCount >= badge.count;
+                                const src = isEarned ? badge.image : badge.gray;
                                 return (
                                     <div
                                         key={badge.count}
-                                        className="flex flex-col items-center gap-2"
+                                        className="flex flex-col items-center gap-2 rounded-xl p-2 sm:p-3"
                                     >
                                         <Image
-                                            src={
-                                                isEarned
-                                                    ? badge.image
-                                                    : badge.gray
-                                            }
+                                            src={src}
                                             alt={`${badge.label} 뱃지`}
                                             width={80}
                                             height={80}
+                                            className="h-16 w-16 md:h-20 md:w-20"
+                                            priority={false}
+                                            sizes="(max-width: 640px) 64px, (max-width: 768px) 72px, 80px"
                                         />
-                                        <span className="text-sm">
+                                        <span className="text-center text-xs sm:text-sm">
                                             {badge.label}
                                         </span>
                                     </div>
@@ -126,30 +131,30 @@ export default function Badges() {
                             })}
                         </div>
                     </div>
-                    <div className="border-border-primary1 mt-10 border-b pb-4">
-                        <p className="mb-3 text-[16px] font-normal">
-                            연속 출석일
-                        </p>
-                        <div className="grid grid-cols-4 gap-6">
+
+                    <div className="border-border-primary1 mt-8 border-b pb-5 sm:mt-10">
+                        <SectionTitle>연속 출석일</SectionTitle>
+
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 md:grid-cols-4 md:gap-6">
                             {streakBadgeList.map((badge) => {
                                 const isEarned =
                                     streak !== null && streak >= badge.count;
+                                const src = isEarned ? badge.image : badge.gray;
                                 return (
                                     <div
                                         key={badge.count}
-                                        className="flex flex-col items-center gap-2"
+                                        className="flex flex-col items-center gap-2 rounded-xl p-2 sm:p-3"
                                     >
                                         <Image
-                                            src={
-                                                isEarned
-                                                    ? badge.image
-                                                    : badge.gray
-                                            }
+                                            src={src}
                                             alt={`${badge.label} 뱃지`}
                                             width={80}
                                             height={80}
+                                            className="h-16 w-16 md:h-20 md:w-20"
+                                            priority={false}
+                                            sizes="(max-width: 640px) 64px, (max-width: 768px) 72px, 80px"
                                         />
-                                        <span className="text-sm">
+                                        <span className="text-center text-xs sm:text-sm">
                                             {badge.label}
                                         </span>
                                     </div>
@@ -157,6 +162,7 @@ export default function Badges() {
                             })}
                         </div>
                     </div>
+                    <div className="h-2 sm:h-3" />
                 </div>
             </div>
         </div>
