@@ -24,27 +24,14 @@ export default function MemoirHeatmap({ data }: { data: HeatmapValue[] }) {
     }, [data]);
 
     return (
-        <div className="border-border-primary1 bg-bg-member1 h-[180px] rounded-xl border pr-2 shadow-sm md:h-[272px]">
+        <div className="border-border-primary1 bg-bg-member1 h-[180px] overflow-x-auto rounded-xl border pr-2 shadow-sm">
             <h3 className="text-md mt-4 mb-2 ml-4 font-semibold">
                 회고 히트맵
             </h3>
 
             <div className="flex">
-                {/* ✅ 요일 라벨 영역 */}
-                <div className="text-text-secondary2 flex flex-col pt-[14px] pr-2 pl-4 text-[10px] md:justify-between md:py-7 md:text-xs">
-                    {["일", "월", "화", "수", "목", "금", "토"].map((d) => (
-                        <div
-                            key={d}
-                            className="mt-[6px] h-[9px] leading-[9px] md:mt-1.5 md:h-[18px] md:leading-[18px]"
-                        >
-                            {d}
-                        </div>
-                    ))}
-                </div>
-
-                {/* ✅ Heatmap */}
                 <div
-                    className="h-[120px] flex-1 overflow-x-auto overflow-y-hidden md:h-[200px] [&>svg.react-calendar-heatmap]:block [&>svg.react-calendar-heatmap]:h-full [&>svg.react-calendar-heatmap]:w-auto"
+                    className="h-[140px] flex-1 overflow-x-auto overflow-y-hidden md:w-[100vw] [&>svg.react-calendar-heatmap]:block [&>svg.react-calendar-heatmap]:h-full [&>svg.react-calendar-heatmap]:w-auto md:[&>svg.react-calendar-heatmap]:h-auto md:[&>svg.react-calendar-heatmap]:w-full [&>svg.react-calendar-heatmap>g.react-calendar-heatmap-weekday-labels]:-translate-x-1"
                     ref={wrapRef}
                 >
                     <ReactCalendarHeatmap
@@ -70,7 +57,7 @@ export default function MemoirHeatmap({ data }: { data: HeatmapValue[] }) {
                                 "data-tooltip-content": `${formatted}: ${v.count}회`,
                             };
                         }}
-                        showWeekdayLabels={false} // 라이브러리 기본 요일 라벨은 꺼버림
+                        showWeekdayLabels={true}
                     />
                 </div>
             </div>
