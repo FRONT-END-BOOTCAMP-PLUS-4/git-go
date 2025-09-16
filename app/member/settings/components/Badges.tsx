@@ -96,7 +96,7 @@ export default function Badges() {
 
     return (
         <div className="flex justify-center">
-            <div className="border-border-primary1 bg-bg-member1 m-4 w-full max-w-[880px] rounded-md border">
+            <div className="border-border-primary1 bg-bg-member1 w-full max-w-[880px] rounded-md border">
                 <div className="border-border-primary1 border-b px-3 py-4 text-lg font-semibold sm:px-4 sm:text-xl">
                     획득한 뱃지
                 </div>
