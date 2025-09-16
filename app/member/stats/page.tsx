@@ -84,11 +84,11 @@ export default function StatsPage() {
     return (
         <div className="space-y-6">
             {/* 히트맵 + 오른쪽 세로 카드 */}
-            <div className="flex flex-col gap-4 md:flex-row">
-                <div className="md:w-[70%]">
+            <div className="flex flex-col gap-4">
+                <div className="flex">
                     <MemoirHeatmap data={memoirHeatmap} />
                 </div>
-                <div className="flex flex-col gap-4 md:w-[30%]">
+                <div className="flex flex-col gap-4 md:flex-row">
                     {loadingStats || !statsData ? (
                         <>
                             <StatsCardSkeleton />
@@ -121,12 +121,12 @@ export default function StatsPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* 커밋 활동 */}
                 {loadingStats || !statsData ? (
-                    <div className="border-border-primary1 bg-bg-member1 h-79 rounded-xl border p-4 shadow-sm">
+                    <div className="border-border-primary1 bg-bg-member1 h-fit rounded-xl border p-4 shadow-sm">
                         <ChartSkeleton />
                     </div>
                 ) : (
                     <BottomCard title="커밋 활동" subtitle="최근 7일">
-                        <div className="h-64 w-full">
+                        <div className="mt-[6vh] h-64 w-full">
                             <WeeklyCommitChart data={statsData.weeklyCommits} />
                         </div>
                     </BottomCard>
@@ -142,7 +142,7 @@ export default function StatsPage() {
                         title="가장 활발한 저장소"
                         subtitle="커밋 수 기준"
                     >
-                        <div className="space-y-4">
+                        <div className="mt-[6vh] space-y-4">
                             {topRepos.length > 0 ? (
                                 topRepos.map((repo) => (
                                     <div
