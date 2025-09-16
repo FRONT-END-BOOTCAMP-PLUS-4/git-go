@@ -4,7 +4,12 @@ import * as React from "react";
 
 import {
     type DropdownMenuProps,
+    DropdownMenu,
+    DropdownMenuContent,
     DropdownMenuItemIndicator,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { SuggestionPlugin } from "@udecode/plate-suggestion/react";
 import {
@@ -13,14 +18,6 @@ import {
     usePluginOption,
 } from "@udecode/plate/react";
 import { CheckIcon, EyeIcon, PencilLineIcon, PenIcon } from "lucide-react";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuTrigger,
-} from "@/app/member/components/CreateMemoir/plate-editor/ui/dropdown-menu";
 
 import { ToolbarButton } from "./toolbar";
 

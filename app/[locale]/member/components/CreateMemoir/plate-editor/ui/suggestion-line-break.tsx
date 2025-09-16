@@ -7,11 +7,9 @@ import type { TSuggestionData } from "@udecode/plate-suggestion";
 import { type RenderNodeWrapper, usePluginOption } from "@udecode/plate/react";
 import { CornerDownLeftIcon } from "lucide-react";
 
-import {
-    type SuggestionConfig,
-    suggestionPlugin,
-} from "@/app/member/components/CreateMemoir/plate-editor/plugin/suggestion-plugin";
 import { cn } from "@/lib/utils";
+import { suggestionPlugin } from "../plugin";
+import { SuggestionConfig } from "../plugin/suggestion-plugin";
 
 export const SuggestionBelowNodes: RenderNodeWrapper<SuggestionConfig> = ({
     api,
