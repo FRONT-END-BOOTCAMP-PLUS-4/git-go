@@ -114,7 +114,7 @@ export default function MemberLayout({
                                         type="lined"
                                         htmlType="button"
                                         size="full"
-                                        onClick={setFilterOpen}
+                                        onClick={() => setFilterOpen(true)}
                                     >
                                         <Filter size={16} />
                                         필터

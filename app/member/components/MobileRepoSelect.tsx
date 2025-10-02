@@ -17,6 +17,11 @@ type RepoItem = {
     nameWithOwner: string;
 };
 
+type GithubRepo = {
+    id: string;
+    nameWithOwner: string;
+};
+
 export default function MobileRepoSelect({
     repoSelectOpen,
     setRepoSelectOpen,
@@ -74,13 +79,15 @@ export default function MobileRepoSelect({
                 fetch("/api/github/repos"),
             ]);
 
-            const userRepoIds: { id: number; name: string }[] =
-                await userRes.json();
-            const githubRepos = await githubRes.json();
+            const userRepoIds = (await userRes.json()) as Array<{
+                id: number;
+                name: string;
+            }>;
+            const githubRepos = (await githubRes.json()) as GithubRepo[];
 
-            const matched = githubRepos
-                .map((repo: any) => {
-                    const match = userRepoIds.find((r) => r.name === repo.id);
+            const matched: RepoItem[] = githubRepos
+                .map((repo) => {
+                    const match = userRepoIds.find((u) => u.name === repo.id);
                     if (!match) return null;
                     return {
                         dbId: Number(match.id),
@@ -88,7 +95,7 @@ export default function MobileRepoSelect({
                         nameWithOwner: repo.nameWithOwner,
                     };
                 })
-                .filter((r): r is RepoItem => r !== null)
+                .filter((r: RepoItem | null): r is RepoItem => r !== null)
                 .sort((a, b) => a.dbId - b.dbId);
 
             setUserRepos(matched);
@@ -116,7 +123,7 @@ export default function MobileRepoSelect({
         if (reloadRepoList) {
             fetchRepos().finally(() => resetReload());
         }
-    }, [reloadRepoList]);
+    }, [reloadRepoList, resetReload]);
 
     useEffect(() => {
         // 렌더링 이후에 overflow 여부 체크
@@ -179,17 +186,16 @@ export default function MobileRepoSelect({
                                     >
                                         <div
                                             className="overflow-x-auto whitespace-nowrap"
-                                            ref={(el) =>
-                                                (containerRefs.current[
-                                                    repo.id
-                                                ] = el)
-                                            }
+                                            ref={(el) => {
+                                                containerRefs.current[repo.id] =
+                                                    el;
+                                            }}
                                         >
                                             <span
-                                                ref={(el) =>
-                                                    (textRefs.current[repo.id] =
-                                                        el)
-                                                }
+                                                ref={(el) => {
+                                                    textRefs.current[repo.id] =
+                                                        el;
+                                                }}
                                                 className={`inline-block min-w-full ${slideClass}`}
                                             >
                                                 {repo.nameWithOwner}
