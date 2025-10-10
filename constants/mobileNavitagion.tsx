@@ -1,4 +1,4 @@
-import { CodeXml, File, Pencil } from "lucide-react";
+import { CodeXml, Pencil, File } from "lucide-react";
 
 export const NAVIGATION_ITEMS = [
     {

@@ -127,7 +127,7 @@ export default function EditEditorForm({
     };
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-2 overflow-y-hidden p-4 lg:p-0">
+        <div className="flex h-full min-h-0 flex-col overflow-y-hidden">
             {/* 제목 */}
             <div>
                 <input
