@@ -3,11 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "postinstall": "prisma generate",
+        "vercel-build": "prisma generate && next build",
         "build": "next build",
-        "start": "next start",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-        "format": "prettier --write ."
+        "start": "next start"
     },
     "dependencies": {
         "@ariakit/react": "^0.4.17",
