@@ -1,10 +1,19 @@
+// 리팩토링 상황 : 완료
+// 확인 날짜 : 2025.10.17
+// 수정 내역: feature 타입 분리 및 안정화
+// 기능 : 스크롤을 이용한 섹션 위치 컨트롤
+// 파일 및 폴더 명 : 확인
+// 변수명, 함수명 : 확인
+// 함수 선언 방식 : 확인
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { ArrowUp, Mouse } from "lucide-react";
 import Image from "next/image";
+import { Feature } from "@/types/feature";
 
-export function FeatureBox({ feature }: { feature: any }) {
+export function FeatureBox({ feature }: { feature: Feature }) {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         const container = document.querySelector("main"); // ← snap이 걸린 컨테이너
