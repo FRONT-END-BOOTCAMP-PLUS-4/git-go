@@ -1,3 +1,9 @@
+// 리팩토링 상황 : 진행 중
+// 확인 날짜 : 2025.10.17
+// 기능 : 홈페이지, 첫 렌더링 페이지, 서비스 설명
+// 파일 및 폴더 명 : 확인
+// 변수명, 함수명 :
+// 함수 선언 :
 import {
     FeatureBox,
     ScrollDownButton,
@@ -15,9 +21,9 @@ import { getServerSession } from "next-auth";
 
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
-    const isLoggedIn = !!session;
+    const isLoggedIn = !!session; // session에 값이 있으면 로그인 처리
 
-    const features = [
+    const FEATURES = [
         {
             id: "sync",
             title: "활동 동기화",
@@ -86,7 +92,7 @@ export default async function HomePage() {
                 )}
 
                 <div className="mt-10 flex flex-wrap justify-center gap-10 leading-10">
-                    {features.map((feature) => (
+                    {FEATURES.map((feature) => (
                         <FeatureBox key={feature.id} feature={feature} />
                     ))}
                 </div>
