@@ -4,19 +4,7 @@ import { useSourceTitleStore } from "@/store/useSourceTitleStore";
 import { Archive, GitBranch, GitCommitHorizontal, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-interface LabelBadgeProps {
-    type:
-        | "feat"
-        | "fix"
-        | "chore"
-        | "merge"
-        | "refactor"
-        | "test"
-        | "docs"
-        | "style"
-        | "etc";
-}
+import { LabelBadgeProps, CardInfoProps } from "@/types/commitList";
 
 const typeClassMap: Record<
     LabelBadgeProps["type"],
@@ -69,15 +57,6 @@ const typeClassMap: Record<
     },
 };
 
-interface CardInfoProps {
-    sha: string;
-    message: string;
-    branch: string;
-    repo: string;
-    commitType: LabelBadgeProps["type"];
-    createdAt: string;
-}
-
 export default function CommitCard({
     sha,
     commitType,
@@ -107,15 +86,8 @@ export default function CommitCard({
     }).format(newCreatedAt);
 
     return (
-        // <li className="border-border-primary1 border-b p-4">
         <article className="my-1 flex items-start gap-x-4">
             <div className="bg-primary2 flex h-10 w-10 items-center justify-center rounded-full">
-                {/* <Image
-                        src="/commit-blue.svg"
-                        width={20}
-                        height={16}
-                        alt="커밋 아이콘"
-                    /> */}
                 <GitCommitHorizontal className="text-primary7" />
             </div>
             <div className="flex min-w-0 flex-1 flex-col gap-y-2 md:gap-y-1">
@@ -158,6 +130,5 @@ export default function CommitCard({
                 </div>
             </div>
         </article>
-        // </li>
     );
 }

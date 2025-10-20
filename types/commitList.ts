@@ -20,3 +20,24 @@ export interface Repo {
     name: string;
     nameWithOwner: string;
 }
+export interface LabelBadgeProps {
+    type:
+        | "feat"
+        | "fix"
+        | "chore"
+        | "merge"
+        | "refactor"
+        | "test"
+        | "docs"
+        | "style"
+        | "etc";
+}
+
+export interface CardInfoProps {
+    sha: string;
+    message: string;
+    branch: string;
+    repo: string;
+    commitType: LabelBadgeProps["type"];
+    createdAt: string;
+}

@@ -1,10 +1,10 @@
-// 리팩토링 상황 : 진행중
-// 확인 날짜 : 2025.10.17
-// 수정 내역 : 주석 제거
-// 기능 :
-// 파일 및 폴더 명 :
-// 변수명, 함수명 :
-// 함수 선언 방식 :
+// 리팩토링 상황 : 완료
+// 확인 날짜 : 2025.10.20
+// 수정 내역 : 주석 제거, 타입 분리
+// 기능 : 커밋 목록 페이지 보여주기 / 페이지네이션
+// 파일 및 폴더 명 : 확인
+// 변수명, 함수명 : 확인
+// 함수 선언 방식 : 확인
 
 "use client";
 
@@ -17,30 +17,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import RepoSelectModal from "../components/RepoSelectModal";
-
-interface Commit {
-    sha: string;
-    type:
-        | "feat"
-        | "fix"
-        | "chore"
-        | "merge"
-        | "refactor"
-        | "test"
-        | "docs"
-        | "style"
-        | "etc";
-    message: string;
-    repo: string;
-    branch: string;
-    createdAt: string;
-}
-
-interface Repo {
-    id: number;
-    name: string;
-    nameWithOwner: string;
-}
+import { Commit, Repo } from "@/types/commitList";
 
 export default function CommitPage() {
     const now = new Date();
